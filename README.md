@@ -57,16 +57,27 @@
 </div>
 
 
+## Technologies
+
+**Debian version**: `bookworm (12.5)`
+
+**Python version**: `3.11.6`
+
+**Django version**: `4.2.4`
+
+<br><br>
+
+
 ## Modules
 
 <br>
 
 ### Summary
 
-|              | Major Module amt. | Minor Module amt. | Total Score |
-| :----------: | :---------------: | :---------------: | :---------: |
-| **Selected** |         10        |         6         |   **13**   |
-| **Working**  |         1         |         0         |   **1.0**   |
+|              | Major Module amt. | Minor Module amt. |       Total Score        |
+| :----------: | :---------------: | :---------------: | :----------------------: |
+| **Selected** |         10        |         6         | **13.0** <sub>/7.0</sub> |
+| **Working**  |         0         |         0         |  **0.0** <sub>/7.0</sub> |
 
 <br>
 
@@ -80,25 +91,29 @@
 
 <br>
 
-### Technologies
-
-**Debian version**: `bookworm (12.5)`
-
-**Python version**: `3.11.6`
-
-**Django version**: `4.2.4`
-
-<br>
-
 ### Selected Modules
 
-| State  |  Class  |    Category    | Module |
-| :----: | :-----: | :------------: | :----- |
-|   ✅   | `major` | AI-Algo        | Introduce an AI Opponent. |
-|   ❌   | `minor` | Cybersecurity  | Implement Two-Factor Authentication (2FA) and JWT. |
+| State  |  Class  |           Category           | Module |
+| :----: | :-----: | :--------------------------: | :----- |
+|   ❌   | `major` | Web                          | [Use a Framework as backend](#major-use-a-framework-as-backend) |
+|   ❌   | `minor` | Web                          | [Use a front-end framework or toolkit](#minor-use-a-front-end-framework-or-toolkit) |
+|   ❌   | `minor` | Web                          | [Use a database for the backend](#minor-use-a-database-for-the-backend) |
+|   ❌   | `major` | User Management              | [Standard user management, authentication, users across tournaments](#major-standard-user-management,-authentication,-users-across-tournaments) |
+|   ❌   | `major` | User Management              | [Implementing a remote authentication](#major-implementing-a-remote-authentication) |
+|   ❌   | `major` | Gameplay and user experience | [Remote players](#major-remote-players) |
+|   ❌   | `major` | Gameplay and user experience | [Multiplayers (more than 2 in the same game)](#major-multiplayers-(more-than-2-in-the-same-game)) |
+|   ❌   | `minor` | Gameplay and user experience | [Game Customization Options](#minor-game-customization-options) |
+|   ❌   | `major` | Gameplay and user experience | [Live chat](#major-live-chat) |
+|   ❌   | `major` | AI-Algo                      | [Introduce an AI Opponent](#major-introduce-an-ai-opponent) |
+|   ❌   | `minor` | AI-Algo                      | [User and Game Stats Dashboards](#minor-user-and-game-stats-dashboards) |
+|   ❌   | `major` | Cybersecurity                | [Implement Two-Factor Authentication (2FA) and JWT](#major-implement-two-factor-authentication-(2fa)-and-jwt) |
+|   ❌   | `major` | Cybersecurity                | [Designing the Backend as Microservices](#major-designing-the-backend-as-microservices) |
+|   ❌   | `minor` | Accessibility                | [Expanding Browser Compatibility](#minor-expanding-browser-compatibility) |
+|   ❌   | `minor` | Accessibility                | [Multiple language supports](#minor-multiple-language-supports) |
+|   ❌   | `major` | Server-Side Pong             | [Replacing Basic Pong with Server-Side Pong and Imple-menting an API](#major-replacing-basic-pong-with-server-side-pong-and-imple-menting-an-api) |
 
 > [!NOTE]
-> This is an example of how to fill the table.
+> If the link is not clickable, the development of the module is not yet started.
 
 <br>
 
@@ -147,5 +162,4 @@
 
 - **Server-Side Pong**
   - [x] Major module: *Replacing Basic Pong with Server-Side Pong and Imple-menting an API.*
-  - [ ] Major module: *Enabling Pong Gameplay via CLI against Web Users with*
-API Integration.
+  - [ ] Major module: *Enabling Pong Gameplay via CLI against Web Users with API Integration.*
