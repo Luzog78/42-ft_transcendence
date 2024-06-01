@@ -6,21 +6,23 @@ services:
         build:
             context: ./postgresql
             dockerfile: Dockerfile
-        volumes:
-            - db-data:/var/lib/postgresql/15/main
+        # volumes:
+        #     - db-data:/var/lib/postgresql/15/main
         networks:
             - db
         restart: on-failure
         expose:
-            - 3306
+            - 5432
+        ports:
+            - 5432:5432
 
-volumes:
-    db-data:
-        driver: local
-        driver_opts:
-            type: none
-            device: ~/sgoinfre/data-pong/postgresql
-            o: bind
+# volumes:
+#     db-data:
+#         driver: local
+#         driver_opts:
+#             type: none
+#             device: ~/sgoinfre/data-pong/postgresql
+#             o: bind
 
 networks:
     db: {
