@@ -65,7 +65,7 @@
 
 |              | Major Module amt. | Minor Module amt. | Total Score |
 | :----------: | :---------------: | :---------------: | :---------: |
-| **Selected** |         7         |         5         |   **9.5**   |
+| **Selected** |         10        |         6         |   **13**   |
 | **Working**  |         1         |         0         |   **1.0**   |
 
 <br>
@@ -107,12 +107,12 @@
 - **Web**
   - [x] Major module: *Use a Framework as backend.*
   - [x] Minor module: *Use a front-end framework or toolkit.*
-  - [ ] Minor module: *Use a database for the backend.*
+  - [x] Minor module: *Use a database for the backend.*
   - [ ] Major module: *Store the score of a tournament in the Blockchain.*
 
 - **User Management**
   - [x] Major module: *Standard user management, authentication, users across tournaments.*
-  - [ ] Major module: *Implementing a remote authentication.*
+  - [x] Major module: *Implementing a remote authentication.*
 
 - **Gameplay and user experience**
   - [x] Major module: *Remote players*
@@ -122,7 +122,7 @@
   - [x] Major module: *Live chat.*
 
 - **AI-Algo**
-  - [ ] Major module: *Introduce an AI Opponent.*
+  - [x] Major module: *Introduce an AI Opponent.*
   - [x] Minor module: *User and Game Stats Dashboards*
 
 - **Cybersecurity**
@@ -133,7 +133,7 @@
 - **Devops**
   - [ ] Major module: *Infrastructure Setup for Log Management.*
   - [ ] Minor module: *Monitoring system.*
-  - [ ] Major module: *Designing the Backend as Microservices.*
+  - [x] Major module: *Designing the Backend as Microservices.*
 
 - **Graphics**
   - [ ] Major module: *Use of advanced 3D techniques.*
