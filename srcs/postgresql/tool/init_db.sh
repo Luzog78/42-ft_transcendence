@@ -3,19 +3,11 @@ service postgresql start
 
 su postgres << EOF
 
-echo $DB_NAME
-echo $DB_USER
-echo $DB_PASSWD
-
 createdb $DB_NAME
 if [ $? = 0 ]; then
 	echo "Created db '$DB_NAME'"
 	createuser $DB_USER
-	psql << EOP
-	\password $DB_USER
-	$DB_PASSWD
-	$DB_PASSWD
-	EOP
+	psql -c "ALTER USER $DB_USER WITH PASSWORD '$DB_PASSWD';"
 fi
 
 EOF
