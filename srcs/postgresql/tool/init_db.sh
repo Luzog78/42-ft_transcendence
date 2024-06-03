@@ -8,22 +8,10 @@ if [ $? = 0 ]; then
 	echo "Created db '$DB_NAME'"
 	createuser $DB_USER
 	psql -c "ALTER USER $DB_USER WITH PASSWORD '$DB_PASSWD';"
+	psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USER;"
+	PGPASSWORD=$DB_PASSWD psql -h 127.0.0.1 -U $DB_USER -d $DB_NAME -a -f /db_tables.sql
 fi
 
 EOF
-
-# create table
-#   "public"."users" (
-#     "id" serial not null,
-#     "created_at" timestamp not null default NOW(),
-#     "mail" varchar(255) not null,
-#     "username" varchar(255) not null,
-#     "password" varchar(32) not null,
-#     "a2f" BOOLEAN not null default 0,
-#     constraint "users_pkey" primary key ("id")
-#   );
-
-# comment
-#   on column "public"."users"."password" is 'must be hashed with sha256'
 
 $@
