@@ -1,5 +1,6 @@
 import { Home } from "./Home.js";
 import { Login } from "./Login.js";
+import { Logout } from "./Logout.js";
 import { Register } from "./Register.js";
 import { Err404 } from "./Err404.js";
 
@@ -17,6 +18,11 @@ const router = [
 	{
 		path: "/login",
 		component: Login,
+		context: {},
+	},
+	{
+		path: "/logout",
+		component: Logout,
 		context: {},
 	},
 	{
