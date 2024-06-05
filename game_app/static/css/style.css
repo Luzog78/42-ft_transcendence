@@ -1,0 +1,174 @@
+:root {
+	--c-bg: #00244d;
+	--c-fg: #fff;
+	--bg-url: url("https://preview.redd.it/zomea5tdv8651.jpg?auto=webp&s=0a20face47ba06072a6510c946c01b9c83c9b1d2");
+}
+
+body {
+	padding: 0px;
+	padding-top: 10px;
+	background-color: var(--c-bg);
+}
+
+* {
+	font-family: "Kodchasan", sans-serif;
+	font-weight: 300;
+	font-size: 1.02em;
+	font-style: normal;
+	color: var(--c-fg);
+}
+
+.background-image {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: -1;
+	background: var(--bg-url) no-repeat center center fixed;
+	background-size: cover;
+}
+
+.container-blur {
+	backdrop-filter: blur(8px);
+	background-color: #00000050;
+	margin: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 20px;
+	width: fit-content;
+	border-radius: 10px;
+	border: 1px solid #fff;
+	box-shadow: 0 0 10px 0 #ffffff80;
+}
+
+.container-blur-success {
+	backdrop-filter: blur(8px);
+	background-color: #00ff0050;
+	margin: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 20px;
+	width: fit-content;
+	border-radius: 10px;
+	border: 1px solid #0f0;
+	box-shadow: 0 0 10px 0 #00ff0080;
+}
+
+.container-blur-error {
+	backdrop-filter: blur(8px);
+	background-color: #00000050;
+	margin: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 20px;
+	width: fit-content;
+	border-radius: 10px;
+	border: 1px solid #f00;
+	box-shadow: 0 0 10px 0 #ff000080;
+}
+
+.alert-dismissible {
+	padding: 10px;
+}
+
+.alert-dismissible .content {
+	margin-right: 30px;
+}
+
+.alert-dismissible .btn-close {
+	transform: scale(.75) translate(25%, -25%);
+}
+
+.a-no-style {
+	text-decoration: inherit;
+	color: inherit;
+	font: inherit;
+}
+
+.a-no-style:hover {
+	text-decoration: inherit;
+	color: inherit;
+}
+
+.navbar {
+	padding: 0;
+}
+
+.navbar > .container-fluid {
+	padding-left: 0;
+	width: 100%;
+}
+
+.navbar > .container-fluid > * {
+	flex: 1;
+	text-align: right;
+}
+
+.navbar > .container-fluid > *:nth-child(2) {
+	text-align: center;
+}
+
+.navbar img {
+	width: 50px;
+}
+
+.navbar-brand h1 {
+	display: inline;
+}
+
+.navbar-brand {
+	display: flex;
+}
+
+.abc {
+	height: 400vh;
+}
+
+.profile-name {
+	font-size: large;
+	text-decoration: underline #555555;
+	text-underline-offset: .17em;
+	text-decoration-thickness: .1em;
+	letter-spacing: .05em;
+}
+
+.profile-name:hover {
+	text-decoration: underline #555555;
+	text-underline-offset: .17em;
+	text-decoration-thickness: .1em;
+}
+
+.profile > * {
+	cursor: pointer;
+}
+
+.form-ssm {
+	width: min(512px, 100%);
+}
+
+.form-ssm .row {
+	margin-bottom: 5px;
+}
+
+.form-ssm label {
+	font-weight: bold;
+}
+
+.form-ssm *::placeholder {
+	color: #888;
+}
+
+.form-ssm input {
+	background: transparent;
+	color: var(--c-fg);
+}
+
+.form-ssm input:focus {
+	background: transparent;
+	color: var(--c-fg);
+}
+
+.form-ssm button[type="submit"] {
+	width: 100%;
+}
