@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from os import getenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,6 +80,14 @@ DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.sqlite3',
 		'NAME': BASE_DIR / 'db.sqlite3',
+	},
+	'pong': {
+		'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': getenv("DB_NAME") or 'pong_user',
+        'PASSWORD': getenv("DB_PASSWD") or 'dAci7q$.51dgDGeT',
+        'HOST': '127.0.0.1', # todo when dockerized: update host
+        'PORT': '5432'
 	}
 }
 
