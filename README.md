@@ -76,8 +76,8 @@
 
 |              | Major Module amt. | Minor Module amt. |       Total Score        |
 | :----------: | :---------------: | :---------------: | :----------------------: |
-| **Selected** |         10        |         6         | **13.0** <sub>/7.0</sub> |
-| **Working**  |         0         |         0         |  **0.0** <sub>/7.0</sub> |
+| **Selected** |         11        |         6         | **14.0** <sub>/9.5</sub> |
+| **Working**  |         1         |         1         |  **1.5** <sub>/9.5</sub> |
 
 <br>
 
@@ -88,6 +88,8 @@
 > • &nbsp; Major module score: `+0.5 / module`
 >
 > • &nbsp; **Required Score**: `7.0`
+>
+> • &nbsp; **Required Score _to get all the bonuses_**: `9.5`
 
 <br>
 
@@ -95,8 +97,8 @@
 
 | State  |  Class  |           Category           | Module |
 | :----: | :-----: | :--------------------------: | :----- |
-|   ❌   | `major` | Web                          | [Use a Framework as backend](#major-use-a-framework-as-backend) |
-|   ❌   | `minor` | Web                          | [Use a front-end framework or toolkit](#minor-use-a-front-end-framework-or-toolkit) |
+|   ✅   | `major` | Web                          | [Use a Framework as backend](#major-use-a-framework-as-backend) |
+|   ✅   | `minor` | Web                          | [Use a front-end framework or toolkit](#minor-use-a-front-end-framework-or-toolkit) |
 |   ❌   | `minor` | Web                          | [Use a database for the backend](#minor-use-a-database-for-the-backend) |
 |   ❌   | `major` | User Management              | [Standard user management, authentication, users across tournaments](#major-standard-user-management,-authentication,-users-across-tournaments) |
 |   ❌   | `major` | User Management              | [Implementing a remote authentication](#major-implementing-a-remote-authentication) |
@@ -107,13 +109,14 @@
 |   ❌   | `major` | AI-Algo                      | [Introduce an AI Opponent](#major-introduce-an-ai-opponent) |
 |   ❌   | `minor` | AI-Algo                      | [User and Game Stats Dashboards](#minor-user-and-game-stats-dashboards) |
 |   ❌   | `major` | Cybersecurity                | [Implement Two-Factor Authentication (2FA) and JWT](#major-implement-two-factor-authentication-(2fa)-and-jwt) |
-|   ❌   | `major` | Cybersecurity                | [Designing the Backend as Microservices](#major-designing-the-backend-as-microservices) |
+|   ❌   | `major` | Devops                       | [Designing the Backend as Microservices](#major-designing-the-backend-as-microservices) |
+|   ❌   | `major` | Graphics                     | [Use of advanced 3D techniques](#major-use-of-advanced-3d-techniques) |
 |   ❌   | `minor` | Accessibility                | [Expanding Browser Compatibility](#minor-expanding-browser-compatibility) |
 |   ❌   | `minor` | Accessibility                | [Multiple language supports](#minor-multiple-language-supports) |
 |   ❌   | `major` | Server-Side Pong             | [Replacing Basic Pong with Server-Side Pong and Imple-menting an API](#major-replacing-basic-pong-with-server-side-pong-and-imple-menting-an-api) |
 
 > [!NOTE]
-> If the link is not clickable, the development of the module is not yet started.
+> If the link does not work, the development of the module is not yet started.
 
 <br>
 
@@ -151,7 +154,7 @@
   - [x] Major module: *Designing the Backend as Microservices.*
 
 - **Graphics**
-  - [ ] Major module: *Use of advanced 3D techniques.*
+  - [x] Major module: *Use of advanced 3D techniques.*
 
 - **Accessibility**
   - [ ] Minor module: *Support on all devices.*
