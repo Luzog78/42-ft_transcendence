@@ -3,6 +3,8 @@ import { Login } from "./pages/Login.js";
 import { Logout } from "./pages/Logout.js";
 import { Register } from "./pages/Register.js";
 import { Err404 } from "./pages/Err404.js";
+import { Profile } from "./pages/Profile.js";
+import { Play } from "./pages/Play.js";
 
 var global_context = {
 	user: {
@@ -41,6 +43,16 @@ const router = [
 	{
 		path: "/register",
 		component: Register,
+		context: {},
+	},
+	{
+		path: "/profile",
+		component: Profile,
+		context: {},
+	},
+	{
+		path: "/play",
+		component: Play,
 		context: {},
 	},
 ];

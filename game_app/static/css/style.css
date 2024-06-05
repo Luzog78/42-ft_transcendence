@@ -1,7 +1,10 @@
+/* ************************************************************************** */
+/* --------------------------- Root: Every pages ---------------------------- */
+/* ************************************************************************** */
+
 :root {
 	--c-bg: #00244d;
 	--c-fg: #fff;
-	--bg-url: url("https://preview.redd.it/zomea5tdv8651.jpg?auto=webp&s=0a20face47ba06072a6510c946c01b9c83c9b1d2");
 }
 
 body {
@@ -25,9 +28,13 @@ body {
 	width: 100vw;
 	height: 100vh;
 	z-index: -1;
-	background: var(--bg-url) no-repeat center center fixed;
+	background: url("https://preview.redd.it/zomea5tdv8651.jpg?auto=webp&s=0a20face47ba06072a6510c946c01b9c83c9b1d2") no-repeat center center fixed;
 	background-size: cover;
 }
+
+/* ************************************************************************** */
+/* ------------------------------ Blur effect ------------------------------- */
+/* ************************************************************************** */
 
 .container-blur {
 	backdrop-filter: blur(8px);
@@ -68,6 +75,45 @@ body {
 	box-shadow: 0 0 10px 0 #ff000080;
 }
 
+.block-blur {
+	backdrop-filter: blur(12px);
+	background-color: #00000030;
+	margin: auto;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	min-height: 80vh;
+	width: min(850px, 100%);
+	border-radius: 4px;
+	display: flex;
+}
+
+.block-blur > .content {
+	flex: 992;
+	width: 100%;
+}
+
+.block-blur-pad {
+	flex: 4;
+	width: 2px;
+	min-width: 2px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.block-blur-pad:first-child {
+	margin-right: 20px;
+}
+
+.block-blur-pad:last-child {
+	margin-left: 20px;
+}
+
+/* ************************************************************************** */
+/* --------------------------------- Alerts --------------------------------- */
+/* ************************************************************************** */
+
 .alert-dismissible {
 	padding: 10px;
 }
@@ -80,16 +126,9 @@ body {
 	transform: scale(.75) translate(25%, -25%);
 }
 
-.a-no-style {
-	text-decoration: inherit;
-	color: inherit;
-	font: inherit;
-}
-
-.a-no-style:hover {
-	text-decoration: inherit;
-	color: inherit;
-}
+/* ************************************************************************** */
+/* --------------------------------- Navbar --------------------------------- */
+/* ************************************************************************** */
 
 .navbar {
 	padding: 0;
@@ -121,11 +160,7 @@ body {
 	display: flex;
 }
 
-.abc {
-	height: 400vh;
-}
-
-.profile-name {
+.navbar .profile-name {
 	font-size: large;
 	text-decoration: underline #555555;
 	text-underline-offset: .17em;
@@ -133,15 +168,19 @@ body {
 	letter-spacing: .05em;
 }
 
-.profile-name:hover {
+.navbar .profile-name:hover {
 	text-decoration: underline #555555;
 	text-underline-offset: .17em;
 	text-decoration-thickness: .1em;
 }
 
-.profile > * {
+.navbar .profile > * {
 	cursor: pointer;
 }
+
+/* ************************************************************************** */
+/* --------------------------------- Forms ---------------------------------- */
+/* ************************************************************************** */
 
 .form-ssm {
 	width: min(512px, 100%);
@@ -171,4 +210,142 @@ body {
 
 .form-ssm button[type="submit"] {
 	width: 100%;
+}
+
+/* ************************************************************************** */
+/* -------------------------------- Profile --------------------------------- */
+/* ************************************************************************** */
+
+#profile-content .profile {
+	display: flex;
+}
+
+#profile-content #profile-picture {
+	width: 100px;
+	border-radius: 1000%;
+}
+
+#profile-content #profile-name {
+	font-size: 2em;
+	font-weight: 500;
+	height: fit-content;
+	align-self: center;
+	margin-left: 10px;
+}
+
+#profile-content .rating {
+	display: flex;
+	width: 80%;
+	margin: auto;
+	justify-content: space-between;
+	align-items: center;
+	text-align: center;
+	font-size: 1.1em;
+}
+
+#profile-content .rating > * {
+	flex: 1;
+}
+
+#profile-content .rating-label {
+	text-decoration: underline;
+	text-underline-offset: .1em;
+}
+
+#profile-content #rating-games-won {
+	margin-right: 20px;
+	font-weight: 800;
+	color: #0f0;
+}
+
+#profile-content #rating-games-lost {
+	margin-left: 20px;
+	font-weight: 800;
+	color: #f00;
+}
+
+#profile-content #rating-ratio {
+	font-weight: 600;
+	color: #aaa;
+}
+
+#profile-content .table {
+	margin-top: 50px;
+}
+
+#profile-content .table > thead > * > * {
+	font-weight: 600;
+}
+
+#profile-content .table > :not(caption) > * > * {
+	background-color: transparent;
+	color: var(--c-fg);
+}
+
+#profile-content .table-striped > tbody > tr:nth-of-type(2n+1) > * {
+	background-color: #00000030;
+}
+
+#profile-content .table > tbody > tr:hover > * {
+	background-color: #00000050;
+}
+
+#profile-content .table .game-won {
+	color: #0f0;
+	font-weight: 600;
+}
+
+#profile-content .table .game-lost {
+	color: #f00;
+	font-weight: 600;
+}
+
+#profile-content .nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	text-align: center;
+}
+
+#profile-content .nav > * {
+	flex: 1;
+}
+
+#profile-content .nav .nav-links {
+	max-width: 20%;
+}
+
+#profile-content .nav .nav-labels {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 15%;
+}
+
+#profile-content .nav .nav-labels > * {
+	flex: 1;
+}
+
+#profile-content .nav .nav-label {
+	color: #aaa;
+}
+
+#profile-content .nav #nav-label-current {
+	font-weight: 600;
+	color: var(--c-fg);
+}
+
+/* ************************************************************************** */
+/* ------------------------------ Miscellanous ------------------------------ */
+/* ************************************************************************** */
+
+.a-no-style {
+	text-decoration: inherit;
+	color: inherit;
+	font: inherit;
+}
+
+.a-no-style:hover {
+	text-decoration: inherit;
+	color: inherit;
 }

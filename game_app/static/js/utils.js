@@ -137,6 +137,16 @@ function checkPasswords(passwordId, confirmationId) {
 	return true;
 }
 
+function checkUID(uidId) {
+	let uid = document.querySelector(uidId);
+	if (!uid.value.match(/^[0-9]+$/)) {
+		invalidFeedback(uid, "Invalid UID (must be a number)");
+		return false;
+	}
+	validFeedback(uid, null);
+	return true;
+}
+
 export {
 	getJson,
 	postJson,
@@ -149,4 +159,5 @@ export {
 	checkEmail,
 	checkPassword,
 	checkPasswords,
+	checkUID,
 };
