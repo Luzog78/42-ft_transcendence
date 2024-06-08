@@ -13,6 +13,8 @@ function Home(context) {
 	`;
 	getJson("/api/profile").then(data => {
 		let content = document.getElementById("home-content");
+		if (content === null)
+			return;
 		if (data.ok) {
 			content.innerHTML = /*html*/`
 				<h3>Welcome to PONG <span id="home-realname"></span> !</h3>

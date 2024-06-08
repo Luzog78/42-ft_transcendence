@@ -1,5 +1,5 @@
 import { getJson } from "../utils.js";
-import { redirect, refresh } from "../script.js";
+import { persistError, persistSuccess, popNext, redirect, refresh } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistants } from "../components/Persistants.js";
 
@@ -10,19 +10,16 @@ function Logout(context) {
 	getJson("/api/logout").then(data => {
 		if (data.ok) {
 			context.user.is_authenticated = false;
-			context.persistant.success.push(data.success);
+			persistSuccess(context, data.success);
 			if (context.user.is_authenticated) {
 				context.user.is_authenticated = false;
 				if (!context.next)
 					refresh();
 			}
 		} else
-			context.persistant.error.push(data.error);
-		if (context.next) {
-			let next = context.next;
-			context.next = null;
-			redirect(next);
-		}
+			persistError(context, data.error);
+		if (context.next)
+			redirect(popNext(context));
 	});
 	return div.outerHTML;
 }

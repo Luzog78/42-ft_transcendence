@@ -3,7 +3,7 @@ import { Login } from "./pages/Login.js";
 import { Logout } from "./pages/Logout.js";
 import { Register } from "./pages/Register.js";
 import { Err404 } from "./pages/Err404.js";
-import { Profile } from "./pages/Profile.js";
+import { CompleteProfileSample, Profile } from "./pages/Profile.js";
 import { Play } from "./pages/Play.js";
 
 var global_context = {
@@ -12,48 +12,53 @@ var global_context = {
 		email: null,
 		is_authenticated: false,
 	},
-	persistant: {
-		success: [],
-		error: [],
-	},
+	persistant: [],
 	next: null,
 };
 
+/**
+ * @note	Path arguments:
+ * @note	- <numbers>		: Any number
+ * @note	- <letters>		: Any letter
+ * @note	- <alphanum>	: Any alphanumeric character
+ * @note	- <any>			: Any character
+ */
 const router = [
 	{
 		path: undefined,
 		component: Err404,
-		context: {},
 	},
 	{
 		path: "/",
 		component: Home,
-		context: {},
 	},
 	{
 		path: "/login",
 		component: Login,
-		context: {},
 	},
 	{
 		path: "/logout",
 		component: Logout,
-		context: {},
 	},
 	{
 		path: "/register",
 		component: Register,
-		context: {},
 	},
 	{
 		path: "/profile",
 		component: Profile,
-		context: {},
+	},
+	{
+		path: "/profile/sample",
+		component: CompleteProfileSample,
+	},
+	{
+		path: "/profile/<numbers>",
+		component: Profile,
 	},
 	{
 		path: "/play",
 		component: Play,
-		context: {},
 	},
 ];
 
@@ -63,21 +68,83 @@ const loadPage = (path) => {
 	let next = new URLSearchParams(window.location.search).get("next");
 	if (next)
 		global_context.next = next;
-
-	let route = router.find(r => r.path === path);
+	
+	let route = null;
+	let args = [];
+	let pathes = path.split("/");
+	for (let i = 1; i < router.length; i++) {
+		let rPathes = router[i].path.split("/");
+		let ok = rPathes.length === pathes.length;
+		for (let j = 0; ok && j < rPathes.length; j++) {
+			if (rPathes[j] === "<numbers>")
+				if (isNaN(pathes[j]))
+					ok = false;
+				else
+					args.push(parseInt(pathes[j]));
+			else if (rPathes[j] === "<letters>")
+				if (!/^[a-zA-Z]+$/.test(pathes[j]))
+					ok = false;
+				else
+					args.push(pathes[j]);
+			else if (rPathes[j] === "<alphanum>")
+				if (!/^[a-zA-Z0-9]+$/.test(pathes[j]))
+					ok = false;
+				else
+					args.push(pathes[j]);
+			else if (rPathes[j] === "<any>")
+				args.push(pathes[j]);
+			else if (rPathes[j] !== pathes[j])
+				ok = false;
+		}
+		if (ok) {
+			route = router[i];
+			break;
+		}
+		args = [];
+	}
 	if (!route)
 		route = router[0];
-	content.innerHTML = route.component(global_context);
+	let inner = route.component(global_context, ...args);
+	if (inner === null || inner === undefined || inner === "")
+		return;
+	content.innerHTML = inner;
 }
 
 const redirect = (path) => {
 	let href = window.location.origin + path;
 	window.history.pushState(null, null, href);
-	loadPage(path);
+	loadPage(path.split("?")[0].split("#")[0]);
 }
 
 const refresh = () => {
 	loadPage(window.location.pathname);
+}
+
+const popNext = (context) => {
+	if (!context.next)
+		return null;
+	context.next = context.next.split(";");
+	while (context.next.length) {
+		if (context.next[0] === "")
+			context.next.shift();
+		else {
+			let nextPath = context.next.shift();
+			if (context.next.length)
+				nextPath += "?next=" + context.next.join(";");
+			context.next = null;
+			return nextPath;
+		}
+	}
+	context.next = null;
+	return null;
+}
+
+const persistSuccess = (context, message) => {
+	context.persistant.push({ ok: true, message: message });
+}
+
+const persistError = (context, message) => {
+	context.persistant.push({ ok: false, message: message });
 }
 
 window.addEventListener("load", () => {
@@ -101,6 +168,6 @@ window.addEventListener("load", () => {
 	loadPage(window.location.pathname);
 });
 
-export { redirect, refresh };
+export { redirect, refresh, popNext, persistSuccess, persistError };
 
 console.log("[✅] Scripts loaded successfully!");

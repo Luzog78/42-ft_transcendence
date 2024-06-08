@@ -30,6 +30,8 @@ function Play(context) {
 	`;
 	setTimeout(() => {
 		let form = document.querySelector("#play-form");
+		if (form === null)
+			return;
 		form.onsubmit = (event) => event.preventDefault();
 		document.querySelector("#join-button").onclick = () => {
 			clearFeedbacks(form);

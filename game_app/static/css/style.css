@@ -28,7 +28,7 @@ body {
 	width: 100vw;
 	height: 100vh;
 	z-index: -1;
-	background: url("https://preview.redd.it/zomea5tdv8651.jpg?auto=webp&s=0a20face47ba06072a6510c946c01b9c83c9b1d2") no-repeat center center fixed;
+	background: url("https://cdn.prod.website-files.com/6206183801c03c3c7c7e316c/65a1654270406c29d7c7c227_1background-banner.png") no-repeat center center fixed;
 	background-size: cover;
 }
 
@@ -174,8 +174,22 @@ body {
 	text-decoration-thickness: .1em;
 }
 
+.navbar .profile {
+	position: relative;
+}
+
 .navbar .profile > * {
 	cursor: pointer;
+}
+
+.navbar #logout-btn {
+	position: absolute;
+	right: 0;
+	display: none;
+}
+
+.navbar .profile:hover #logout-btn {
+	display: block;
 }
 
 /* ************************************************************************** */
@@ -228,6 +242,16 @@ body {
 #profile-content #profile-name {
 	font-size: 2em;
 	font-weight: 500;
+	height: fit-content;
+	align-self: center;
+	margin-left: 10px;
+}
+
+#profile-content #profile-username {
+	font-size: 1em;
+	font-weight: 500;
+	font-style: italic;
+	color: #aaa;
 	height: fit-content;
 	align-self: center;
 	margin-left: 10px;

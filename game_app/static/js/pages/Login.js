@@ -1,5 +1,5 @@
 import { checkPassword, checkUsername, clearFeedbacks, postJson } from "../utils.js";
-import { redirect, refresh } from "../script.js";
+import { persistError, persistSuccess, popNext, redirect, refresh } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistants } from "../components/Persistants.js";
 
@@ -44,7 +44,18 @@ function Login(context) {
 		</div>
 	`;
 	setTimeout(() => {
+		if (context.user.is_authenticated) {
+			if (context.next)
+				redirect(popNext(context));
+			else if (window.history.length > 1)
+				window.history.back();
+			else
+				redirect("/");
+			return;
+		}
 		let form = document.querySelector("#login-form");
+		if (form === null)
+			return;
 		form.onsubmit = (event) => {
 			event.preventDefault();
 			clearFeedbacks(form);
@@ -55,22 +66,17 @@ function Login(context) {
 				password: document.querySelector("#password").value,
 			}).then(data => {
 				if (data.ok) {
-					context.persistant.success.push(data.success);
+					persistSuccess(context, data.success);
 					context.user.username = data.username;
 					context.user.firstName = data.firstName;
 					context.user.lastName = data.lastName;
 					context.user.email = data.email;
 					context.user.is_authenticated = true;
 				} else {
-					context.persistant.error.push(data.error);
+					persistError(context, data.error);
 					context.user.is_authenticated = false;
 				}
-				if (context.next) {
-					let next = context.next;
-					context.next = null;
-					redirect(next);
-				} else
-					redirect("/");
+				redirect(context.next ? popNext(context) : "/");
 			});
 		};
 	}, 250);

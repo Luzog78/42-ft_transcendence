@@ -51,6 +51,8 @@ function invalidFeedback(child, message) {
 
 function clearFeedbacks(form) {
 	let inputs = form.querySelectorAll("input");
+	if (inputs === null)
+		return;
 	inputs.forEach(input => {
 		input.classList.remove("is-invalid");
 		input.classList.remove("is-valid");
@@ -66,6 +68,8 @@ function clearFeedbacks(form) {
 
 function checkUsername(usernameId) {
 	let username = document.querySelector(usernameId);
+	if (username === null)
+		return false;
 	if (username.value.length < 3) {
 		invalidFeedback(username, "Username must be at least 3 characters long");
 		return false;
@@ -82,6 +86,8 @@ function checkUsername(usernameId) {
 
 function checkFirstName(firstNameId) {
 	let firstName = document.querySelector(firstNameId);
+	if (firstName === null)
+		return false;
 	if (firstName.value.length < 1) {
 		invalidFeedback(firstName, "First name must be at least 1 character long");
 		return false;
@@ -95,6 +101,8 @@ function checkFirstName(firstNameId) {
 
 function checkLastName(lastNameId) {
 	let lastName = document.querySelector(lastNameId);
+	if (lastName === null)
+		return false;
 	if (lastName.value.length < 1) {
 		invalidFeedback(lastName, "Last name must be at least 1 character long");
 		return false;
@@ -108,6 +116,8 @@ function checkLastName(lastNameId) {
 
 function checkEmail(emailId) {
 	let email = document.querySelector(emailId);
+	if (email === null)
+		return false;
 	if (!email.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
 		invalidFeedback(email, "Invalid email address");
 		return false;
@@ -118,6 +128,8 @@ function checkEmail(emailId) {
 
 function checkPassword(passwordId) {
 	let password = document.querySelector(passwordId);
+	if (password === null)
+		return false;
 	if (password.value.length < 4) {
 		invalidFeedback(password, "Password must be at least 4 characters long");
 		return false;
@@ -129,6 +141,8 @@ function checkPassword(passwordId) {
 function checkPasswords(passwordId, confirmationId) {
 	let password = document.querySelector(passwordId);
 	let confirmation = document.querySelector(confirmationId);
+	if (password === null || confirmation === null)
+		return false;
 	if (password.value !== confirmation.value) {
 		invalidFeedback(confirmation, "Passwords do not match");
 		return false;
@@ -139,6 +153,8 @@ function checkPasswords(passwordId, confirmationId) {
 
 function checkUID(uidId) {
 	let uid = document.querySelector(uidId);
+	if (uid === null)
+		return false;
 	if (!uid.value.match(/^[0-9]+$/)) {
 		invalidFeedback(uid, "Invalid UID (must be a number)");
 		return false;

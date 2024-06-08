@@ -1,7 +1,7 @@
 import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, checkUsername, clearFeedbacks, postJson } from "../utils.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistants } from "../components/Persistants.js";
-import { redirect, refresh } from "../script.js";
+import { persistError, persistSuccess, popNext, redirect, refresh } from "../script.js";
 
 function Register(context) {
 	let div = document.createElement("div");
@@ -68,6 +68,8 @@ function Register(context) {
 	`;
 	setTimeout(() => {
 		let form = document.querySelector("#registration-form");
+		if (form === null)
+			return;
 		form.onsubmit = (event) => {
 			event.preventDefault();
 			clearFeedbacks(form);
@@ -85,16 +87,13 @@ function Register(context) {
 				email: document.querySelector("#email").value,
 				password: document.querySelector("#password").value,
 			}).then(data => {
-				if (data.ok)
-					context.persistant.success.push(data.success);
-				else
-					context.persistant.error.push(data.error);
-				if (context.next) {
-					let next = context.next;
-					context.next = null;
-					redirect(next);
-				} else
-					refresh("/login");
+				if (data.ok) {
+					persistSuccess(context, data.success);
+					redirect(context.next ? popNext(context) : "/login");
+				} else {
+					persistError(context, data.error);
+					refresh();
+				}
 			});
 		};
 	}, 250);
