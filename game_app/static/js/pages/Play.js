@@ -1,11 +1,11 @@
 import { NavBar } from "../components/NavBar.js";
-import { Persistants } from "../components/Persistants.js";
+import { Persistents } from "../components/Persistents.js";
 import { checkUID, clearFeedbacks, postJson } from "../utils.js";
 
 function Play(context) {
 	let div = document.createElement("div");
 	div.innerHTML = NavBar("Play", context);
-	div.innerHTML += Persistants(context);
+	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<div class="container container-blur form-ssm" style="padding: 50px; margin-top: 100px;">
 			<form class="row g-3" id="play-form" style="margin-top: 0px;">

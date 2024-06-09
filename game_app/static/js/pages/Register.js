@@ -1,12 +1,12 @@
 import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, checkUsername, clearFeedbacks, postJson } from "../utils.js";
 import { NavBar } from "../components/NavBar.js";
-import { Persistants } from "../components/Persistants.js";
+import { Persistents } from "../components/Persistents.js";
 import { persistError, persistSuccess, popNext, redirect, refresh } from "../script.js";
 
 function Register(context) {
 	let div = document.createElement("div");
 	div.innerHTML = NavBar("Register", context);
-	div.innerHTML += Persistants(context);
+	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<p><br><br></p>
 		<div class="container container-blur form-ssm">

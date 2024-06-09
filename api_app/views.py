@@ -3,7 +3,6 @@ from django.http import JsonResponse
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
-from requests import post
 
 
 @csrf_exempt
@@ -88,7 +87,7 @@ def logout(request):
 @csrf_exempt
 def profile(request):
 	if not request.user.is_authenticated:
-		return JsonResponse({'ok': False, 'error': 'Not logged in'})
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn.message'})
 	return JsonResponse({
 		'ok': True,
 		'username': request.user.username,

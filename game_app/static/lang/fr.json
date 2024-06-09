@@ -1,0 +1,29 @@
+{
+	"locale": "fr",
+	"lang": "Français",
+	"iconAlt": "Drapeau de la France",
+	"iconURL": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg",
+	"title": "PING! PONG !",
+	"loading": "Chargement...",
+	"navbar": {
+		"iconAlt": "Logo",
+		"login": "Connexion",
+		"logout": "Déconnexion",
+		"register": "S'inscrire",
+		"profilePictureAlt": "Photo de profil"
+	},
+	"pages": {
+		"home": {
+			"title": "PONG !",
+			"h0": "Une erreur s'est produite...",
+			"h1": "Bienvenue sur PONG",
+			"h2": "!",
+			"p0": "Venez et jouez avec nous !"
+		}
+	},
+	"errors": {
+		"notLoggedIn": {
+			"message": "Il semblerait que vous ne soyez pas connecté."
+		}
+	}
+}

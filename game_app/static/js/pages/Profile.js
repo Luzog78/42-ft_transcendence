@@ -1,5 +1,5 @@
 import { NavBar } from "../components/NavBar.js";
-import { Persistants } from "../components/Persistants.js";
+import { Persistents } from "../components/Persistents.js";
 import { persistError, redirect } from "../script.js";
 
 function Profile(context, username) {
@@ -13,7 +13,7 @@ function Profile(context, username) {
 	}
 	let div = document.createElement("div");
 	div.innerHTML = NavBar("Profile", context);
-	div.innerHTML += Persistants(context);
+	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<p><br><br></p>
 		<div id="profile-content" class="block-blur">
@@ -113,7 +113,7 @@ function Profile(context, username) {
 function CompleteProfileSample(context) {
 	let div = document.createElement("div");
 	div.innerHTML = NavBar("Profile Sample", context);
-	div.innerHTML += Persistants(context);
+	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<p><br><br></p>
 		<div id="profile-content" class="block-blur">

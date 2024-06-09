@@ -5,14 +5,18 @@ import { Register } from "./pages/Register.js";
 import { Err404 } from "./pages/Err404.js";
 import { CompleteProfileSample, Profile } from "./pages/Profile.js";
 import { Play } from "./pages/Play.js";
+import { getJson } from "./utils.js";
+
+const DEFAULT_LANG = "fr";
 
 var global_context = {
+	lang: {},
 	user: {
 		username: null,
 		email: null,
 		is_authenticated: false,
 	},
-	persistant: [],
+	persistent: [],
 	next: null,
 };
 
@@ -140,14 +144,36 @@ const popNext = (context) => {
 }
 
 const persistSuccess = (context, message) => {
-	context.persistant.push({ ok: true, message: message });
+	context.persistent.push({ ok: true, message: message });
 }
 
 const persistError = (context, message) => {
-	context.persistant.push({ ok: false, message: message });
+	context.persistent.push({ ok: false, message: message });
 }
 
-window.addEventListener("load", () => {
+const loadLang = async (context, lang) => {
+	context.lang = await getJson(`/static/lang/${lang}.json`);
+	if (!context.lang.locale)
+		console.error(`[❌] Failed to fetch language file: ${lang}.json`);
+	else
+		console.log(`[✅] Loaded language file: ${lang}.json`, context.lang);
+}
+
+const getLang = (context, key) => {
+	const notFound = `{'${key}' not found}`;
+	let pathes = key.split(".");
+	let found = context.lang;
+	for (let path of pathes) {
+		if (!found[path])
+			return notFound;
+		found = found[path];
+	}
+	if (typeof found !== "string")
+		return notFound;
+	return found;
+}
+
+window.addEventListener("load", async () => {
 	if (window.location.pathname !== "/" && window.location.pathname.endsWith("/"))
 		window.history.pushState(null, null, window.location.pathname.slice(0, -1)
 			+ window.location.search + window.location.hash);
@@ -165,9 +191,18 @@ window.addEventListener("load", () => {
 		loadPage(window.location.pathname);
 	});
 
+	await loadLang(global_context, DEFAULT_LANG);
 	loadPage(window.location.pathname);
 });
 
-export { redirect, refresh, popNext, persistSuccess, persistError };
+export {
+	redirect,
+	refresh,
+	popNext, 
+	persistSuccess,
+	persistError,
+	loadLang,
+	getLang,
+};
 
 console.log("[✅] Scripts loaded successfully!");

@@ -1,10 +1,10 @@
 import { NavBar } from "../components/NavBar.js";
-import { Persistants } from "../components/Persistants.js";
+import { Persistents } from "../components/Persistents.js";
 
 function Err404(context) {
 	let div = document.createElement("div");
 	div.innerHTML = NavBar("Error 404", context);
-	div.innerHTML += Persistants(context);
+	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<div style="position: fixed; top: 50%; transform: translateY(-50%); width: 100%; margin: auto">
 			<div class="container-blur text-center">

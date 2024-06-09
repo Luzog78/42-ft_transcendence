@@ -1,15 +1,15 @@
 import { getJson } from "../utils.js";
-import { refresh } from "../script.js";
+import { getLang, refresh } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
-import { Persistants } from "../components/Persistants.js";
+import { Persistents } from "../components/Persistents.js";
 
 function Home(context) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar("PONG !", context);
-	div.innerHTML += Persistants(context);
+	div.innerHTML = NavBar(getLang(context, "pages.home.title"), context);
+	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<p><br><br></p>
-		<div class="container" id="home-content">Loading...</p>
+		<div class="container" id="home-content">${getLang(context, "loading")}</p>
 	`;
 	getJson("/api/profile").then(data => {
 		let content = document.getElementById("home-content");
@@ -17,9 +17,13 @@ function Home(context) {
 			return;
 		if (data.ok) {
 			content.innerHTML = /*html*/`
-				<h3>Welcome to PONG <span id="home-realname"></span> !</h3>
+				<h3>
+					${getLang(context, "pages.home.h1")}
+					<span id="home-realname"></span>
+					${getLang(context, "pages.home.h2")}
+				</h3>
 				<br>
-				<p>Come and play with us !</p>
+				<p>${getLang(context, "pages.home.p0")}</p>
 			`;
 			content.querySelector("#home-realname").innerText = `${data.firstName} ${data.lastName}`;
 			context.user.username = data.username;
@@ -32,10 +36,10 @@ function Home(context) {
 			}
 		} else {
 			content.innerHTML = /*html*/`
-				<h3>An error occured...</h3>
-				<p class="home-error"></p>
+				<h3>${getLang(context, "pages.home.h0")}</h3>
+				<p class="home-error">${getLang(context, "loading")}</p>
 			`;
-			content.querySelector(".home-error").innerText = data.error;
+			content.querySelector(".home-error").innerText = getLang(context, data.error);
 			context.user.is_authenticated = false;
 		}
 	});

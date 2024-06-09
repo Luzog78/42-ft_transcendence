@@ -1,4 +1,4 @@
-import { redirect, refresh } from "../script.js";
+import { getLang, redirect, refresh } from "../script.js";
 import { getJson } from "../utils.js";
 
 function NavBar(title, context) {
@@ -22,16 +22,16 @@ function NavBar(title, context) {
 	let next = window.location.pathname;
 	if (context.user.is_authenticated) {
 		right.innerHTML = /*html*/`
-			<img class="profile-picture" src="/static/img/user.svg" alt="No profile picture">
-			<a class="a-no-style profile-name" href="/profile" data-link>Loading...</a>
-			<a type="button" class="btn btn-outline-danger nav-links" href="/logout?next=${next}" id="logout-btn" data-link>Logout</a>
+			<img class="profile-picture" src="/static/img/user.svg" alt="${getLang(context, "navbar.profilePictureAlt")}">
+			<a class="a-no-style profile-name" href="/profile" data-link>${getLang(context, "loading")}</a>
+			<a type="button" class="btn btn-outline-danger nav-links" href="/logout?next=${next}" id="logout-btn" data-link>${getLang(context, "navbar.logout")}</a>
 		`;
 		right.classList.add("profile");
 		right.querySelector(".profile-name").innerText = context.user.username;
 	} else {
 		right.innerHTML = /*html*/`
-			<a type="button" class="btn btn-outline-secondary" href="/login?next=${next}" data-link>Login</a>
-			<a type="button" class="btn btn-outline-primary" href="/register?next=/login;${next}" data-link>Register</a>
+			<a type="button" class="btn btn-outline-secondary" href="/login?next=${next}" data-link>${getLang(context, "navbar.login")}</a>
+			<a type="button" class="btn btn-outline-primary" href="/register?next=/login;${next}" data-link>${getLang(context, "navbar.register")}</a>
 		`;
 	}
 	getJson("/api/profile").then(data => {
