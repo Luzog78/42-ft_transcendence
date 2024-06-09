@@ -5,6 +5,8 @@ import { Register } from "./pages/Register.js";
 import { Err404 } from "./pages/Err404.js";
 import { CompleteProfileSample, Profile } from "./pages/Profile.js";
 import { Play } from "./pages/Play.js";
+import { Pong } from "./pages/Pong.js";
+
 import { getJson } from "./utils.js";
 
 const DEFAULT_LANG = "fr";
@@ -63,6 +65,10 @@ const router = [
 	{
 		path: "/play",
 		component: Play,
+	},
+	{
+		path: "/pong",
+		component: Pong,
 	},
 ];
 
