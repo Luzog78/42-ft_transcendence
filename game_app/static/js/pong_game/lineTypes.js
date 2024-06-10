@@ -24,34 +24,59 @@ class WallLines
 		this.colors = colors;
 		this.divisionCount = divisionCount;
 
-		this.line = new Lines(scene, points, colors, divisionCount, name);
+		this.line = new Lines(scene, points, colors, divisionCount, 5, name);
 		this.scene.entities.push(this.line)
 	}
 
 	destroy()
 	{
-		console.log("destroy line")
 		this.scene.remove(this.line);
 	}
 
 	update(scene)
 	{
-		// if (this.line.mesh.material.opactiy <= 0)
-		// 	return;
 
-		this.line.mesh.material.opacity = (-0.2 - -1) / (0.0005 * 1000) * (this.line.mesh.position.y - -1) + -0.2;
-
-		let points = this.line.points
-		for (let i = 0; i < points.length; i++)
-		{
-			if (this.line.mesh.position.y < -0.2)
-				this.line.mesh.position.y += 0.0005;
-			else
-				this.line.mesh.position.y = -1;
-		}
+		if (this.line.mesh.position.y < -0.2)
+			this.line.mesh.position.y += 0.001;
+		else
+			this.line.mesh.position.y = -1;
 		this.line.update(scene);
 	}
 
 }
 
-export { WallLines }
+class FloorLines
+{
+	constructor(scene, points, colors, divisionCount, name="FloorLine")
+	{
+		this.scene = scene;
+		this.name = this.scene.getName(name);
+
+		this.points = points;
+		this.colors = colors;
+		this.divisionCount = divisionCount;
+
+		this.line = new Lines(scene, points, colors, divisionCount, 5, name);
+		this.scene.entities.push(this.line)
+	}
+
+	destroy()
+	{
+		this.scene.remove(this.line);
+	}
+
+	update(scene)
+	{
+		//random movement along y axis
+
+		let points = this.line.points
+		for (let i = 0; i < points.length; i++)
+		{
+			console.log(points)
+			points[i].y += Math.random() * 0.01 - 0.005;
+		}
+		this.line.update(scene);
+	}
+}
+
+export { WallLines, FloorLines }

@@ -3,17 +3,19 @@ import { Persistents } from "../components/Persistents.js";
 
 function Pong(context)
 {
+	console.log(context)
 	let div = document.createElement("div");
 	div.innerHTML = NavBar("Profile", context);
 	div.innerHTML += Persistents(context);
-	div.innerHTML += /*html*/`
-		<style>
-			* {
-				margin: 0;
-			}
-		</style>
-		<script type="module" src="static/js/pong_game/main.js"></script>
-	`;
+	
+
+	let script = document.createElement("script");
+
+	script.type = "module"
+	script.src = "static/js/pong_game/main.js";
+
+	document.body.appendChild(script);
+
 	return div.outerHTML;
 }
 

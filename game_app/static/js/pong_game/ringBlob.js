@@ -31,7 +31,12 @@ class RingBlob
 	init(position)
 	{
 		const geometry = new THREE.RingGeometry(0.01, 0.015, 32);
-		const material = new THREE.MeshBasicMaterial({...this.options, side: THREE.DoubleSide, transparent: true, opacity: 1});
+		const material = new THREE.MeshBasicMaterial({
+			...this.options,
+			side: THREE.DoubleSide,
+			transparent: true,
+			opacity: 1,
+		});
 		this.mesh = new THREE.Mesh( geometry, material );
 		
 		this.mesh.position.set(position.x, position.y, position.z);
@@ -42,7 +47,7 @@ class RingBlob
 
 	update(scene)
 	{
-		if (this.currentRadius >= this.radiusMax)
+		if (this.mesh.material.opacity <= 0)
 		{
 			this.scene.remove(this);
 			return;

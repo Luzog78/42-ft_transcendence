@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/09 21:03:19 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/10 12:00:41 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ class Scene
 		this.entities.push(new Player(this, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, "player"));
 		this.entities.push(new Player(this, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, "ennemy"));
 
-		this.get("player").position.set(0,0,3.92);
-		this.get("ennemy").position.set(0,0,-3.92);
+		this.get("player").player.position.set(0,0,3.92);
+		this.get("ennemy").player.position.set(0,0,-3.92);
 		
 		this.entities.push(new Ball(this, 0.15, {color: 0xeeeeee, emissive:0xeeeeee, emissiveIntensity:3}, "ball1"))
 		this.get("ball1").position.set(0,0.25,0);
@@ -102,8 +102,8 @@ class Scene
 		if (name.length == 0)
 			name = "Text " + text;
 		let loader = new FontLoader.FontLoader();
-		loader.load('static/js/pong_game/Braciola MS_Regular.json', (font) => {
-
+		// loader.load('js/pong_game/Braciola MS_Regular.json', (font) => {
+		loader.load("static/js/pong_game/Braciola MS_Regular.json", (font) => {
 			const shapes = font.generateShapes( text, size );
 			const geometry = new THREE.ShapeGeometry( shapes );
 			geometry.computeBoundingBox();
@@ -123,6 +123,7 @@ class Scene
 			this.add(textMesh, name);
 			
 		});
+	
 	}
 
 	addSphere(radius, param, name="")

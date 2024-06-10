@@ -17,7 +17,7 @@ import { LineGeometry } from 'linegeometry';
 
 class Lines
 {
-	constructor(scene, points, colors, divisionCount, name="Line")
+	constructor(scene, points, colors, divisionCount, linewidth=5, name="Line")
 	{
 		this.scene = scene;
 		this.name = this.scene.getName(name);
@@ -25,6 +25,7 @@ class Lines
 		this.points = points;
 		this.colors = colors;
 		this.divisionCount = divisionCount;
+		this.linewidth = linewidth;
 
 		this.init();
 	}
@@ -74,10 +75,10 @@ class Lines
 		const geometry = this.getGeometry(this.points, this.divisionCount);
 		const matLine = new LineMaterial({
 			color: 0xffffff,
-			linewidth: 5,
+			linewidth: this.linewidth,
 			vertexColors: true,
 			transparent: true,
-			opacity: 1,
+			opacity: 1
 		});
 
 		this.mesh = new Line2( geometry, matLine );

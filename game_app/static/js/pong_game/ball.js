@@ -73,6 +73,8 @@ class Ball
 		
 		if (wallname.includes("wall"))
 			scene.entities.push(new RingBlob(scene, 0.2, 100, {color: 0x1f56b5}, position));
+		if (wallname == "playerbox" || wallname == "ennemybox")
+			scene.get(wallname.replace("box", "")).bump(normal);
 	}
 
 	resolutionCollision(closestPoint, minDistance, wallname, scene)
@@ -103,7 +105,7 @@ class Ball
 
 	checkCollision(scene)
 	{
-		let walls = ["wall1", "wall2", "player", "ennemy"];
+		let walls = ["wall1", "wall2", "playerbox", "ennemybox"];
 		for (let wallname of walls)
 		{
 			let wall = scene.get(wallname);
