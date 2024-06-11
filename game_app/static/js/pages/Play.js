@@ -12,7 +12,7 @@
 
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
-import { checkUID, clearFeedbacks, postJson } from "../utils.js";
+import { checkUID, clearFeedbacks } from "../utils.js";
 
 function Play(context) {
 	let div = document.createElement("div");

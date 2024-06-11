@@ -84,11 +84,12 @@ function Login(context) {
 					context.user.lastName = data.lastName;
 					context.user.email = data.email;
 					context.user.is_authenticated = true;
+					redirect(context.next ? popNext(context) : "/");
 				} else {
 					persistError(context, data.error);
 					context.user.is_authenticated = false;
+					refresh();
 				}
-				redirect(context.next ? popNext(context) : "/");
 			});
 		};
 	}, 250);

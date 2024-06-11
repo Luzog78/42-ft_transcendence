@@ -28,10 +28,12 @@ function Logout(context) {
 				if (!context.next)
 					refresh();
 			}
-		} else
+			if (context.next)
+				redirect(popNext(context));
+		} else {
 			persistError(context, data.error);
-		if (context.next)
-			redirect(popNext(context));
+			refresh();
+		}
 	});
 	return div.outerHTML;
 }

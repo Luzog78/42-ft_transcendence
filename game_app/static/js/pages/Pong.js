@@ -12,6 +12,7 @@
 
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
+import { startGame } from "../pong_game/main.js";
 
 function Pong(context)
 {
@@ -19,14 +20,27 @@ function Pong(context)
 	let div = document.createElement("div");
 	div.innerHTML = NavBar("Profile", context);
 	div.innerHTML += Persistents(context);
-	
 
-	let script = document.createElement("script");
+	div.innerHTML += /*html*/`
+		<style type="text/css">
+			canvas {
+				position: fixed;
+				top: 0;
+				z-index: -1;
+			}
+		</style>
+	`;
 
-	script.type = "module"
-	script.src = "static/js/pong_game/main.js";
+	setTimeout(() => {
+		startGame();
+	}, 250);
 
-	document.body.appendChild(script);
+	// let script = document.createElement("script");
+
+	// script.type = "module"
+	// script.src = "static/js/pong_game/main.js";
+
+	// document.body.appendChild(script);
 
 	return div.outerHTML;
 }
