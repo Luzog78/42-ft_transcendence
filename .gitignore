@@ -1,0 +1,33 @@
+#######################
+## Ignore everything ##
+#######################
+
+*
+
+
+############################
+## But not these files... ##
+############################
+
+!*.py
+!*.html
+!*.css
+!*.js
+!*.json
+!*.svg
+!*.md
+!.gitignore
+!Makefile
+
+
+################
+## Exceptions ##
+################
+
+*.tmp.*
+*subject.pdf
+.vscode
+__pycache__
+db.sqlite3
+site
+fields.yml
