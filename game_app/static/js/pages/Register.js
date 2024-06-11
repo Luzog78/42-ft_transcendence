@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Register.js                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/11 22:56:24 by ysabik            #+#    #+#             */
+/*   Updated: 2024/06/11 22:56:24 by ysabik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, checkUsername, clearFeedbacks, postJson } from "../utils.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";

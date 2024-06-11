@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Profile.js                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/11 22:56:22 by ysabik            #+#    #+#             */
+/*   Updated: 2024/06/11 22:56:22 by ysabik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 import { persistError, redirect } from "../script.js";

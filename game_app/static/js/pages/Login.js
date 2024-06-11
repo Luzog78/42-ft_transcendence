@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Login.js                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/11 22:56:13 by ysabik            #+#    #+#             */
+/*   Updated: 2024/06/11 22:56:13 by ysabik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 import { checkPassword, checkUsername, clearFeedbacks, postJson } from "../utils.js";
 import { persistError, persistSuccess, popNext, redirect, refresh } from "../script.js";
 import { NavBar } from "../components/NavBar.js";

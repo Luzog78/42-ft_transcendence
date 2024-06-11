@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Play.js                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/11 22:56:18 by ysabik            #+#    #+#             */
+/*   Updated: 2024/06/11 22:56:18 by ysabik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 import { checkUID, clearFeedbacks, postJson } from "../utils.js";

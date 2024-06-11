@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Logout.js                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/11 22:56:15 by ysabik            #+#    #+#             */
+/*   Updated: 2024/06/11 22:56:15 by ysabik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 import { getJson } from "../utils.js";
 import { persistError, persistSuccess, popNext, redirect, refresh } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
