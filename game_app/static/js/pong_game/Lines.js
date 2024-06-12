@@ -77,9 +77,8 @@ class Lines
 			color: 0xffffff,
 			linewidth: this.linewidth,
 			vertexColors: true,
-			transparent: true,
-			opacity: 1
 		});
+
 
 		this.mesh = new Line2( geometry, matLine );
 		this.mesh.computeLineDistances();

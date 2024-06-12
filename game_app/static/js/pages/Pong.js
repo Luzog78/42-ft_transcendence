@@ -12,7 +12,7 @@
 
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
-import { startGame } from "../pong_game/main.js";
+import { animate } from "../pong_game/main.js";
 
 function Pong(context)
 {
@@ -32,7 +32,7 @@ function Pong(context)
 	`;
 
 	setTimeout(() => {
-		startGame();
+		animate();
 	}, 250);
 
 	// let script = document.createElement("script");

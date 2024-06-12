@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wallLines.js                                       :+:      :+:    :+:   */
+/*   lineTypes.js                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 17:32:23 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/09 17:32:23 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/12 18:15:36 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,12 @@ class WallLines
 
 	update(scene)
 	{
-
 		if (this.line.mesh.position.y < -0.2)
 			this.line.mesh.position.y += 0.001;
 		else
+		{
 			this.line.mesh.position.y = -1;
+		}
 		this.line.update(scene);
 	}
 
@@ -71,10 +72,7 @@ class FloorLines
 
 		let points = this.line.points
 		for (let i = 0; i < points.length; i++)
-		{
-			console.log(points)
 			points[i].y += Math.random() * 0.01 - 0.005;
-		}
 		this.line.update(scene);
 	}
 }

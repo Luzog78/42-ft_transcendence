@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/10 12:00:41 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/12 19:04:28 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ import * as RenderPass from 'renderpass';
 import * as EffectComposer from 'effectcomposer';
 import * as UnrealBloomPass from 'unrealbloompass';
 import * as FontLoader from 'fontloader';
+import * as Timer from 'timer';
 
 import { Ball } from "./ball.js"
 import { Player } from "./player.js"
@@ -34,27 +35,31 @@ class Scene
 		this.elements = {};
 		this.entities = []
 		
+		this.timer = new Timer.Timer();
+		this.dt = 0;
+		
 		this.init();
-	
+		
 		this.renderScene = new RenderPass.RenderPass(this.scene, this.camera);
 		this.composer = new EffectComposer.EffectComposer(this.renderer);
 		this.composer.addPass(this.renderScene);
-
+		
 		var bloomPass = new UnrealBloomPass.UnrealBloomPass(
 			new THREE.Vector2(window.innerWidth, window.innerHeight), 
 			0.4, 1.0, 0.5);
 		this.composer.addPass(bloomPass);
 	}
-	
+		
 	init()
 	{
+		
 		this.entities.push(new Player(this, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, "player"));
 		this.entities.push(new Player(this, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, "ennemy"));
 
 		this.get("player").player.position.set(0,0,3.92);
 		this.get("ennemy").player.position.set(0,0,-3.92);
 		
-		this.entities.push(new Ball(this, 0.15, {color: 0xeeeeee, emissive:0xeeeeee, emissiveIntensity:3}, "ball1"))
+		this.entities.push(new Ball(this, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball1"))
 		this.get("ball1").position.set(0,0.25,0);
 		
 		this.renderer.shadowMap.enabled = true;
@@ -65,6 +70,9 @@ class Scene
 	
 	update()
 	{
+		this.timer.update();
+		this.dt = this.timer.getDelta();
+
 		for (let el in this.entities)
 			if (this.entities[el].update != undefined)
 				this.entities[el].update(this);
@@ -102,8 +110,8 @@ class Scene
 		if (name.length == 0)
 			name = "Text " + text;
 		let loader = new FontLoader.FontLoader();
-		// loader.load('js/pong_game/Braciola MS_Regular.json', (font) => {
-		loader.load("static/js/pong_game/Braciola MS_Regular.json", (font) => {
+		loader.load('static/js/pong_game/Braciola MS_Regular.json', (font) => {
+
 			const shapes = font.generateShapes( text, size );
 			const geometry = new THREE.ShapeGeometry( shapes );
 			geometry.computeBoundingBox();
@@ -167,7 +175,7 @@ class Scene
 	{
 		if (!this.entities.includes(element))
 			return ;
-
+		
 		this.entities.splice(this.entities.indexOf(element), 1);
 		delete this.elements[element.name]
 		

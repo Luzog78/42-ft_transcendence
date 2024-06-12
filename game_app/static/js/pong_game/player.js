@@ -54,7 +54,6 @@ class Player
 				this.player.material.emissive.add(new THREE.Color(0.01,0.01,0.01))
 			}, 2 * i);
 			setTimeout(() => {
-				console.log(this.player.position.z, normal.z)
 				this.player.position.z += normal.z * -0.05;
 			}, 2 * i);
 			this.player.material.emissiveIntensity += 0.5;

@@ -12,6 +12,7 @@
 
 import * as THREE from 'three';
 import { RingBlob } from "./ringBlob.js"
+import { Particle } from "./particle.js"
 
 function closestPointOnSegment(A, B, P)
 {
@@ -52,27 +53,33 @@ class Ball
 {
 	constructor(scene, radius, options, name)
 	{
-		let maxX = 0.01;
-		let minX = 0.01;
-		let maxZ = 0.01;
-		let minZ = 0.01;
+		this.scene = scene;
 		
+		this.terminalVelocity = 12;
+
+		let maxX = 1.2;
+		let minX = 1.2;
+		let maxZ = 1.2;
+		let minZ = 1.2;
 		this.vel = new THREE.Vector3(Math.random() * (maxX - minX) + minX, 0, Math.random() * (maxZ - minZ) + minZ);
 		this.acc = new THREE.Vector3(0, 0, 0);
 
+		this.trails = []
+		this.trailsLength = 20;
+
 		this.radius = radius;
-		this.sphere = scene.addSphere(this.radius, options, name);
+		this.sphere = this.scene.addSphere(this.radius, options, name);
 	}
 
 	effectCollision(scene, wallname, position, normal)
 	{
-		let shake = Math.exp(this.vel.length()) - 1;
+		let shake = Math.exp(this.vel.length() / 100) - 1;
 		scene.shake.shake(scene.camera, new THREE.Vector3(shake, 0), 400);
 
 		position = position.sub(normal.multiplyScalar(this.radius * 0.85));
 		
 		if (wallname.includes("wall"))
-			scene.entities.push(new RingBlob(scene, 0.2, 100, {color: 0x1f56b5}, position));
+			scene.entities.push(new RingBlob(scene, 0.2, 100, {color: 0xffffff}, position));
 		if (wallname == "playerbox" || wallname == "ennemybox")
 			scene.get(wallname.replace("box", "")).bump(normal);
 	}
@@ -94,7 +101,8 @@ class Ball
 		this.sphere.position.set(newCircleCenter.x, 0.25, newCircleCenter.y);
 		
 		this.vel = new THREE.Vector3(this.vel.x, this.vel.y, this.vel.z).reflect(new THREE.Vector3(collisionNormal.x, 0, collisionNormal.y));
-		this.vel.multiplyScalar(1.05);
+		this.vel.setLength(this.vel.length() + 0.1);
+		console.log(this.vel.length());
 		
 		// let wallSpeed = scene.get(wallname).;
 
@@ -128,15 +136,34 @@ class Ball
 		}
 	}
 
+	
 	update(scene)
 	{
 		this.checkCollision(scene);
-
+		
 		let color = 270 - this.sphere.position.z * 20;
 		this.sphere.material.color = new THREE.Color(`hsl(${color}, 100%, 80%)`);
 		this.sphere.material.emissive = new THREE.Color(`hsl(${color}, 100%, 80%)`);
 		
-		this.sphere.position.add(this.vel);
+		if (this.trails.length < this.trailsLength)
+		{
+			let particle = new Particle(scene, this, 0.15, {
+				color: this.sphere.material.color,
+				emissive: this.sphere.material.color,
+				emissiveIntensity: 3,
+				transparent: true,
+				opacity: 1,
+				alphaTest: 0.01
+			}, "particle");
+
+			particle.mesh.position.set(this.sphere.position.x, this.sphere.position.y, this.sphere.position.z);
+			this.trails.push(particle);
+		}
+
+		for (let i = 0; i < this.trails.length; i++)
+			this.trails[i].update(scene)
+
+		this.sphere.position.add(new THREE.Vector3().copy(this.vel).multiplyScalar(this.scene.dt));
 		this.vel.add(this.acc);
 		this.acc.multiplyScalar(0.99);
 	}
