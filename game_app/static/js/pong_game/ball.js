@@ -65,7 +65,7 @@ class Ball
 		this.acc = new THREE.Vector3(0, 0, 0);
 
 		this.trails = []
-		this.trailsLength = 20;
+		this.trailsLength = 50;
 
 		this.radius = radius;
 		this.sphere = this.scene.addSphere(this.radius, options, name);

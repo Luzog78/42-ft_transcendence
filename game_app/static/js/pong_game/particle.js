@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   particle.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 23:20:59 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/12 19:07:37 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/06/13 00:05:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ class Particle
 
 	update(scene)
 	{
-		this.mesh.material.opacity -= 0.05;
+		this.mesh.material.opacity -= 0.02;
 
-		this.mesh.geometry.scale(0.95, 0.95, 0.95);
+		this.mesh.geometry.scale(0.96, 0.96, 0.96);
 		
 		if (this.mesh.material.opacity < 0)
 		{
