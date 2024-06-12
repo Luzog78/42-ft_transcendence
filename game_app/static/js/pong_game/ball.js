@@ -100,10 +100,10 @@ class Ball
 		};
 		this.sphere.position.set(newCircleCenter.x, 0.25, newCircleCenter.y);
 		
-		this.vel = new THREE.Vector3(this.vel.x, this.vel.y, this.vel.z).reflect(new THREE.Vector3(collisionNormal.x, 0, collisionNormal.y));
-		this.vel.setLength(this.vel.length() + 0.1);
-		console.log(this.vel.length());
-		
+		this.vel.reflect(new THREE.Vector3(collisionNormal.x, 0, collisionNormal.y));
+		if (this.vel.length() < this.terminalVelocity)
+			this.vel.setLength(this.vel.length() + 0.1);
+
 		// let wallSpeed = scene.get(wallname).;
 
 		this.effectCollision(scene, wallname, 

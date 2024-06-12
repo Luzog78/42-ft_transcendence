@@ -101,8 +101,8 @@ function animate()
 	requestAnimationFrame(animate);
 	scene.update();
 
-	scene.get("player").player.position.x = scene.get("ball1").position.x
-	scene.get("ennemy").player.position.x = scene.get("ball1").position.x
+	// scene.get("player").player.position.x = scene.get("ball1").position.x
+	// scene.get("ennemy").player.position.x = scene.get("ball1").position.x
 }
 
 // animate();
