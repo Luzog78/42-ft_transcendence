@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { RingBlob } from "./ringBlob.js"
-import { Particle } from "./particle.js"
+import { Trail } from "./trail.js"
 
 function closestPointOnSegment(A, B, P)
 {
@@ -61,6 +61,8 @@ class Ball
 		let minX = 1.2;
 		let maxZ = 1.2;
 		let minZ = 1.2;
+
+		this.currentMaxVel = 0;
 		this.vel = new THREE.Vector3(Math.random() * (maxX - minX) + minX, 0, Math.random() * (maxZ - minZ) + minZ);
 		this.acc = new THREE.Vector3(0, 0, 0);
 
@@ -81,7 +83,25 @@ class Ball
 		if (wallname.includes("wall"))
 			scene.entities.push(new RingBlob(scene, 0.2, 100, {color: 0xffffff}, position));
 		if (wallname == "playerbox" || wallname == "ennemybox")
-			scene.get(wallname.replace("box", "")).bump(normal);
+		{
+			let player = scene.get(wallname.replace("box", ""));
+			player.bump(normal);
+
+			let player_up = player.keyboard["ArrowUp"] || player.keyboard["w"];
+			let player_down = player.keyboard["ArrowDown"] || player.keyboard["s"];
+			
+			console.log(this.vel)
+			if (player_up == "keydown")
+			{
+				this.vel.x = -Math.abs(this.vel.x);
+				this.acc = new THREE.Vector3(1, 0, -0.5);
+			}
+			else if (player_down == "keydown")
+			{
+				// this.vel.x = 0;
+				// this.acc = new THREE.Vector3(0.5, 0, 0.0);
+			}
+		}
 	}
 
 	resolutionCollision(closestPoint, minDistance, wallname, scene)
@@ -102,10 +122,8 @@ class Ball
 		
 		this.vel = new THREE.Vector3(this.vel.x, this.vel.y, this.vel.z).reflect(new THREE.Vector3(collisionNormal.x, 0, collisionNormal.y));
 		this.vel.setLength(this.vel.length() + 0.1);
-		console.log(this.vel.length());
 		
-		// let wallSpeed = scene.get(wallname).;
-
+		this.currentMaxVel = this.vel.length();
 		this.effectCollision(scene, wallname, 
 							new THREE.Vector3(newCircleCenter.x, 0.25, newCircleCenter.y),
 							new THREE.Vector3(collisionNormal.x, 0.25, collisionNormal.y),);
@@ -132,6 +150,8 @@ class Ball
 
 			if (!collision)
 				continue;
+
+			console.log(this.vel.length())
 			this.resolutionCollision(closestPoint, minDistance, wallname, scene);
 		}
 	}
@@ -147,25 +167,32 @@ class Ball
 		
 		if (this.trails.length < this.trailsLength)
 		{
-			let particle = new Particle(scene, this, 0.15, {
+			let trail = new Trail(scene, this, 0.15, {
 				color: this.sphere.material.color,
 				emissive: this.sphere.material.color,
 				emissiveIntensity: 3,
 				transparent: true,
 				opacity: 1,
 				alphaTest: 0.01
-			}, "particle");
+			}, "trail");
 
-			particle.mesh.position.set(this.sphere.position.x, this.sphere.position.y, this.sphere.position.z);
-			this.trails.push(particle);
+			trail.mesh.position.set(this.sphere.position.x, this.sphere.position.y, this.sphere.position.z);
+			this.trails.push(trail);
 		}
 
 		for (let i = 0; i < this.trails.length; i++)
 			this.trails[i].update(scene)
 
+		console.log(this.vel)
 		this.sphere.position.add(new THREE.Vector3().copy(this.vel).multiplyScalar(this.scene.dt));
-		this.vel.add(this.acc);
+		this.vel.add(new THREE.Vector3().copy(this.acc).multiplyScalar(this.scene.dt));
 		this.acc.multiplyScalar(0.99);
+			
+		if (this.currentMaxVel != 0 && this.vel.length() > this.currentMaxVel)
+		{
+			// this.vel.multiplyScalar(0.999);
+			console.log("slowing ball")
+		}		
 	}
 }
 

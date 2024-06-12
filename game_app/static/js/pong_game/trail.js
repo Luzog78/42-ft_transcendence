@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   particle.js                                        :+:      :+:    :+:   */
+/*   trail.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/11 23:20:59 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/13 00:05:24 by marvin           ###   ########.fr       */
+/*   Created: 2024/06/13 00:25:59 by marvin            #+#    #+#             */
+/*   Updated: 2024/06/13 00:26:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from 'three';
 
-class Particle
+class Trail
 {
 	constructor(scene, ball, radius, options, name)
 	{
@@ -51,11 +51,10 @@ class Particle
 			this.mesh.material.color = this.ball.sphere.material.color;
 			this.mesh.material.emissive = this.ball.sphere.material.emissive;
 
-
 			this.mesh.position.set(this.ball.sphere.position.x, this.ball.sphere.position.y, this.ball.sphere.position.z);
 			this.mesh.material.opacity = 1;
 		}
 	}
 }
 
-export { Particle }
+export { Trail }
