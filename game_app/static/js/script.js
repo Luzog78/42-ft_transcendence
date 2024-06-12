@@ -17,6 +17,7 @@ import { Register } from "./pages/Register.js";
 import { Err404 } from "./pages/Err404.js";
 import { CompleteProfileSample, Profile } from "./pages/Profile.js";
 import { Play } from "./pages/Play.js";
+import { PlayId } from "./pages/PlayId.js";
 import { Pong } from "./pages/Pong.js";
 
 import { getJson } from "./utils.js";
@@ -77,6 +78,10 @@ const router = [
 	{
 		path: "/play",
 		component: Play,
+	},
+	{
+		path: "/play/id",
+		component: PlayId,
 	},
 	{
 		path: "/pong",
