@@ -21,7 +21,8 @@ function Home(context) {
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<p><br><br></p>
-		<div class="container" id="home-content">${getLang(context, "loading")}</p>
+		<div class="container" id="home-content">${getLang(context, "loading")}</div>
+		<button type="button" class="btn btn-primary" id="1234">Click</button>
 	`;
 	getJson("/api/profile").then(data => {
 		let content = document.getElementById("home-content");
@@ -54,6 +55,24 @@ function Home(context) {
 			content.querySelector(".home-error").innerText = getLang(context, data.error);
 			context.user.is_authenticated = false;
 		}
+
+		const pongSocket = new WebSocket('ws://' + window.location.host + '/ws/pong');
+		pongSocket.onopen = function() {
+			console.log('WebSocket connection established.');
+			const message = {
+				'message': 'Hello, world!'
+			};
+			pongSocket.send(JSON.stringify(message));
+		};
+		pongSocket.onmessage = function(event) {
+			const message = JSON.parse(event.data);
+			console.log('Received message:', message);
+		};
+		document.getElementById("1234").addEventListener("click", () => {
+			pongSocket.send(JSON.stringify({
+				'message': 'Hello, world!!'
+			}));
+		});
 	});
 	return div.outerHTML;
 }

@@ -14,11 +14,15 @@ Including another URLconf
 	1. Import the include() function: from django.urls import include, path
 	2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path, include
+from .pong_socket import PongSocket
+
+
+ws_urlpatterns = [
+	path('ws/pong', PongSocket.as_asgi()),
+]
 
 urlpatterns = [
-	# path('admin/', admin.site.urls),
 	path('api/', include('api_app.urls')),
 	path('api', include('api_app.urls')),
 	path('', include('game_app.urls')),
