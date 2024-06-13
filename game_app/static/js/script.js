@@ -72,7 +72,7 @@ const router = [
 		component: CompleteProfileSample,
 	},
 	{
-		path: "/profile/<numbers>",
+		path: "/profile/<any>",
 		component: Profile,
 	},
 	{
@@ -80,7 +80,7 @@ const router = [
 		component: Play,
 	},
 	{
-		path: "/play/id",
+		path: "/play/<numbers>",
 		component: PlayId,
 	},
 	{

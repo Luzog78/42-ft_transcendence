@@ -363,56 +363,56 @@ body {
 /* ------------------------------ PlayId ------------------------------ */
 /* ******************************************************************** */
 
-.moving-point {
+#playid-content .moving-point {
 	position: absolute;
 	height: 8px;
 	width: 8px;
 	display: flex;
 	background-color: white;
-	animation: move-point 5s 0s infinite linear;
+	animation: playid-move-point 5s 0s infinite linear;
 	border-radius: 500px;
 	border: 1px solid #fff;
 	box-shadow: 0 0 10px 0 #ffffff80;
 }
 
-.search-text span {
+#playid-content .search-text span {
 	position: relative;
-	animation: jump-letter 3s infinite;
+	animation: playid-jump-letter 3s infinite;
 }
 
-.search-text span:nth-child(2) {
+#playid-content .search-text span:nth-child(2) {
 	animation-delay: 0.1s;
 }
 
-.search-text span:nth-child(3) {
+#playid-content .search-text span:nth-child(3) {
 	animation-delay: 0.2s;
 }
 
-.search-text span:nth-child(4) {
+#playid-content .search-text span:nth-child(4) {
 	animation-delay: 0.3s;
 }
 
-.search-text span:nth-child(5) {
+#playid-content .search-text span:nth-child(5) {
 	animation-delay: 0.4s;
 }
 
-.search-text span:nth-child(6) {
+#playid-content .search-text span:nth-child(6) {
 	animation-delay: 0.5s;
 }
 
-.search-text span:nth-child(7) {
+#playid-content .search-text span:nth-child(7) {
 	animation-delay: 0.6s;
 }
 
-.search-text span:nth-child(8) {
+#playid-content .search-text span:nth-child(8) {
 	animation-delay: 0.7s;
 }
 
-.search-text span:nth-child(9) {
+#playid-content .search-text span:nth-child(9) {
 	animation-delay: 0.8s;
 }
 
-@keyframes jump-letter {
+@keyframes playid-jump-letter {
 	0% {
 		bottom: 0px;
 	}
@@ -427,7 +427,7 @@ body {
 	}
 }
 
-@keyframes move-point {
+@keyframes playid-move-point {
 	0% {
 		top: calc(0% - 4px);
 		left: calc(0% - 4px);
