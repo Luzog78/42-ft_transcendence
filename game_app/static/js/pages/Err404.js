@@ -12,22 +12,26 @@
 
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
+import { getLang } from "../script.js";
 
 function Err404(context) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar("Error 404", context);
+	div.innerHTML = NavBar(getLang(context, "pages.404.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<div style="position: fixed; top: 50%; transform: translateY(-50%); width: 100%; margin: auto">
 			<div class="container-blur text-center">
-				<h1 class="display-1" style="font-weight: 600;">Page not found...</h1>
+				<h1 class="display-1" style="font-weight: 600;">${getLang(context, "pages.404.h0")}</h1>
 				<br><br>
-				<p>The page you are looking for does not exist.</p>
-				<p>Let's go back <a href="/">home</a>.</p>
+				<p>${getLang(context, "pages.404.p0")}</p>
+				<p>
+					${getLang(context, "pages.404.p1")}
+					<a href="/">${getLang(context, "pages.404.p2")}</a>${getLang(context, "pages.404.p3")}
+				</p>
 			</div>
 		</div>
 	`;
-	return div.outerHTML;
+	return div.innerHTML;
 }
 
 export { Err404 };

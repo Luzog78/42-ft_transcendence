@@ -11,13 +11,22 @@
 /* ************************************************************************** */
 
 import { checkPassword, checkUsername, clearFeedbacks, postJson } from "../utils.js";
-import { persistError, persistSuccess, popNext, redirect, refresh } from "../script.js";
+import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
-import { Persistents } from "../components/Persistents.js";
+import { Persistents, overridePersistents } from "../components/Persistents.js";
 
 function Login(context) {
+	if (context.user.is_authenticated) {
+		if (context.next)
+			redirect(popNext(context));
+		else if (window.history.length > 1)
+			window.history.back();
+		else
+			redirect("/");
+		return;
+	}
 	let div = document.createElement("div");
-	div.innerHTML = NavBar("Login", context);
+	div.innerHTML = NavBar(getLang(context, "pages.login.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<p><br><br></p>
@@ -25,15 +34,15 @@ function Login(context) {
 			<form class="row g-3" id="login-form">
 				<div class="row col-12">
 					<div class="col-12">
-						<label for="username" class="form-label">Username</label>
-						<input type="text" class="form-control" id="username" placeholder="ft_transcender">
+						<label for="username" class="form-label">${getLang(context, "pages.login.labels.username")}</label>
+						<input type="text" class="form-control" id="username" placeholder="${getLang(context, "pages.login.placeholders.username")}">
 					</div>
 				</div>
 
 				<div class="row col-12">
 					<div class="col-12">
-						<label for="password" class="form-label">Password</label>
-						<input type="password" class="form-control" id="password" placeholder="Enter a string one...">
+						<label for="password" class="form-label">${getLang(context, "pages.login.labels.password")}</label>
+						<input type="password" class="form-control" id="password" placeholder="${getLang(context, "pages.login.placeholders.password")}">
 					</div>
 				</div>
 
@@ -43,42 +52,33 @@ function Login(context) {
 
 				<div class="row col-12">
 					<div class="col-12 text-center">
-						Don't have an account? &nbsp; • &nbsp; <a href="/register">Register</a>
+						${getLang(context, "pages.login.dontHaveAccount")} &nbsp; • &nbsp; <a href="/register${window.location.search}${window.location.hash}">${getLang(context, "pages.login.labels.register")}</a>
 					</div>
 				</div>
 
 				<div class="row col-12">
 					<div class="col-12">
-						<button class="btn btn-primary" type="submit">Login</button>
+						<button class="btn btn-primary" type="submit">${getLang(context, "pages.login.labels.login")}</button>
 					</div>
 				</div>
 			</form>
 		</div>
 	`;
 	setTimeout(() => {
-		if (context.user.is_authenticated) {
-			if (context.next)
-				redirect(popNext(context));
-			else if (window.history.length > 1)
-				window.history.back();
-			else
-				redirect("/");
-			return;
-		}
 		let form = document.querySelector("#login-form");
 		if (form === null)
 			return;
 		form.onsubmit = (event) => {
 			event.preventDefault();
 			clearFeedbacks(form);
-			if (!checkUsername("#username") | !checkPassword("#password"))
+			if (!checkUsername(context, "#username") | !checkPassword(context, "#password"))
 				return;
 			postJson("/api/login", {
 				username: document.querySelector("#username").value,
 				password: document.querySelector("#password").value,
 			}).then(data => {
 				if (data.ok) {
-					persistSuccess(context, data.success);
+					persistSuccess(context, getLang(context, data.success));
 					context.user.username = data.username;
 					context.user.firstName = data.firstName;
 					context.user.lastName = data.lastName;
@@ -86,14 +86,14 @@ function Login(context) {
 					context.user.is_authenticated = true;
 					redirect(context.next ? popNext(context) : "/");
 				} else {
-					persistError(context, data.error);
+					persistError(context, getLang(context, data.error));
 					context.user.is_authenticated = false;
-					refresh();
+					overridePersistents(context);
 				}
 			});
 		};
 	}, 250);
-	return div.outerHTML;
+	return div.innerHTML;
 }
 
 export { Login };

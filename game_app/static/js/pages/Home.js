@@ -11,11 +11,12 @@
 /* ************************************************************************** */
 
 import { getJson } from "../utils.js";
-import { getLang, refresh } from "../script.js";
+import { getLang, persist, persistCopy, refresh } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 
 function Home(context) {
+	var persistentBackup = persistCopy(context);
 	let div = document.createElement("div");
 	div.innerHTML = NavBar(getLang(context, "pages.home.title"), context);
 	div.innerHTML += Persistents(context);
@@ -45,6 +46,8 @@ function Home(context) {
 			context.user.email = data.email;
 			if (!context.user.is_authenticated) {
 				context.user.is_authenticated = true;
+				persist(context, persistentBackup);
+				console.log("Home: Restored context from persistentBackup.");
 				refresh();
 			}
 		} else {
@@ -74,7 +77,7 @@ function Home(context) {
 			}));
 		});
 	});
-	return div.outerHTML;
+	return div.innerHTML;
 }
 
 export { Home };

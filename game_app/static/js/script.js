@@ -22,7 +22,7 @@ import { Pong } from "./pages/Pong.js";
 
 import { getJson } from "./utils.js";
 
-const DEFAULT_LANG = "fr";
+const DEFAULT_LANG = "en";
 
 var global_context = {
 	lang: {},
@@ -174,6 +174,18 @@ const persistError = (context, message) => {
 	context.persistent.push({ ok: false, message: message });
 }
 
+const persistCopy = (context) => {
+	let copy = [];
+	for (let p of context.persistent)
+		copy.push({ ...p });
+	return copy;
+}
+
+const persist = (context, copy) => {
+	for (let p of copy)
+		context.persistent.push({ ...p });
+}
+
 const loadLang = async (context, lang) => {
 	context.lang = await getJson(`/static/lang/${lang}.json`);
 	if (!context.lang.locale)
@@ -224,6 +236,8 @@ export {
 	popNext, 
 	persistSuccess,
 	persistError,
+	persistCopy,
+	persist,
 	loadLang,
 	getLang,
 };

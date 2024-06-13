@@ -12,12 +12,12 @@
 
 import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, checkUsername, clearFeedbacks, postJson } from "../utils.js";
 import { NavBar } from "../components/NavBar.js";
-import { Persistents } from "../components/Persistents.js";
-import { persistError, persistSuccess, popNext, redirect, refresh } from "../script.js";
+import { Persistents, overridePersistents } from "../components/Persistents.js";
+import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
 
 function Register(context) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar("Register", context);
+	div.innerHTML = NavBar(getLang(context, "pages.register.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<p><br><br></p>
@@ -25,38 +25,38 @@ function Register(context) {
 			<form class="row g-3" id="registration-form">
 				<div class="row col-12">
 					<div class="col-12">
-						<label for="username" class="form-label">Username</label>
-						<input type="text" class="form-control" id="username" placeholder="ft_transcender">
+						<label for="username" class="form-label">${getLang(context, "pages.register.labels.username")}</label>
+						<input type="text" class="form-control" id="username" placeholder="${getLang(context, "pages.register.placeholders.username")}">
 					</div>
 				</div>
 
 				<div class="row col-12">
 					<div class="col-6">
-						<label for="first-name" class="form-label">First name</label>
-						<input type="text" class="form-control" id="first-name"  placeholder="Doc">
+						<label for="first-name" class="form-label">${getLang(context, "pages.register.labels.firstName")}</label>
+						<input type="text" class="form-control" id="first-name"  placeholder="${getLang(context, "pages.register.placeholders.firstName")}">
 					</div>
 					<div class="col-6">
-						<label for="last-name" class="form-label">Last name</label>
-						<input type="text" class="form-control" id="last-name" placeholder="... nobody knows...">
-					</div>
-				</div>
-
-				<div class="row col-12">
-					<div class="col-12">
-						<label for="email" class="form-label">Email</label>
-						<input type="email" class="form-control" id="email" placeholder="doc@42.fr">
+						<label for="last-name" class="form-label">${getLang(context, "pages.register.labels.lastName")}</label>
+						<input type="text" class="form-control" id="last-name" placeholder="${getLang(context, "pages.register.placeholders.lastName")}">
 					</div>
 				</div>
 
 				<div class="row col-12">
 					<div class="col-12">
-						<label for="password" class="form-label">Password</label>
+						<label for="email" class="form-label">${getLang(context, "pages.register.labels.email")}</label>
+						<input type="email" class="form-control" id="email" placeholder="${getLang(context, "pages.register.placeholders.email")}">
+					</div>
+				</div>
+
+				<div class="row col-12">
+					<div class="col-12">
+						<label for="password" class="form-label">${getLang(context, "pages.register.labels.password")}</label>
 					</div>
 					<div class="col-6">
-						<input type="password" class="form-control" id="password" placeholder="Enter a string one...">
+						<input type="password" class="form-control" id="password" placeholder="${getLang(context, "pages.register.placeholders.password")}">
 					</div>
 					<div class="col-6">
-						<input type="password" class="form-control" id="confirmation" placeholder="Confirmation">
+						<input type="password" class="form-control" id="confirmation" placeholder="${getLang(context, "pages.register.placeholders.confirmPassword")}">
 					</div>
 				</div>
 
@@ -66,13 +66,13 @@ function Register(context) {
 
 				<div class="row col-12">
 					<div class="col-12 text-center" id="abc">
-						Already have an account? &nbsp; • &nbsp; <a href="/login">Login</a>
+						${getLang(context, "pages.register.haveAccount")} &nbsp; • &nbsp; <a href="/login${window.location.search}${window.location.hash}">${getLang(context, "pages.register.labels.login")}</a>
 					</div>
 				</div>
 
 				<div class="row col-12">
 					<div class="col-12">
-						<button class="btn btn-primary" type="submit">Register</button>
+						<button class="btn btn-primary" type="submit">${getLang(context, "pages.register.labels.register")}</button>
 					</div>
 				</div>
 			</form>
@@ -85,12 +85,12 @@ function Register(context) {
 		form.onsubmit = (event) => {
 			event.preventDefault();
 			clearFeedbacks(form);
-			if (!checkUsername("#username")
-				| !checkFirstName("#first-name")
-				| !checkLastName("#last-name")
-				| !checkEmail("#email")
-				| !checkPassword("#password")
-				| !checkPasswords("#password", "#confirmation"))
+			if (!checkUsername(context, "#username")
+				| !checkFirstName(context, "#first-name")
+				| !checkLastName(context, "#last-name")
+				| !checkEmail(context, "#email")
+				| !checkPassword(context, "#password")
+				| !checkPasswords(context, "#password", "#confirmation"))
 				return;
 			postJson("/api/register", {
 				username: document.querySelector("#username").value,
@@ -100,16 +100,16 @@ function Register(context) {
 				password: document.querySelector("#password").value,
 			}).then(data => {
 				if (data.ok) {
-					persistSuccess(context, data.success);
-					redirect(context.next ? popNext(context) : "/login");
+					persistSuccess(context, getLang(context, data.success));
+					redirect(context.next ? popNext(context) : "/");
 				} else {
-					persistError(context, data.error);
-					refresh();
+					persistError(context, getLang(context, data.error));
+					overridePersistents(context);
 				}
 			});
 		};
 	}, 250);
-	return div.outerHTML;
+	return div.innerHTML;
 }
 
 export { Register };

@@ -11,31 +11,31 @@
 /* ************************************************************************** */
 
 import { getJson } from "../utils.js";
-import { persistError, persistSuccess, popNext, redirect, refresh } from "../script.js";
+import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
-import { Persistents } from "../components/Persistents.js";
+import { Persistents, overridePersistents } from "../components/Persistents.js";
 
 function Logout(context) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar("Logout", context);
+	div.innerHTML = NavBar(getLang(context, "pages.logout.title"), context);
 	div.innerHTML += Persistents(context);
 	getJson("/api/logout").then(data => {
 		if (data.ok) {
 			context.user.is_authenticated = false;
-			persistSuccess(context, data.success);
+			persistSuccess(context, getLang(context, data.success));
 			if (context.user.is_authenticated) {
 				context.user.is_authenticated = false;
 				if (!context.next)
-					refresh();
+					overridePersistents(context);
 			}
 			if (context.next)
 				redirect(popNext(context));
 		} else {
-			persistError(context, data.error);
-			refresh();
+			persistError(context, getLang(context, data.error));
+			overridePersistents(context);
 		}
 	});
-	return div.outerHTML;
+	return div.innerHTML;
 }
 
 export { Logout };

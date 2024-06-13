@@ -42,7 +42,7 @@ function Pong(context)
 
 	// document.body.appendChild(script);
 
-	return div.outerHTML;
+	return div.innerHTML;
 }
 
 export { Pong }

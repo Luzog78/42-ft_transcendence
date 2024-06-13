@@ -13,17 +13,105 @@
 		"profilePictureAlt": "Profile picture"
 	},
 	"pages": {
+		"404": {
+			"title": "Error 404",
+			"h0": "Page not found...",
+			"p0": "The page you are looking for does not exist.",
+			"p1": "Let's go back",
+			"p2": "home",
+			"p3": "."
+		},
 		"home": {
 			"title": "PONG !",
 			"h0": "An error occured...",
 			"h1": "Welcome to PONG",
 			"h2": "!",
 			"p0": "Come and play with us !"
+		},
+		"login": {
+			"title": "Login",
+			"dontHaveAccount": "Don't have an account ?",
+			"labels": {
+				"username": "Username",
+				"password": "Password",
+				"register": "Register",
+				"login": "Login"
+			},
+			"placeholders": {
+				"username": "ft_transcender",
+				"password": "Enter a strong one..."
+			}
+		},
+		"logout": {
+			"title": "Logout"
+		},
+		"register": {
+			"title": "Register",
+			"haveAccount": "Already have an account ?",
+			"labels": {
+				"username": "Username",
+				"firstName": "First name",
+				"lastName": "Last name",
+				"email": "Email",
+				"password": "Password",
+				"register": "Register",
+				"login": "Login"
+			},
+			"placeholders": {
+				"username": "doc123",
+				"firstName": "Doc",
+				"lastName": "... nobody knows...",
+				"email": "doc@42.fr",
+				"password": "Enter a strong one...",
+				"confirmPassword": "Confirmation"
+			}
+		},
+		"play": {
+			"title": "Play",
+			"placeholder": "Join an existing game...",
+			"join": "JOIN",
+			"play": "PLAY"
+		},
+		"playId": {
+			"title": "Play",
+			"waiting": "Waiting for opponents..."
+		},
+		"profile": {
+			"title": "Profile",
+			"ratio": "Ratio",
+			"result": "Result",
+			"gameLink": "Game link",
+			"date": "Date",
+			"previous": "Previous",
+			"next": "Next"
 		}
 	},
 	"errors": {
-		"notLoggedIn": {
-			"message": "You are not logged in !"
-		}
+		"404": "404 Not Found",
+		"invalidMethod": "Invalid method",
+		"invalidRequest": "Invalid request",
+		"notLoggedIn": "You are not logged in !",
+		"mustBeLoggedIn": "You must be logged in to access this page !",
+		"invalidCredentials": "Invalid credentials !",
+		"emailAlreadyUsed": "This email is already used !",
+		"usernameAlreadyUsed": "This username is already used !",
+		"invalidUsername": "Invalid username !",
+		"invalidEmail": "Invalid email !",
+		"invalidPassword": "Invalid password !",
+		"invalidUID": "Invalid UID (must be a number) !",
+		"usernameTooShort": "Username must be at least 3 characters long !",
+		"usernameTooLong": "Username must be at most 24 characters long !",
+		"usernameIllegal": "Username must contain only letters, numbers and underscores !",
+		"firstNameTooShort": "First name must be at least 1 character long !",
+		"firstNameTooLong": "First name must be at most 24 characters long !",
+		"lastNameTooShort": "Last name must be at least 1 character long !",
+		"lastNameTooLong": "Last name must be at most 24 characters long !",
+		"passwordTooShort": "Password must be at least 4 characters long !",
+		"passwordMismatch": "Passwords do not match !"
+	},
+	"successes": {
+		"registered": "You have been successfully registered !",
+		"loggedIn": "You have been successfully logged in !",
+		"loggedOut": "You have been successfully logged out !"
 	}
 }

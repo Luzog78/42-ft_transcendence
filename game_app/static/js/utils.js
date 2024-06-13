@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+import { getLang } from "./script.js";
+
 function postJson(url, data, jsonify = true) {
 	let promise = fetch(url, {
 		method: "POST",
@@ -78,97 +80,97 @@ function clearFeedbacks(form) {
 	});
 }
 
-function checkUsername(usernameId) {
+function checkUsername(context, usernameId) {
 	let username = document.querySelector(usernameId);
 	if (username === null)
 		return false;
 	if (username.value.length < 3) {
-		invalidFeedback(username, "Username must be at least 3 characters long");
+		invalidFeedback(username, getLang(context, "errors.usernameTooShort"));
 		return false;
 	} else if (username.value.length > 24) {
-		invalidFeedback(username, "Username must be at most 24 characters long");
+		invalidFeedback(username, getLang(context, "errors.usernameTooLong"));
 		return false;
 	} else if (username.value.match(/[^a-zA-Z0-9_]/)) {
-		invalidFeedback(username, "Username must contain only letters, numbers and underscores");
+		invalidFeedback(username, getLang(context, "errors.usernameIllegal"));
 		return false;
 	}
 	validFeedback(username, null);
 	return true;
 }
 
-function checkFirstName(firstNameId) {
+function checkFirstName(context, firstNameId) {
 	let firstName = document.querySelector(firstNameId);
 	if (firstName === null)
 		return false;
 	if (firstName.value.length < 1) {
-		invalidFeedback(firstName, "First name must be at least 1 character long");
+		invalidFeedback(firstName, getLang(context, "errors.firstNameTooShort"));
 		return false;
 	} else if (firstName.value.length > 24) {
-		invalidFeedback(firstName, "First name must be at most 24 characters long");
+		invalidFeedback(firstName, getLang(context, "errors.firstNameTooLong"));
 		return false;
 	}
 	validFeedback(firstName, null);
 	return true;
 }
 
-function checkLastName(lastNameId) {
+function checkLastName(context, lastNameId) {
 	let lastName = document.querySelector(lastNameId);
 	if (lastName === null)
 		return false;
 	if (lastName.value.length < 1) {
-		invalidFeedback(lastName, "Last name must be at least 1 character long");
+		invalidFeedback(lastName, getLang(context, "errors.lastNameTooShort"));
 		return false;
 	} else if (lastName.value.length > 24) {
-		invalidFeedback(lastName, "Last name must be at most 24 characters long");
+		invalidFeedback(lastName, getLang(context, "errors.lastNameTooLong"));
 		return false;
 	}
 	validFeedback(lastName, null);
 	return true;
 }
 
-function checkEmail(emailId) {
+function checkEmail(context, emailId) {
 	let email = document.querySelector(emailId);
 	if (email === null)
 		return false;
 	if (!email.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
-		invalidFeedback(email, "Invalid email address");
+		invalidFeedback(email, getLang(context, "errors.invalidEmail"));
 		return false;
 	}
 	validFeedback(email, null);
 	return true;
 }
 
-function checkPassword(passwordId) {
+function checkPassword(context, passwordId) {
 	let password = document.querySelector(passwordId);
 	if (password === null)
 		return false;
 	if (password.value.length < 4) {
-		invalidFeedback(password, "Password must be at least 4 characters long");
+		invalidFeedback(password, getLang(context, "errors.passwordTooShort"));
 		return false;
 	}
 	validFeedback(password, null);
 	return true;
 }
 
-function checkPasswords(passwordId, confirmationId) {
+function checkPasswords(context, passwordId, confirmationId) {
 	let password = document.querySelector(passwordId);
 	let confirmation = document.querySelector(confirmationId);
 	if (password === null || confirmation === null)
 		return false;
 	if (password.value !== confirmation.value) {
-		invalidFeedback(confirmation, "Passwords do not match");
+		invalidFeedback(confirmation, getLang(context, "errors.passwordMismatch"));
 		return false;
 	}
 	validFeedback(confirmation, null);
 	return true;
 }
 
-function checkUID(uidId) {
+function checkUID(context, uidId) {
 	let uid = document.querySelector(uidId);
 	if (uid === null)
 		return false;
 	if (!uid.value.match(/^[0-9]+$/)) {
-		invalidFeedback(uid, "Invalid UID (must be a number)");
+		invalidFeedback(uid, getLang(context, "errors.invalidUID"));
 		return false;
 	}
 	validFeedback(uid, null);

@@ -10,13 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+var i = 0;
+
 function Persistents(context) {
 	let div = document.createElement("div");
 	div.innerHTML = /*html*/`
 		<div class="container-fluid" id="persistent-container"></div>
 	`;
 	let container = div.querySelector("#persistent-container");
-	let i = 0;
+	let j = 0;
 	while (context.persistent.length > 0) {
 		let persistent = context.persistent.shift();
 		let className = persistent.ok ? "success" : "error";
@@ -32,10 +34,19 @@ function Persistents(context) {
 				document.getElementById(`persistent-container-${i}`).remove();
 			} catch (ignored) {
 			}
-		}, 4000 + 130 * i, i);
+		}, 4000 + 130 * j, i);
 		i++;
+		j++;
+		if (i > 100000)
+			i = 0;
 	}
-	return div.outerHTML;
+	return div.innerHTML;
 }
 
-export { Persistents };
+function overridePersistents(context) {
+	let container = document.querySelector("#persistent-container");
+	if (container)
+		container.outerHTML = Persistents(context);
+}
+
+export { Persistents, overridePersistents };

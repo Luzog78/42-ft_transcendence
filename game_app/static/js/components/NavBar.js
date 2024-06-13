@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { getLang, redirect, refresh } from "../script.js";
+import { getLang, persist, persistCopy, refresh } from "../script.js";
 import { getJson } from "../utils.js";
 
-function NavBar(title, context) {
+function NavBar(title, context, fetchProfile = true) {
 	let div = document.createElement("div");
 	div.innerHTML = /*html*/`
-		<nav class="navbar">
+		<nav id="#navbar" class="navbar">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="#">
 					<img src="/static/img/menu.svg" alt="Menu">
@@ -43,22 +43,29 @@ function NavBar(title, context) {
 	} else {
 		right.innerHTML = /*html*/`
 			<a type="button" class="btn btn-outline-secondary" href="/login?next=${next}" data-link>${getLang(context, "navbar.login")}</a>
-			<a type="button" class="btn btn-outline-primary" href="/register?next=/login;${next}" data-link>${getLang(context, "navbar.register")}</a>
+			<a type="button" class="btn btn-outline-primary" href="/register?next=${next}" data-link>${getLang(context, "navbar.register")}</a>
 		`;
 	}
-	getJson("/api/profile").then(data => {
-		if (data.ok) {
-			context.user.username = data.username;
-			context.user.firstName = data.firstName;
-			context.user.lastName = data.lastName;
-			context.user.email = data.email;
-			if (!context.user.is_authenticated) {
-				context.user.is_authenticated = true;
-				refresh();
+	if (fetchProfile)
+		getJson("/api/profile").then(data => {
+			if (data.ok) {
+				context.user.username = data.username;
+				context.user.firstName = data.firstName;
+				context.user.lastName = data.lastName;
+				context.user.email = data.email;
+				if (!context.user.is_authenticated) {
+					context.user.is_authenticated = true;
+					overrideNavBar(title, context);
+				}
 			}
-		}
-	});
-	return div.outerHTML;
+		});
+	return div.innerHTML;
 }
 
-export { NavBar };
+function overrideNavBar(title, context) {
+	let container = document.getElementById("#navbar");
+	if (container)
+		container.outerHTML = NavBar(title, context, false);
+}
+
+export { NavBar, overrideNavBar };

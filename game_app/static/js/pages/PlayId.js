@@ -1,9 +1,10 @@
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
+import { getLang } from "../script.js";
 
 function PlayId(context, id) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar("Play", context);
+	div.innerHTML = NavBar(getLang(context, "pages.playId.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<div id="playid-content" class="container-fluid container-blur" style="padding: 50px; margin-top: 100px;">
@@ -28,7 +29,7 @@ function PlayId(context, id) {
 			</div>
 		</div>
 	`;
-	return div.outerHTML;
+	return div.innerHTML;
 }
 
 export { PlayId };
