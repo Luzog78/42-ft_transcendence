@@ -89,17 +89,31 @@ class Ball
 
 			let player_up = player.keyboard["ArrowUp"] || player.keyboard["w"];
 			let player_down = player.keyboard["ArrowDown"] || player.keyboard["s"];
-			
-			console.log(this.vel)
+			console.log(player_up, player_down)
 			if (player_up == "keydown")
 			{
-				this.vel.x = -Math.abs(this.vel.x);
+				let newVel = new THREE.Vector3(-1, 0, -0.5)
+				newVel.setLength(this.vel.length() + 0.1);
+				
+				this.vel = newVel;
+
 				this.acc = new THREE.Vector3(1, 0, -0.5);
+				this.acc.setLength(this.vel.length() * 2)
 			}
 			else if (player_down == "keydown")
 			{
-				// this.vel.x = 0;
-				// this.acc = new THREE.Vector3(0.5, 0, 0.0);
+				let newVel = new THREE.Vector3(1, 0, -0.5)
+				newVel.setLength(this.vel.length() + 0.1);
+				
+				this.vel = newVel;
+
+				this.acc = new THREE.Vector3(-1, 0, -0.5);
+				this.acc.setLength(this.vel.length() * 2)
+			}
+			if (player_up == "keydown" || player_down == "keydown")
+			{
+				this.acc.z *= normal.z < 0 ? 1 : -1;
+				this.vel.z *= normal.z < 0 ? 1 : -1;
 			}
 		}
 	}
@@ -123,10 +137,10 @@ class Ball
 		this.vel = new THREE.Vector3(this.vel.x, this.vel.y, this.vel.z).reflect(new THREE.Vector3(collisionNormal.x, 0, collisionNormal.y));
 		this.vel.setLength(this.vel.length() + 0.1);
 		
-		this.currentMaxVel = this.vel.length();
 		this.effectCollision(scene, wallname, 
-							new THREE.Vector3(newCircleCenter.x, 0.25, newCircleCenter.y),
-							new THREE.Vector3(collisionNormal.x, 0.25, collisionNormal.y),);
+			new THREE.Vector3(newCircleCenter.x, 0.25, newCircleCenter.y),
+			new THREE.Vector3(collisionNormal.x, 0, collisionNormal.y),);
+		this.currentMaxVel = this.vel.length();
 	}
 
 	checkCollision(scene)
@@ -183,15 +197,13 @@ class Ball
 		for (let i = 0; i < this.trails.length; i++)
 			this.trails[i].update(scene)
 
-		console.log(this.vel)
 		this.sphere.position.add(new THREE.Vector3().copy(this.vel).multiplyScalar(this.scene.dt));
 		this.vel.add(new THREE.Vector3().copy(this.acc).multiplyScalar(this.scene.dt));
 		this.acc.multiplyScalar(0.99);
 			
 		if (this.currentMaxVel != 0 && this.vel.length() > this.currentMaxVel)
 		{
-			// this.vel.multiplyScalar(0.999);
-			console.log("slowing ball")
+			this.vel.multiplyScalar(0.999);
 		}		
 	}
 }
