@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/12 19:04:28 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/06/14 14:13:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ import * as UnrealBloomPass from 'unrealbloompass';
 import * as FontLoader from 'fontloader';
 import * as Timer from 'timer';
 
-import { Ball } from "./ball.js"
-import { Player } from "./player.js"
+import { Ball } from "./Ball.js"
+import { Server } from "./Server.js"
+import { Player } from "./Player.js"
 import { ScreenShake } from "./screenShake.js"
 
 class Scene
@@ -31,6 +32,8 @@ class Scene
 		this.renderer = new THREE.WebGLRenderer({antialias: true});
 		this.controls = new OrbitControls.OrbitControls(this.camera, this.renderer.domElement);
 		this.shake = ScreenShake();
+		
+		this.server = new Server(this);
 		
 		this.elements = {};
 		this.entities = []
@@ -59,8 +62,8 @@ class Scene
 		this.get("player").player.position.set(0,0,3.92);
 		this.get("ennemy").player.position.set(0,0,-3.92);
 		
-		this.entities.push(new Ball(this, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball1"))
-		this.get("ball1").position.set(0,0.25,0);
+		this.entities.push(new Ball(this, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball"))
+		this.get("ball").position.set(0,0.25,0);
 		
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -83,7 +86,7 @@ class Scene
 		this.composer.render();
 	}
 
-	getName(name)
+	getName(name="")
 	{
 		if (name.length == 0)
 			name = Object.keys(this.elements).length;
@@ -94,6 +97,8 @@ class Scene
 
 	add(elements, name="")
 	{
+		if (name.length == 0)
+			name = getName();
 		this.elements[name] = elements;
 		this.scene.add(elements);
 		
@@ -140,7 +145,6 @@ class Scene
 			name = "Sphere";
 		name = this.getName(name);
 
-		// var geometry = new THREE.BoxGeometry(0.25, 0.25, 0.25);
 		var geometry = new THREE.SphereGeometry(radius, 32, 32);
 		var material = new THREE.MeshLambertMaterial(param);
 

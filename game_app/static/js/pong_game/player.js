@@ -17,7 +17,7 @@ class Player
 	constructor(scene, options, name)
 	{
 		this.scene = scene;
-		this.name = name;
+		this.name = this.scene.getName(name);
 		this.options = options;
 
 		

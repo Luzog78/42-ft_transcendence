@@ -58,24 +58,6 @@ function Home(context) {
 			content.querySelector(".home-error").innerText = getLang(context, data.error);
 			context.user.is_authenticated = false;
 		}
-
-		const pongSocket = new WebSocket('ws://' + window.location.host + '/ws/pong');
-		pongSocket.onopen = function() {
-			console.log('WebSocket connection established.');
-			const message = {
-				'message': 'Hello, world!'
-			};
-			pongSocket.send(JSON.stringify(message));
-		};
-		pongSocket.onmessage = function(event) {
-			const message = JSON.parse(event.data);
-			console.log('Received message:', message);
-		};
-		document.getElementById("1234").addEventListener("click", () => {
-			pongSocket.send(JSON.stringify({
-				'message': 'Hello, world!!'
-			}));
-		});
 	});
 	return div.innerHTML;
 }

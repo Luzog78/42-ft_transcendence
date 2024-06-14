@@ -1,16 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lineTypes.js                                       :+:      :+:    :+:   */
+/*   LineEffects.js                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 17:32:23 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/12 18:15:36 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/06/14 13:22:02 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import * as THREE from 'three';
 import { Lines } from "./Lines.js"
 
 class WallLines
@@ -46,35 +45,4 @@ class WallLines
 
 }
 
-class FloorLines
-{
-	constructor(scene, points, colors, divisionCount, name="FloorLine")
-	{
-		this.scene = scene;
-		this.name = this.scene.getName(name);
-
-		this.points = points;
-		this.colors = colors;
-		this.divisionCount = divisionCount;
-
-		this.line = new Lines(scene, points, colors, divisionCount, 5, name);
-		this.scene.entities.push(this.line)
-	}
-
-	destroy()
-	{
-		this.scene.remove(this.line);
-	}
-
-	update(scene)
-	{
-		//random movement along y axis
-
-		let points = this.line.points
-		for (let i = 0; i < points.length; i++)
-			points[i].y += Math.random() * 0.01 - 0.005;
-		this.line.update(scene);
-	}
-}
-
-export { WallLines, FloorLines }
+export { WallLines }

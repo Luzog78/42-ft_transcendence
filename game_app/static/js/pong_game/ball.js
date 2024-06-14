@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 import * as THREE from 'three';
-import { RingBlob } from "./ringBlob.js"
+import { RingBlob } from "./RingBlob.js"
 import { Trail } from "./trail.js"
 
 function closestPointOnSegment(A, B, P)
@@ -54,23 +54,24 @@ class Ball
 	constructor(scene, radius, options, name)
 	{
 		this.scene = scene;
+		this.name = this.scene.getName(name);
 		
 		this.terminalVelocity = 8;
 
-		let maxX = 3;
-		let minX = 3;
-		let maxZ = 3;
-		let minZ = 3;
+		let maxX = 1.2;
+		let minX = 1.2;
+		let maxZ = 1.2;
+		let minZ = 1.2;
 
-		this.currentVelLength = 0;
 		this.vel = new THREE.Vector3(Math.random() * (maxX - minX) + minX, 0, Math.random() * (maxZ - minZ) + minZ);
 		this.acc = new THREE.Vector3(0, 0, 0);
+		this.currentVelLength = this.vel.length();
 
 		this.trails = []
 		this.trailsLength = 50;
 
 		this.radius = radius;
-		this.sphere = this.scene.addSphere(this.radius, options, name);
+		this.sphere = this.scene.addSphere(this.radius, options, this.name);
 	}
 
 	effectCollision(scene, wallname, position, normal)

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Scene } from "./scene.js"
-import { WallLines, FloorLines } from "./lineTypes.js"
+import { WallLines } from "./LineEffects.js"
 import { Lines } from "./Lines.js"
 
 let scene = new Scene(75);
@@ -101,10 +101,8 @@ function animate()
 	requestAnimationFrame(animate);
 	scene.update();
 
-	scene.get("player").player.position.x = scene.get("ball1").position.x
-	scene.get("ennemy").player.position.x = scene.get("ball1").position.x
+	// scene.get("player").player.position.x = scene.get("ball").position.x
+	// scene.get("ennemy").player.position.x = scene.get("ball").position.x
 }
-
-// animate();
 
 export { animate }
