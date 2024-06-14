@@ -55,14 +55,14 @@ class Ball
 	{
 		this.scene = scene;
 		
-		this.terminalVelocity = 12;
+		this.terminalVelocity = 8;
 
-		let maxX = 1.2;
-		let minX = 1.2;
-		let maxZ = 1.2;
-		let minZ = 1.2;
+		let maxX = 3;
+		let minX = 3;
+		let maxZ = 3;
+		let minZ = 3;
 
-		this.currentMaxVel = 0;
+		this.currentVelLength = 0;
 		this.vel = new THREE.Vector3(Math.random() * (maxX - minX) + minX, 0, Math.random() * (maxZ - minZ) + minZ);
 		this.acc = new THREE.Vector3(0, 0, 0);
 
@@ -89,7 +89,7 @@ class Ball
 
 			let player_up = player.keyboard["ArrowUp"] || player.keyboard["w"];
 			let player_down = player.keyboard["ArrowDown"] || player.keyboard["s"];
-			console.log(player_up, player_down)
+
 			if (player_up == "keydown")
 			{
 				let newVel = new THREE.Vector3(-1, 0, -0.5)
@@ -134,13 +134,21 @@ class Ball
 		};
 		this.sphere.position.set(newCircleCenter.x, 0.25, newCircleCenter.y);
 		
+		//prevent going to fast curved ball
+		if (this.acc.length() > 0.5 && wallname.includes("wall"))
+		{
+			this.acc = new THREE.Vector3(0, 0, 0);
+			this.vel.setLength(this.currentVelLength - 0.25);
+		}
+
 		this.vel = new THREE.Vector3(this.vel.x, this.vel.y, this.vel.z).reflect(new THREE.Vector3(collisionNormal.x, 0, collisionNormal.y));
 		this.vel.setLength(this.vel.length() + 0.1);
-		
+
 		this.effectCollision(scene, wallname, 
 			new THREE.Vector3(newCircleCenter.x, 0.25, newCircleCenter.y),
 			new THREE.Vector3(collisionNormal.x, 0, collisionNormal.y),);
-		this.currentMaxVel = this.vel.length();
+
+		this.currentVelLength = this.vel.length();
 	}
 
 	checkCollision(scene)
@@ -165,8 +173,9 @@ class Ball
 			if (!collision)
 				continue;
 
-			console.log(this.vel.length())
 			this.resolutionCollision(closestPoint, minDistance, wallname, scene);
+			
+			console.log(this.vel.length())
 		}
 	}
 
@@ -200,11 +209,9 @@ class Ball
 		this.sphere.position.add(new THREE.Vector3().copy(this.vel).multiplyScalar(this.scene.dt));
 		this.vel.add(new THREE.Vector3().copy(this.acc).multiplyScalar(this.scene.dt));
 		this.acc.multiplyScalar(0.99);
-			
-		if (this.currentMaxVel != 0 && this.vel.length() > this.currentMaxVel)
-		{
-			this.vel.multiplyScalar(0.999);
-		}		
+
+		if (this.vel.length() > this.terminalVelocity)
+			this.vel.setLength(this.terminalVelocity);
 	}
 }
 
