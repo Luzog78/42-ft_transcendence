@@ -58,10 +58,15 @@ class Ball
 		
 		this.terminalVelocity = 8;
 
-		let maxX = 1.2;
-		let minX = 1.2;
-		let maxZ = 1.2;
-		let minZ = 1.2;
+		// let maxX = 1.2;
+		// let minX = 1.2;
+		// let maxZ = 1.2;
+		// let minZ = 1.2;
+
+		let maxX = 0;
+		let minX = 0;
+		let maxZ = 0;
+		let minZ = 0;
 
 		this.vel = new THREE.Vector3(Math.random() * (maxX - minX) + minX, 0, Math.random() * (maxZ - minZ) + minZ);
 		this.acc = new THREE.Vector3(0, 0, 0);
@@ -167,6 +172,7 @@ class Ball
 				{ x: line.x2, y: line.z2 },
 				{ x: line.x, y: line.z2 }
 			]
+
 			let sphere = this.sphere.position;
 			const { closestPoint, minDistance } = closestPointOnRectangle(rectangle, sphere);
 			const collision = minDistance <= this.radius;
@@ -183,7 +189,7 @@ class Ball
 	
 	update(scene)
 	{
-		this.checkCollision(scene);
+		// this.checkCollision(scene);
 		
 		let color = 270 - this.sphere.position.z * 20;
 		this.sphere.material.color = new THREE.Color(`hsl(${color}, 100%, 80%)`);

@@ -15,6 +15,9 @@ class Server
 	constructor(scene)
 	{
 		this.scene = scene;
+
+		this.lobby_id = 0;
+		this.client_id = 0;
 		
 		this.socket = new WebSocket('ws://' + window.location.host + '/ws/pong');
 		this.socket.addEventListener('message', (event) => this.onMessage(this.scene, event));
@@ -24,7 +27,14 @@ class Server
 	onOpen(scene, event)
 	{
 		console.log('WebSocket connection established.');
-		scene.server.send("Hello, server!");
+		scene.initConnection();
+	}
+
+	modify(scene, message)
+	{
+		for (const [key, value] of Object.entries(message.modify))
+			eval(key + " = " + value + ";");
+
 	}
 
 	onMessage(scene, event)
@@ -32,25 +42,13 @@ class Server
 		const message = JSON.parse(event.data);
 		console.log('Received message:', message);
 
-		//will be handled differently later
-		if (!message.modify)
-			return ;
-		for (const [key, value] of Object.entries(message.modify))
-		{
-			let keysplit = key.split(".");
-			
-			let element = keysplit[0];
-			let string_attributes = "";
-
-			for(let attributes of keysplit.slice(1, keysplit.length))
-				string_attributes += "." + attributes;
-			eval("scene.get('" + element + "')" + string_attributes + " = " + value + ";");
-		}
+		if (message.modify)
+			this.modify(scene, message);
 	}
 
 	send(message)
 	{
-		this.sendData("message", message, "time", Date.now());
+		this.sendData("message", message);
 	}
 	sendData(...args)
 	{
@@ -60,6 +58,9 @@ class Server
             const value = args[i + 1];
             data[key] = value;
         }
+
+		data["lobby_id"] = this.lobby_id;
+		data["client_id"] = this.client_id;
 
 		this.sendJson(data);
 	}

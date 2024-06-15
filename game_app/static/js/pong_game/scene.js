@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/14 14:13:37 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/15 02:03:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class Scene
 		
 		this.elements = {};
 		this.entities = []
+		this.ball = new Ball(this, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball")
 		
 		this.timer = new Timer.Timer();
 		this.dt = 0;
@@ -62,7 +63,7 @@ class Scene
 		this.get("player").player.position.set(0,0,3.92);
 		this.get("ennemy").player.position.set(0,0,-3.92);
 		
-		this.entities.push(new Ball(this, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball"))
+		this.entities.push(this.ball)
 		this.get("ball").position.set(0,0.25,0);
 		
 		this.renderer.shadowMap.enabled = true;
@@ -71,6 +72,28 @@ class Scene
 		document.body.appendChild(this.renderer.domElement);
 	}
 	
+	initConnection()
+	{
+		let walls = {}
+
+		let wallsnames = ["wall1", "wall2", "playerbox", "ennemybox"];
+		for (let wallname of wallsnames)
+		{
+			let wall = this.get(wallname);
+			let bounding = wall.geometry.boundingBox;
+
+			let line = {x:wall.position.x - bounding.min.x, z:wall.position.z - bounding.min.z, x2:wall.position.x - bounding.max.x, z2:wall.position.z - bounding.max.z};
+			let rectangle = [
+				{ x: line.x, y: line.z },
+				{ x: line.x2, y: line.z },
+				{ x: line.x2, y: line.z2 },
+				{ x: line.x, y: line.z2 }
+			]
+			walls[wallname] = rectangle;
+		}
+		this.server.sendData("walls", walls);
+	}
+
 	update()
 	{
 		this.timer.update();
