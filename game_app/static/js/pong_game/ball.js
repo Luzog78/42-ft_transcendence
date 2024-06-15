@@ -56,19 +56,7 @@ class Ball
 		this.scene = scene;
 		this.name = this.scene.getName(name);
 		
-		this.terminalVelocity = 8;
-
-		// let maxX = 1.2;
-		// let minX = 1.2;
-		// let maxZ = 1.2;
-		// let minZ = 1.2;
-
-		let maxX = 0;
-		let minX = 0;
-		let maxZ = 0;
-		let minZ = 0;
-
-		this.vel = new THREE.Vector3(Math.random() * (maxX - minX) + minX, 0, Math.random() * (maxZ - minZ) + minZ);
+		this.vel = new THREE.Vector3(0, 0, 0);
 		this.acc = new THREE.Vector3(0, 0, 0);
 		this.currentVelLength = this.vel.length();
 
@@ -79,113 +67,53 @@ class Ball
 		this.sphere = this.scene.addSphere(this.radius, options, this.name);
 	}
 
-	effectCollision(scene, wallname, position, normal)
+	effectCollision(wallname, position, normal)
 	{
 		let shake = Math.exp(this.vel.length() / 100) - 1;
-		scene.shake.shake(scene.camera, new THREE.Vector3(shake, 0), 400);
-
-		position = position.sub(normal.multiplyScalar(this.radius * 0.85));
+		this.scene.shake.shake(this.scene.camera, new THREE.Vector3(shake, 0), 400);
 		
+		position = new THREE.Vector3(position.x, 0.25, position.y);
+		normal = new THREE.Vector3(normal.x, 0, normal.y);
+		normal.setLength(0.2);
+
 		if (wallname.includes("wall"))
-			scene.entities.push(new RingBlob(scene, 0.2, 100, {color: 0xffffff}, position));
+			this.scene.entities.push(new RingBlob(this.scene, 0.2, 100, {color: 0xffffff}, position));
 		if (wallname == "playerbox" || wallname == "ennemybox")
 		{
-			let player = scene.get(wallname.replace("box", ""));
+			let player = this.scene.get(wallname.replace("box", ""));
 			player.bump(normal);
-
-			let player_up = player.keyboard["ArrowUp"] || player.keyboard["w"];
-			let player_down = player.keyboard["ArrowDown"] || player.keyboard["s"];
-
-			if (player_up == "keydown")
-			{
-				let newVel = new THREE.Vector3(-1, 0, -0.5)
-				newVel.setLength(this.vel.length() + 0.1);
-				
-				this.vel = newVel;
-
-				this.acc = new THREE.Vector3(1, 0, -0.5);
-				this.acc.setLength(this.vel.length() * 2)
-			}
-			else if (player_down == "keydown")
-			{
-				let newVel = new THREE.Vector3(1, 0, -0.5)
-				newVel.setLength(this.vel.length() + 0.1);
-				
-				this.vel = newVel;
-
-				this.acc = new THREE.Vector3(-1, 0, -0.5);
-				this.acc.setLength(this.vel.length() * 2)
-			}
-			if (player_up == "keydown" || player_down == "keydown")
-			{
-				this.acc.z *= normal.z < 0 ? 1 : -1;
-				this.vel.z *= normal.z < 0 ? 1 : -1;
-			}
-		}
-	}
-
-	resolutionCollision(closestPoint, minDistance, wallname, scene)
-	{
-		let sphere = this.sphere.position;
-
-		const collisionNormal = {
-			x: (sphere.x - closestPoint.x) / minDistance,
-			y: (sphere.z - closestPoint.y) / minDistance
-		};
-
-		const penetrationDepth = this.radius - minDistance;
-		const newCircleCenter = {
-			x: sphere.x + penetrationDepth * collisionNormal.x,
-			y: sphere.z + penetrationDepth * collisionNormal.y
-		};
-		this.sphere.position.set(newCircleCenter.x, 0.25, newCircleCenter.y);
-		
-		//prevent going to fast curved ball
-		if (this.acc.length() > 0.5 && wallname.includes("wall"))
-		{
-			this.acc = new THREE.Vector3(0, 0, 0);
-			this.vel.setLength(this.currentVelLength - 0.25);
 		}
 
-		this.vel = new THREE.Vector3(this.vel.x, this.vel.y, this.vel.z).reflect(new THREE.Vector3(collisionNormal.x, 0, collisionNormal.y));
-		this.vel.setLength(this.vel.length() + 0.1);
-
-		this.effectCollision(scene, wallname, 
-			new THREE.Vector3(newCircleCenter.x, 0.25, newCircleCenter.y),
-			new THREE.Vector3(collisionNormal.x, 0, collisionNormal.y),);
-
-		this.currentVelLength = this.vel.length();
-	}
-
-	checkCollision(scene)
-	{
-		let walls = ["wall1", "wall2", "playerbox", "ennemybox"];
-		for (let wallname of walls)
-		{
-			let wall = scene.get(wallname);
-			let bounding = wall.geometry.boundingBox;
-
-			let line = {x:wall.position.x - bounding.min.x, z:wall.position.z - bounding.min.z, x2:wall.position.x - bounding.max.x, z2:wall.position.z - bounding.max.z};
-			let rectangle = [
-				{ x: line.x, y: line.z },
-				{ x: line.x2, y: line.z },
-				{ x: line.x2, y: line.z2 },
-				{ x: line.x, y: line.z2 }
-			]
-
-			let sphere = this.sphere.position;
-			const { closestPoint, minDistance } = closestPointOnRectangle(rectangle, sphere);
-			const collision = minDistance <= this.radius;
-
-			if (!collision)
-				continue;
-
-			this.resolutionCollision(closestPoint, minDistance, wallname, scene);
 			
-			console.log(this.vel.length())
-		}
-	}
+		// let player_up = player.keyboard["ArrowUp"] || player.keyboard["w"];
+		// let player_down = player.keyboard["ArrowDown"] || player.keyboard["s"];
+		
+		// if (player_up == "keydown")
+		// {
+		// 	let newVel = new THREE.Vector3(-1, 0, -0.5)
+		// 	newVel.setLength(this.vel.length() + 0.1);
+			
+		// 	this.vel = newVel;
 
+		// 	this.acc = new THREE.Vector3(1, 0, -0.5);
+		// 	this.acc.setLength(this.vel.length() * 2)
+		// }
+		// else if (player_down == "keydown")
+		// {
+		// 	let newVel = new THREE.Vector3(1, 0, -0.5)
+		// 	newVel.setLength(this.vel.length() + 0.1);
+			
+		// 	this.vel = newVel;
+
+		// 	this.acc = new THREE.Vector3(-1, 0, -0.5);
+		// 	this.acc.setLength(this.vel.length() * 2)
+		// }
+		// if (player_up == "keydown" || player_down == "keydown")
+		// {
+		// 	this.acc.z *= normal.z < 0 ? 1 : -1;
+		// 	this.vel.z *= normal.z < 0 ? 1 : -1;
+		// }
+	}
 	
 	update(scene)
 	{
@@ -216,9 +144,6 @@ class Ball
 		this.sphere.position.add(new THREE.Vector3().copy(this.vel).multiplyScalar(this.scene.dt));
 		this.vel.add(new THREE.Vector3().copy(this.acc).multiplyScalar(this.scene.dt));
 		this.acc.multiplyScalar(0.99);
-
-		if (this.vel.length() > this.terminalVelocity)
-			this.vel.setLength(this.terminalVelocity);
 	}
 }
 

@@ -27,14 +27,6 @@ class Server
 	onOpen(scene, event)
 	{
 		console.log('WebSocket connection established.');
-		scene.initConnection();
-	}
-
-	modify(scene, message)
-	{
-		for (const [key, value] of Object.entries(message.modify))
-			eval(key + " = " + value + ";");
-
 	}
 
 	onMessage(scene, event)
@@ -43,7 +35,18 @@ class Server
 		console.log('Received message:', message);
 
 		if (message.modify)
-			this.modify(scene, message);
+			for (const [key, value] of Object.entries(message.modify))
+				eval(key + " = " + value + ";");
+		else if (message.call)
+		{
+			let args = message.call.args;
+			for (let i = 0; i < args.length; i++)
+				if (typeof args[i] === "object")
+					args[i] = JSON.stringify(args[i]);
+			let functionCall = `${message.call.command}(${args.join(', ')})`;
+			eval(functionCall)
+		}
+			
 	}
 
 	send(message)

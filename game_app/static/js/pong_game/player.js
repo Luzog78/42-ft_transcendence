@@ -19,7 +19,6 @@ class Player
 		this.scene = scene;
 		this.name = this.scene.getName(name);
 		this.options = options;
-
 		
 		this.vel = new THREE.Vector3(0, 0, 0);
 		this.acc = new THREE.Vector3(0, 0, 0);
@@ -34,16 +33,20 @@ class Player
 		this.player = this.scene.addBox(1, 0.5, 0.15, this.options, this.name + "box");
 		this.scene.elements[this.name] = this;
 
-		document.addEventListener("keydown", (e) => {this.keyboard[e.key] = "keydown";});
-		document.addEventListener("keyup", (e) => {this.keyboard[e.key] = "keyup";});
+		document.addEventListener("keydown", (e) => {
+			this.keyboard[e.key] = "keydown";
+		});
+		document.addEventListener("keyup", (e) => {
+			this.keyboard[e.key] = "keyup";
+		});
 	}
 
 	keyPressed()
 	{
 		if (this.keyboard["ArrowUp"] == "keydown" || this.keyboard["w"] == "keydown")
-			this.player.position.x -= 0.01;
+			this.player.position.x -= 1.2 * this.scene.dt;
 		if (this.keyboard["ArrowDown"] == "keydown" || this.keyboard["s"] == "keydown")
-			this.player.position.x += 0.01;	
+			this.player.position.x += 1.2 * this.scene.dt;
 	}
 
 	bump(normal)
