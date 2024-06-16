@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/16 02:13:24 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/16 03:51:29 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ import * as UnrealBloomPass from 'unrealbloompass';
 import * as FontLoader from 'fontloader';
 import * as Timer from 'timer';
 
-import { Ball } from "./Ball.js"
+import { Ball } from "./ball.js"
 import { Server } from "./Server.js"
-import { Player } from "./Player.js"
+import { Player } from "./player.js"
 import { ScreenShake } from "./screenShake.js"
 
 class Scene

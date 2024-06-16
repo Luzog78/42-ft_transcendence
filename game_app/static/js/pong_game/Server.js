@@ -56,11 +56,11 @@ class Server
 	sendData(...args)
 	{
 		const data = {};
-        for (let i = 0; i < args.length; i += 2) {
-            const key = args[i];
-            const value = args[i + 1];
-            data[key] = value;
-        }
+		for (let i = 0; i < args.length; i += 2) {
+			const key = args[i];
+			const value = args[i + 1];
+			data[key] = value;
+		}
 
 		data["lobby_id"] = this.lobby_id;
 		data["client_id"] = this.client_id;

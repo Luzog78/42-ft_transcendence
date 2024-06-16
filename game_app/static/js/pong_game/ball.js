@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 import * as THREE from 'three';
-import { RingBlob } from "./RingBlob.js"
+import { RingBlob } from "./ringBlob.js"
 import { Trail } from "./trail.js"
 
 function closestPointOnSegment(A, B, P)
