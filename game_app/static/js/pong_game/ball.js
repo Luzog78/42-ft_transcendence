@@ -117,8 +117,6 @@ class Ball
 	
 	update(scene)
 	{
-		// this.checkCollision(scene);
-		
 		let color = 270 - this.sphere.position.z * 20;
 		this.sphere.material.color = new THREE.Color(`hsl(${color}, 100%, 80%)`);
 		this.sphere.material.emissive = new THREE.Color(`hsl(${color}, 100%, 80%)`);
@@ -143,7 +141,7 @@ class Ball
 
 		this.sphere.position.add(new THREE.Vector3().copy(this.vel).multiplyScalar(this.scene.dt));
 		this.vel.add(new THREE.Vector3().copy(this.acc).multiplyScalar(this.scene.dt));
-		this.acc.multiplyScalar(0.99);
+		this.acc.multiplyScalar(Math.pow(0.18729769509073987, this.scene.dt));
 	}
 }
 

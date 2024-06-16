@@ -82,12 +82,38 @@ class Ball():
 		self.vel = self.vel.reflect(Vector(collisionNormal["x"], 0, collisionNormal["y"]))
 		self.vel.setLength(self.vel.length() + 0.1)
 
-
-		# this.effectCollision(scene, wallname, 
-		# 	new THREE.Vector3(newCircleCenter.x, 0.25, newCircleCenter.y),
-		# 	new THREE.Vector3(collisionNormal.x, 0, collisionNormal.y),);
-
 		# this.currentVelLength = this.vel.length();
+
+	def ballEffect(self, wallname, normal):
+		if ("player" not in wallname):
+			return
+
+		player = self.lobby.clients[int(wallname.replace("player", "").replace("box", ""))]
+
+		player_up = player.keyboard["w"] if "w" in player.keyboard else False
+		player_down = player.keyboard["s"] if "s" in player.keyboard else False
+
+		if (player_up == True):
+			newVel = Vector(-1, 0, -normal["y"] / 2)
+			newVel.setLength(self.vel.length() + 0.1)
+		
+			self.vel = newVel
+
+			self.acc = Vector(1, 0, normal["y"] / 2)
+			self.acc.setLength(self.vel.length() * 2)
+
+		elif (player_down == True):
+			newVel = Vector(1, 0, -normal["y"] / 2)
+			newVel.setLength(self.vel.length() + 0.1)
+		
+			self.vel = newVel
+
+			self.acc = Vector(-1, 0, normal["y"] / 2)
+			self.acc.setLength(self.vel.length() * 2)
+
+		# if (player_up == True or player_down == True):
+		# 	self.acc.z *= -1 if normal["y"] < 0 else 1
+		# 	self.vel.z *= -1 if normal["y"] < 0 else 1
 
 	async def checkCollision(self):
 		for wall in self.lobby.walls:
@@ -103,10 +129,11 @@ class Ball():
 					"y": (self.pos.z - closestPoint["y"]) / minDistance
 				}
 
+				self.ballEffect(wall, collisionNormal)
 				self.resolutionCollision(collisionNormal, minDistance)
 
 				await self.updateBall()
-				await self.lobby.sendData("call", {"command": f'scene.ball.effectCollision',
+				await self.lobby.sendData("call", {"command": 'scene.ball.effectCollision',
 									   				"args": ['"' + wall + '"', closestPoint, collisionNormal]})
 
 	async def update(self):
@@ -116,7 +143,9 @@ class Ball():
 		self.vel.x += self.acc.x * self.lobby.gameServer.dt
 		self.vel.z += self.acc.z * self.lobby.gameServer.dt
 
+		self.acc *= 0.18729769509073987 ** self.lobby.gameServer.dt
+
 		await self.checkCollision()
 
-		if (self.vel.length() > self.terminalVelocity):
-			self.vel.setLength(self.terminalVelocity)
+		# if (self.vel.length() > self.terminalVelocity):
+		# 	self.vel.setLength(self.terminalVelocity)
