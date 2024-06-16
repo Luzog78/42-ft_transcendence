@@ -20,10 +20,8 @@ class Player
 		this.name = this.scene.getName(name);
 		this.options = options;
 		
-		this.vel = new THREE.Vector3(0, 0, 0);
-		this.acc = new THREE.Vector3(0, 0, 0);
-		
 		this.keyboard = {};
+		this.player = null;
 
 		this.init();
 	}
@@ -33,19 +31,25 @@ class Player
 		this.player = this.scene.addBox(1, 0.5, 0.15, this.options, this.name + "box");
 		this.scene.elements[this.name] = this;
 
-		document.addEventListener("keydown", (e) => {
-			this.keyboard[e.key] = "keydown";
+		document.addEventListener("keydown", async (e) => {
+			if (this.keyboard[e.key] == true)
+				return;
+			this.keyboard[e.key] = true;
+			await this.scene.server.sendData("player_keyboard", this.keyboard)
 		});
-		document.addEventListener("keyup", (e) => {
-			this.keyboard[e.key] = "keyup";
+		document.addEventListener("keyup", async (e) => {
+			if (this.keyboard[e.key] == false)
+				return;
+			this.keyboard[e.key] = false;
+			await this.scene.server.sendData("player_keyboard", this.keyboard)
 		});
 	}
 
 	keyPressed()
 	{
-		if (this.keyboard["ArrowUp"] == "keydown" || this.keyboard["w"] == "keydown")
+		if (this.keyboard["w"] == true)
 			this.player.position.x -= 1.2 * this.scene.dt;
-		if (this.keyboard["ArrowDown"] == "keydown" || this.keyboard["s"] == "keydown")
+		if (this.keyboard["s"] == true)
 			this.player.position.x += 1.2 * this.scene.dt;
 	}
 
@@ -79,12 +83,8 @@ class Player
 
 	update()
 	{
-		if (this.name == "player")
+		if (this.name == "player" + this.scene.server.client_id)
 			this.keyPressed();
-
-		this.player.position.add(this.vel);
-		this.vel.add(this.acc);
-		this.acc.multiplyScalar(0.99);
 	}
 }
 

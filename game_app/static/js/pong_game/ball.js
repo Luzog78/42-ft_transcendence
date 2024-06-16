@@ -78,15 +78,15 @@ class Ball
 
 		if (wallname.includes("wall"))
 			this.scene.entities.push(new RingBlob(this.scene, 0.2, 100, {color: 0xffffff}, position));
-		if (wallname == "playerbox" || wallname == "ennemybox")
+		if (wallname == "player0box" || wallname == "player1box")
 		{
 			let player = this.scene.get(wallname.replace("box", ""));
 			player.bump(normal);
 		}
 
 			
-		// let player_up = player.keyboard["ArrowUp"] || player.keyboard["w"];
-		// let player_down = player.keyboard["ArrowDown"] || player.keyboard["s"];
+		// let player_up = player.keyboard["w"];
+		// let player_down = player.keyboard["s"];
 		
 		// if (player_up == "keydown")
 		// {

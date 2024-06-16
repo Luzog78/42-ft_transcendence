@@ -27,17 +27,25 @@ class Lobby():
 	async def update(self):
 		await self.ball.update()
 
+		for c in self.clients:
+			await c.update()
+
 	def receive(self, data):
-		if (data["walls"]):
+		if ("walls" in data):
 			self.walls = data["walls"]
+
+			for c in self.clients:
+				c.calculatePos()
+
+		if ("player_keyboard" in data):
+			self.clients[data["client_id"]].keyboard = data["player_keyboard"]
 
 	async def addClient(self, player):
 		self.clients.append(player)
 
 		await player.sendData("modify", {"scene.server.lobby_id": self.lobby_id,
 								   		"scene.server.client_id": player.client_id})
-		if (player.client_id == 0):
-			await player.sendData("call", {"command": "scene.initConnection", "args": []})
+		await player.sendData("call", {"command": "scene.initConnection", "args": []})
 
 		print("clients in lobby: ", len(self.clients))
 		if (len(self.clients) == self.clientsPerLobby):
@@ -53,3 +61,8 @@ class Lobby():
 	async def sendData(self, *args):
 		for c in self.clients:
 			await c.sendData(*args)
+	
+	async def sendToOther(self, client, *args):
+		for c in self.clients:
+			if (c != client):
+				await c.sendData(*args)

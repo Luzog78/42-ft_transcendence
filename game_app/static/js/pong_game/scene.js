@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/15 15:09:26 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/16 02:13:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,11 @@ class Scene
 		
 	init()
 	{
-		
-		this.entities.push(new Player(this, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, "player"));
-		this.entities.push(new Player(this, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, "ennemy"));
+		this.entities.push(new Player(this, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, "player0"));
+		this.entities.push(new Player(this, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, "player1"));
 
-		this.get("player").player.position.set(0,0,3.92);
-		this.get("ennemy").player.position.set(0,0,-3.92);
+		this.get("player0").player.position.set(0,0,3.92);
+		this.get("player1").player.position.set(0,0,-3.92);
 		
 		this.entities.push(this.ball)
 		this.get("ball").position.set(0,0.25,0);
@@ -76,7 +75,7 @@ class Scene
 	{
 		let walls = {}
 
-		let wallsnames = ["wall1", "wall2", "playerbox", "ennemybox"];
+		let wallsnames = ["wall1", "wall2", "player0box", "player1box"];
 		for (let wallname of wallsnames)
 		{
 			let wall = this.get(wallname);
