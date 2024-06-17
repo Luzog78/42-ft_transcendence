@@ -248,7 +248,7 @@ input[type=number].no-arrow {
 	color: var(--c-fg);
 }
 
-.form-ssm button[type="submit"] {
+.form-ssm button {
 	width: 100%;
 }
 

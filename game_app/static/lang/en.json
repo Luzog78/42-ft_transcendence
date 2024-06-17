@@ -70,7 +70,8 @@
 			"title": "Play",
 			"placeholder": "Join an existing game...",
 			"join": "JOIN",
-			"play": "PLAY"
+			"play": "PLAY",
+			"create": "NEW"
 		},
 		"playId": {
 			"title": "Play",
@@ -98,7 +99,7 @@
 		"invalidUsername": "Invalid username !",
 		"invalidEmail": "Invalid email !",
 		"invalidPassword": "Invalid password !",
-		"invalidUID": "Invalid UID (must be a number) !",
+		"invalidUID": "Invalid UID !",
 		"usernameTooShort": "Username must be at least 3 characters long !",
 		"usernameTooLong": "Username must be at most 24 characters long !",
 		"usernameIllegal": "Username must contain only letters, numbers and underscores !",

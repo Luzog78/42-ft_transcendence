@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 
 import { NavBar } from "../components/NavBar.js";
-import { Persistents } from "../components/Persistents.js";
-import { getLang } from "../script.js";
-import { checkUID, clearFeedbacks } from "../utils.js";
+import { Persistents, pushPersistents } from "../components/Persistents.js";
+import { getLang, persistError, redirect } from "../script.js";
+import { checkUID, clearFeedbacks, getJson } from "../utils.js";
 
 function Play(context) {
 	let div = document.createElement("div");
@@ -21,7 +21,7 @@ function Play(context) {
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<div class="container container-blur form-ssm" style="padding: 50px; margin-top: 100px;">
-			<form class="row g-3" id="play-form" style="margin-top: 0px;">
+			<form class="row g-3" id="play-form" style="margin-top: 0; margin-bottom: 0;">
 				<div class="row col-12">
 					<div class="col-8" style="padding-right: 2px;">
 						<input type="text" class="form-control" id="uid" placeholder="${getLang(context, "pages.play.placeholder")}">
@@ -35,7 +35,13 @@ function Play(context) {
 
 				<div class="row col-12">
 					<div class="col-12">
-						<button id="play-button" class="btn btn-success" type="submit">${getLang(context, "pages.play.play")}</span>
+						<button id="play-button" class="btn btn-success">${getLang(context, "pages.play.play")}</span>
+					</div>
+				</div>
+
+				<div class="row col-12" style="margin-top: 4px; margin-bottom: 0;">
+					<div class="col-12">
+						<button id="create-button" class="btn btn-outline-info">${getLang(context, "pages.play.create")}</span>
 					</div>
 				</div>
 			</form>
@@ -50,10 +56,37 @@ function Play(context) {
 			clearFeedbacks(form);
 			if (!checkUID(context, "#uid"))
 				return;
-			console.log("Joining game...");
+			redirect(`/play/${document.querySelector("#uid").value}`);
 		};
 		document.querySelector("#play-button").onclick = () => {
-			console.log("Playing game...");
+			getJson("/api/game/rand").then(data => {
+				if (data.ok) {
+					if (data.uid)
+						redirect(`/play/${data.uid}`);
+					else
+						getJson("/api/game/new").then(data => {
+							if (data.ok)
+								redirect(`/play/${data.uid}`);
+							else {
+								persistError(context, getLang(context, data.error));
+								pushPersistents(context);
+							}
+						});
+				} else {
+					persistError(context, getLang(context, data.error));
+					pushPersistents(context);
+				}
+			});
+		};
+		document.querySelector("#create-button").onclick = () => {
+			getJson("/api/game/new").then(data => {
+				if (data.ok)
+					redirect(`/play/${data.uid}`);
+				else {
+					persistError(context, getLang(context, data.error));
+					pushPersistents(context);
+				}
+			});
 		};
 	}, 250);
 	return div.innerHTML;

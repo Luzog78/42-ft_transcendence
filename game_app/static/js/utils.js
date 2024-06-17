@@ -39,10 +39,10 @@ function validFeedback(child, message) {
 
 	child.classList.add("is-valid");
 	if (message !== null) {
-		parent.innerHTML += /*html*/`
-		<div class="valid-feedback"></div>
-		`;
-		parent.querySelector(".valid-feedback").innerText = message;
+		let feedback = document.createElement("div");
+		feedback.classList.add("valid-feedback");
+		feedback.innerText = message;
+		parent.appendChild(feedback);
 	}
 }
 
@@ -56,10 +56,10 @@ function invalidFeedback(child, message) {
 
 	child.classList.add("is-invalid");
 	if (message !== null) {
-		parent.innerHTML += /*html*/`
-		<div class="invalid-feedback"></div>
-		`;
-		parent.querySelector(".invalid-feedback").innerText = message;
+		let feedback = document.createElement("div");
+		feedback.classList.add("invalid-feedback");
+		feedback.innerText = message;
+		parent.appendChild(feedback);
 	}
 }
 
@@ -169,7 +169,7 @@ function checkUID(context, uidId) {
 	let uid = document.querySelector(uidId);
 	if (uid === null)
 		return false;
-	if (!uid.value.match(/^[0-9]+$/)) {
+	if (!uid.value.match(/^[a-z]{2}[A-Z0-9]{3}$/)) {
 		invalidFeedback(uid, getLang(context, "errors.invalidUID"));
 		return false;
 	}
