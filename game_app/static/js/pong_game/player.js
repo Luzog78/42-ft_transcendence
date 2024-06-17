@@ -23,26 +23,32 @@ class Player
 		this.keyboard = {};
 		this.player = null;
 
+		this.keydown_event_func = this.keydown_event.bind(this)
+		this.keyup_event_func = this.keyup_event.bind(this)
+
 		this.init();
+	}
+
+	async keydown_event(e)
+	{
+		console.log(this.name)
+		if (this.keyboard[e.key] == true)
+			return;
+		this.keyboard[e.key] = true;
+		await this.scene.server.sendData("player_keyboard", this.keyboard);
+	}
+	async keyup_event(e)
+	{
+		if (this.keyboard[e.key] == false)
+			return;
+		this.keyboard[e.key] = false;
+		await this.scene.server.sendData("player_keyboard", this.keyboard);
 	}
 
 	init()
 	{
 		this.player = this.scene.addBox(1, 0.5, 0.15, this.options, this.name + "box");
 		this.scene.elements[this.name] = this;
-
-		document.addEventListener("keydown", async (e) => {
-			if (this.keyboard[e.key] == true)
-				return;
-			this.keyboard[e.key] = true;
-			await this.scene.server.sendData("player_keyboard", this.keyboard)
-		});
-		document.addEventListener("keyup", async (e) => {
-			if (this.keyboard[e.key] == false)
-				return;
-			this.keyboard[e.key] = false;
-			await this.scene.server.sendData("player_keyboard", this.keyboard)
-		});
 	}
 
 	keyPressed()

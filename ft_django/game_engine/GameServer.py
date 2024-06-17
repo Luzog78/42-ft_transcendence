@@ -50,10 +50,15 @@ class GameServer():
 		if (self.lobbysAreFull()):
 			self.lobbys.append(Lobby(self))
 		lobby = self.lobbys[-1]
+		print("new client in lobby id: ", lobby.lobby_id)
 		player = Player(lobby, client, len(lobby.clients))
 		
 		self.clients.append(player)
 		await lobby.addClient(player)
 		
 	def removeClient(self, client):
-		self.clients.remove(client)
+		for player in self.clients:
+			if (player.client == client):
+				player.lobby.removeClient(player)
+				self.clients.remove(player)
+				break

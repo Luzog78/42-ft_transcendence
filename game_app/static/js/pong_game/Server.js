@@ -24,6 +24,7 @@ class Server
 		this.socket.addEventListener('open', (event) => this.onOpen(this.scene, event));
 	}
 
+
 	onOpen(scene, event)
 	{
 		console.log('WebSocket connection established.');
@@ -47,6 +48,11 @@ class Server
 			eval(functionCall)
 		}
 			
+	}
+
+	disconnect()
+	{
+		this.socket.close();
 	}
 
 	send(message)

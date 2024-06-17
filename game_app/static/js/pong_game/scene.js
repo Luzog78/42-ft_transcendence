@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/16 02:13:24 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/17 23:59:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,10 @@ class Scene
 	
 	initConnection()
 	{
+		let my_player = this.get("player" + this.server.client_id);
+		window.addEventListener("keydown", my_player.keydown_event_func);
+		window.addEventListener("keyup", my_player.keyup_event_func);
+		
 		let walls = {}
 
 		let wallsnames = ["wall1", "wall2", "player0box", "player1box"];

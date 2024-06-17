@@ -47,7 +47,7 @@ class Lobby():
 								   		"scene.server.client_id": player.client_id})
 		await player.sendData("call", {"command": "scene.initConnection", "args": []})
 
-		print("clients in lobby: ", len(self.clients))
+		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)
 		if (len(self.clients) == self.clientsPerLobby):
 			self.ball.vel = Vector(1.2, 0, 1.2)
 
@@ -57,6 +57,9 @@ class Lobby():
 
 	def removeClient(self, client):
 		self.clients.remove(client)
+
+		if (len(self.clients) == 0):
+			self.gameServer.lobbys.remove(self)
 
 	async def sendData(self, *args):
 		for c in self.clients:
