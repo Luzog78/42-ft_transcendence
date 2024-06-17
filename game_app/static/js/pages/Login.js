@@ -13,7 +13,7 @@
 import { checkPassword, checkUsername, clearFeedbacks, postJson } from "../utils.js";
 import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
-import { Persistents, overridePersistents } from "../components/Persistents.js";
+import { Persistents, pushPersistents } from "../components/Persistents.js";
 
 function createA2fInput(context) {
 	var row = document.createElement("div");
@@ -43,7 +43,7 @@ function createA2fInput(context) {
 }
 
 function Login(context) {
-	if (context.user.is_authenticated) {
+	if (context.user.isAuthenticated) {
 		if (context.next)
 			redirect(popNext(context));
 		else if (window.history.length > 1)
@@ -106,7 +106,7 @@ function Login(context) {
 			if (a2f_input != undefined && a2f_input.length != 6)
 			{
 				persistError(context, getLang(context, "errors.a2fBadLength"));
-				overridePersistents(context);
+				pushPersistents(context);
 				return ;
 			}
 			postJson("/api/login", {
@@ -116,25 +116,30 @@ function Login(context) {
 			}).then(data => {
 				if (data.ok) {
 					persistSuccess(context, getLang(context, data.success));
+					context.user.isAuthenticated = true;
 					context.user.username = data.username;
+					context.user.createdAt = data.createdAt;
+					context.user.email = data.email;
 					context.user.firstName = data.firstName;
 					context.user.lastName = data.lastName;
-					context.user.email = data.email;
-					context.user.is_authenticated = true;
+					context.user.picture = data.picture;
+					context.user.lang = data.lang;
+					context.user.a2f = data.a2f;
+					context.user.isAdmin = data.isAdmin;
+					context.user.lastLogin = data.lastLogin;
 					redirect(context.next ? popNext(context) : "/");
-				} else {
+				} else if (data.error == "errors.missingA2F") {
 					context.user.is_authenticated = false;
-					if (data.error == "errors.missingA2F") {
-						var a2f_code = document.getElementById("a2f_code");
-						if (!a2f_code)
-						{
-							var loginForm = document.getElementById("login-form");
-							loginForm.insertBefore(createA2fInput(context), loginForm.childNodes[5]);
-						}
-					} else {
-						persistError(context, getLang(context, data.error));
-						overridePersistents(context);
+					var a2f_code = document.getElementById("a2f_code");
+					if (!a2f_code)
+					{
+						var loginForm = document.getElementById("login-form");
+						loginForm.insertBefore(createA2fInput(context), loginForm.childNodes[5]);
 					}
+				} else {
+					persistError(context, getLang(context, data.error));
+					context.user.is_authenticated = false;
+					pushPersistents(context);
 				}
 			});
 		};

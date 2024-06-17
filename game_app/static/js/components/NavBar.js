@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { getLang, persist, persistCopy, refresh } from "../script.js";
+import { getLang } from "../script.js";
 import { getJson } from "../utils.js";
 
 function NavBar(title, context, fetchProfile = true) {
@@ -32,9 +32,10 @@ function NavBar(title, context, fetchProfile = true) {
 	div.querySelector("#navbar-title").innerText = title;
 	let right = div.querySelector("#navbar-right");
 	let next = window.location.pathname;
-	if (context.user.is_authenticated) {
+	if (context.user.isAuthenticated) {
 		right.innerHTML = /*html*/`
-			<img class="profile-picture" src="/static/img/user.svg" alt="${getLang(context, "navbar.profilePictureAlt")}">
+			<a href="/profile" data-link><img class="profile-picture" src="${context.user.picture ? context.user.picture : '/static/img/user.svg'}" alt="${getLang(context, "navbar.profilePictureAlt")}"></a>
+			<div type="button" class="btn nav-links" id="logout-btn-zone">${getLang(context, "navbar.logout")}</div>
 			<a class="a-no-style profile-name" href="/profile" data-link>${getLang(context, "loading")}</a>
 			<a type="button" class="btn btn-outline-danger nav-links" href="/logout?next=${next}" id="logout-btn" data-link>${getLang(context, "navbar.logout")}</a>
 		`;
@@ -47,14 +48,20 @@ function NavBar(title, context, fetchProfile = true) {
 		`;
 	}
 	if (fetchProfile)
-		getJson("/api/profile").then(data => {
+		getJson("/api/user").then(data => {
 			if (data.ok) {
 				context.user.username = data.username;
+				context.user.createdAt = data.createdAt;
+				context.user.email = data.email;
 				context.user.firstName = data.firstName;
 				context.user.lastName = data.lastName;
-				context.user.email = data.email;
-				if (!context.user.is_authenticated) {
-					context.user.is_authenticated = true;
+				context.user.picture = data.picture;
+				context.user.lang = data.lang;
+				context.user.a2f = data.a2f;
+				context.user.isAdmin = data.isAdmin;
+				context.user.lastLogin = data.lastLogin;
+				if (!context.user.isAuthenticated) {
+					context.user.isAuthenticated = true;
 					overrideNavBar(title, context);
 				}
 			}

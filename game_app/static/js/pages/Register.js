@@ -12,7 +12,7 @@
 
 import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, checkUsername, clearFeedbacks, postJson } from "../utils.js";
 import { NavBar } from "../components/NavBar.js";
-import { Persistents, overridePersistents } from "../components/Persistents.js";
+import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
 
 function Register(context) {
@@ -104,7 +104,7 @@ function Register(context) {
 					redirect(context.next ? popNext(context) : "/");
 				} else {
 					persistError(context, getLang(context, data.error));
-					overridePersistents(context);
+					pushPersistents(context);
 				}
 			});
 		};

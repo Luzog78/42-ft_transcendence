@@ -321,15 +321,17 @@ def view_test(request, whatever):
 		email='123@123.net',
 		password='1234')
 	auth.login(request, username='123', password='1234')
-	user = auth.get_user(request)
+
+	request.user.picture = 'https://media.senscritique.com/media/000019789638/300/doc.jpg'
+	request.user.save()
 
 	Game.objects.create(uid=Game.new_uid())
 	Game.objects.create(uid=Game.new_uid())
 	Game.objects.create(uid=Game.new_uid())
 	Game.objects.create(uid=Game.new_uid())
 
-	Game.objects.create(uid=Game.new_uid(), players=['123'], winner=user)
-	Game.objects.create(uid=Game.new_uid(), players=['123'], winner=user)
+	Game.objects.create(uid=Game.new_uid(), players=['123'])
+	Game.objects.create(uid=Game.new_uid(), players=['123'])
 	Game.objects.create(uid=Game.new_uid(), players=['123'])
 	Game.objects.create(uid=Game.new_uid(), players=['123'])
 

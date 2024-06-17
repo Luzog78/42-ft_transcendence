@@ -17,7 +17,22 @@ function Persistents(context) {
 	div.innerHTML = /*html*/`
 		<div class="container-fluid" id="persistent-container"></div>
 	`;
-	let container = div.querySelector("#persistent-container");
+	pushPersistents(context, div);
+	return div.innerHTML;
+}
+
+function overridePersistents(context) {
+	let container = document.querySelector("#persistent-container");
+	if (container)
+		container.outerHTML = Persistents(context);
+}
+
+function pushPersistents(context, dom=null) {
+	let container = null;
+	if (dom)
+		container = dom.querySelector("#persistent-container");
+	else
+		container = document.querySelector("#persistent-container");
 	let j = 0;
 	while (context.persistent.length > 0) {
 		let persistent = context.persistent.shift();
@@ -40,13 +55,6 @@ function Persistents(context) {
 		if (i > 100000)
 			i = 0;
 	}
-	return div.innerHTML;
 }
 
-function overridePersistents(context) {
-	let container = document.querySelector("#persistent-container");
-	if (container)
-		container.outerHTML = Persistents(context);
-}
-
-export { Persistents, overridePersistents };
+export { Persistents, overridePersistents, pushPersistents };
