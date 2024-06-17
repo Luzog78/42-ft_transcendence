@@ -31,6 +31,7 @@
 *subject.pdf
 .vscode
 __pycache__
+pic
 migrations
 db.sqlite3
 site

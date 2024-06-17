@@ -1,3 +1,4 @@
+import json
 import random
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -45,6 +46,7 @@ class User(AbstractBaseUser):
 	first_name	= models.CharField(max_length=24)
 	last_name	= models.CharField(max_length=24)
 	lang		= models.CharField(max_length=2, default='en')
+	picture		= models.CharField(max_length=255, null=True, default=None)
 	a2f			= models.BooleanField(default=False)
 	is_admin	= models.BooleanField(default=False)
 
@@ -55,13 +57,13 @@ class User(AbstractBaseUser):
 
 	def __str__(self):
 		return self.username
-	
+
 	def has_perm(self, perm, obj=None):
 		return self.is_admin
-	
+
 	def has_module_perms(self, app_label):
 		return self.is_admin
-	
+
 	def json(self, show_email=False):
 		return {
 			'username': self.username,
@@ -69,6 +71,7 @@ class User(AbstractBaseUser):
 			'email': self.email if show_email else None,
 			'firstName': self.first_name,
 			'lastName': self.last_name,
+			'picture': self.picture,
 			'lang': self.lang,
 			'a2f': self.a2f,
 			'isAdmin': self.is_admin,
@@ -86,23 +89,34 @@ class Game(models.Model):
 
 	@staticmethod
 	def new_uid():
-		charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890123456789'
-		max_tries = len(set(charset)) ** 5
+		charset1 = 'abcdefghijklmnopqrstuvwxyz'
+		charset2 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890123456789'
+		max_tries = len(set(charset1)) ** 2 * len(set(charset2)) ** 3
 		while max_tries:
-			uid = ''.join(random.choices(charset, k=5))
+			uid = ''.join(random.choices(charset1, k=2) + random.choices(charset2, k=3))
 			if not Game.objects.filter(uid=uid).exists():
 				return uid
 			max_tries -= 1
 		return None
 
+	def __str__(self):
+		return self.uid
+
 	def json(self):
+		ended = self.ended_at is not None or self.winner is not None
+		playing = self.started_at is not None and not ended
+		waiting = not playing and not ended
 		return {
 			'uid': self.uid,
 			'players': self.players,
 			'createdAt': self.created_at,
 			'startedAt': self.started_at,
 			'endedAt': self.ended_at,
-			'winner': self.winner,
+			'winner': str(self.winner) if self.winner is not None else None,
+
+			'ended': ended,
+			'playing': playing,
+			'waiting': waiting,
 		}
 
 
@@ -115,11 +129,14 @@ class Stats(models.Model):
 	bounces		= models.IntegerField()
 	won			= models.BooleanField()
 
+	def __str__(self):
+		return self.id
+
 	def json(self):
 		return {
 			'id': self.id,
-			'username': self.username,
-			'gameUid': self.game_uid,
+			'username': str(self.username) if self.username is not None else None,
+			'gameUid': str(self.game_uid) if self.game_uid is not None else None,
 			'scored': self.scored,
 			'killed': self.killed,
 			'bounces': self.bounces,

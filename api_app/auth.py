@@ -25,6 +25,12 @@ class Response:
 	def __ne__(self, other):
 		return self.ok != bool(other)
 
+	def __and__(self, other):
+		return self.ok and bool(other)
+
+	def __or__(self, other):
+		return self.ok or bool(other)
+
 
 def register(request, username: str, first_name: str,
 		last_name: str, email: str, password: str) -> Response:

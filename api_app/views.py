@@ -86,11 +86,13 @@ def view_register(request):
 		return JsonResponse({'ok': False, 'error': 'errors.emailAlreadyUsed'})
 
 	result = auth.register(request,
-						username=username,
-						first_name=first_name,
-						last_name=last_name,
-						email=email,
-						password=password)
+				username=username,
+				first_name=first_name,
+				last_name=last_name,
+				email=email,
+				password=password)
+	if result:
+		result = auth.login(request, username=username, password=password)
 	if not result:
 		return JsonResponse({'ok': False, 'error': f'Internal server error: {result}'})
 	return JsonResponse({'ok': True, 'success': 'successes.registered'})
@@ -151,23 +153,90 @@ def view_user(request, username: str | None = None):
 @csrf_exempt
 def view_games(request):
 	games = Game.objects.all()
-	l = []
+	waiting, playing, ended = [], [], []
 	i = 0
 	try:
 		while True:
-			l.append(games[i].json())
+			json = games[i].json()
+			if json['waiting']:
+				waiting.append(json)
+			elif json['playing']:
+				playing.append(json)
+			else:
+				ended.append(json)
 			i += 1
 	except IndexError:
 		pass
 	return JsonResponse({
 		'ok': True,
-		'length': i,
-		'games': l
+		'waitingLength': len(waiting),
+		'playingLength': len(playing),
+		'endedLength': len(ended),
+		'total': i,
+		'waiting': waiting,
+		'playing': playing,
+		'ended': ended,
 	})
 
 
 @csrf_exempt
-def view_game(request, uid: str):
+def view_game_list(request):
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+	
+	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+	if 'uids' not in data:
+		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+	
+	uids = data['uids']
+	l, l_not_found = [], []
+	for uid in uids:
+		game = Game.objects.filter(uid=uid)
+		if not game:
+			l_not_found.append(uid)
+		else:
+			game = game[0]
+			l.append(game.json())
+
+	return JsonResponse({
+		'ok': True,
+		'length': len(l),
+		'notFoundLength': len(l_not_found),
+		'total': len(uids),
+		'games': l,
+		'notFound': l_not_found,
+	})
+
+
+@csrf_exempt
+def view_game_user(request, username: str):
+	games = Game.objects.filter(players__contains=[username])
+	won, lost = [], []
+	i = 0
+	try:
+		while True:
+			if games[i].winner and games[i].winner.username == request.user.username:
+				won.append(games[i].uid)
+			else:
+				lost.append(games[i].uid)
+			i += 1
+	except IndexError:
+		pass
+	winrate = float(len(won)) / (len(won) + len(lost)) * 100
+	winrate = f'{"0" if winrate < 10 else ""}{winrate:.8f}'
+	return JsonResponse({
+		'ok': True,
+		'wonLength': len(won),
+		'lostLength': len(lost),
+		'total': i,
+		'winrate': winrate,
+		'won': won,
+		'lost': lost,
+	})
+
+
+@csrf_exempt
+def view_game_uid(request, uid: str):
 	game = None
 	if uid == 'new':
 		if not request.user.is_authenticated:
@@ -239,10 +308,30 @@ def view_stats_game(request, uid: str):
 
 @csrf_exempt
 def view_test(request, whatever):
-	vals = User.objects.all().values()
+	if request.user.is_authenticated:
+		return JsonResponse({ 'ok': False })
+
+	auth.register(request,
+		username='123',
+		first_name='123',
+		last_name='123',
+		email='123@123.net',
+		password='1234')
+	auth.login(request, username='123', password='1234')
+	user = auth.get_user(request)
+
+	Game.objects.create(uid=Game.new_uid())
+	Game.objects.create(uid=Game.new_uid())
+	Game.objects.create(uid=Game.new_uid())
+	Game.objects.create(uid=Game.new_uid())
+
+	Game.objects.create(uid=Game.new_uid(), players=['123'], winner=user)
+	Game.objects.create(uid=Game.new_uid(), players=['123'], winner=user)
+	Game.objects.create(uid=Game.new_uid(), players=['123'])
+	Game.objects.create(uid=Game.new_uid(), players=['123'])
+
 	return JsonResponse({
 		'ok': True,
 		'success': 'Whatever...',
 		'whatever': whatever,
-		'vals': str(vals)
 	})

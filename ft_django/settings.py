@@ -98,8 +98,8 @@ DATABASES = {
 	# 'pong': {
 		'ENGINE': 'django.db.backends.postgresql',
 		'NAME': 'pong',
-		'USER': getenv("DB_NAME") or 'pong_user',
-		'PASSWORD': getenv("DB_PASSWD") or 'dAci7q51dgDGeT',
+		'USER': 'pong_user',
+		'PASSWORD': 'dAci7q51dgDGeT',
 		'HOST': '127.0.0.1', # todo when dockerized: update host
 		'PORT': '5432'
 	}
