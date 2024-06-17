@@ -73,7 +73,7 @@ class User(AbstractBaseUser):
 			'lastName': self.last_name,
 			'picture': self.picture,
 			'lang': self.lang,
-			'a2f_token': self.a2f_token,
+			'a2f': not (self.a2f_token is None),
 			'isAdmin': self.is_admin,
 			'lastLogin': self.last_login,
 		}
