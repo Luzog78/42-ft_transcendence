@@ -27,9 +27,17 @@ const DEFAULT_LANG = "en";
 var global_context = {
 	lang: {},
 	user: {
+		isAuthenticated: false,
 		username: null,
+		createdAt: null,
 		email: null,
-		is_authenticated: false,
+		firstName: null,
+		lastName: null,
+		picture: null,
+		lang: null,
+		a2f: null,
+		isAdmin: null,
+		lastLogin: null,
 	},
 	persistent: [],
 	next: null,

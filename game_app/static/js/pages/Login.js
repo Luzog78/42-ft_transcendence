@@ -13,10 +13,10 @@
 import { checkPassword, checkUsername, clearFeedbacks, postJson } from "../utils.js";
 import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
-import { Persistents, overridePersistents } from "../components/Persistents.js";
+import { Persistents, pushPersistents } from "../components/Persistents.js";
 
 function Login(context) {
-	if (context.user.is_authenticated) {
+	if (context.user.isAuthenticated) {
 		if (context.next)
 			redirect(popNext(context));
 		else if (window.history.length > 1)
@@ -79,16 +79,22 @@ function Login(context) {
 			}).then(data => {
 				if (data.ok) {
 					persistSuccess(context, getLang(context, data.success));
+					context.user.isAuthenticated = true;
 					context.user.username = data.username;
+					context.user.createdAt = data.createdAt;
+					context.user.email = data.email;
 					context.user.firstName = data.firstName;
 					context.user.lastName = data.lastName;
-					context.user.email = data.email;
-					context.user.is_authenticated = true;
+					context.user.picture = data.picture;
+					context.user.lang = data.lang;
+					context.user.a2f = data.a2f;
+					context.user.isAdmin = data.isAdmin;
+					context.user.lastLogin = data.lastLogin;
 					redirect(context.next ? popNext(context) : "/");
 				} else {
 					persistError(context, getLang(context, data.error));
-					context.user.is_authenticated = false;
-					overridePersistents(context);
+					context.user.isAuthenticated = false;
+					pushPersistents(context);
 				}
 			});
 		};

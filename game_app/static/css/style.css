@@ -27,7 +27,7 @@ body {
 	left: 0;
 	width: 100vw;
 	height: 100vh;
-	z-index: -1;
+	z-index: -100;
 	background: url("https://cdn.prod.website-files.com/6206183801c03c3c7c7e316c/65a1654270406c29d7c7c227_1background-banner.png") no-repeat center center fixed;
 	background-size: cover;
 }
@@ -150,6 +150,9 @@ body {
 
 .navbar img {
 	width: 50px;
+	height: 50px;
+	object-fit: cover;
+	border-radius: 1000%;
 }
 
 .navbar-brand h1 {
@@ -185,10 +188,23 @@ body {
 .navbar #logout-btn {
 	position: absolute;
 	right: 0;
+	bottom: -100%;
 	display: none;
 }
 
-.navbar .profile:hover #logout-btn {
+.navbar #logout-btn-zone {
+	position: absolute;
+	right: 0;
+	bottom: -100%;
+	display: none;
+	opacity: 0;
+	height: 100%;
+	padding-top: 100px;
+	z-index: -1;
+}
+
+.navbar .profile:hover #logout-btn,
+.navbar .profile:hover #logout-btn-zone {
 	display: block;
 }
 
@@ -236,6 +252,8 @@ body {
 
 #profile-content #profile-picture {
 	width: 100px;
+	height: 100px;
+	object-fit: cover;
 	border-radius: 1000%;
 }
 

@@ -11,18 +11,12 @@
 /* ************************************************************************** */
 
 import { NavBar } from "../components/NavBar.js";
-import { Persistents } from "../components/Persistents.js";
-import { getLang, persistError, redirect } from "../script.js";
+import { Persistents, pushPersistents } from "../components/Persistents.js";
+import { getLang, persist, persistCopy, persistError, redirect } from "../script.js";
+import { getJson, postJson } from "../utils.js";
 
 function Profile(context, username) {
-	if (!context.user.is_authenticated || !context.user.username) {
-		persistError(context, getLang(context, "errors.mustBeLoggedIn"));
-		redirect("/login?next=" + window.location.pathname);
-		return;
-	} else if (!username) {
-		redirect("/profile/" + context.user.username, false);
-		return;
-	}
+	let persistentBackup = persistCopy(context);
 	let div = document.createElement("div");
 	div.innerHTML = NavBar(getLang(context, "pages.profile.title"), context);
 	div.innerHTML += Persistents(context);
@@ -65,11 +59,11 @@ function Profile(context, username) {
 						${getLang(context, "pages.profile.previous")}
 					</button>
 					<span class="nav-labels">
-						<span class="nav-label" id="nav-label-current">1</span>
+						<span class="nav-label" id="nav-label-current">...</span>
 						<span class="nav-label">/</span>
-						<span class="nav-label" id="nav-label-total">1</span>
+						<span class="nav-label" id="nav-label-total">...</span>
 					</span>
-					<button id="nav-next" type="button" class="btn btn-outline-primary nav-links" disabled>
+					<button id="nav-next" type="button" class="btn btn-outline-primary nav-links">
 						${getLang(context, "pages.profile.next")}
 					</button>
 				</div>
@@ -78,7 +72,125 @@ function Profile(context, username) {
 			<div class="block-blur-pad"></div>
 		</div>
 	`;
+	setTimeout(() => {
+		if (!context.user.isAuthenticated || !context.user.username) {
+			persist(context, persistentBackup);
+			persistError(context, getLang(context, "errors.mustBeLoggedIn"));
+			redirect("/login?next=" + window.location.pathname);
+			return;
+		} else if (!username) {
+			persist(context, persistentBackup);
+			redirect("/profile/" + context.user.username, false);
+			return;
+		}
+
+		let profileName = document.getElementById("profile-name");
+		let profileUsername = document.getElementById("profile-username");
+		let profilePicture = document.getElementById("profile-picture");
+		let ratingGamesWon = document.getElementById("rating-games-won");
+		let ratingGamesLost = document.getElementById("rating-games-lost");
+		let ratingRatio = document.getElementById("rating-ratio");
+		let navLabelTotal = document.getElementById("nav-label-total");
+
+		let uids = [];
+		let totalPage = 0;
+		let page = new URLSearchParams(window.location.search).get("page");
+		if (!page)
+			page = 1;
+		else
+			try {
+				page = parseInt(page);
+			} catch (e) {
+				page = 1;
+			}
+		
+		if (profileName)
+			profileName.innerText = context.user.firstName + " " + context.user.lastName.toUpperCase();
+		if (profileUsername)
+			profileUsername.innerText = context.user.username;
+		if (profilePicture && context.user.picture)
+			profilePicture.src = context.user.picture;
+		
+		getJson("/api/game/u/" + username).then(data => {
+			if (!data.ok) {
+				persistError(context, getLang(context, data.error) + " (/api/game/u/" + username + ")");
+				pushPersistents(context);
+				return;
+			}
+			uids = [...data.won, ...data.lost];
+			totalPage = Math.ceil(uids.length / 8);
+			if (ratingGamesWon)
+				ratingGamesWon.innerText = data.wonLength;
+			if (ratingGamesLost)
+				ratingGamesLost.innerText = data.lostLength;
+			if (ratingRatio)
+				ratingRatio.innerText = data.winrate.substring(0, 5) + "%";
+			if (navLabelTotal)
+				navLabelTotal.innerText = totalPage;
+			tablePage(context, uids, page, totalPage);
+		});
+	}, 250);
 	return div.innerHTML;
+}
+
+function tablePage(context, uids, page, totalPage) {
+	if (page == 1)
+		window.history.replaceState(null, null, window.location.pathname);
+	else
+		window.history.replaceState(null, null, window.location.pathname + "?page=" + page);
+
+	let uidsPage = uids.slice((page - 1) * 8, page * 8);
+
+	postJson("/api/game/l", { uids: uidsPage }).then(data => {
+		if (!data.ok) {
+			persistError(context, getLang(context, data.error) + " (/api/game/l)");
+			pushPersistents(context);
+			return;
+		}
+
+		let gamesTable = document.getElementById("games-table").querySelector("tbody");
+		let navPrevious = document.getElementById("nav-previous");
+		let navNext = document.getElementById("nav-next");
+		let navLabelCurrent = document.getElementById("nav-label-current");
+
+		if (navLabelCurrent)
+			navLabelCurrent.innerText = page;
+	
+		if (gamesTable) {
+			gamesTable.innerHTML = "";
+			data.games.forEach(game => {
+				let won = game.winner === context.user.username;
+				let date = new Date(game.waiting ? game.createdAt
+					: game.playing ? game.startedAt : game.endedAt)
+					.toLocaleDateString();
+				let tr = document.createElement("tr");
+				tr.innerHTML = /*html*/`
+					<td class="game-${won ? "won" : "lost"}">${won ? "Win" : "Lost"}</td>
+					<td><a href="/play/${game.uid}" data-link>PONG #${game.uid} !</a></td>
+					<td>${date}</td>
+				`;
+				gamesTable.appendChild(tr);
+			});
+		}
+
+		if (navPrevious) {
+			if (page <= 1)
+				navPrevious.disabled = true;
+			else {
+				navPrevious.disabled = false;
+				navPrevious.onclick = () => tablePage(context, uids, page - 1, totalPage);
+			}
+		}
+
+		if (navNext) {
+			if (page >= totalPage)
+				navNext.disabled = true;
+			else {
+				navNext.disabled = false;
+				navNext.onclick = () => tablePage(context, uids, page + 1, totalPage);
+			}
+		}
+	});
 }
 
 function CompleteProfileSample(context) {

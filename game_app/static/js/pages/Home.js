@@ -25,11 +25,27 @@ function Home(context) {
 		<div class="container" id="home-content">${getLang(context, "loading")}</div>
 		<button type="button" class="btn btn-primary" id="1234">Click</button>
 	`;
-	getJson("/api/profile").then(data => {
+	getJson("/api/user").then(data => {
 		let content = document.getElementById("home-content");
 		if (content === null)
 			return;
 		if (data.ok) {
+			if (!context.user.isAuthenticated) {
+				context.user.isAuthenticated = true;
+				context.user.username = data.username;
+				context.user.createdAt = data.createdAt;
+				context.user.email = data.email;
+				context.user.firstName = data.firstName;
+				context.user.lastName = data.lastName;
+				context.user.picture = data.picture;
+				context.user.lang = data.lang;
+				context.user.a2f = data.a2f;
+				context.user.isAdmin = data.isAdmin;
+				context.user.lastLogin = data.lastLogin;
+				persist(context, persistentBackup);
+				refresh();
+				return;
+			}
 			content.innerHTML = /*html*/`
 				<h3>
 					${getLang(context, "pages.home.h1")}
@@ -40,22 +56,13 @@ function Home(context) {
 				<p>${getLang(context, "pages.home.p0")}</p>
 			`;
 			content.querySelector("#home-realname").innerText = `${data.firstName} ${data.lastName}`;
-			context.user.username = data.username;
-			context.user.firstName = data.firstName;
-			context.user.lastName = data.lastName;
-			context.user.email = data.email;
-			if (!context.user.is_authenticated) {
-				context.user.is_authenticated = true;
-				persist(context, persistentBackup);
-				refresh();
-			}
 		} else {
 			content.innerHTML = /*html*/`
 				<h3>${getLang(context, "pages.home.h0")}</h3>
 				<p class="home-error">${getLang(context, "loading")}</p>
 			`;
 			content.querySelector(".home-error").innerText = getLang(context, data.error);
-			context.user.is_authenticated = false;
+			context.user.isAuthenticated = false;
 		}
 	});
 	return div.innerHTML;

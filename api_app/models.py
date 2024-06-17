@@ -46,7 +46,7 @@ class User(AbstractBaseUser):
 	first_name	= models.CharField(max_length=24)
 	last_name	= models.CharField(max_length=24)
 	lang		= models.CharField(max_length=2, default='en')
-	picture		= models.CharField(max_length=255, null=True, default=None)
+	picture		= models.CharField(max_length=1024, null=True, default=None)
 	a2f			= models.BooleanField(default=False)
 	is_admin	= models.BooleanField(default=False)
 
@@ -90,7 +90,7 @@ class Game(models.Model):
 	@staticmethod
 	def new_uid():
 		charset1 = 'abcdefghijklmnopqrstuvwxyz'
-		charset2 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890123456789'
+		charset2 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 		max_tries = len(set(charset1)) ** 2 * len(set(charset2)) ** 3
 		while max_tries:
 			uid = ''.join(random.choices(charset1, k=2) + random.choices(charset2, k=3))
