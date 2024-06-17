@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 from .views import view_err404, view_test, \
 					view_root, view_login, view_logout, view_register, \
-					view_user, \
+					view_user, view_user_set, view_user_del, \
 					view_games, view_game_list, view_game_user, view_game_uid, \
 					view_game_new, view_game_rand, \
 					view_stats_id, view_stats_user, view_stats_game
@@ -18,6 +18,8 @@ r(view_logout,		'logout')
 r(view_register,	'register')
 r(view_user,		'user')
 r(view_user,		'user/<str:username>')
+r(view_user_set,	'user/<str:username>/set')
+r(view_user_del,	'user/<str:username>/del')
 r(view_games,		'games')
 r(view_game_list,	'game/l')
 r(view_game_user,	'game/u/<str:username>')

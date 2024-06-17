@@ -21,8 +21,10 @@ import { PlayId } from "./pages/PlayId.js";
 import { Pong } from "./pages/Pong.js";
 
 import { getJson } from "./utils.js";
+import { Settings } from "./pages/Settings.js";
 
-const DEFAULT_LANG = "en";
+const SUPPORTED_LANGS = ["en", "fr"];
+const DEFAULT_LANG = SUPPORTED_LANGS[0];
 
 var global_context = {
 	lang: {},
@@ -70,6 +72,10 @@ const router = [
 	{
 		path: "/register",
 		component: Register,
+	},
+	{
+		path: "/settings",
+		component: Settings,
 	},
 	{
 		path: "/profile",
@@ -223,8 +229,11 @@ window.addEventListener("load", async () => {
 	document.body.addEventListener("click", (e) => {
 		if (e.target.matches("[data-link]")) {
 			e.preventDefault();
-			window.history.pushState(null, null, e.target.href);
-			loadPage(new URL(e.target.href).pathname);
+			let target = e.target;
+			if (target.href === undefined)
+				target = target.parentElement;
+			window.history.pushState(null, null, target.href);
+			loadPage(new URL(target.href).pathname);
 		}
 	});
 
@@ -247,6 +256,8 @@ export {
 	persist,
 	loadLang,
 	getLang,
+	SUPPORTED_LANGS,
+	DEFAULT_LANG,
 };
 
 console.log("[✅] Scripts loaded successfully!");

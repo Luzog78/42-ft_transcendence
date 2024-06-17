@@ -36,7 +36,7 @@ class Response:
 def register(request, username: str, first_name: str,
 		last_name: str, email: str, password: str) -> Response:
 	try:
-		user = User.objects.create_user(
+		user = User.objects.create_user( # type: ignore
 			username=username,
 			first_name=first_name,
 			last_name=last_name,

@@ -155,6 +155,95 @@ def view_user(request, username: str | None = None):
 
 
 @csrf_exempt
+def view_user_set(request, username: str):
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+
+	if not request.user.is_authenticated:
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+
+	user = User.objects.filter(username=username)
+	if not user:
+		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
+	user = user[0]
+
+	if request.user.username != user.username and not request.user.is_admin:
+		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+
+	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+
+	for key, value in data.items():
+		if key not in ['firstName', 'lastName', 'email', 'password', 'lang', 'a2f']:
+			return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+
+	try:
+		if 'firstName' in data:
+			first_name = data['firstName']
+			if len(first_name) < 1 or len(first_name) > 24:
+				return JsonResponse({'ok': False, 'error': 'errors.invalidFirstName'})
+			user.first_name = first_name
+
+		if 'lastName' in data:
+			last_name = data['lastName']
+			if len(last_name) < 1 or len(last_name) > 24:
+				return JsonResponse({'ok': False, 'error': 'errors.invalidLastName'})
+			user.last_name = last_name
+
+		if 'email' in data:
+			email = data['email']
+			if len(email) < 6 or len(email) > 254:
+				return JsonResponse({'ok': False, 'error': 'errors.invalidEmail'})
+			user.email = email
+
+		if 'password' in data:
+			password = data['password']
+			if len(password) < 4:
+				return JsonResponse({'ok': False, 'error': 'errors.invalidPassword'})
+			user.set_password(password)
+
+		if 'lang' in data:
+			lang = data['lang']
+			if len(lang) != 2:
+				return JsonResponse({'ok': False, 'error': 'errors.invalidLang'})
+			user.lang = lang
+
+		if 'a2f' in data:
+			a2f = data['a2f']
+			if len(a2f) > 32:
+				return JsonResponse({'ok': False, 'error': 'errors.invalidA2F'})
+			user.a2f_token = a2f
+
+		user.save()
+	except Exception as e:
+		return JsonResponse({'ok': False, 'error': f'Error: {e}'})
+
+	return JsonResponse({
+		'ok': True,
+		**user.json(show_email=True),
+	})
+
+
+@csrf_exempt
+def view_user_del(request, username: str):
+	if not request.user.is_authenticated:
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+
+	user = User.objects.filter(username=username)
+	if not user:
+		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
+	user = user[0]
+
+	if request.user.username != username and not request.user.is_admin:
+		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+
+	try:
+		user.delete()
+	except Exception as e:
+		return JsonResponse({'ok': False, 'error': f'Error: {e}'})
+	return JsonResponse({'ok': True})
+
+
+@csrf_exempt
 def view_games(request):
 	games = Game.objects.all()
 	waiting, playing, ended = [], [], []
@@ -219,7 +308,7 @@ def view_game_user(request, username: str):
 	i = 0
 	try:
 		while True:
-			if games[i].winner and games[i].winner.username == request.user.username:
+			if games[i].winner and games[i].winner.username == request.user.username: # type: ignore
 				won.append(games[i].uid)
 			else:
 				lost.append(games[i].uid)

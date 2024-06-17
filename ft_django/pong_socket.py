@@ -37,4 +37,3 @@ class PongSocket(AsyncWebsocketConsumer):
 
 	async def sendJson(self, json_data):
 		await self.send(text_data=json.dumps(json_data))
-		

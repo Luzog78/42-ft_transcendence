@@ -66,6 +66,40 @@
 				"confirmPassword": "Confirmation"
 			}
 		},
+		"settings": {
+			"title": "Settings",
+			"profilePictureAlt": "Profile picture",
+			"useToken": "Please use your token to activate the 2FA !",
+			"titles": {
+				"personal": "Personal informations",
+				"security": "Security",
+				"a2f": "Two-factor authentication (2FA)"
+			},
+			"labels": {
+				"firstName": "First name",
+				"lastName": "Last name",
+				"email": "Email",
+				"password": "New password",
+				"confirmPassword": "Confirmation",
+				"token": "2FA Key",
+				"lang": "Lang",
+				"enabled": "ENABLED",
+				"disabled": "DISABLED",
+				"update": "Update",
+				"delete": "Delete account",
+				"deleteConfirm": "You sure you want to delete your account ?",
+				"deleteLastChance": "This action is irreversible !",
+				"deleteFinal": "DELETE !"
+			},
+			"placeholders": {
+				"firstName": "Doc",
+				"lastName": "... nobody knows...",
+				"email": "doc@42.fr",
+				"password": "Enter a strong one...",
+				"confirmPassword": "Confirmation",
+				"token": "ABCDEFGHIJKLMNOPQRSTUV1234567890"
+			}
+		},
 		"play": {
 			"title": "Play",
 			"placeholder": "Join an existing game...",

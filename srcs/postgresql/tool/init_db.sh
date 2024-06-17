@@ -13,6 +13,4 @@ fi
 
 EOF
 
-sleep 3
-
 $@

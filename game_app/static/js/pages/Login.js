@@ -129,7 +129,7 @@ function Login(context) {
 					context.user.lastLogin = data.lastLogin;
 					redirect(context.next ? popNext(context) : "/");
 				} else if (data.error == "errors.missingA2F") {
-					context.user.is_authenticated = false;
+					context.user.isAuthenticated = false;
 					var a2f_code = document.getElementById("a2f_code");
 					if (!a2f_code)
 					{
@@ -138,7 +138,7 @@ function Login(context) {
 					}
 				} else {
 					persistError(context, getLang(context, data.error));
-					context.user.is_authenticated = false;
+					context.user.isAuthenticated = false;
 					pushPersistents(context);
 				}
 			});

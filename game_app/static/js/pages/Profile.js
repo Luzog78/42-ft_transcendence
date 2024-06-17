@@ -26,6 +26,10 @@ function Profile(context, username) {
 			<div class="block-blur-pad"></div>
 			<div class="container-fluid">
 
+				<a id="settings" href="/settings" class="a-no-style" data-link>
+					<img src="/static/img/settings.svg" alt="back" data-link>
+				</a>
+
 				<div class="profile">
 					<img id="profile-picture" src="/static/img/user.svg" alt="No profile picture">
 					<span id="profile-name">${getLang(context, "loading")}</span>
@@ -84,6 +88,12 @@ function Profile(context, username) {
 			return;
 		}
 
+		if (context.user.username !== username) {
+			let back = document.getElementById("settings");
+			if (back)
+				back.remove();
+		}
+
 		let profileName = document.getElementById("profile-name");
 		let profileUsername = document.getElementById("profile-username");
 		let profilePicture = document.getElementById("profile-picture");
@@ -135,9 +145,9 @@ function Profile(context, username) {
 
 function tablePage(context, uids, page, totalPage) {
 	if (page == 1)
-		window.history.replaceState(null, null, window.location.pathname);
+		window.history.replaceState(null, null, window.location.origin + window.location.pathname + window.location.search);
 	else
-		window.history.replaceState(null, null, window.location.pathname + "?page=" + page);
+		window.history.replaceState(null, null,window.location.origin + window.location.pathname + `?page=${page}` + window.location.search);
 
 	let uidsPage = uids.slice((page - 1) * 8, page * 8);
 
