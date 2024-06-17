@@ -107,7 +107,8 @@
 		"lastNameTooShort": "Last name must be at least 1 character long !",
 		"lastNameTooLong": "Last name must be at most 24 characters long !",
 		"passwordTooShort": "Password must be at least 4 characters long !",
-		"passwordMismatch": "Passwords do not match !"
+		"passwordMismatch": "Passwords do not match !",
+		"a2fBadLength": "A2F Code must be 6 numbers long !"
 	},
 	"successes": {
 		"registered": "You have been successfully registered !",

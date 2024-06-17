@@ -47,7 +47,7 @@ class User(AbstractBaseUser):
 	last_name	= models.CharField(max_length=24)
 	lang		= models.CharField(max_length=2, default='en')
 	picture		= models.CharField(max_length=255, null=True, default=None)
-	a2f			= models.BooleanField(default=False)
+	a2f_token	= models.CharField(max_length=32, null=True, default=None)
 	is_admin	= models.BooleanField(default=False)
 
 	objects = UserManager()
@@ -73,7 +73,7 @@ class User(AbstractBaseUser):
 			'lastName': self.last_name,
 			'picture': self.picture,
 			'lang': self.lang,
-			'a2f': self.a2f,
+			'a2f_token': self.a2f_token,
 			'isAdmin': self.is_admin,
 			'lastLogin': self.last_login,
 		}

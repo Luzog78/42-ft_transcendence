@@ -109,7 +109,10 @@ def view_login(request):
 
 	username = data['username']
 	password = data['password']
-	result = auth.login(request, username=username, password=password)
+	a2f_code = None
+	if 'a2f_code' in data:
+		a2f_code = data['a2f_code']
+	result = auth.login(request, username=username, password=password, a2f_code=a2f_code)
 	if not result:
 		return JsonResponse({'ok': False, 'error': f'{result}'})
 	return JsonResponse({

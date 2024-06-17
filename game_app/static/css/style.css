@@ -32,6 +32,16 @@ body {
 	background-size: cover;
 }
 
+input.no-arrow::-webkit-outer-spin-button,
+input.no-arrow::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type=number].no-arrow {
+	-moz-appearance: textfield;
+}
+
 /* ************************************************************************** */
 /* ------------------------------ Blur effect ------------------------------- */
 /* ************************************************************************** */

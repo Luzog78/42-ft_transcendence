@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+import pyotp
 
 from .models import User
 
@@ -49,7 +50,19 @@ def register(request, username: str, first_name: str,
 	return Response()
 
 
-def login(request, username: str, password: str) -> Response:
+def login(request, username: str, password: str, a2f_code: str | None = None) -> Response:
+
+	user = User.objects.filter(username=username)
+	if not user.exists():
+		return Response('errors.invalidCredentials')
+	user = user[0]
+	if not (user.a2f_token is None) :
+		if a2f_code is None:
+			return Response('errors.missingA2F')
+		else:
+			if (not pyotp.TOTP(user.a2f_token).verify(a2f_code)):
+				return Response('errors.invalidCredentials')
+
 	auth_user = authenticate(request, username=username, password=password)
 	if auth_user is None:
 		return Response('errors.invalidCredentials')
