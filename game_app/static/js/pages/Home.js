@@ -47,7 +47,6 @@ function Home(context) {
 			if (!context.user.is_authenticated) {
 				context.user.is_authenticated = true;
 				persist(context, persistentBackup);
-				console.log("Home: Restored context from persistentBackup.");
 				refresh();
 			}
 		} else {

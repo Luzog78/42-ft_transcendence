@@ -1,8 +1,9 @@
 import json
 from django.http import JsonResponse
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
+
+from .models import User
+from . import auth
 
 
 @csrf_exempt
@@ -41,17 +42,14 @@ def register(request):
 	if len(User.objects.filter(email=email)) > 0:
 		return JsonResponse({'ok': False, 'error': 'errors.emailAlreadyUsed'})
 
-	try:
-		user = User.objects.create_user(
-			username=username,
-			first_name=first_name,
-			last_name=last_name,
-			email=email,
-			password=password)
-		user.save()
-		auth_login(request, authenticate(request, username=username, password=password))
-	except Exception as e:
-		return JsonResponse({'ok': False, 'error': f'Internal server error: {e}'})
+	result = auth.register(request,
+						username=username,
+						first_name=first_name,
+						last_name=last_name,
+						email=email,
+						password=password)
+	if not result:
+		return JsonResponse({'ok': False, 'error': f'Internal server error: {result}'})
 	return JsonResponse({'ok': True, 'success': 'successes.registered'})
 
 
@@ -66,10 +64,9 @@ def login(request):
 
 	username = data['username']
 	password = data['password']
-	user = authenticate(request, username=username, password=password)
-	if user is None:
-		return JsonResponse({'ok': False, 'error': 'errors.invalidCredentials'})
-	auth_login(request, user)
+	result = auth.login(request, username=username, password=password)
+	if not result:
+		return JsonResponse({'ok': False, 'error': f'{result}'})
 	return JsonResponse({
 		'ok': True,
 		'success': 'successes.loggedIn',
@@ -82,7 +79,9 @@ def login(request):
 
 @csrf_exempt
 def logout(request):
-	auth_logout(request)
+	result = auth.logout(request)
+	if not result:
+		return JsonResponse({'ok': False, 'error': f'{result}'})
 	return JsonResponse({'ok': True, 'success': 'successes.loggedOut'})
 
 
@@ -96,4 +95,15 @@ def profile(request):
 		'firstName': request.user.first_name,
 		'lastName': request.user.last_name,
 		'email': request.user.email
+	})
+
+
+@csrf_exempt
+def test(request, whatever):
+	vals = User.objects.all().values()
+	return JsonResponse({
+		'ok': True,
+		'success': 'Whatever...',
+		'whatever': whatever,
+		'vals': str(vals)
 	})

@@ -82,19 +82,24 @@ ASGI_APPLICATION = 'ft_django.asgi.application'
 WSGI_APPLICATION = 'ft_django.wsgi.application'
 
 
+AUTH_USER_MODEL = 'api_app.User'
+
+AUTHENTICATION_BACKENDS = [ 'api_app.backends.CustomBackend' ]
+
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
 	'default': {
-		'ENGINE': 'django.db.backends.sqlite3',
-		'NAME': BASE_DIR / 'db.sqlite3',
-	},
-	'pong': {
+	# 	'ENGINE': 'django.db.backends.sqlite3',
+	# 	'NAME': BASE_DIR / 'db.sqlite3',
+	# },
+	# 'pong': {
 		'ENGINE': 'django.db.backends.postgresql',
 		'NAME': 'pong',
 		'USER': getenv("DB_NAME") or 'pong_user',
-		'PASSWORD': getenv("DB_PASSWD") or 'dAci7q$.51dgDGeT',
+		'PASSWORD': getenv("DB_PASSWD") or 'dAci7q51dgDGeT',
 		'HOST': '127.0.0.1', # todo when dockerized: update host
 		'PORT': '5432'
 	}

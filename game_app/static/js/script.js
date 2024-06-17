@@ -137,9 +137,12 @@ const loadPage = (path) => {
 	content.innerHTML = inner;
 }
 
-const redirect = (path) => {
+const redirect = (path, addToHistory = true) => {
 	let href = window.location.origin + path;
-	window.history.pushState(null, null, href);
+	if (addToHistory)
+		window.history.pushState(null, null, href);
+	else
+		window.history.replaceState(null, null, href);
 	loadPage(path.split("?")[0].split("#")[0]);
 }
 

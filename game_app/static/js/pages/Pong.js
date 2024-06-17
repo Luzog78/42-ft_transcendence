@@ -16,7 +16,6 @@ import { animate } from "../pong_game/main.js";
 
 function Pong(context)
 {
-	console.log(context)
 	let div = document.createElement("div");
 	div.innerHTML = NavBar("Profile", context);
 	div.innerHTML += Persistents(context);

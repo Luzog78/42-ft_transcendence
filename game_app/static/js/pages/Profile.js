@@ -20,7 +20,7 @@ function Profile(context, username) {
 		redirect("/login?next=" + window.location.pathname);
 		return;
 	} else if (!username) {
-		redirect("/profile/" + context.user.username);
+		redirect("/profile/" + context.user.username, false);
 		return;
 	}
 	let div = document.createElement("div");
