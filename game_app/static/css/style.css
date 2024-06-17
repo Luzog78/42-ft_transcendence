@@ -214,9 +214,15 @@ input[type=number].no-arrow {
 	z-index: -1;
 }
 
-.navbar .profile:hover #logout-btn,
-.navbar .profile:hover #logout-btn-zone {
-	display: block;
+.navbar .profile #logout-btn:hover,
+.navbar .profile #logout-btn-zone:hover ~ #logout-btn {
+	display: inline-block;
+}
+
+.navbar .profile:hover #logout-btn-zone,
+.navbar .profile #logout-btn-zone:hover {
+	display: inline-block;
+	z-index: 0;
 }
 
 /* ************************************************************************** */
