@@ -1,4 +1,5 @@
 import json
+import random
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -239,17 +240,50 @@ def view_game_user(request, username: str):
 
 
 @csrf_exempt
+def view_game_new(request):
+	if not request.user.is_authenticated:
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+	game = Game.objects.create(uid=Game.new_uid())
+	return JsonResponse({
+		'ok': True,
+		**game.json(),
+	})
+
+
+@csrf_exempt
+def view_game_rand(request):
+	if not request.user.is_authenticated:
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+	games = Game.objects.filter(started_at=None)
+	waiting = []
+	i = 0
+	try:
+		while True:
+			json = games[i].json()
+			if json['waiting']:
+				waiting.append(json)
+			i += 1
+	except IndexError:
+		pass
+	if not waiting:
+		return JsonResponse({
+			'ok': True,
+			'found': False,
+		})
+	game = random.choice(waiting)
+	return JsonResponse({
+		'ok': True,
+		'found': True,
+		**game,
+	})
+
+
+@csrf_exempt
 def view_game_uid(request, uid: str):
-	game = None
-	if uid == 'new':
-		if not request.user.is_authenticated:
-			return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
-		game = Game.objects.create(uid=Game.new_uid())
-	else:
-		game = Game.objects.filter(uid=uid)
-		if not game:
-			return JsonResponse({'ok': False, 'error': 'errors.gameNotFound'})
-		game = game[0]
+	game = Game.objects.filter(uid=uid)
+	if not game:
+		return JsonResponse({'ok': False, 'error': 'errors.gameNotFound'})
+	game = game[0]
 	return JsonResponse({
 		'ok': True,
 		**game.json(),

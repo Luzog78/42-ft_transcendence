@@ -15,7 +15,7 @@ import { Login } from "./pages/Login.js";
 import { Logout } from "./pages/Logout.js";
 import { Register } from "./pages/Register.js";
 import { Err404 } from "./pages/Err404.js";
-import { CompleteProfileSample, Profile } from "./pages/Profile.js";
+import { Profile } from "./pages/Profile.js";
 import { Play } from "./pages/Play.js";
 import { PlayId } from "./pages/PlayId.js";
 import { Pong } from "./pages/Pong.js";
@@ -76,10 +76,6 @@ const router = [
 		component: Profile,
 	},
 	{
-		path: "/profile/sample",
-		component: CompleteProfileSample,
-	},
-	{
 		path: "/profile/<any>",
 		component: Profile,
 	},
@@ -88,7 +84,7 @@ const router = [
 		component: Play,
 	},
 	{
-		path: "/play/<numbers>",
+		path: "/play/<any>",
 		component: PlayId,
 	},
 	{
