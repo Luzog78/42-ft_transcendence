@@ -141,7 +141,10 @@ class Ball
 
 		this.sphere.position.add(new THREE.Vector3().copy(this.vel).multiplyScalar(this.scene.dt));
 		this.vel.add(new THREE.Vector3().copy(this.acc).multiplyScalar(this.scene.dt));
-		this.acc.multiplyScalar(Math.pow(0.18729769509073987, this.scene.dt));
+
+		let accelerationFactor = Math.pow(10, Math.log10(0.99) / this.scene.dt); // 
+
+		this.acc.multiplyScalar(Math.pow(accelerationFactor, this.scene.dt));
 	}
 }
 

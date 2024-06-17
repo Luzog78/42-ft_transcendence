@@ -13,6 +13,7 @@
 import math
 
 from game_engine.Vector import Vector
+import time
 
 class Ball():
 	def __init__(self, lobby, radius):
@@ -20,6 +21,8 @@ class Ball():
 		self.radius = radius
 
 		self.terminalVelocity = 8
+
+		self.time = 0
 
 		self.pos = Vector(0, 0, 0)
 		self.vel = Vector(0, 0, 0)
@@ -137,13 +140,17 @@ class Ball():
 									   				"args": ['"' + wall + '"', closestPoint, collisionNormal]})
 
 	async def update(self):
-		self.pos.x += self.vel.x * self.lobby.gameServer.dt
-		self.pos.z += self.vel.z * self.lobby.gameServer.dt
+		if (self.time == 0):
+			self.time = time.time()
+			return
 
-		self.vel.x += self.acc.x * self.lobby.gameServer.dt
-		self.vel.z += self.acc.z * self.lobby.gameServer.dt
+		dt = time.time() - self.time
+		self.time = time.time()
 
-		self.acc *= 0.18729769509073987 ** self.lobby.gameServer.dt
+		self.pos += self.vel * dt
+		self.vel += self.acc * dt
+
+		self.acc *= 0.18729769509073987 ** dt
 
 		await self.checkCollision()
 

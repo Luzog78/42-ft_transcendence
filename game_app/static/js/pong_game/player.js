@@ -31,7 +31,6 @@ class Player
 
 	async keydown_event(e)
 	{
-		console.log(this.name)
 		if (this.keyboard[e.key] == true)
 			return;
 		this.keyboard[e.key] = true;
