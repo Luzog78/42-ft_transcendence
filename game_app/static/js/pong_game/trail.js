@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trail.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 00:25:59 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/13 00:26:07 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/17 17:32:06 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class Trail
 	{
 		let geometry = new THREE.SphereGeometry(this.radius, 32, 32);
 		let material = new THREE.MeshStandardMaterial(this.options);
-		
+
 		this.mesh = new THREE.Mesh(geometry, material);
 		this.scene.scene.add(this.mesh);
 	}
@@ -42,7 +42,7 @@ class Trail
 		this.mesh.material.opacity -= 0.02;
 
 		this.mesh.geometry.scale(0.96, 0.96, 0.96);
-		
+
 		if (this.mesh.material.opacity < 0)
 		{
 			this.mesh.geometry.dispose();

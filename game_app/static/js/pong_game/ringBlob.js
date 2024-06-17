@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ringBlob.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 01:13:05 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/14 13:21:33 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/17 17:32:06 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ class RingBlob
 	{
 		this.scene = scene;
 		this.name = this.scene.getName(name)
-		
+
 		this.radiusMax = radiusMax;
 		this.currentRadius = 0;
-		
+
 		this.timeToFade = timeToFade;
-		
+
 		this.options = options;
 		this.init(position);
 	}
@@ -38,7 +38,7 @@ class RingBlob
 			opacity: 1,
 		});
 		this.mesh = new THREE.Mesh( geometry, material );
-		
+
 		this.mesh.position.set(position.x, position.y, position.z);
 
 		this.mesh.rotation.y = Math.PI / 2;

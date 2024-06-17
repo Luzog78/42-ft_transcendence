@@ -14,7 +14,7 @@ class PongSocket(AsyncWebsocketConsumer):
 	async def connect(self):
 		self.room_name = 'pong'
 		self.room_group_name = 'pong_group'
-		
+
 		await self.accept()
 		await gameServer.addClient(self)
 
@@ -37,3 +37,4 @@ class PongSocket(AsyncWebsocketConsumer):
 
 	async def sendJson(self, json_data):
 		await self.send(text_data=json.dumps(json_data))
+		

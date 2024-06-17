@@ -30,7 +30,7 @@ function Play(context) {
 						<button id="join-button" class="btn btn-success" type="submit">${getLang(context, "pages.play.join")}</button>
 					</div>
 				</div>
-				
+
 				<hr>
 
 				<div class="row col-12">

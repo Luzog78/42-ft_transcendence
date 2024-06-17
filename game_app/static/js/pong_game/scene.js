@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/16 03:51:29 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/17 17:46:30 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,28 @@ class Scene
 		this.renderer = new THREE.WebGLRenderer({antialias: true});
 		this.controls = new OrbitControls.OrbitControls(this.camera, this.renderer.domElement);
 		this.shake = ScreenShake();
-		
+
 		this.server = new Server(this);
-		
+
 		this.elements = {};
 		this.entities = []
 		this.ball = new Ball(this, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball")
-		
+
 		this.timer = new Timer.Timer();
 		this.dt = 0;
-		
+
 		this.init();
-		
+
 		this.renderScene = new RenderPass.RenderPass(this.scene, this.camera);
 		this.composer = new EffectComposer.EffectComposer(this.renderer);
 		this.composer.addPass(this.renderScene);
-		
+
 		var bloomPass = new UnrealBloomPass.UnrealBloomPass(
-			new THREE.Vector2(window.innerWidth, window.innerHeight), 
+			new THREE.Vector2(window.innerWidth, window.innerHeight),
 			0.4, 1.0, 0.5);
 		this.composer.addPass(bloomPass);
 	}
-		
+
 	init()
 	{
 		this.entities.push(new Player(this, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, "player0"));
@@ -61,16 +61,16 @@ class Scene
 
 		this.get("player0").player.position.set(0,0,3.92);
 		this.get("player1").player.position.set(0,0,-3.92);
-		
+
 		this.entities.push(this.ball)
 		this.get("ball").position.set(0,0.25,0);
-		
+
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		document.body.appendChild(this.renderer.domElement);
 	}
-	
+
 	initConnection()
 	{
 		let walls = {}
@@ -103,7 +103,7 @@ class Scene
 				this.entities[el].update(this);
 
 		this.shake.update(this.camera);
-		
+
 		this.controls.update();
 		this.composer.render();
 	}
@@ -123,10 +123,10 @@ class Scene
 			name = getName();
 		this.elements[name] = elements;
 		this.scene.add(elements);
-		
+
 		return elements;
 	}
-	
+
 	get(name)
 	{
 		return this.elements[name];
@@ -144,21 +144,21 @@ class Scene
 			geometry.computeBoundingBox();
 			const xMid = -0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
 			geometry.translate( xMid, 0, 0 );
-			
+
 			geometry.rotateX(-Math.PI / 2);
 			geometry.rotateY(Math.PI / 2);
-			
+
 			geometry.translate(position);
-			
+
 			const matLite = new THREE.MeshBasicMaterial({
 				side: THREE.DoubleSide,
 				color: param.color
 			});
 			const textMesh = new THREE.Mesh( geometry, matLite );
 			this.add(textMesh, name);
-			
+
 		});
-	
+
 	}
 
 	addSphere(radius, param, name="")
@@ -185,7 +185,7 @@ class Scene
 
 		var geometry = new THREE.BoxGeometry(width, height, depth);
 		geometry.computeBoundingBox();
-		
+
 		var material = new THREE.MeshPhysicalMaterial(param);
 		material.roughness = 0.6;
 		material.metalness = 0.1;
@@ -201,10 +201,10 @@ class Scene
 	{
 		if (!this.entities.includes(element))
 			return ;
-		
+
 		this.entities.splice(this.entities.indexOf(element), 1);
 		delete this.elements[element.name]
-		
+
 		if (element.destroy != undefined)
 			{element.destroy(); return ;}
 

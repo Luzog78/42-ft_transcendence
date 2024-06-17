@@ -18,7 +18,7 @@ import { Persistents, pushPersistents } from "../components/Persistents.js";
 function createA2fInput(context) {
 	var row = document.createElement("div");
 	row.classList.add("row", "col-12");
-	
+
 	var col = document.createElement("div");
 	col.classList.add("col-12");
 
@@ -26,7 +26,7 @@ function createA2fInput(context) {
 	label.setAttribute("for", "a2f_code");
 	label.classList.add("form-label");
 	label.innerText = getLang(context, "pages.login.labels.a2f");
-	
+
 	var input = document.createElement("input");
 	input.type = "number";
 	input.classList.add("form-control", "no-arrow")
@@ -98,7 +98,7 @@ function Login(context) {
 		form.onsubmit = (event) => {
 			event.preventDefault();
 			clearFeedbacks(form);
-			if (!checkUsername(context, "#username") | !checkPassword(context, "#password")) // wtf qui fait ses OR comme ca ptdr
+			if (!checkUsername(context, "#username") | !checkPassword(context, "#password"))
 				return;
 			var a2f_input = document.getElementById("a2f_code");
 			if (a2f_input)

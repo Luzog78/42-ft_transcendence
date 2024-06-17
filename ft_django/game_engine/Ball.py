@@ -62,7 +62,7 @@ class Ball():
 									   		"scene.ball.vel.z": self.vel.z})
 		await self.lobby.sendData("modify", {"scene.ball.acc.x": self.acc.x,
 									   		"scene.ball.acc.z": self.acc.z})
-	
+
 	def resolutionCollision(self, collisionNormal, minDistance):
 		penetrationDepth = (self.radius - minDistance)
 		newCircleCenter = {
@@ -71,7 +71,7 @@ class Ball():
 		}
 		self.pos.x = newCircleCenter["x"]
 		self.pos.z = newCircleCenter["y"]
-		
+
 		# //prevent going to fast curved ball
 		# if (this.acc.length() > 0.5 && wallname.includes("wall"))
 		# {
@@ -96,7 +96,7 @@ class Ball():
 		if (player_up == True):
 			newVel = Vector(-1, 0, -normal["y"] / 2)
 			newVel.setLength(self.vel.length() + 0.1)
-		
+
 			self.vel = newVel
 
 			self.acc = Vector(1, 0, normal["y"] / 2)
@@ -105,7 +105,7 @@ class Ball():
 		elif (player_down == True):
 			newVel = Vector(1, 0, -normal["y"] / 2)
 			newVel.setLength(self.vel.length() + 0.1)
-		
+
 			self.vel = newVel
 
 			self.acc = Vector(-1, 0, normal["y"] / 2)
@@ -122,7 +122,7 @@ class Ball():
 
 			closestPoint, minDistance = Ball.closestPointOnRectangle(rectangle, sphere)
 			collision = minDistance <= self.radius
-			
+
 			if (collision):
 				collisionNormal = {
 					"x": (self.pos.x - closestPoint["x"]) / minDistance,

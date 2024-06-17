@@ -99,7 +99,7 @@ const loadPage = (path) => {
 	let next = new URLSearchParams(window.location.search).get("next");
 	if (next)
 		global_context.next = next;
-	
+
 	let route = null;
 	let args = [];
 	let pathes = path.split("/");
@@ -240,7 +240,7 @@ window.addEventListener("load", async () => {
 export {
 	redirect,
 	refresh,
-	popNext, 
+	popNext,
 	persistSuccess,
 	persistError,
 	persistCopy,

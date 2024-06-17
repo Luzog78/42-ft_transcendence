@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   screenShake.js                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 00:42:48 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/09 00:42:48 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/17 17:46:30 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ function ScreenShake() {
 			if ( this.enabled == true ) {
 				const now = Date.now();
 				if ( this._timestampEnd > now ) {
-					let interval = (Date.now() - this._timestampStart) / 
+					let interval = (Date.now() - this._timestampStart) /
 						(this._timestampEnd - this._timestampStart) ;
 					this.computePosition( camera, interval );
 				} else {
@@ -77,7 +77,7 @@ function ScreenShake() {
 			} else {
 				var position = this.getQuadra( (interval-0.9) / 0.1 ) * -0.1;
 			}
-			
+
 			// Here the camera is positioned according to the wavy 'position' variable.
 			camera.position.lerpVectors( this._startPoint, this._endPoint, position );
 		},

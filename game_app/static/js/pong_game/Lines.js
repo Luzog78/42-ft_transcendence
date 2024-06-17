@@ -40,18 +40,18 @@ class Lines
 		const point = new THREE.Vector3();
 
 		for ( let i = 0; i < divisions; i ++ ) {
-			
+
 			const t = i / divisions;
 
 			spline.getPoint( t, point );
 			positions.push( point.x, point.y, point.z );
-			
+
 			let colorIndex = Math.floor(t * this.colors.length);
 			let color = new THREE.Color();
 
 			let first = this.colors[colorIndex];
 			let second = this.colors[THREE.MathUtils.clamp(colorIndex + 1, 0, this.colors.length - 1)];
-			
+
 			color.lerpColors(first, second, t * this.colors.length - colorIndex);
 			colors.push(color.r, color.g, color.b );
 		}
@@ -87,7 +87,7 @@ class Lines
 	}
 
 	update(scene)
-	{		
+	{
 		const geometry = this.getGeometry(this.points, this.divisionCount);
 		this.mesh.geometry.dispose();
 		this.mesh.geometry = geometry;

@@ -187,11 +187,11 @@ def view_games(request):
 def view_game_list(request):
 	if request.method != 'POST':
 		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
-	
+
 	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
 	if 'uids' not in data:
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
-	
+
 	uids = data['uids']
 	l, l_not_found = [], []
 	for uid in uids:

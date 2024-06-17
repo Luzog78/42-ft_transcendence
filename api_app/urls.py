@@ -28,4 +28,3 @@ r(view_stats_id,	'stats/<int:id>')
 r(view_stats_user,	'stats/u/<str:username>')
 r(view_stats_game,	'stats/g/<str:uid>')
 r(view_test,		'<int:whatever>')
-

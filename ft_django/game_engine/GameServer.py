@@ -36,7 +36,7 @@ class GameServer():
 
 			for lobby in self.lobbys:
 				await lobby.update()
-	
+
 	def receive(self, data):
 		lobby = self.lobbys[data["lobby_id"]]
 		lobby.receive(data)
@@ -52,9 +52,9 @@ class GameServer():
 			self.lobbys.append(Lobby(self))
 		lobby = self.lobbys[-1]
 		player = Player(lobby, client, len(lobby.clients))
-		
+
 		self.clients.append(player)
 		await lobby.addClient(player)
-		
+
 	def removeClient(self, client):
 		self.clients.remove(client)

@@ -61,7 +61,7 @@ class Lobby():
 	async def sendData(self, *args):
 		for c in self.clients:
 			await c.sendData(*args)
-	
+
 	async def sendToOther(self, client, *args):
 		for c in self.clients:
 			if (c != client):

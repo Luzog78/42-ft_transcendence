@@ -39,6 +39,7 @@ input.no-arrow::-webkit-inner-spin-button {
 }
 
 input[type=number].no-arrow {
+	appearance: textfield;
 	-moz-appearance: textfield;
 }
 

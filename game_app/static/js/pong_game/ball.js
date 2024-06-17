@@ -55,7 +55,7 @@ class Ball
 	{
 		this.scene = scene;
 		this.name = this.scene.getName(name);
-		
+
 		this.vel = new THREE.Vector3(0, 0, 0);
 		this.acc = new THREE.Vector3(0, 0, 0);
 		this.currentVelLength = this.vel.length();
@@ -71,7 +71,7 @@ class Ball
 	{
 		let shake = Math.exp(this.vel.length() / 100) - 1;
 		this.scene.shake.shake(this.scene.camera, new THREE.Vector3(shake, 0), 400);
-		
+
 		position = new THREE.Vector3(position.x, 0.25, position.y);
 		normal = new THREE.Vector3(normal.x, 0, normal.y);
 		normal.setLength(0.2);
@@ -84,15 +84,15 @@ class Ball
 			player.bump(normal);
 		}
 
-			
+
 		// let player_up = player.keyboard["w"];
 		// let player_down = player.keyboard["s"];
-		
+
 		// if (player_up == "keydown")
 		// {
 		// 	let newVel = new THREE.Vector3(-1, 0, -0.5)
 		// 	newVel.setLength(this.vel.length() + 0.1);
-			
+
 		// 	this.vel = newVel;
 
 		// 	this.acc = new THREE.Vector3(1, 0, -0.5);
@@ -102,7 +102,7 @@ class Ball
 		// {
 		// 	let newVel = new THREE.Vector3(1, 0, -0.5)
 		// 	newVel.setLength(this.vel.length() + 0.1);
-			
+
 		// 	this.vel = newVel;
 
 		// 	this.acc = new THREE.Vector3(-1, 0, -0.5);
@@ -114,13 +114,13 @@ class Ball
 		// 	this.vel.z *= normal.z < 0 ? 1 : -1;
 		// }
 	}
-	
+
 	update(scene)
 	{
 		let color = 270 - this.sphere.position.z * 20;
 		this.sphere.material.color = new THREE.Color(`hsl(${color}, 100%, 80%)`);
 		this.sphere.material.emissive = new THREE.Color(`hsl(${color}, 100%, 80%)`);
-		
+
 		if (this.trails.length < this.trailsLength)
 		{
 			let trail = new Trail(scene, this, 0.15, {
