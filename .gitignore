@@ -14,8 +14,11 @@
 !*.css
 !*.js
 !*.json
+!*.yml
+!*.sql
 !*.svg
 !*.md
+!*.env
 !.gitignore
 !Makefile
 
@@ -28,6 +31,7 @@
 *subject.pdf
 .vscode
 __pycache__
+migrations
 db.sqlite3
 site
 fields.yml
