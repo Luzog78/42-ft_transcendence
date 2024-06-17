@@ -79,7 +79,7 @@ console:
 sql:
 	docker exec -it postgresql bash -c "PGPASSWORD=$(DB_PASSWD) psql -h localhost -p 5432 -U $(DB_USER) $(DB_NAME)"
 
-re: clean up
+re: clean all
 
 clean:
 	$(call exec, docker stop $$(docker ps -qa), $$(docker ps -qa))

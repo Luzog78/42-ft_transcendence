@@ -2,17 +2,60 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import User
+from .models import User, Game, Stats
 from . import auth
 
 
 @csrf_exempt
-def err404(request):
+def view_err404(request):
 	return JsonResponse({'ok': False, 'error': 'errors.404'})
 
 
 @csrf_exempt
-def register(request):
+def view_root(request):
+	return JsonResponse({
+		'ok': True,
+		'api': 'v1',
+		'endpoints': [
+			'login',
+			'logout',
+			'register',
+			'user',
+			'user/<str:username>',
+			'games',
+			'game/<str:uid>',
+			'stats/<int:id>',
+			'stats/u/<str:username>',
+			'stats/g/<str:uid>',
+			'<int:whatever>',
+		],
+		'errors': [
+			'errors.404',
+			'errors.invalidMethod',
+			'errors.invalidRequest',
+			'errors.invalidUsername',
+			'errors.invalidFirstName',
+			'errors.invalidLastName',
+			'errors.invalidPassword',
+			'errors.invalidEmail',
+			'errors.usernameAlreadyUsed',
+			'errors.emailAlreadyUsed',
+			'errors.notLoggedIn',
+			'errors.userNotFound',
+			'errors.gameNotFound',
+			'errors.statsNotFound',
+		],
+		'successes': [
+			'successes.registered',
+			'successes.loggedIn',
+			'successes.loggedOut',
+			'successes.gameCreated',
+		],
+	})
+
+
+@csrf_exempt
+def view_register(request):
 	if request.method != 'POST':
 		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
 
@@ -54,7 +97,7 @@ def register(request):
 
 
 @csrf_exempt
-def login(request):
+def view_login(request):
 	if request.method != 'POST':
 		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
 
@@ -70,15 +113,12 @@ def login(request):
 	return JsonResponse({
 		'ok': True,
 		'success': 'successes.loggedIn',
-		'username': request.user.username,
-		'firstName': request.user.first_name,
-		'lastName': request.user.last_name,
-		'email': request.user.email
+		**request.user.json(show_email=True),
 	})
 
 
 @csrf_exempt
-def logout(request):
+def view_logout(request):
 	result = auth.logout(request)
 	if not result:
 		return JsonResponse({'ok': False, 'error': f'{result}'})
@@ -86,20 +126,119 @@ def logout(request):
 
 
 @csrf_exempt
-def profile(request):
-	if not request.user.is_authenticated:
-		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+def view_user(request, username: str | None = None):
+	user = None
+	show_email = False
+	if username is None:
+		if not request.user.is_authenticated:
+			return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+		user = request.user
+		show_email = True
+	else:
+		user = User.objects.filter(username=username)
+		if not user:
+			return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
+		user = user[0]
+		if request.user.is_authenticated and (
+			request.user.username == username or request.user.is_admin):
+			show_email = True
 	return JsonResponse({
 		'ok': True,
-		'username': request.user.username,
-		'firstName': request.user.first_name,
-		'lastName': request.user.last_name,
-		'email': request.user.email
+		**user.json(show_email=show_email),
 	})
 
 
 @csrf_exempt
-def test(request, whatever):
+def view_games(request):
+	games = Game.objects.all()
+	l = []
+	i = 0
+	try:
+		while True:
+			l.append(games[i].json())
+			i += 1
+	except IndexError:
+		pass
+	return JsonResponse({
+		'ok': True,
+		'length': i,
+		'games': l
+	})
+
+
+@csrf_exempt
+def view_game(request, uid: str):
+	game = None
+	if uid == 'new':
+		if not request.user.is_authenticated:
+			return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+		game = Game.objects.create(uid=Game.new_uid())
+	else:
+		game = Game.objects.filter(uid=uid)
+		if not game:
+			return JsonResponse({'ok': False, 'error': 'errors.gameNotFound'})
+		game = game[0]
+	return JsonResponse({
+		'ok': True,
+		**game.json(),
+	})
+
+
+@csrf_exempt
+def view_stats_id(request, id: int):
+	stats = Stats.objects.filter(id=id)
+	if not stats:
+		return JsonResponse({'ok': False, 'error': 'errors.statsNotFound'})
+	stats = stats[0]
+	return JsonResponse({
+		'ok': True,
+		'length': 1,
+		'stats': [
+			{
+				**stats.json(),
+			},
+		],
+	})
+
+
+@csrf_exempt
+def view_stats_user(request, username: str):
+	stats = Stats.objects.filter(username=username)
+	l = []
+	i = 0
+	try:
+		while True:
+			l.append(stats[i].json())
+			i += 1
+	except IndexError:
+		pass
+	return JsonResponse({
+		'ok': True,
+		'length': i,
+		'stats': l
+	})
+
+
+@csrf_exempt
+def view_stats_game(request, uid: str):
+	stats = Stats.objects.filter(game_uid=uid)
+	l = []
+	i = 0
+	try:
+		while True:
+			l.append(stats[i].json())
+			i += 1
+	except IndexError:
+		pass
+	return JsonResponse({
+		'ok': True,
+		'length': i,
+		'stats': l
+	})
+
+
+@csrf_exempt
+def view_test(request, whatever):
 	vals = User.objects.all().values()
 	return JsonResponse({
 		'ok': True,
