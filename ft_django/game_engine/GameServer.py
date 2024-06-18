@@ -46,10 +46,10 @@ class GameServer():
 		return len(self.lobbys) == 0 or len(self.lobbys[-1].clients) == self.lobbys[-1].clientsPerLobby
 
 	async def addClient(self, client):
-
 		if (self.lobbysAreFull()):
 			self.lobbys.append(Lobby(self))
 		lobby = self.lobbys[-1]
+		
 		print("new client in lobby id: ", lobby.lobby_id)
 		player = Player(lobby, client, len(lobby.clients))
 

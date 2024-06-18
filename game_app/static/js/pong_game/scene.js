@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/18 20:48:25 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/18 22:20:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ class Scene
 		this.entities.push(new Player(this, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, "player0"));
 		this.entities.push(new Player(this, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, "player1"));
 
-		this.get("player0").player.position.set(0,0,4);
-		this.get("player1").player.position.set(0,0,-4);
+		this.get("player0").player.position.set(0,0.15,4.075);
+		this.get("player1").player.position.set(0,0.15,-4.075);
 
 		this.entities.push(this.ball)
 		this.get("ball").position.set(0,0.25,0);
@@ -76,25 +76,6 @@ class Scene
 		let my_player = this.get("player" + this.server.client_id);
 		window.addEventListener("keydown", my_player.keydown_event_func);
 		window.addEventListener("keyup", my_player.keyup_event_func);
-		
-		let walls = {}
-
-		let wallsnames = ["wall1", "wall2", "player0box", "player1box"];
-		for (let wallname of wallsnames)
-		{
-			let wall = this.get(wallname);
-			let bounding = wall.geometry.boundingBox;
-
-			let line = {x:wall.position.x - bounding.min.x, z:wall.position.z - bounding.min.z, x2:wall.position.x - bounding.max.x, z2:wall.position.z - bounding.max.z};
-			let rectangle = [
-				{ x: line.x, y: line.z },
-				{ x: line.x2, y: line.z },
-				{ x: line.x2, y: line.z2 },
-				{ x: line.x, y: line.z2 }
-			]
-			walls[wallname] = rectangle;
-		}
-		this.server.sendData("walls", walls);
 	}
 
 	update()

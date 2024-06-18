@@ -43,22 +43,6 @@ class Ball():
 
 		return { "x": A["x"] + t * AB["x"], "y": A["y"] + t * AB["y"] }
 
-	@staticmethod
-	def closestPointOnRectangle(rectangle, point):
-		closestPoint = None
-		minDistance = math.inf
-
-		for i in range(len(rectangle)):
-			j = (i + 1) % len(rectangle)
-			segmentClosestPoint = Ball.closestPointOnSegment(rectangle[i], rectangle[j], point)
-			distance = math.hypot(segmentClosestPoint["x"] - point.x, segmentClosestPoint["y"] - point.z)
-
-			if (distance < minDistance):
-				minDistance = distance
-				closestPoint = segmentClosestPoint
-
-		return ( closestPoint, minDistance )
-
 	async def updateBall(self):
 		await self.lobby.sendData("modify", {"scene.ball.sphere.position.x": self.pos.x,
 									   		"scene.ball.sphere.position.z": self.pos.z})
@@ -118,25 +102,24 @@ class Ball():
 			
 
 	async def checkCollision(self):
-		for wall in self.lobby.walls:
-			rectangle = self.lobby.walls[wall]
-			sphere = self.pos
+		for wallname in self.lobby.walls:
+			wall = self.lobby.walls[wallname]
 
-			closestPoint, minDistance = Ball.closestPointOnRectangle(rectangle, sphere)
-			collision = minDistance <= self.radius
+			segmentClosestPoint = Ball.closestPointOnSegment(wall[0], wall[1], self.pos)
+			distance = math.hypot(segmentClosestPoint["x"] - self.pos.x, segmentClosestPoint["y"] - self.pos.z)
+			collision = distance <= self.radius
 
 			if (collision):
 				collisionNormal = {
-					"x": (self.pos.x - closestPoint["x"]) / minDistance,
-					"y": (self.pos.z - closestPoint["y"]) / minDistance
+					"x": (self.pos.x - segmentClosestPoint["x"]) / distance,
+					"y": (self.pos.z - segmentClosestPoint["y"]) / distance
 				}
-
-				self.ballEffect(wall, collisionNormal)
-				self.resolutionCollision(collisionNormal, minDistance)
+				self.ballEffect(wallname, collisionNormal)
+				self.resolutionCollision(collisionNormal, distance)
 
 				await self.updateBall()
 				await self.lobby.sendData("call", {"command": 'scene.ball.effectCollision',
-									   				"args": ['"' + wall + '"', closestPoint, collisionNormal]})
+									   				"args": ["'" + wallname + "'", segmentClosestPoint, collisionNormal]})
 
 	async def update(self):
 		if (self.time == 0):

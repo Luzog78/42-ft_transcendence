@@ -20,21 +20,24 @@ class Player():
 		self.client_id = client_id
 
 		self.pos = Vector(0, 0, 0)
-
+		
 		self.keyboard = {}
 
-	def calculatePos(self):
-		playerBox = self.lobby.walls["player" + str(self.client_id) + "box"]
-		playerBoxCenter = Vector(0, 0, 0)
+		self.addSelfWall()
 
-		for point in playerBox:
-			playerBoxCenter += Vector(point["x"], 0, point["y"])
+	def addSelfWall(self):
+		playerName = "player" + str(self.client_id)
+		if (self.client_id == 0):
+			self.lobby.walls[playerName] = ({"x": 0.5, "y": 4}, {"x": -0.5, "y": 4})
+		elif (self.client_id == 1):
+			self.lobby.walls[playerName] = ({"x": 0.5, "y": -4}, {"x": -0.5, "y": -4})
 
-		playerBoxCenter /= len(playerBox)
-		self.pos = playerBoxCenter
+		playerBox = self.lobby.walls[playerName]
+		middle = {"x": (playerBox[0]["x"] + playerBox[1]["x"]) / 2, "y": (playerBox[0]["y"] + playerBox[1]["y"]) / 2}
+		self.pos = Vector(middle["x"], 0, middle["y"])
 
 	async def move(self, x, y):
-		playerBox = self.lobby.walls["player" + str(self.client_id) + "box"]
+		playerBox = self.lobby.walls["player" + str(self.client_id)]
 
 		for point in playerBox:
 			point["x"] += x
@@ -43,7 +46,6 @@ class Player():
 		self.pos += Vector(x, 0, y)
 
 		playerBoxJS = "scene.get('player" + str(self.client_id) + "').player"
-
 		await self.lobby.sendToOther(self, "modify",
 									{f"{playerBoxJS}.position.x": self.pos.x,
 		  							f"{playerBoxJS}.position.z": self.pos.z})

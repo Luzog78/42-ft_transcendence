@@ -27,7 +27,6 @@ class PongSocket(AsyncWebsocketConsumer):
 		gameServer.receive(data)
 
 	async def sendData(self, *args):
-
 		data = {}
 		for i in range(0, len(args), 2):
 			key = args[i]

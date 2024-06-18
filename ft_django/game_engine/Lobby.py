@@ -10,6 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
+import random
+
 from game_engine.Ball import Ball
 from game_engine.Vector import Vector
 
@@ -22,7 +24,8 @@ class Lobby():
 		self.clientsPerLobby = 2
 
 		self.ball = Ball(self, 0.15)
-		self.walls = []
+		self.walls = {"wall1": [{"x": 2, "y": 4}, {"x": 2, "y": -4}],
+					"wall2": [{"x": -2, "y": 4}, {"x": -2, "y": -4}]}
 
 	async def update(self):
 		await self.ball.update()
@@ -31,12 +34,6 @@ class Lobby():
 			await c.update()
 
 	def receive(self, data):
-		if ("walls" in data):
-			self.walls = data["walls"]
-
-			for c in self.clients:
-				c.calculatePos()
-
 		if ("player_keyboard" in data):
 			self.clients[data["client_id"]].keyboard = data["player_keyboard"]
 
