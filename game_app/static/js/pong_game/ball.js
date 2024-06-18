@@ -14,41 +14,6 @@ import * as THREE from 'three';
 import { RingBlob } from "./ringBlob.js"
 import { Trail } from "./trail.js"
 
-function closestPointOnSegment(A, B, P)
-{
-	const AB = { x: B.x - A.x, y: B.y - A.y };
-	const AP = { x: P.x - A.x, y: P.z - A.y };
-	const AB_squared = AB.x * AB.x + AB.y * AB.y;
-
-	if (AB_squared === 0)
-		return A;
-
-	let t = (AP.x * AB.x + AP.y * AB.y) / AB_squared;
-	t = Math.max(0, Math.min(1, t));
-
-	return { x: A.x + t * AB.x, y: A.y + t * AB.y };
-}
-
-function closestPointOnRectangle(rectangle, point)
-{
-	let closestPoint = null;
-	let minDistance = Infinity;
-
-	for (let i = 0; i < rectangle.length; i++)
-	{
-		const j = (i + 1) % rectangle.length;
-		const segmentClosestPoint = closestPointOnSegment(rectangle[i], rectangle[j], point);
-		const distance = Math.hypot(segmentClosestPoint.x - point.x, segmentClosestPoint.y - point.z);
-
-		if (distance < minDistance) {
-			minDistance = distance;
-			closestPoint = segmentClosestPoint;
-		}
-	}
-
-	return { closestPoint, minDistance };
-}
-
 class Ball
 {
 	constructor(scene, radius, options, name)
@@ -142,7 +107,7 @@ class Ball
 		this.sphere.position.add(new THREE.Vector3().copy(this.vel).multiplyScalar(this.scene.dt));
 		this.vel.add(new THREE.Vector3().copy(this.acc).multiplyScalar(this.scene.dt));
 
-		let accelerationFactor = Math.pow(10, Math.log10(0.99) / this.scene.dt); // 
+		let accelerationFactor = Math.pow(10, Math.log10(0.99) / 0.006); // 
 
 		this.acc.multiplyScalar(Math.pow(accelerationFactor, this.scene.dt));
 	}

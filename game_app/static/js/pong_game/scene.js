@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/18 00:20:43 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/18 17:06:42 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ class Scene
 		this.entities.push(new Player(this, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, "player0"));
 		this.entities.push(new Player(this, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, "player1"));
 
-		this.get("player0").player.position.set(0,0,3.92);
-		this.get("player1").player.position.set(0,0,-3.92);
+		this.get("player0").player.position.set(0,0,4);
+		this.get("player1").player.position.set(0,0,-4);
 
 		this.entities.push(this.ball)
 		this.get("ball").position.set(0,0.25,0);

@@ -21,6 +21,7 @@ class Ball():
 		self.radius = radius
 
 		self.terminalVelocity = 8
+		self.currentVelLength = 0
 
 		self.time = 0
 
@@ -76,16 +77,13 @@ class Ball():
 		self.pos.z = newCircleCenter["y"]
 
 		# //prevent going to fast curved ball
-		# if (this.acc.length() > 0.5 && wallname.includes("wall"))
-		# {
-		# 	this.acc = new THREE.Vector3(0, 0, 0);
-		# 	this.vel.setLength(this.currentVelLength - 0.25);
-		# }
-
+		# if (self.acc.length() > 0.5 and wallname.includes("wall")):
+		# 	self.acc = Vector(0, 0, 0)
+		# 	self.vel.setLength(self.currentVelLength - 0.25)
 		self.vel = self.vel.reflect(Vector(collisionNormal["x"], 0, collisionNormal["y"]))
 		self.vel.setLength(self.vel.length() + 0.1)
 
-		# this.currentVelLength = this.vel.length();
+		self.currentVelLength = self.vel.length()
 
 	def ballEffect(self, wallname, normal):
 		if ("player" not in wallname):
@@ -96,27 +94,28 @@ class Ball():
 		player_up = player.keyboard["w"] if "w" in player.keyboard else False
 		player_down = player.keyboard["s"] if "s" in player.keyboard else False
 
-		if (player_up == True):
-			newVel = Vector(-1, 0, -normal["y"] / 2)
+		if (player_up):
+			newVel = Vector(-1, 0, -0.5)
 			newVel.setLength(self.vel.length() + 0.1)
 
 			self.vel = newVel
 
-			self.acc = Vector(1, 0, normal["y"] / 2)
+			self.acc = Vector(1, 0, 0.5)
 			self.acc.setLength(self.vel.length() * 2)
 
-		elif (player_down == True):
-			newVel = Vector(1, 0, -normal["y"] / 2)
+		elif (player_down):
+			newVel = Vector(1, 0, -0.5)
 			newVel.setLength(self.vel.length() + 0.1)
 
 			self.vel = newVel
 
-			self.acc = Vector(-1, 0, normal["y"] / 2)
+			self.acc = Vector(-1, 0, 0.5)
 			self.acc.setLength(self.vel.length() * 2)
 
-		# if (player_up == True or player_down == True):
-		# 	self.acc.z *= -1 if normal["y"] < 0 else 1
-		# 	self.vel.z *= -1 if normal["y"] < 0 else 1
+		if (player_up or player_down):
+			self.acc.z *= -1 if normal["y"] < 0 else 1
+			self.vel.z *= -1 if normal["y"] < 0 else 1
+			
 
 	async def checkCollision(self):
 		for wall in self.lobby.walls:
