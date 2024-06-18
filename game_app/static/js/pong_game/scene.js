@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/18 22:20:11 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/19 01:24:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ class Scene
 	{
 		this.timer.update();
 		this.dt = this.timer.getDelta();
-
+		
 		for (let el in this.entities)
 			if (this.entities[el].update != undefined)
 				this.entities[el].update(this);

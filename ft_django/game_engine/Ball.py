@@ -60,16 +60,16 @@ class Ball():
 		self.pos.x = newCircleCenter["x"]
 		self.pos.z = newCircleCenter["y"]
 
-		# //prevent going to fast curved ball
-		# if (self.acc.length() > 0.5 and wallname.includes("wall")):
-		# 	self.acc = Vector(0, 0, 0)
-		# 	self.vel.setLength(self.currentVelLength - 0.25)
 		self.vel = self.vel.reflect(Vector(collisionNormal["x"], 0, collisionNormal["y"]))
 		self.vel.setLength(self.vel.length() + 0.1)
 
 		self.currentVelLength = self.vel.length()
 
 	def ballEffect(self, wallname, normal):
+		if (self.acc.length() > 0.5 and "wall" in wallname):
+			self.acc = Vector(0, 0, 0)
+			self.vel.setLength(self.currentVelLength - 0.25)
+
 		if ("player" not in wallname):
 			return
 
@@ -84,7 +84,7 @@ class Ball():
 
 			self.vel = newVel
 
-			self.acc = Vector(1, 0, 0.5)
+			self.acc = Vector(1, 0, -0.5)
 			self.acc.setLength(self.vel.length() * 2)
 
 		elif (player_down):
@@ -93,12 +93,12 @@ class Ball():
 
 			self.vel = newVel
 
-			self.acc = Vector(-1, 0, 0.5)
+			self.acc = Vector(-1, 0, -0.5)
 			self.acc.setLength(self.vel.length() * 2)
 
 		if (player_up or player_down):
-			self.acc.z *= -1 if normal["y"] < 0 else 1
-			self.vel.z *= -1 if normal["y"] < 0 else 1
+			self.vel.z *= 1 if normal["y"] < 0 else -1
+			self.acc.z *= 1 if normal["y"] < 0 else -1
 			
 
 	async def checkCollision(self):
@@ -114,8 +114,9 @@ class Ball():
 					"x": (self.pos.x - segmentClosestPoint["x"]) / distance,
 					"y": (self.pos.z - segmentClosestPoint["y"]) / distance
 				}
-				self.ballEffect(wallname, collisionNormal)
+
 				self.resolutionCollision(collisionNormal, distance)
+				self.ballEffect(wallname, collisionNormal)
 
 				await self.updateBall()
 				await self.lobby.sendData("call", {"command": 'scene.ball.effectCollision',

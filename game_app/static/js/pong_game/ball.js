@@ -13,6 +13,7 @@
 import * as THREE from 'three';
 import { RingBlob } from "./ringBlob.js"
 import { Trail } from "./trail.js"
+import { Particle } from "./particle.js"
 
 class Ball
 {
@@ -27,6 +28,8 @@ class Ball
 
 		this.trails = []
 		this.trailsLength = 50;
+
+		this.groundTrailLength = 20;
 
 		this.radius = radius;
 		this.sphere = this.scene.addSphere(this.radius, options, this.name);
@@ -49,35 +52,27 @@ class Ball
 			player.bump(normal);
 		}
 
+		for (let i = 0; i < 10; i++)
+		{
+			let randomPosition = position.clone().add(new THREE.Vector3(Math.random() * 0.2 - 0.1,Math.random() * 0.2 - 0.1,Math.random() * 0.2 - 0.1));
+			let direction = randomPosition.clone().sub(position).multiplyScalar(13);
+			let acceleration = direction.clone().multiplyScalar(-1.8);
 
-		// let player_up = player.keyboard["w"];
-		// let player_down = player.keyboard["s"];
+			let accDec = 0.989
 
-		// if (player_up == "keydown")
-		// {
-		// 	let newVel = new THREE.Vector3(-1, 0, -0.5)
-		// 	newVel.setLength(this.vel.length() + 0.1);
+			let radius = Math.random() * 0.02 + 0.005;
+			let color = this.sphere.material.color;
+			color = new THREE.Color(color).offsetHSL(0, 0, Math.random() * 0.2 - 0.1);
 
-		// 	this.vel = newVel;
+			let particle = new Particle(this.scene, randomPosition, direction, acceleration, accDec,
+				radius, {color: color}, 2, "particle");
+			particle.addUpdate(Particle.updatePhysics);
+			particle.addUpdate(Particle.updateFadeOpacity);
+			particle.addUpdate(Particle.updateRemoveOnFade);
 
-		// 	this.acc = new THREE.Vector3(1, 0, -0.5);
-		// 	this.acc.setLength(this.vel.length() * 2)
-		// }
-		// else if (player_down == "keydown")
-		// {
-		// 	let newVel = new THREE.Vector3(1, 0, -0.5)
-		// 	newVel.setLength(this.vel.length() + 0.1);
+			this.scene.entities.push(particle);
+		}
 
-		// 	this.vel = newVel;
-
-		// 	this.acc = new THREE.Vector3(-1, 0, -0.5);
-		// 	this.acc.setLength(this.vel.length() * 2)
-		// }
-		// if (player_up == "keydown" || player_down == "keydown")
-		// {
-		// 	this.acc.z *= normal.z < 0 ? 1 : -1;
-		// 	this.vel.z *= normal.z < 0 ? 1 : -1;
-		// }
 	}
 
 	update(scene)
@@ -101,6 +96,34 @@ class Ball
 			this.trails.push(trail);
 		}
 
+		if (this.groundTrailLength > 0 && Date.now() % 20 == 0)
+		{
+			this.groundTrailLength--;
+
+			let randomPosition = this.sphere.position.clone();
+			let positionOffset = new THREE.Vector3(Math.random() * 0.2 - 0.1, 0, Math.random() * 0.2 - 0.1);
+			randomPosition.add(positionOffset);
+
+			let direction = new THREE.Vector3(0, 0, 0);
+			let acceleration = new THREE.Vector3(0, 0, 0);
+
+			let accDec = 0.99
+
+			let radius = Math.random() * 0.01 + 0.005;
+			let color = new THREE.Color(0xffffff);
+			color.offsetHSL(0, 0, Math.random() * 0.2 - 0.1);
+
+			let particle = new Particle(this.scene, randomPosition, direction, acceleration, accDec,
+				radius, {color: color}, 2, "particle");
+			particle.addUpdate(Particle.updatePhysics);
+			particle.addUpdate(Particle.updateFadeOpacity);
+			particle.addUpdate(Particle.updateResetPositionOnFade, [this.sphere])
+
+			particle.positionOffset = positionOffset;
+
+			this.scene.entities.push(particle);
+		}
+
 		for (let i = 0; i < this.trails.length; i++)
 			this.trails[i].update(scene)
 
@@ -108,7 +131,6 @@ class Ball
 		this.vel.add(new THREE.Vector3().copy(this.acc).multiplyScalar(this.scene.dt));
 
 		let accelerationFactor = Math.pow(10, Math.log10(0.99) / 0.006); // 
-
 		this.acc.multiplyScalar(Math.pow(accelerationFactor, this.scene.dt));
 	}
 }
