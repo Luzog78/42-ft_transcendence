@@ -8,11 +8,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 	def get_token(self, user):
-		print(self)
-		print(user)
-		print(type(user))
 
 		token = super().get_token(user)
-		print(token)
-
+		# maybe full useless todo remove
 		return token

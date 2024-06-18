@@ -2,6 +2,7 @@ import json
 import random
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import pyotp
 
 from rest_framework_simplejwt.views import TokenViewBase
 
@@ -469,3 +470,25 @@ def view_test(request, whatever):
 
 class MyTokenObtainPairView(TokenViewBase):
 	serializer_class = MyTokenObtainPairSerializer
+
+	def post(self, request, *args, **kwargs):
+		data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+		username = None
+		a2f_code = None
+		print(data)
+		if ('username' in data):
+			username = data['username']
+		if ('a2f_code' in data):
+			a2f_code = data['a2f_code']
+		if not (username is None):
+			user = User.objects.filter(username=username)
+			if user.exists():
+				user = user[0]
+				if not (user.a2f_token is None) :
+					if a2f_code is None:
+						return JsonResponse({'ok': False, 'error': 'errors.missingA2F'})
+					else:
+						if (not pyotp.TOTP(user.a2f_token).verify(a2f_code)):
+							return JsonResponse({'ok': False, 'error': 'errors.invalidCredentials'})
+
+		return super().post(request, args, kwargs)
