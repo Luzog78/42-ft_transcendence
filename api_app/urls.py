@@ -4,7 +4,8 @@ from .views import view_err404, view_test, \
 					view_user, view_user_set, view_user_del, \
 					view_games, view_game_list, view_game_user, view_game_uid, \
 					view_game_new, view_game_rand, \
-					view_stats_id, view_stats_user, view_stats_game
+					view_stats_id, view_stats_user, view_stats_game, \
+					MyTokenObtainPairView
 
 
 urlpatterns = [ re_path('.*', view_err404) ]
@@ -30,3 +31,4 @@ r(view_stats_id,	'stats/<int:id>')
 r(view_stats_user,	'stats/u/<str:username>')
 r(view_stats_game,	'stats/g/<str:uid>')
 r(view_test,		'<int:whatever>')
+urlpatterns.insert(0, path('token/', MyTokenObtainPairView.as_view(), name="token_obtain_pair"))

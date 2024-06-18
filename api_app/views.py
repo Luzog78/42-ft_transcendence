@@ -3,8 +3,11 @@ import random
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from rest_framework_simplejwt.views import TokenViewBase
+
 from .models import User, Game, Stats
 from . import auth
+from .serializers import MyTokenObtainPairSerializer
 
 
 @csrf_exempt
@@ -463,3 +466,6 @@ def view_test(request, whatever):
 		'success': 'Whatever...',
 		'whatever': whatever,
 	})
+
+class MyTokenObtainPairView(TokenViewBase):
+	serializer_class = MyTokenObtainPairSerializer
