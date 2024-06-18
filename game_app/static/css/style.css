@@ -172,6 +172,102 @@ input[type=number].no-arrow {
 
 .navbar-brand {
 	display: flex;
+	z-index: 100;
+	position: relative;
+}
+
+.navbar-brand img {
+	border-radius: 0;
+	cursor: pointer;
+}
+
+#menu-trigger {
+	z-index: 1000;
+	transition: .5s;
+}
+
+#menu-container {
+	position: absolute;
+	display: none;
+	transition: .5s;
+}
+
+#menu-container img {
+	position: absolute;
+	transition: .5s;
+}
+
+#menu-container img:nth-child(1) {
+	position: absolute;
+	--s: 16rem;
+	width: var(--s);
+	height: var(--s);
+	top: calc(var(--s) / -2);
+	left: calc(var(--s) / -2);
+	animation: menu-rotate-0 infinite linear 100s;
+}
+
+#menu-container img:nth-child(2) {
+	position: absolute;
+	border-radius: 1000%;
+	--s: 36rem;
+	width: var(--s);
+	height: var(--s);
+	top: calc(var(--s) / -2);
+	left: calc(var(--s) / -2);
+}
+
+#menu-container img:nth-child(3) {
+	position: absolute;
+	--s: 38rem;
+	width: var(--s);
+	height: var(--s);
+	top: calc(var(--s) / -2);
+	left: calc(var(--s) / -2);
+	animation: menu-rotate-1 infinite linear 180s;
+}
+
+#menu-container img:nth-child(4) {
+	position: absolute;
+	--s: 5rem;
+	width: var(--s);
+	height: var(--s);
+	top: calc(var(--s) * 1.2);
+	left: calc(var(--s) * 1.2);
+}
+
+#menu-container img:nth-child(5) {
+	position: absolute;
+	--s: 4rem;
+	width: var(--s);
+	height: var(--s);
+	left: calc(var(--s) * 2.5);
+}
+
+#menu-container img:nth-child(6) {
+	position: absolute;
+	--s: 4rem;
+	width: var(--s);
+	height: var(--s);
+	top: calc(var(--s) * 2.5);
+}
+
+@keyframes menu-rotate-0 {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes menu-rotate-1 {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(-360deg);
+	}
 }
 
 .navbar .profile-name {

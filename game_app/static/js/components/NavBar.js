@@ -10,17 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { getLang } from "../script.js";
+import { getLang, redirect } from "../script.js";
 import { getJson } from "../utils.js";
+
+var stunned = false;
 
 function NavBar(title, context, fetchProfile = true) {
 	let div = document.createElement("div");
 	div.innerHTML = /*html*/`
 		<nav id="#navbar" class="navbar">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="#">
-					<img src="/static/img/menu.svg" alt="Menu">
-				</a>
+				<div class="navbar-brand">
+					<img src="/static/img/menu.svg" alt="Menu" id="menu-trigger">
+					<div id="menu-container">
+						<img src="/static/img/circle1.svg" alt="">
+						<img src="/static/img/circle2.svg" alt="">
+						<img src="/static/img/circle1.svg" alt="">
+						<img src="/static/img/game.svg" alt="" id="goto-play">
+						<img src="/static/img/win.svg" alt="" id="goto-tour">
+						<img src="/static/img/chat.svg" alt="" id="goto-chat">
+					</div>
+				</div>
 				<h1>
 					<a class="a-no-style" id="navbar-title" href="/" data-link></a>
 				</h1>
@@ -66,7 +76,112 @@ function NavBar(title, context, fetchProfile = true) {
 				}
 			}
 		});
+	setTimeout(() => {
+		let menu = document.getElementById("menu-trigger");
+		let menuContainer = document.getElementById("menu-container");
+		let gotoPlay = document.getElementById("goto-play");
+		let gotoTour = document.getElementById("goto-tour");
+		let gotoChat = document.getElementById("goto-chat");
+
+		if (!menu || !menuContainer || !gotoPlay || !gotoTour || !gotoChat)
+			return;
+		menu.onclick = () => {
+			if (stunned)
+				return;
+			if (menuContainer.style.display === "none" || menuContainer.style.display === "") {
+				openMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
+			} else {
+				closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
+			}
+		};
+		gotoPlay.onclick = () => {
+			if (stunned)
+				return;
+			closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
+			setTimeout(() => redirect("/play"), 900);
+		};
+		gotoTour.onclick = () => {
+			if (stunned)
+				return;
+			closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
+			setTimeout(() => redirect("/tournament"), 900);
+		};
+		gotoChat.onclick = () => {
+			if (stunned)
+				return;
+			closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
+			setTimeout(() => redirect("/chat"), 900);
+		};
+	}, 250);
 	return div.innerHTML;
+}
+
+function openMenu(menu, container, gotoPlay, gotoTour, gotoChat) {
+	if (!menu || !container || !gotoPlay || !gotoTour || !gotoChat)
+		return;
+
+	stunned = true;
+	menu.style.transform = "rotate(0deg)";
+	container.style.display = "inline-block";
+	container.style.transform = "scale(0.001)";
+	container.style.opacity = "0";
+	gotoPlay.style.opacity = "0";
+	gotoTour.style.opacity = "0";
+	gotoChat.style.opacity = "0";
+	setTimeout(() => {
+		container.style.opacity = "1";
+		container.style.transform = "scale(1)";
+		menu.style.transform = "rotate(-90deg)";
+	}, 50);
+	setTimeout(() => {
+		gotoPlay.style.opacity = "1";
+	}, 500);
+	setTimeout(() => {
+		gotoTour.style.opacity = "1";
+	}, 700);
+	setTimeout(() => {
+		gotoChat.style.opacity = "1";
+	}, 900);
+	setTimeout(() => {
+		stunned = false;
+	}, 1000);
+
+	// Close on Escape
+	document.addEventListener("keydown", (event) => {
+		if (event.key === "Escape" && !stunned && container.style.display !== "none") {
+			event.preventDefault();
+			closeMenu(menu, container, gotoPlay, gotoTour, gotoChat);
+		}
+	});
+}
+
+function closeMenu(menu, container, gotoPlay, gotoTour, gotoChat) {
+	if (!menu || !container || !gotoPlay || !gotoTour || !gotoChat)
+		return;
+
+	stunned = true;
+	menu.style.transform = "rotate(-90deg)";
+	container.style.opacity = "1";
+	gotoPlay.style.opacity = "1";
+	gotoTour.style.opacity = "1";
+	gotoChat.style.opacity = "1";
+	setTimeout(() => {
+		gotoChat.style.opacity = "0";
+		menu.style.transform = "rotate(0deg)";
+	}, 50);
+	setTimeout(() => {
+		gotoTour.style.opacity = "0";
+	}, 150);
+	setTimeout(() => {
+		gotoPlay.style.opacity = "0";
+	}, 250);
+	setTimeout(() => {
+		container.style.opacity = "0";
+	}, 350);
+	setTimeout(() => {
+		container.style.display = "none";
+		stunned = false;
+	}, 1000);
 }
 
 function overrideNavBar(title, context) {
