@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 17:32:23 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/18 22:24:28 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/18 22:28:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ class WallLines
 
 		this.points = points;
 		this.colors = colors;
-		this.divisionCount = 128;
+		this.divisionCount = divisionCount;
 
-		this.line = new Lines(scene, points, colors, 128, 5, name);
+		this.line = new Lines(scene, points, colors, divisionCount, 5, name);
 		this.scene.entities.push(this.line)
 	}
 
