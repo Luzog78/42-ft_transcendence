@@ -19,6 +19,7 @@ import { Profile } from "./pages/Profile.js";
 import { Play } from "./pages/Play.js";
 import { PlayId } from "./pages/PlayId.js";
 import { Pong } from "./pages/Pong.js";
+import { PongResult } from "./pages/PongResult.js";
 
 import { getJson } from "./utils.js";
 import { Settings } from "./pages/Settings.js";
@@ -96,6 +97,10 @@ const router = [
 	{
 		path: "/pong",
 		component: Pong,
+	},
+	{
+		path: "/result/<numbers>",
+		component: PongResult,
 	},
 ];
 

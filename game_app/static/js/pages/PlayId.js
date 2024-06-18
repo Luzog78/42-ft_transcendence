@@ -11,15 +11,16 @@ function PlayId(context, id) {
 		<div class="moving-point"></div>
 			<div class="row">
 			<div class="text-center search-text fs-1">
-				<span>S</span>
-				<span>e</span>
-				<span>a</span>
-				<span>r</span>
-				<span>c</span>
-				<span>h</span>
-				<span>i</span>
-				<span>n</span>
-				<span>g</span>
+		        <span
+		        >S</span><span
+		        >e</span><span
+		        >a</span><span
+		        >r</span><span
+		        >c</span><span
+		        >h</span><span
+		        >i</span><span
+		        >n</span><span
+		        >g</span>
 			</div>
 				<div class="row fs-3 justify-content-center">
 					<p class="col-1">1</p>

@@ -724,6 +724,184 @@ input[type=number].no-arrow {
 	}
 }
 
+/* ******************************************************************** */
+/* ------------------------------ PongResult -------------------------- */
+/* ******************************************************************** */
+
+.PongResult-container {
+	width: 70%;
+}
+
+#PongResult-content {
+	--PongResultWidth: 48px;
+	--PongResultHeight: 32px;
+}
+
+@media (min-width: 992px) {
+	#PongResult-content {
+		--PongResultWidth: 96px;
+		--PongResultHeight: 84px;
+	}
+}
+
+#PongResult-content img {
+	width: var(--PongResultWidth);
+	height: var(--PongResultHeight);
+}
+
+#PongResult-content .line {
+	height: 1px;
+	width: 20%;
+	background-color: white;
+	margin-left: 40%;
+}
+
+#PongResult-content .linear-wipe {
+	background: linear-gradient(
+			to right,
+			#7953cd 20%,
+			#00affa 30%,
+			#0190cd 70%,
+			#764ada 80%
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	text-fill-color: transparent;
+	background-size: 500% auto;
+	animation: PongResult-Shine 5s infinite;
+}
+
+#PongResult-content .pongResult-Streak img {
+	top: -15%;
+	position: absolute;
+	width: 35px;
+	height: 42px;
+}
+
+#PongResult-content .circle {
+	top: 0;
+	left: calc(50% - 50px);
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background: transparent;
+	border: 5px solid #FFA500;
+	border-top-color: transparent;
+	animation: PongResult-Flame 3s infinite alternate;
+}
+
+#pongResult-item span {
+	font-weight: 800;
+}
+
+#pongResult-item .pongResult-Rebounds {
+	animation: PongResult-Appear 2s;
+}
+
+#pongResult-item .pongResult-Streak {
+	position: relative;
+	animation: PongResult-Appear 1s;
+}
+
+#pongResult-item .pongResult-Streak span {
+	padding-top: 24px;
+}
+
+#pongResult-item .pongResult-BestStreak {
+	background: linear-gradient(
+		to right,
+		#bd372f 20%,
+		#c84a27 30%,
+		#e07215 70%,
+		#c84a27 80%
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	text-fill-color: transparent;
+	background-size: 500% auto;
+	animation: PongResult-Shine 5s infinite alternate;
+}
+
+#pongResult-item .pongResult-Ball {
+	animation: PongResult-Appear 2s;
+}
+
+#PongResult-content a {
+	color: white;
+	text-decoration: none;
+}
+
+#PongResult-content .PongResult-players {
+	gap: 15%;
+	padding-bottom: 20px;
+}
+
+.PongResult-ListPlayers::-webkit-scrollbar {
+	width: 4px;
+}
+
+.PongResult-ListPlayers::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(200,200,200,1);
+	border-radius: 20px;
+}
+
+.PongResult-ListPlayers::-webkit-scrollbar-thumb {
+	border-radius: 20px;
+	background-color: rgba(255,255,255,0.1);
+	-webkit-box-shadow: inset 0 0 6px rgba(90,90,90,0.7);
+}
+
+@keyframes PongResult-Appear {
+	0% {
+		opacity: 0%;
+	}
+	50% {
+		opacity: 0%;
+	}
+	100% {
+		opacity: 100%;
+	}
+}
+
+@keyframes PongResult-Shine {
+	0% {
+		background-position: 0% 50%;
+	}
+	100% {
+		background-position: 100% 50%;
+	}
+}
+
+@keyframes PongResult-Flame {
+	0% {
+		border: 4px solid #bd372f;
+		border-top-color: transparent;
+	}
+	20% {
+		border: 4px solid #c84a27;
+		border-top-color: transparent;
+	}
+	40% {
+		border: 4px solid #e07215;
+		border-top-color: transparent;
+	}
+	60% {
+		border: 4px solid #ec850e;
+		border-top-color: transparent;
+	}
+	80% {
+		border: 4px solid #c84a27;
+		border-top-color: transparent;
+	}
+	100% {
+		border: 4px solid #bd372f;
+		border-top-color: transparent;
+	}
+}
+
 /* ************************************************************************** */
 /* ------------------------------ Miscellanous ------------------------------ */
 /* ************************************************************************** */
