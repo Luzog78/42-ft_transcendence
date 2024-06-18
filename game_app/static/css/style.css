@@ -270,12 +270,17 @@ input[type=number].no-arrow {
 	}
 }
 
+.navbar .profile-picture {
+	z-index: 100;
+}
+
 .navbar .profile-name {
 	font-size: large;
 	text-decoration: underline #555555;
 	text-underline-offset: .17em;
 	text-decoration-thickness: .1em;
 	letter-spacing: .05em;
+	z-index: 100;
 }
 
 .navbar .profile-name:hover {

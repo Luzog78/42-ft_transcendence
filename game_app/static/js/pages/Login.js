@@ -79,7 +79,7 @@ function Login(context) {
 
 				<div class="row col-12">
 					<div class="col-12 text-center">
-						${getLang(context, "pages.login.dontHaveAccount")} &nbsp; • &nbsp; <a href="/register${window.location.search}${window.location.hash}">${getLang(context, "pages.login.labels.register")}</a>
+						${getLang(context, "pages.login.dontHaveAccount")} &nbsp; • &nbsp; <a href="/register${window.location.search}${window.location.hash}" data-link>${getLang(context, "pages.login.labels.register")}</a>
 					</div>
 				</div>
 
