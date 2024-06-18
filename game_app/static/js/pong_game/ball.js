@@ -43,7 +43,7 @@ class Ball
 
 		if (wallname.includes("wall"))
 			this.scene.entities.push(new RingBlob(this.scene, 0.2, 100, {color: 0xffffff}, position));
-		if (wallname == "player0box" || wallname == "player1box")
+		if (wallname.includes("player"))
 		{
 			let player = this.scene.get(wallname.replace("box", ""));
 			player.bump(normal);
