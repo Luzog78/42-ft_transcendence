@@ -14,7 +14,7 @@ import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 import { init_scene, animate } from "../pong_game/main.js";
 
-function Pong(context)
+async function Pong(context)
 {
 	let div = document.createElement("div");
 	div.innerHTML = NavBar("Profile", context);

@@ -14,7 +14,7 @@ import { getLang, persistError, persistSuccess, popNext, redirect } from "../scr
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 
-function Logout(context) {
+async function Logout(context) {
 	let div = document.createElement("div");
 	context.user = {
 		isAuthenticated: false,

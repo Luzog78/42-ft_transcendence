@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.urls import path, include
 from .pong_socket import PongSocket
+from .chat_socket import ChatSocket
 
 
 ws_urlpatterns = [
 	path('ws/pong', PongSocket.as_asgi()),
+	path('ws/chat', ChatSocket.as_asgi())
 ]
 
 urlpatterns = [

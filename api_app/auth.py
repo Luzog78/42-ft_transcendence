@@ -58,14 +58,15 @@ class Response:
 
 
 def register(request: HttpRequest, username: str, first_name: str,
-		last_name: str, email: str, password: str) -> Response:
+		last_name: str, email: str, password: str, **extra_fields) -> Response:
 	try:
 		user = User.objects.create_user( # type: ignore
 			username=username,
 			first_name=first_name,
 			last_name=last_name,
 			email=email,
-			password=password)
+			password=password,
+			**extra_fields)
 		user.save()
 		return Response()
 	except Exception as e:
@@ -84,7 +85,7 @@ def login(request: HttpRequest, username: str, password: str, a2f_code: str | No
 			return Response('errors.invalidCredentials')
 
 	jwt_token = jwt.generate_token(user.username)
-	return Response(token=jwt_token, user=user.username)
+	return Response(token=jwt_token, user=user, username=user.username)
 
 
 def is_authenticated(request: HttpRequest) -> Response:

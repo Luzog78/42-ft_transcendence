@@ -11,10 +11,14 @@
 /* ************************************************************************** */
 
 import { NavBar } from "../components/NavBar.js";
-import { Persistents } from "../components/Persistents.js";
-import { getLang } from "../script.js";
+import { Persistents, pushPersistents } from "../components/Persistents.js";
+import { getLang, persistError, redirect } from "../script.js";
+import { getJson } from "../utils.js";
+import { PlayId } from "./PlayId.js";
 
-function PongResult(context, id) {
+async function PongResult(context, id, data=null) {
+	if (data === null)
+		return await PlayId(context, id);
 	let div = document.createElement("div");
 	div.innerHTML = NavBar(getLang(context, "pages.playResult.title"), context);
 	div.innerHTML += Persistents(context);
@@ -72,59 +76,6 @@ function PongResult(context, id) {
 
 					<div class="PongResult-ListPlayers px-5 d-flex justify-content-center">
 						<div class="PongResult-players flex-nowrap text-center d-flex">
-							<div class="PongResult-player row justify-content-center">
-								<img id="profile-picture" src="/static/img/user.svg" alt="No profile picture" class="">
-								<a href="/profile/username" class="fs-4 fw-semibold">username</a>
-								<span class="fs-5">9 pts</span>
-							</div>
-
-							<div class="PongResult-player row justify-content-center">
-								<img id="profile-picture" src="/static/img/user.svg" alt="No profile picture" class="">
-								<a href="/profile/username" class="fs-4 fw-semibold">username</a>
-								<span class="fs-5">8 pts</span>
-							</div>
-
-							<div class="PongResult-player row justify-content-center">
-								<img id="profile-picture" src="/static/img/user.svg" alt="No profile picture" class="">
-								<a href="/profile/username" class="fs-4 fw-semibold">username</a>
-								<span class="fs-5">7 pts</span>
-							</div>
-
-							<div class="PongResult-player row justify-content-center">
-								<img id="profile-picture" src="/static/img/user.svg" alt="No profile picture" class="">
-								<a href="/profile/username" class="fs-4 fw-semibold">username</a>
-								<span class="fs-5">6 pts</span>
-							</div>
-
-							<div class="PongResult-player row justify-content-center">
-								<img id="profile-picture" src="/static/img/user.svg" alt="No profile picture" class="">
-								<a href="/profile/username" class="fs-4 fw-semibold">username</a>
-								<span class="fs-5">5 pts</span>
-							</div>
-
-							<div class="PongResult-player row justify-content-center">
-								<img id="profile-picture" src="/static/img/user.svg" alt="No profile picture" class="">
-								<a href="/profile/username" class="fs-4 fw-semibold">username</a>
-								<span class="fs-5">4 pts</span>
-							</div>
-
-							<div class="PongResult-player row justify-content-center">
-								<img id="profile-picture" src="/static/img/user.svg" alt="No profile picture" class="">
-								<a href="/profile/username" class="fs-4 fw-semibold">username</a>
-								<span class="fs-5">3 pts</span>
-							</div>
-
-							<div class="PongResult-player row justify-content-center">
-								<img id="profile-picture" src="/static/img/user.svg" alt="No profile picture" class="">
-								<a href="/profile/username" class="fs-4 fw-semibold">username</a>
-								<span class="fs-5">2 pts</span>
-							</div>
-
-							<div class="PongResult-player row justify-content-center">
-								<img id="profile-picture" src="/static/img/user.svg" alt="No profile picture" class="">
-								<a href="/profile/username" class="fs-4 fw-semibold">username</a>
-								<span class="fs-5">1 pts</span>
-							</div>
 						</div>
 					</div>
 
@@ -145,6 +96,33 @@ function PongResult(context, id) {
 		let gameUid = document.querySelector("#game-uid");
 		let pongResultPlayers = document.querySelector(".PongResult-players");
 
+		if (data.uid)
+			gameUid.innerText = `#${data.uid}`;
+		if (data.winner) {
+			if (data.winner.user) {
+				if (data.winner.user.picture)
+					bestPicture.src = data.winner.user.picture;
+				bestUsername.href = `/profile/${data.winner.user.username}`;
+				bestUsername.innerText = data.winner.user.username;
+			}
+			bestScore.innerText = data.winner.score + " pts";
+		}
+		if (data.bestStreak) {
+			bestStreak.innerText = data.bestStreak.score;
+			if (data.bestStreak.user)
+				bestStreakBy.innerText = data.bestStreak.user.username;
+		}
+		if (data.rebounces) {
+			rebounds.innerText = data.rebounces.rebounces;
+			if (data.rebounces.user)
+				reboundsBy.innerText = data.rebounces.user.username;
+		}
+		if (data.ultimate) {
+			ultimateSpeed.innerText = Math.round(data.ultimate.ultimate * 100) / 100;
+			if (data.ultimate.user)
+				ultimateSpeedBy.innerText = data.ultimate.user.username;
+		}
+
 		if (pongResultPlayers) {
 			async function scrollH(div, amount) {
 				setTimeout(() => {
@@ -159,8 +137,39 @@ function PongResult(context, id) {
 				e.preventDefault();
 				scrollH(pongResultPlayers, e.deltaY * .4);
 			});
-		}
 
+			getJson(context, `/api/stats/g/${id}`).then(data => {
+				if (!data.ok) {
+					console.log("[❌] Could not get stats for game " + id);
+					persistError(context, getLang(context, data.error));
+					pushPersistents(context);
+					return;
+				}
+				if (!data.stats || data.stats.length === 0) {
+					let div = document.createElement("div");
+					div.classList.add("PongResult-player", "row", "justify-content-center");
+					div.innerText = getLang(context, "pages.playResult.noPlayers");
+					pongResultPlayers.appendChild(div);
+				} else
+					for (let player of data.stats) {
+						if (!player)
+							continue;
+						let pic = player.user ? player.user.picture : null;
+						let usr = player.user ? player.user.username : "Unknown";
+						let div = document.createElement("div");
+						div.classList.add("PongResult-player", "row", "justify-content-center");
+						div.innerHTML = /*html*/`
+							<img src="${pic || "/static/img/user.svg"}" alt="${getLang(context, "pages.playResult.profilePictureAlt")}" class="row">
+							<a class="fs-4 fw-semibold row">${usr}</a>
+							<span class="fs-5 row" style="font-size: 1em !important;">${player.score} pts</span>
+						`;
+						div.style.cursor = "pointer";
+						if (usr !== "Unknown")
+							div.onclick = () => redirect(`/profile/${usr}`);
+						pongResultPlayers.appendChild(div);
+					}
+			});
+		}
 	}, 200);
 	return div.outerHTML;
 }
