@@ -6,14 +6,30 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/18 00:00:07 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/19 06:38:17 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { SUPPORTED_LANGS, getLang, loadLang, persist, persistCopy, persistError, persistSuccess, redirect, refresh } from "../script.js";
-import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, clearFeedbacks, getJson, postJson } from "../utils.js";
+import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, clearFeedbacks, postJson } from "../utils.js";
+
+
+function setUserAttributes(context, data) {
+	return postJson(context, `/api/user/${context.user.username}/set`, data)
+		.then(data => {
+			if (data.success)
+				for (let key in data.success)
+					persistSuccess(context, getLang(context, data.success[key]));
+			if (data.error)
+				for (let key in data.error)
+					persistError(context, getLang(context, data.error[key]));
+			if (!data.ok)
+				persistError(context, "[FATAL] " + getLang(context, data.error));
+			return data;
+		});
+}
 
 
 function Settings(context) {
@@ -238,16 +254,13 @@ function Settings(context) {
 				}
 				if (i >= SUPPORTED_LANGS.length)
 					i = 0;
-				postJson(`/api/user/${context.user.username}/set`, {
-					lang: SUPPORTED_LANGS[i]
-				}).then(data => {
-					if (!data.ok) {
-						persistError(context, getLang(context, data.error) + " (/api/settings/lang)");
-						refresh();
-						return;
-					}
-					loadLang(context, SUPPORTED_LANGS[i]).then(() => refresh());
-				});
+				setUserAttributes(context, { lang: SUPPORTED_LANGS[i] })
+					.then(data => {
+						if (data.ok)
+							loadLang(context, SUPPORTED_LANGS[i]).then(() => refresh());
+						else
+							refresh();
+					});
 			});
 		}
 
@@ -296,14 +309,10 @@ function Settings(context) {
 			editLastName.addEventListener("input", checkActivation);
 			personalForm.addEventListener("submit", (e) => {
 				e.preventDefault();
-				postJson(`/api/user/${context.user.username}/set`, {
+				setUserAttributes(context, {
 					firstName: editFirstName.value,
 					lastName: editLastName.value,
-				}).then(data => {
-					if (!data.ok)
-						persistError(context, getLang(context, data.error));
-					refresh();
-				});
+				}).then(data => refresh());
 			});
 		}
 
@@ -312,7 +321,7 @@ function Settings(context) {
 
 			editEmail.addEventListener("input", () => {
 				clearFeedbacks(emailForm);
-				if (!checkEmail("#editEmail"))
+				if (!checkEmail(context, "#editEmail"))
 					return;
 				let button = emailForm.querySelector("button[type=submit]");
 				if (editEmail.value !== context.user.email) {
@@ -327,13 +336,9 @@ function Settings(context) {
 			});
 			emailForm.addEventListener("submit", (e) => {
 				e.preventDefault();
-				postJson(`/api/user/${context.user.username}/set`, {
+				setUserAttributes(context, {
 					email: editEmail.value
-				}).then(data => {
-					if (!data.ok)
-						persistError(context, getLang(context, data.error));
-					refresh();
-				});
+				}).then(data => refresh());
 			});
 		}
 
@@ -359,13 +364,9 @@ function Settings(context) {
 			editNewPassConfirm.addEventListener("input", checkActivation);
 			securityForm.addEventListener("submit", (e) => {
 				e.preventDefault();
-				postJson(`/api/user/${context.user.username}/set`, {
+				setUserAttributes(context, {
 					password: editNewPass.value
-				}).then(data => {
-					if (!data.ok)
-						persistError(context, getLang(context, data.error));
-					refresh();
-				});
+				}).then(data => refresh());
 			});
 		}
 
@@ -376,15 +377,8 @@ function Settings(context) {
 				editDisabled.classList.remove("btn-danger");
 				editDisabled.classList.add("btn-outline-danger");
 
-				editDisabled.addEventListener("click", () => {
-					postJson(`/api/user/${context.user.username}/set`, {
-						a2f: null
-					}).then(data => {
-						if (!data.ok)
-							persistError(context, getLang(context, data.error));
-						refresh();
-					});
-				});
+				editDisabled.addEventListener("click", () =>
+					setUserAttributes(context, { a2f: null }).then(data => refresh()));
 			} else {
 				editDisabled.classList.remove("btn-outline-danger");
 				editDisabled.classList.add("btn-danger");
@@ -414,13 +408,9 @@ function Settings(context) {
 			});
 			a2fForm.addEventListener("submit", (e) => {
 				e.preventDefault();
-				postJson(`/api/user/${context.user.username}/set`, {
+				setUserAttributes(context, {
 					a2f: editToken.value
-				}).then(data => {
-					if (!data.ok)
-						persistError(context, getLang(context, data.error));
-					refresh();
-				});
+				}).then(data => refresh());
 			});
 		}
 
@@ -436,15 +426,17 @@ function Settings(context) {
 					btnDeleteText.innerText = getLang(context, "pages.settings.labels.deleteFinal");
 					deleteLevel++;
 				} else {
-					postJson(`/api/user/${context.user.username}/del`).then(data => {
-						if (!data.ok)
+					postJson(context, `/api/user/${context.user.username}/del`).then(data => {
+						if (!data.ok) {
 							persistError(context, getLang(context, data.error));
-						refresh();
+							refresh();
+						} else
+							redirect("/logout?next=/");
 					});
 				}
 			});
 		}
-	}, 250);
+	}, 200);
 	return div.innerHTML;
 }
 

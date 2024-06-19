@@ -59,12 +59,12 @@ function Play(context) {
 			redirect(`/play/${document.querySelector("#uid").value}`);
 		};
 		document.querySelector("#play-button").onclick = () => {
-			getJson("/api/game/rand").then(data => {
+			getJson(context, "/api/game/rand").then(data => {
 				if (data.ok) {
 					if (data.uid)
 						redirect(`/play/${data.uid}`);
 					else
-						getJson("/api/game/new").then(data => {
+						getJson(context, "/api/game/new").then(data => {
 							if (data.ok)
 								redirect(`/play/${data.uid}`);
 							else {
@@ -79,7 +79,7 @@ function Play(context) {
 			});
 		};
 		document.querySelector("#create-button").onclick = () => {
-			getJson("/api/game/new").then(data => {
+			getJson(context, "/api/game/new").then(data => {
 				if (data.ok)
 					redirect(`/play/${data.uid}`);
 				else {
@@ -88,7 +88,7 @@ function Play(context) {
 				}
 			});
 		};
-	}, 250);
+	}, 200);
 	return div.innerHTML;
 }
 

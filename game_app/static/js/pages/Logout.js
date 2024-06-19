@@ -17,31 +17,33 @@ import { Persistents, pushPersistents } from "../components/Persistents.js";
 
 function Logout(context) {
 	let div = document.createElement("div");
+	context.user = {
+		isAuthenticated: false,
+		token: null,
+		username: null,
+		createdAt: null,
+		email: null,
+		firstName: null,
+		lastName: null,
+		picture: null,
+		lang: null,
+		a2f: null,
+		isAdmin: null,
+		lastLogin: null,
+	};
+	try {
+		localStorage.removeItem("ft_token");
+		persistSuccess(context, getLang(context, "successes.loggedOut"));
+		if (context.next) {
+			redirect(popNext(context));
+			return;
+		}
+	} catch (e) {
+		console.log("[❌] Could not remove token from localStorage");
+		persistError(context, getLang(context, "errors.couldNotLogout"));
+	}
 	div.innerHTML = NavBar(getLang(context, "pages.logout.title"), context);
 	div.innerHTML += Persistents(context);
-	getJson("/api/logout").then(data => {
-		if (data.ok) {
-			context.user = {
-				isAuthenticated: false,
-				username: null,
-				createdAt: null,
-				email: null,
-				firstName: null,
-				lastName: null,
-				picture: null,
-				lang: null,
-				a2f: null,
-				isAdmin: null,
-				lastLogin: null,
-			};
-			persistSuccess(context, getLang(context, data.success));
-			if (context.next)
-				redirect(popNext(context));
-		} else {
-			persistError(context, getLang(context, data.error));
-			pushPersistents(context);
-		}
-	});
 	return div.innerHTML;
 }
 

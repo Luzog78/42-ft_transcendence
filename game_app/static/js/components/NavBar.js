@@ -61,7 +61,7 @@ function NavBar(title, context, fetchProfile = true) {
 		`;
 	}
 	if (fetchProfile)
-		getJson("/api/user").then(data => {
+		getJson(context, "/api/user").then(data => {
 			if (data.ok) {
 				context.user.username = data.username;
 				context.user.createdAt = data.createdAt;
@@ -115,7 +115,7 @@ function NavBar(title, context, fetchProfile = true) {
 			closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
 			setTimeout(() => redirect("/chat"), 900);
 		};
-	}, 250);
+	}, 200);
 	return div.innerHTML;
 }
 

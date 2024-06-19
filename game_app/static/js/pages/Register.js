@@ -92,7 +92,7 @@ function Register(context) {
 				| !checkPassword(context, "#password")
 				| !checkPasswords(context, "#password", "#confirmation"))
 				return;
-			postJson("/api/register", {
+			postJson(context, "/api/register", {
 				username: document.querySelector("#username").value,
 				firstName: document.querySelector("#first-name").value,
 				lastName: document.querySelector("#last-name").value,
@@ -101,14 +101,20 @@ function Register(context) {
 			}).then(data => {
 				if (data.ok) {
 					persistSuccess(context, getLang(context, data.success));
-					redirect(context.next ? popNext(context) : "/");
+					try {
+						localStorage.setItem("ft_token", data.token);
+						context.user.token = data.token;
+					} catch (e) {
+						console.log("[❌] Token could not be saved in localStorage.");
+					}
+					redirect("/login?next=" + context.next);
 				} else {
 					persistError(context, getLang(context, data.error));
 					pushPersistents(context);
 				}
 			});
 		};
-	}, 250);
+	}, 200);
 	return div.innerHTML;
 }
 

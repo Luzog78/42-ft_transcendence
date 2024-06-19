@@ -1,11 +1,10 @@
 from django.urls import path, re_path
 from .views import view_err404, view_test, \
-					view_root, view_login, view_logout, view_register, \
+					view_root, view_login, view_register, \
 					view_user, view_user_set, view_user_del, \
 					view_games, view_game_list, view_game_user, view_game_uid, \
 					view_game_new, view_game_rand, \
-					view_stats_id, view_stats_user, view_stats_game, \
-					MyTokenObtainPairView
+					view_stats_id, view_stats_user, view_stats_game
 
 
 urlpatterns = [ re_path('.*', view_err404) ]
@@ -15,7 +14,6 @@ def r(v, p): urlpatterns.insert(0, path(p, v, name='api-' + v.__name__))
 
 r(view_root,		'')
 r(view_login,		'login')
-r(view_logout,		'logout')
 r(view_register,	'register')
 r(view_user,		'user')
 r(view_user,		'user/<str:username>')
@@ -31,4 +29,3 @@ r(view_stats_id,	'stats/<int:id>')
 r(view_stats_user,	'stats/u/<str:username>')
 r(view_stats_game,	'stats/g/<str:uid>')
 r(view_test,		'<int:whatever>')
-urlpatterns.insert(0, path('token/', MyTokenObtainPairView.as_view(), name="token_obtain_pair"))

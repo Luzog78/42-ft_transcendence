@@ -97,7 +97,7 @@
 				"email": "doc@42.fr",
 				"password": "Enter a strong one...",
 				"confirmPassword": "Confirmation",
-				"token": "ABCDEFGHIJKLMNOPQRSTUV1234567890"
+				"token": "eyI0MiI6IllvdSBmb3VuZCBtZSA6cCAoQGx1em9nNzgpIiwiYWxnIjoiSFMyNTYifQ"
 			}
 		},
 		"play": {
@@ -127,10 +127,13 @@
 		"invalidRequest": "Invalid request",
 		"notLoggedIn": "You are not logged in !",
 		"mustBeLoggedIn": "You must be logged in to access this page !",
+		"couldNotLogout": "Could not log out !",
 		"invalidCredentials": "Invalid credentials !",
-		"emailAlreadyUsed": "This email is already used !",
 		"usernameAlreadyUsed": "This username is already used !",
+		"emailAlreadyUsed": "This email is already used !",
 		"invalidUsername": "Invalid username !",
+		"invalidFirstName": "Invalid first name !",
+		"invalidLastName": "Invalid last name !",
 		"invalidEmail": "Invalid email !",
 		"invalidPassword": "Invalid password !",
 		"invalidUID": "Invalid UID !",
@@ -143,11 +146,20 @@
 		"lastNameTooLong": "Last name must be at most 24 characters long !",
 		"passwordTooShort": "Password must be at least 4 characters long !",
 		"passwordMismatch": "Passwords do not match !",
+		"userNotFound": "User not found !",
+		"invalidLang": "Invalid language !",
 		"a2fBadLength": "A2F Code must be 6 numbers long !"
 	},
 	"successes": {
 		"registered": "You have been successfully registered !",
 		"loggedIn": "You have been successfully logged in !",
-		"loggedOut": "You have been successfully logged out !"
+		"loggedOut": "You have been successfully logged out !",
+		"firstNameSet": "First name successfully set !",
+		"lastNameSet": "Last name successfully set !",
+		"emailSet": "Email successfully set !",
+		"passwordSet": "Password successfully set !",
+		"langSet": "Language successfully set !",
+		"a2fEnabled": "Two-factor authentication successfully enabled !",
+		"a2fDisabled": "Two-factor authentication successfully disabled !"
 	}
 }

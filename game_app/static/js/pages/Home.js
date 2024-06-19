@@ -11,12 +11,11 @@
 /* ************************************************************************** */
 
 import { getJson } from "../utils.js";
-import { getLang, persist, persistCopy, refresh } from "../script.js";
+import { getLang } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 
 function Home(context) {
-	var persistentBackup = persistCopy(context);
 	let div = document.createElement("div");
 	div.innerHTML = NavBar(getLang(context, "pages.home.title"), context);
 	div.innerHTML += Persistents(context);
@@ -25,27 +24,11 @@ function Home(context) {
 		<div class="container" id="home-content">${getLang(context, "loading")}</div>
 		<button type="button" class="btn btn-primary" id="1234">Click</button>
 	`;
-	getJson("/api/user").then(data => {
+	getJson(context, "/api/user").then(data => {
 		let content = document.getElementById("home-content");
 		if (content === null)
 			return;
 		if (data.ok) {
-			if (!context.user.isAuthenticated) {
-				context.user.isAuthenticated = true;
-				context.user.username = data.username;
-				context.user.createdAt = data.createdAt;
-				context.user.email = data.email;
-				context.user.firstName = data.firstName;
-				context.user.lastName = data.lastName;
-				context.user.picture = data.picture;
-				context.user.lang = data.lang;
-				context.user.a2f = data.a2f;
-				context.user.isAdmin = data.isAdmin;
-				context.user.lastLogin = data.lastLogin;
-				persist(context, persistentBackup);
-				refresh();
-				return;
-			}
 			content.innerHTML = /*html*/`
 				<h3>
 					${getLang(context, "pages.home.h1")}
@@ -62,7 +45,6 @@ function Home(context) {
 				<p class="home-error">${getLang(context, "loading")}</p>
 			`;
 			content.querySelector(".home-error").innerText = getLang(context, data.error);
-			context.user.isAuthenticated = false;
 		}
 	});
 	return div.innerHTML;

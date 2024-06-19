@@ -121,7 +121,7 @@ function Profile(context, username) {
 		if (profilePicture && context.user.picture)
 			profilePicture.src = context.user.picture;
 
-		getJson("/api/game/u/" + username).then(data => {
+		getJson(context, "/api/game/u/" + username).then(data => {
 			if (!data.ok) {
 				persistError(context, getLang(context, data.error) + " (/api/game/u/" + username + ")");
 				pushPersistents(context);
@@ -139,7 +139,7 @@ function Profile(context, username) {
 				navLabelTotal.innerText = totalPage;
 			tablePage(context, uids, page, totalPage);
 		});
-	}, 250);
+	}, 200);
 	return div.innerHTML;
 }
 
@@ -151,7 +151,7 @@ function tablePage(context, uids, page, totalPage) {
 
 	let uidsPage = uids.slice((page - 1) * 8, page * 8);
 
-	postJson("/api/game/l", { uids: uidsPage }).then(data => {
+	postJson(context, "/api/game/l", { uids: uidsPage }).then(data => {
 		if (!data.ok) {
 			persistError(context, getLang(context, data.error) + " (/api/game/l)");
 			pushPersistents(context);

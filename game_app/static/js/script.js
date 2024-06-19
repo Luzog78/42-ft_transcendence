@@ -31,6 +31,7 @@ var global_context = {
 	lang: {},
 	user: {
 		isAuthenticated: false,
+		token: null,
 		username: null,
 		createdAt: null,
 		email: null,
@@ -205,7 +206,7 @@ const persist = (context, copy) => {
 }
 
 const loadLang = async (context, lang) => {
-	context.lang = await getJson(`/static/lang/${lang}.json`);
+	context.lang = await getJson(context, `/static/lang/${lang}.json`);
 	if (!context.lang.locale)
 		console.error(`[❌] Failed to fetch language file: ${lang}.json`);
 	else
@@ -247,6 +248,7 @@ window.addEventListener("load", async () => {
 		loadPage(window.location.pathname);
 	});
 
+	global_context.user.token = localStorage.getItem("ft_token");
 	await loadLang(global_context, DEFAULT_LANG);
 	loadPage(window.location.pathname);
 });

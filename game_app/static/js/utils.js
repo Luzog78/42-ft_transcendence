@@ -12,11 +12,12 @@
 
 import { getLang } from "./script.js";
 
-function postJson(url, data, jsonify = true) {
+function postJson(context, url, data, jsonify = true) {
 	let promise = fetch(url, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json; charset=utf-8",
+			"Authorization": "Bearer " + context.user.token,
 		},
 		body: JSON.stringify(data),
 	});
@@ -25,8 +26,13 @@ function postJson(url, data, jsonify = true) {
 	return promise;
 }
 
-function getJson(url) {
-	return fetch(url).then(res => res.json());
+function getJson(context, url) {
+	return fetch(url, {
+		method: "GET",
+		headers: {
+			"Authorization": "Bearer " + context.user.token,
+		},
+	}).then(res => res.json());
 }
 
 function validFeedback(child, message) {
@@ -132,7 +138,7 @@ function checkEmail(context, emailId) {
 	let email = document.querySelector(emailId);
 	if (email === null)
 		return false;
-	if (!email.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
+	if (!email.value.match(/^([a-zA-Z0-9]+(\w*[a-zA-Z0-9])?([-.]([a-zA-Z0-9]\w*)?[a-zA-Z0-9])*)(@\w+)(\.\w+(\.\w+)?[a-zA-Z])$/)) {
 		invalidFeedback(email, getLang(context, "errors.invalidEmail"));
 		return false;
 	}

@@ -43,15 +43,6 @@ function createA2fInput(context) {
 }
 
 function Login(context) {
-	if (context.user.isAuthenticated) {
-		if (context.next)
-			redirect(popNext(context));
-		else if (window.history.length > 1)
-			window.history.back();
-		else
-			redirect("/");
-		return;
-	}
 	let div = document.createElement("div");
 	div.innerHTML = NavBar(getLang(context, "pages.login.title"), context);
 	div.innerHTML += Persistents(context);
@@ -91,7 +82,7 @@ function Login(context) {
 			</form>
 		</div>
 	`;
-	setTimeout(() => {
+	const foo = () => {
 		let form = document.querySelector("#login-form");
 		if (form === null)
 			return;
@@ -109,14 +100,20 @@ function Login(context) {
 				pushPersistents(context);
 				return ;
 			}
-			postJson("/api/login", {
+			postJson(context, "/api/login", {
 				username: document.querySelector("#username").value,
 				password: document.querySelector("#password").value,
 				a2f_code: a2f_input
 			}).then(data => {
 				if (data.ok) {
 					persistSuccess(context, getLang(context, data.success));
+					try {
+						localStorage.setItem("ft_token", data.token);
+					} catch (e) {
+						console.log("[❌] Token could not be saved in localStorage.");
+					}
 					context.user.isAuthenticated = true;
+					context.user.token = data.token;
 					context.user.username = data.username;
 					context.user.createdAt = data.createdAt;
 					context.user.email = data.email;
@@ -143,7 +140,24 @@ function Login(context) {
 				}
 			});
 		};
-	}, 250);
+	};
+	if (context.user.token && !context.user.isAuthenticated)
+		setTimeout(() => {
+			if (context.user.isAuthenticated) {
+				let next;
+				while (context.next && (next = popNext(context)) == window.location.pathname);
+				if (context.next)
+						redirect(next);
+				if (window.history.length > 1)
+					window.history.back();
+				else
+					redirect("/");
+				return;
+			}
+			foo();
+		}, 500);
+	else
+		setTimeout(foo, 200);
 	return div.innerHTML;
 }
 

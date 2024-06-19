@@ -1,4 +1,3 @@
-import json
 import random
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -63,6 +62,14 @@ class User(AbstractBaseUser):
 
 	def has_module_perms(self, app_label):
 		return self.is_admin
+	
+	@staticmethod
+	def get(username=None, **kwargs):
+		try:
+			kw = {'username': username, **kwargs} if username is not None else kwargs
+			return User.objects.get(**kw)
+		except User.DoesNotExist:
+			return None
 
 	def json(self, show_email=False):
 		return {
