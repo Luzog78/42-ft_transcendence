@@ -111,6 +111,14 @@
 			"title": "Play",
 			"waiting": "Waiting for opponents..."
 		},
+		"playResult": {
+			"title": "Result",
+			"profilePictureAlt": "Profile picture",
+			"bestStreak": "Best streak",
+			"rebounds": "Rebounds",
+			"ultimateSpeed": "Ultimate speed",
+			"by": "by"
+		},
 		"profile": {
 			"title": "Profile",
 			"ratio": "Ratio",

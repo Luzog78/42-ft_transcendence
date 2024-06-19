@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/11 22:55:37 by ysabik            #+#    #+#              #
-#    Updated: 2024/06/19 06:24:06 by ysabik           ###   ########.fr        #
+#    Updated: 2024/06/19 09:37:34 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,12 +28,12 @@ DIM				=	\033[2m
 
 
 all:
-	@$(MAKE) up
+	@$(MAKE) --no-print-directory up
 	@sleep 2
 	@echo
-	@$(MAKE) migrate
+	@$(MAKE) --no-print-directory migrate
 	@echo
-	@$(MAKE) run
+	@$(MAKE) --no-print-directory run
 
 run:
 	@echo "$(RED)$$> $(MAGENTA)python3 $(MANAGE_FILE) runserver$(RESET)"
