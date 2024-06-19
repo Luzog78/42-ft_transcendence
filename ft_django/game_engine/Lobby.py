@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 import random
+import time
 
 from game_engine.Ball import Ball
 from game_engine.Vector import Vector

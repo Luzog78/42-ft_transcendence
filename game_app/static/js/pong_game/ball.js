@@ -29,7 +29,7 @@ class Ball
 		this.trails = []
 		this.trailsLength = 50;
 
-		this.groundTrailLength = 20;
+		this.groundTrailLength = 30;
 
 		this.radius = radius;
 		this.sphere = this.scene.addSphere(this.radius, options, this.name);
@@ -96,12 +96,12 @@ class Ball
 			this.trails.push(trail);
 		}
 
-		if (this.groundTrailLength > 0 && Date.now() % 20 == 0)
+		if (this.groundTrailLength > 0 && Date.now() % 10 == 0)
 		{
 			this.groundTrailLength--;
 
 			let randomPosition = this.sphere.position.clone();
-			let positionOffset = new THREE.Vector3(Math.random() * 0.2 - 0.1, 0, Math.random() * 0.2 - 0.1);
+			let positionOffset = new THREE.Vector3(Math.random() * 0.1 - 0.05, 0, Math.random() * 0.1 - 0.05);
 			randomPosition.add(positionOffset);
 
 			let direction = new THREE.Vector3(0, 0, 0);
@@ -109,7 +109,7 @@ class Ball
 
 			let accDec = 0.99
 
-			let radius = Math.random() * 0.01 + 0.005;
+			let radius = Math.random() * 0.005 + 0.002;
 			let color = new THREE.Color(0xffffff);
 			color.offsetHSL(0, 0, Math.random() * 0.2 - 0.1);
 

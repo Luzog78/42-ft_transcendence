@@ -20,6 +20,8 @@ class Player
 		this.name = this.scene.getName(name);
 		this.options = options;
 
+		this.angle = 0;
+
 		this.keyboard = {};
 		this.player = null;
 
@@ -53,9 +55,15 @@ class Player
 	keyPressed()
 	{
 		if (this.keyboard["w"] == true)
-			this.player.position.x -= 1.2 * this.scene.dt;
+		{
+			this.player.position.x -= Math.cos(this.angle) * 1.2 * this.scene.dt;
+			this.player.position.z -= Math.sin(this.angle) * 1.2 * this.scene.dt;
+		}
 		if (this.keyboard["s"] == true)
-			this.player.position.x += 1.2 * this.scene.dt;
+		{
+			this.player.position.x += Math.cos(this.angle) * 1.2 * this.scene.dt;
+			this.player.position.z += Math.sin(this.angle) * 1.2 * this.scene.dt;
+		}
 	}
 
 	bump(normal)

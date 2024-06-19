@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/19 09:31:22 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/19 18:54:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ import * as Timer from 'timer';
 
 import { Ball } from "./ball.js"
 import { Server } from "./Server.js"
-import { Player } from "./player.js"
 import { ScreenShake } from "./screenShake.js"
+import { initMap, initCamera } from "./map.js"
 
 class Scene
 {
@@ -37,7 +37,9 @@ class Scene
 
 		this.elements = {};
 		this.entities = []
+
 		this.ball = new Ball(this, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball")
+		this.entities.push(this.ball);
 
 		this.timer = new Timer.Timer();
 		this.dt = 0;
@@ -53,26 +55,21 @@ class Scene
 			0.4, 1.0, 0.5);
 		this.composer.addPass(bloomPass);
 	}
-
+	
 	init()
 	{
-		this.entities.push(new Player(this, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, "player0"));
-		this.entities.push(new Player(this, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, "player1"));
-
-		this.get("player0").player.position.set(0,0.15,4.075);
-		this.get("player1").player.position.set(0,0.15,-4.075);
-
-		this.entities.push(this.ball)
-		this.get("ball").position.set(0,0.25,0);
-
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		document.body.appendChild(this.renderer.domElement);
+
+		initMap(this);
 	}
 
 	initConnection()
 	{
+		initCamera(this);
+
 		let my_player = this.get("player" + this.server.client_id);
 		window.addEventListener("keydown", my_player.keydown_event_func);
 		window.addEventListener("keyup", my_player.keyup_event_func);

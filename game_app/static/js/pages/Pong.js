@@ -33,7 +33,7 @@ function Pong(context)
 	setTimeout(() => {
 		init_scene();
 		animate();
-	}, 200);
+	}, 0);
 
 	return div.innerHTML;
 }
