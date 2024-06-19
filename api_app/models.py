@@ -176,3 +176,46 @@ class Stats(models.Model):
 			'time': self.time,
 			'won': self.won,
 		}
+
+class PrivateChat(models.Model):
+	id			= models.AutoField(primary_key=True)
+	send_at		= models.DateTimeField(auto_now=True)
+	author		= models.ForeignKey(User, related_name='+', on_delete=models.SET_NULL, null=True)
+	target		= models.ForeignKey(User, related_name='+', on_delete=models.SET_NULL, null=True)
+	content		= models.CharField(max_length=2048)
+
+	def __str__(self):
+		return self.id
+
+	def json(self, json_users=True):
+		author = (self.author.json() if json_users else {'username': self.author.username}) if self.author is not None else None
+		target = (self.target.json() if json_users else {'username': self.target.username}) if self.target is not None else None
+		return {
+			'id': self.id,
+			'send_at': self.send_at,
+			'author': author,
+			'target': target,
+			'content': self.content
+		}
+
+class GameChat(models.Model):
+	id			= models.AutoField(primary_key=True)
+	send_at		= models.DateTimeField(auto_now=True)
+	author		= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+	game		= models.ForeignKey(Game, on_delete=models.CASCADE)
+	content		= models.CharField(max_length=2048)
+
+	def __str__(self):
+		return self.id
+
+	def json(self, json_user=True, json_game=True):
+		author = (self.author.json() if json_users else {'username': self.author.username}) if self.author is not None else None
+		game = (self.game.json() if json_game else {'uid': str(self.game)}) if self.game is not None else None
+		
+		return {
+			'id': self.id,
+			'send_at': self.send_at,
+			'author': author,
+			'game': target,
+			'content': self.content
+		}
