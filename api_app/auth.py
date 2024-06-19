@@ -34,12 +34,12 @@ class Response:
 
 	def __or__(self, other):
 		return bool(self.ok) or bool(other)
-	
+
 	def __getitem__(self, key):
 		if key not in self.__dict__['kwargs']:
 			return None
 		return self.__dict__['kwargs'][key]
-	
+
 	def __setitem__(self, key, value):
 		self.__dict__['kwargs'][key] = value
 
@@ -49,7 +49,7 @@ class Response:
 		if key in self.__dict__['kwargs']:
 			return self.kwargs[key]
 		return None
-	
+
 	def __setattr__(self, key, value):
 		if key in self.__dict__:
 			self.__dict__[key] = value

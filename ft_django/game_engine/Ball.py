@@ -99,7 +99,7 @@ class Ball():
 		if (player_up or player_down):
 			self.vel.z *= 1 if normal["y"] < 0 else -1
 			self.acc.z *= 1 if normal["y"] < 0 else -1
-			
+
 
 	async def checkCollision(self):
 		for wallname in self.lobby.walls:

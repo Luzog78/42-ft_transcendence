@@ -148,7 +148,8 @@
 		"passwordMismatch": "Passwords do not match !",
 		"userNotFound": "User not found !",
 		"invalidLang": "Invalid language !",
-		"a2fBadLength": "A2F Code must be 6 numbers long !"
+		"a2fBadLength": "A2F Code must be 6 numbers long !",
+		"missingA2F": "A2F Code is missing !"
 	},
 	"successes": {
 		"registered": "You have been successfully registered !",

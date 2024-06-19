@@ -22,7 +22,7 @@ class Particle
 		this.basePos = pos.clone();
 		this.baseVel = vel.clone();
 		this.baseAcc = acc.clone();
-		
+
 		this.positionOffset = new THREE.Vector3(0, 0, 0);
 
 		this.pos = pos;
@@ -30,7 +30,7 @@ class Particle
 		this.acc = acc;
 
 		this.accDec = accDec;
-		
+
 		this.lifetime = lifetime;
 		this.radius = radius;
 		this.options = options;
@@ -46,7 +46,7 @@ class Particle
 	{
 		particle.mesh.position.add(particle.vel.clone().multiplyScalar(particle.scene.dt));
 		particle.vel.add(particle.acc.clone().multiplyScalar(particle.scene.dt));
-		
+
 		let accelerationFactor = Math.pow(10, Math.log10(particle.accDec) / 0.006);
 		particle.acc.multiplyScalar(Math.pow(accelerationFactor, particle.scene.dt));
 	}

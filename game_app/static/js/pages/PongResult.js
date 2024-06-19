@@ -40,14 +40,14 @@ function PongResult(context, id) {
                         </div>
                     </div>
                 </div>
-                <div class="PongResult-ListPlayers overflow-auto px-5 d-flex justify-content-center">   
+                <div class="PongResult-ListPlayers overflow-auto px-5 d-flex justify-content-center">
                     <div class="PongResult-players flex-nowrap text-center d-flex">
                         <div class="PongResult-player row justify-content-center">
                             <img id="profile-picture" src="/static/img/user.svg" alt="No profile picture" class="">
                             <a href="/profile/username" class="fs-4 fw-semibold">username</a>
                             <span class="fs-5">9 pts</span>
                         </div>
-                        
+
                         <div class="PongResult-player row justify-content-center">
                             <img id="profile-picture" src="/static/img/user.svg" alt="No profile picture" class="">
                             <a href="/profile/username" class="fs-4 fw-semibold">username</a>

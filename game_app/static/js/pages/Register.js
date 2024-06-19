@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, checkUsername, clearFeedbacks, postJson } from "../utils.js";
+import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, checkUsername, postJson } from "../utils.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
@@ -50,10 +50,10 @@ function Register(context) {
 
 				<div class="row col-12">
 					<div class="col-12">
-						<label for="password" class="form-label">${getLang(context, "pages.register.labels.password")}</label>
+						<label for="new-password" class="form-label">${getLang(context, "pages.register.labels.password")}</label>
 					</div>
 					<div class="col-6">
-						<input type="password" class="form-control" id="password" placeholder="${getLang(context, "pages.register.placeholders.password")}">
+						<input type="password" class="form-control" id="new-password" placeholder="${getLang(context, "pages.register.placeholders.password")}">
 					</div>
 					<div class="col-6">
 						<input type="password" class="form-control" id="confirmation" placeholder="${getLang(context, "pages.register.placeholders.confirmPassword")}">
@@ -80,40 +80,65 @@ function Register(context) {
 	`;
 	setTimeout(() => {
 		let form = document.querySelector("#registration-form");
-		if (form === null)
-			return;
-		form.onsubmit = (event) => {
-			event.preventDefault();
-			clearFeedbacks(form);
-			if (!checkUsername(context, "#username")
-				| !checkFirstName(context, "#first-name")
-				| !checkLastName(context, "#last-name")
-				| !checkEmail(context, "#email")
-				| !checkPassword(context, "#password")
-				| !checkPasswords(context, "#password", "#confirmation"))
-				return;
-			postJson(context, "/api/register", {
-				username: document.querySelector("#username").value,
-				firstName: document.querySelector("#first-name").value,
-				lastName: document.querySelector("#last-name").value,
-				email: document.querySelector("#email").value,
-				password: document.querySelector("#password").value,
-			}).then(data => {
-				if (data.ok) {
-					persistSuccess(context, getLang(context, data.success));
-					try {
-						localStorage.setItem("ft_token", data.token);
-						context.user.token = data.token;
-					} catch (e) {
-						console.log("[❌] Token could not be saved in localStorage.");
+		let inputUsername = document.querySelector("#username");
+		let inputFirstName = document.querySelector("#first-name");
+		let inputLastName = document.querySelector("#last-name");
+		let inputEmail = document.querySelector("#email");
+		let inputPassword = document.querySelector("#new-password");
+		let inputConfirmation = document.querySelector("#confirmation");
+
+		if (inputUsername !== null)
+			inputUsername.oninput = () => checkUsername(context, "#username");
+
+		if (inputFirstName !== null)
+			inputFirstName.oninput = () => checkFirstName(context, "#first-name");
+
+		if (inputLastName !== null)
+			inputLastName.oninput = () => checkLastName(context, "#last-name");
+
+		if (inputEmail !== null)
+			inputEmail.oninput = () => checkEmail(context, "#email");
+
+		if (inputPassword !== null)
+			inputPassword.oninput = () => checkPassword(context, "#new-password")
+				| checkPasswords(context, "#new-password", "#confirmation");
+
+		if (inputConfirmation !== null)
+			inputConfirmation.oninput = () => checkPassword(context, "#new-password")
+				| checkPasswords(context, "#new-password", "#confirmation");
+
+		if (form !== null)
+			form.onsubmit = (event) => {
+				event.preventDefault();
+				if (!checkUsername(context, "#username")
+					| !checkFirstName(context, "#first-name")
+					| !checkLastName(context, "#last-name")
+					| !checkEmail(context, "#email")
+					| !checkPassword(context, "#new-password")
+					| !checkPasswords(context, "#new-password", "#confirmation"))
+					return;
+				postJson(context, "/api/register", {
+					username: document.querySelector("#username").value,
+					firstName: document.querySelector("#first-name").value,
+					lastName: document.querySelector("#last-name").value,
+					email: document.querySelector("#email").value,
+					password: document.querySelector("#new-password").value,
+				}).then(data => {
+					if (data.ok) {
+						persistSuccess(context, getLang(context, data.success));
+						try {
+							localStorage.setItem("ft_token", data.token);
+							context.user.token = data.token;
+						} catch (e) {
+							console.log("[❌] Token could not be saved in localStorage.");
+						}
+						redirect("/login?next=" + context.next);
+					} else {
+						persistError(context, getLang(context, data.error));
+						pushPersistents(context);
 					}
-					redirect("/login?next=" + context.next);
-				} else {
-					persistError(context, getLang(context, data.error));
-					pushPersistents(context);
-				}
-			});
-		};
+				});
+			};
 	}, 200);
 	return div.innerHTML;
 }

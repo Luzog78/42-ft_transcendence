@@ -20,7 +20,7 @@ class Player():
 		self.client_id = client_id
 
 		self.pos = Vector(0, 0, 0)
-		
+
 		self.keyboard = {}
 
 		self.addSelfWall()

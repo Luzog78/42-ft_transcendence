@@ -17,7 +17,7 @@ def generate_token(user):
 	}
 	jwt_payload = {
 		"user": user,
-		"exp": int(time.time()) + 60 * 60 * 24 * 30 # 1 mois
+		"exp": int(time.time()) + 60 * 60  # 1 hour
 	}
 	jwt_header_json = json.dumps(jwt_header)
 	jwt_payload_json = json.dumps(jwt_payload)
@@ -44,17 +44,17 @@ def verify_token(token: Token) -> str | None:
 	data = token.split('.')
 	if len(data) != 3:
 		return None
-	
+
 	try:
 		jwt_header_json = json.loads(base64_decode_stripped(data[0]))
 		jwt_payload_json = json.loads(base64_decode_stripped(data[1]))
 	except:
 		return None
-	
+
 	if 'alg' not in jwt_header_json or 'typ' not in jwt_header_json \
 		or jwt_header_json['alg'] != 'HS256' or jwt_header_json['typ'] != 'JWT':
 		return None
-	
+
 	if 'exp' not in jwt_payload_json or 'user' not in jwt_payload_json \
 		or not isinstance(jwt_payload_json["exp"], int) or jwt_payload_json["exp"] < time.time():
 		return None

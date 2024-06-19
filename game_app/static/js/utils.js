@@ -38,10 +38,14 @@ function getJson(context, url) {
 function validFeedback(child, message) {
 	let parent = child.parentElement;
 
+	child.classList.remove("is-valid");
 	child.classList.remove("is-invalid");
-	let feedback = parent.querySelector(".invalid-feedback");
-	if (feedback)
-		feedback.remove();
+	let invalid = parent.querySelector(".invalid-feedback");
+	if (invalid)
+		invalid.remove();
+	let valid = parent.querySelector(".valid-feedback");
+	if (valid)
+		valid.remove();
 
 	child.classList.add("is-valid");
 	if (message !== null) {
@@ -56,9 +60,13 @@ function invalidFeedback(child, message) {
 	let parent = child.parentElement;
 
 	child.classList.remove("is-valid");
-	let feedback = parent.querySelector(".valid-feedback");
-	if (feedback)
-		feedback.remove();
+	child.classList.remove("is-invalid");
+	let invalid = parent.querySelector(".invalid-feedback");
+	if (invalid)
+		invalid.remove();
+	let valid = parent.querySelector(".valid-feedback");
+	if (valid)
+		valid.remove();
 
 	child.classList.add("is-invalid");
 	if (message !== null) {
@@ -183,6 +191,18 @@ function checkUID(context, uidId) {
 	return true;
 }
 
+function checkA2F(context, a2fId, acceptEmpty = false) {
+	let a2f = document.querySelector(a2fId);
+	if (a2f === null)
+		return acceptEmpty;
+	if (!a2f.value.match(/^[0-9]{6}$/) && !(acceptEmpty && a2f.value === "")) {
+		invalidFeedback(a2f, getLang(context, "errors.a2fBadLength"));
+		return false;
+	}
+	validFeedback(a2f, null);
+	return true;
+}
+
 export {
 	getJson,
 	postJson,
@@ -196,4 +216,5 @@ export {
 	checkPassword,
 	checkPasswords,
 	checkUID,
+	checkA2F,
 };

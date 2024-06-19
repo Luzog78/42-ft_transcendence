@@ -184,7 +184,7 @@ def view_user_set(request: HttpRequest, username: str):
 	for key, _ in data.items():
 		if key not in ['firstName', 'lastName', 'email', 'password', 'lang', 'a2f']:
 			return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
-	
+
 	success, error = [], []
 
 	try:
@@ -245,8 +245,8 @@ def view_user_set(request: HttpRequest, username: str):
 
 	return JsonResponse({
 		'ok': True,
-		'success': success,
-		'error': error,
+		'successes': success,
+		'errors': error,
 		**user.json(show_email=True),
 	})
 

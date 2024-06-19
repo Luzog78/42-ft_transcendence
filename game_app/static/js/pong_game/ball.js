@@ -130,7 +130,7 @@ class Ball
 		this.sphere.position.add(new THREE.Vector3().copy(this.vel).multiplyScalar(this.scene.dt));
 		this.vel.add(new THREE.Vector3().copy(this.acc).multiplyScalar(this.scene.dt));
 
-		let accelerationFactor = Math.pow(10, Math.log10(0.99) / 0.006); // 
+		let accelerationFactor = Math.pow(10, Math.log10(0.99) / 0.006); //
 		this.acc.multiplyScalar(Math.pow(accelerationFactor, this.scene.dt));
 	}
 }

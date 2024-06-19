@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { checkPassword, checkUsername, clearFeedbacks, postJson } from "../utils.js";
+import { checkA2F, checkPassword, checkUsername, postJson } from "../utils.js";
 import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
@@ -84,62 +84,66 @@ function Login(context) {
 	`;
 	const foo = () => {
 		let form = document.querySelector("#login-form");
-		if (form === null)
-			return;
-		form.onsubmit = (event) => {
-			event.preventDefault();
-			clearFeedbacks(form);
-			if (!checkUsername(context, "#username") | !checkPassword(context, "#password"))
-				return;
-			var a2f_input = document.getElementById("a2f_code");
-			if (a2f_input)
-				a2f_input = a2f_input.value.toString();
-			if (a2f_input != undefined && a2f_input.length != 6)
-			{
-				persistError(context, getLang(context, "errors.a2fBadLength"));
-				pushPersistents(context);
-				return ;
-			}
-			postJson(context, "/api/login", {
-				username: document.querySelector("#username").value,
-				password: document.querySelector("#password").value,
-				a2f_code: a2f_input
-			}).then(data => {
-				if (data.ok) {
-					persistSuccess(context, getLang(context, data.success));
-					try {
-						localStorage.setItem("ft_token", data.token);
-					} catch (e) {
-						console.log("[❌] Token could not be saved in localStorage.");
+		let inputUsername = document.querySelector("#username");
+		let inputPassword = document.querySelector("#password");
+		let inputA2f = document.querySelector("#a2f_code");
+
+		if (inputUsername !== null)
+			inputUsername.oninput = () => checkUsername(context, "#username");
+
+		if (inputPassword !== null)
+			inputPassword.oninput = () => checkPassword(context, "#password");
+
+		if (inputA2f !== null)
+			inputA2f.oninput = () => checkA2F(context, "#a2f_code");
+
+		if (form !== null)
+			form.onsubmit = (event) => {
+				event.preventDefault();
+				if (!checkUsername(context, "#username")
+					| !checkPassword(context, "#password")
+					| !checkA2F(context, "#a2f_code", true))
+					return;
+				postJson(context, "/api/login", {
+					username: document.querySelector("#username").value,
+					password: document.querySelector("#password").value,
+					a2f_code: document.querySelector("#a2f_code") ? document.querySelector("#a2f_code").value : null
+				}).then(data => {
+					if (data.ok) {
+						persistSuccess(context, getLang(context, data.success));
+						try {
+							localStorage.setItem("ft_token", data.token);
+						} catch (e) {
+							console.log("[❌] Token could not be saved in localStorage.");
+						}
+						context.user.isAuthenticated = true;
+						context.user.token = data.token;
+						context.user.username = data.username;
+						context.user.createdAt = data.createdAt;
+						context.user.email = data.email;
+						context.user.firstName = data.firstName;
+						context.user.lastName = data.lastName;
+						context.user.picture = data.picture;
+						context.user.lang = data.lang;
+						context.user.a2f = data.a2f;
+						context.user.isAdmin = data.isAdmin;
+						context.user.lastLogin = data.lastLogin;
+						redirect(context.next ? popNext(context) : "/");
+					} else if (data.error == "errors.missingA2F") {
+						context.user.isAuthenticated = false;
+						var a2f_code = document.getElementById("a2f_code");
+						if (!a2f_code)
+						{
+							var loginForm = document.getElementById("login-form");
+							loginForm.insertBefore(createA2fInput(context), loginForm.childNodes[5]);
+						}
+					} else {
+						persistError(context, getLang(context, data.error));
+						context.user.isAuthenticated = false;
+						pushPersistents(context);
 					}
-					context.user.isAuthenticated = true;
-					context.user.token = data.token;
-					context.user.username = data.username;
-					context.user.createdAt = data.createdAt;
-					context.user.email = data.email;
-					context.user.firstName = data.firstName;
-					context.user.lastName = data.lastName;
-					context.user.picture = data.picture;
-					context.user.lang = data.lang;
-					context.user.a2f = data.a2f;
-					context.user.isAdmin = data.isAdmin;
-					context.user.lastLogin = data.lastLogin;
-					redirect(context.next ? popNext(context) : "/");
-				} else if (data.error == "errors.missingA2F") {
-					context.user.isAuthenticated = false;
-					var a2f_code = document.getElementById("a2f_code");
-					if (!a2f_code)
-					{
-						var loginForm = document.getElementById("login-form");
-						loginForm.insertBefore(createA2fInput(context), loginForm.childNodes[5]);
-					}
-				} else {
-					persistError(context, getLang(context, data.error));
-					context.user.isAuthenticated = false;
-					pushPersistents(context);
-				}
-			});
-		};
+				});
+			};
 	};
 	if (context.user.token && !context.user.isAuthenticated)
 		setTimeout(() => {

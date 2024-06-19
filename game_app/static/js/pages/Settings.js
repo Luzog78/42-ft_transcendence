@@ -6,25 +6,25 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/19 06:38:17 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/19 09:25:52 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { SUPPORTED_LANGS, getLang, loadLang, persist, persistCopy, persistError, persistSuccess, redirect, refresh } from "../script.js";
-import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, clearFeedbacks, postJson } from "../utils.js";
+import { checkA2F, checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, clearFeedbacks, postJson } from "../utils.js";
 
 
 function setUserAttributes(context, data) {
 	return postJson(context, `/api/user/${context.user.username}/set`, data)
 		.then(data => {
-			if (data.success)
-				for (let key in data.success)
-					persistSuccess(context, getLang(context, data.success[key]));
-			if (data.error)
-				for (let key in data.error)
-					persistError(context, getLang(context, data.error[key]));
+			if (data.successes)
+				for (let key in data.successes)
+					persistSuccess(context, getLang(context, data.successes[key]));
+			if (data.errors)
+				for (let key in data.errors)
+					persistError(context, getLang(context, data.errors[key]));
 			if (!data.ok)
 				persistError(context, "[FATAL] " + getLang(context, data.error));
 			return data;
@@ -394,7 +394,8 @@ function Settings(context) {
 
 		if (a2fForm && editToken) {
 			editToken.addEventListener("input", () => {
-				clearFeedbacks(a2fForm);
+				if (!checkA2F(context, "#editToken"))
+					return;
 				let button = a2fForm.querySelector("button[type=submit]");
 				if (editToken.value !== "") {
 					button.removeAttribute("disabled");

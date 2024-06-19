@@ -49,7 +49,7 @@ class GameServer():
 		if (self.lobbysAreFull()):
 			self.lobbys.append(Lobby(self))
 		lobby = self.lobbys[-1]
-		
+
 		print("new client in lobby id: ", lobby.lobby_id)
 		player = Player(lobby, client, len(lobby.clients))
 

@@ -10,10 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { getJson } from "../utils.js";
 import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
-import { Persistents, pushPersistents } from "../components/Persistents.js";
+import { Persistents } from "../components/Persistents.js";
 
 function Logout(context) {
 	let div = document.createElement("div");
