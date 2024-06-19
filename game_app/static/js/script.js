@@ -26,6 +26,8 @@ import { getJson } from "./utils.js";
 import { Settings } from "./pages/Settings.js";
 import { PlayWaiting } from "./pages/PlayWaiting.js";
 
+import { ChatConnexion } from "./chatConnexion.js";
+
 const SUPPORTED_LANGS = ["en", "fr"];
 const DEFAULT_LANG = SUPPORTED_LANGS[0];
 
@@ -47,6 +49,7 @@ var global_context = {
 	},
 	persistent: [],
 	next: null,
+	ChatConnexion: new ChatConnexion(),
 };
 
 /**
