@@ -86,13 +86,24 @@ class User(AbstractBaseUser):
 		}
 
 
+class GameMode(models.TextChoices):
+	TIME_OUT		= 'TO', 'Time Out'
+	FIRST_TO		= 'FT', 'First To'
+	BATTLE_ROYALE	= 'BR', 'Battle Royale'
+
+
 class Game(models.Model):
 	uid			= models.CharField(primary_key=True, max_length=5, blank=False, null=False)
+	mode		= models.CharField(max_length=2, choices=GameMode.choices, default=GameMode.TIME_OUT)
 	players		= ArrayField(models.CharField(max_length=24), default=list)
 	created_at	= models.DateTimeField(auto_now=True, blank=False)
 	started_at	= models.DateTimeField(auto_now=False, blank=True, null=True, default=None)
 	ended_at	= models.DateTimeField(auto_now=False, blank=True, null=True, default=None)
 	winner		= models.ForeignKey(User, on_delete=models.SET_NULL, null=True, default=None)
+	best_streak	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None)
+	rebounces	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None)
+	ultimate	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None)
+	duration	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None)
 
 	@staticmethod
 	def new_uid():
@@ -109,17 +120,27 @@ class Game(models.Model):
 	def __str__(self):
 		return self.uid
 
-	def json(self):
+	def json(self, json_winner=True, json_stats=True):
 		ended = self.ended_at is not None or self.winner is not None
 		playing = self.started_at is not None and not ended
 		waiting = not playing and not ended
+		winner = (self.winner.json() if json_winner else {'username': self.winner.username}) if self.winner is not None else None
+		best_streak = (self.best_streak.json(json_user=True, json_game=False) if json_stats else {'id': self.best_streak.id}) if self.best_streak is not None else None
+		rebounces = (self.rebounces.json(json_user=True, json_game=False) if json_stats else {'id': self.rebounces.id}) if self.rebounces is not None else None
+		ultimate = (self.ultimate.json(json_user=True, json_game=False) if json_stats else {'id': self.ultimate.id}) if self.ultimate is not None else None
+		duration = (self.duration.json(json_user=True, json_game=False) if json_stats else {'id': self.duration.id}) if self.duration is not None else None
 		return {
 			'uid': self.uid,
+			'mode': self.mode,
 			'players': self.players,
 			'createdAt': self.created_at,
 			'startedAt': self.started_at,
 			'endedAt': self.ended_at,
-			'winner': str(self.winner) if self.winner is not None else None,
+			'winner': winner,
+			'bestStreak': best_streak,
+			'rebounces': rebounces,
+			'ultimate': ultimate,
+			'duration': duration,
 
 			'ended': ended,
 			'playing': playing,
@@ -129,23 +150,29 @@ class Game(models.Model):
 
 class Stats(models.Model):
 	id			= models.AutoField(primary_key=True)
-	username	= models.ForeignKey(User, on_delete=models.CASCADE)
-	game_uid	= models.ForeignKey(Game, on_delete=models.SET_NULL, null=True)
-	scored		= models.IntegerField()
-	killed		= models.IntegerField()
+	user		= models.ForeignKey(User, on_delete=models.CASCADE)
+	game		= models.ForeignKey(Game, on_delete=models.SET_NULL, null=True)
+	score		= models.IntegerField()
+	kills		= models.IntegerField()
 	bounces		= models.IntegerField()
+	ultimate	= models.FloatField()
+	time		= models.FloatField()
 	won			= models.BooleanField()
 
 	def __str__(self):
 		return self.id
 
-	def json(self):
+	def json(self, json_user=True, json_game=True):
+		user = (self.user.json() if json_user else {'username': self.user.username}) if self.user is not None else None
+		game = (self.game.json() if json_game else {'uid': str(self.game)}) if self.game is not None else None # type: ignore
 		return {
 			'id': self.id,
-			'username': str(self.username) if self.username is not None else None,
-			'gameUid': str(self.game_uid) if self.game_uid is not None else None,
-			'scored': self.scored,
-			'killed': self.killed,
+			'user': user,
+			'game': game,
+			'score': self.score,
+			'kills': self.kills,
 			'bounces': self.bounces,
+			'ultimate': self.ultimate,
+			'time': self.time,
 			'won': self.won,
 		}

@@ -7,9 +7,6 @@ import hmac
 from ft_django import settings
 
 
-type Token = str
-
-
 def generate_token(user):
 	jwt_header = {
 		"alg": "HS256",
@@ -40,7 +37,7 @@ def base64_decode_stripped(string):
 	return base64.urlsafe_b64decode(string)
 
 
-def verify_token(token: Token) -> str | None:
+def verify_token(token) -> str | None:
 	data = token.split('.')
 	if len(data) != 3:
 		return None
