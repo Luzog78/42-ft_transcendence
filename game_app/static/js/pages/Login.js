@@ -42,7 +42,7 @@ function createA2fInput(context) {
 	return row;
 }
 
-function Login(context) {
+async function Login(context) {
 	let div = document.createElement("div");
 	div.innerHTML = NavBar(getLang(context, "pages.login.title"), context);
 	div.innerHTML += Persistents(context);

@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/19 09:25:52 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/19 16:38:02 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ import { SUPPORTED_LANGS, getLang, loadLang, persist, persistCopy, persistError,
 import { checkA2F, checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, clearFeedbacks, postJson } from "../utils.js";
 
 
-function setUserAttributes(context, data) {
+async function setUserAttributes(context, data) {
 	return postJson(context, `/api/user/${context.user.username}/set`, data)
 		.then(data => {
 			if (data.successes)

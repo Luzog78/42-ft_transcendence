@@ -130,7 +130,7 @@ def view_login(request: HttpRequest):
 		'ok': True,
 		'success': 'successes.loggedIn',
 		'token': response.token,
-		**User.objects.get(username=response.user).json(show_email=True),
+		**User.objects.get(username=response.username).json(show_email=True),
 	})
 
 
@@ -336,7 +336,8 @@ def view_game_user(request: HttpRequest, username: str):
 	i = 0
 	try:
 		while True:
-			if games[i].winner and games[i].winner.username == username: # type: ignore
+			if games[i].winner and games[i].winner.user \
+				and games[i].winner.user.username == username: # type: ignore
 				won.append(games[i].uid)
 			else:
 				lost.append(games[i].uid)
@@ -445,7 +446,7 @@ def view_stats_user(request: HttpRequest, username: str):
 
 @csrf_exempt
 def view_stats_game(request: HttpRequest, uid: str):
-	stats = Stats.objects.filter(game_uid=uid)
+	stats = Stats.objects.filter(game__uid=uid)
 	l = []
 	i = 0
 	try:
@@ -463,29 +464,97 @@ def view_stats_game(request: HttpRequest, uid: str):
 
 @csrf_exempt
 def view_test(request: HttpRequest, whatever: int):
-	# if request.user.is_authenticated:
-	# 	return JsonResponse({ 'ok': False })
+	def user(usrnm) -> User:
+		res = auth.register(request,
+			username=f'{usrnm}',
+			first_name=f'{usrnm}',
+			last_name=f'{usrnm}',
+			email=f'{usrnm}@42.fr',
+			password='1234',
+			picture='https://media.senscritique.com/media/000019789638/300/doc.jpg')
+		print(usrnm, res.ok, res.message, res.user)
+		res = auth.login(request, username=f'{usrnm}', password='1234')
+		print(usrnm, res.ok, res.message, res.user)
+		return res.user # type: ignore
 
-	# auth.register(request,
-	# 	username='123',
-	# 	first_name='123',
-	# 	last_name='123',
-	# 	email='123@123.net',
-	# 	password='1234')
-	# auth.login(request, username='123', password='1234')
+	us: list[User] = [
+		user('0000'),
+		user('1111'),
+		user('2222'),
+		user('3333'),
+	]
 
-	# request.user.picture = 'https://media.senscritique.com/media/000019789638/300/doc.jpg'
-	# request.user.save()
+	Game.objects.create(uid=Game.new_uid(), players=[u.username for u in us])
+	Game.objects.create(uid=Game.new_uid(), players=[u.username for u in us])
+	Game.objects.create(uid=Game.new_uid(), players=[u.username for u in us])
+	Game.objects.create(uid=Game.new_uid(), players=[u.username for u in us])
 
-	# Game.objects.create(uid=Game.new_uid())
-	# Game.objects.create(uid=Game.new_uid())
-	# Game.objects.create(uid=Game.new_uid())
-	# Game.objects.create(uid=Game.new_uid())
+	g0 = Game.objects.create(uid=Game.new_uid(), players=[u.username for u in us])
+	g1 = Game.objects.create(uid=Game.new_uid(), players=[u.username for u in us])
+	g2 = Game.objects.create(uid=Game.new_uid(), players=[u.username for u in us])
+	g3 = Game.objects.create(uid=Game.new_uid(), players=[u.username for u in us])
 
-	# Game.objects.create(uid=Game.new_uid(), players=['123'])
-	# Game.objects.create(uid=Game.new_uid(), players=['123'])
-	# Game.objects.create(uid=Game.new_uid(), players=['123'])
-	# Game.objects.create(uid=Game.new_uid(), players=['123'])
+	gs: list[Game] = [g0, g1, g2, g3] # type: ignore
+
+	def stats(g: Game, u: User, won: bool) -> Stats:
+		return Stats.objects.create(
+			user=u,
+			game=g,
+			score=random.randint(0, 100),
+			kills=random.randint(0, 100),
+			best_streak=random.randint(0, 50),
+			rebounces=random.randint(0, 1000),
+			ultimate=random.uniform(0, 16),
+			duration=random.randint(0, 600),
+			won=won,
+		)
+
+	s = [
+		stats(g0, us[0], True),
+		stats(g0, us[1], False),
+		stats(g0, us[2], False),
+		stats(g0, us[3], False),
+		stats(g1, us[0], False),
+		stats(g1, us[1], True),
+		stats(g1, us[2], False),
+		stats(g1, us[3], False),
+		stats(g2, us[0], False),
+		stats(g2, us[1], False),
+		stats(g2, us[2], True),
+		stats(g2, us[3], False),
+		stats(g3, us[0], False),
+		stats(g3, us[1], False),
+		stats(g3, us[2], False),
+		stats(g3, us[3], True),
+	]
+
+	g0.winner = s[0]
+	g0.best_streak = s[0]
+	g0.rebounces = s[1]
+	g0.ultimate = s[2]
+	g0.duration = s[3]
+	g0.save()
+
+	g1.winner = s[5]
+	g1.best_streak = s[4]
+	g1.rebounces = s[5]
+	g1.ultimate = s[6]
+	g1.duration = s[7]
+	g1.save()
+
+	g2.winner = s[10]
+	g2.best_streak = s[8]
+	g2.rebounces = s[9]
+	g2.ultimate = s[10]
+	g2.duration = s[11]
+	g2.save()
+
+	g3.winner = s[15]
+	g3.best_streak = s[12]
+	g3.rebounces = s[13]
+	g3.ultimate = s[14]
+	g3.duration = s[15]
+	g3.save()
 
 	s = request.headers.get('Authorization', None)
 

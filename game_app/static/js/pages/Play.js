@@ -15,7 +15,7 @@ import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persistError, redirect } from "../script.js";
 import { checkUID, clearFeedbacks, getJson } from "../utils.js";
 
-function Play(context) {
+async function Play(context) {
 	let div = document.createElement("div");
 	div.innerHTML = NavBar(getLang(context, "pages.play.title"), context);
 	div.innerHTML += Persistents(context);

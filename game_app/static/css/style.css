@@ -734,19 +734,21 @@ input[type=number].no-arrow {
 
 #PongResult-content {
 	--PongResultWidth: 48px;
-	--PongResultHeight: 32px;
+	--PongResultHeight: 48px;
 }
 
 @media (min-width: 992px) {
 	#PongResult-content {
 		--PongResultWidth: 96px;
-		--PongResultHeight: 84px;
+		--PongResultHeight: 96px;
 	}
 }
 
 #PongResult-content img {
 	width: var(--PongResultWidth);
 	height: var(--PongResultHeight);
+	object-fit: cover;
+	border-radius: 1000%;
 }
 
 #PongResult-content .PongResult-winner img:first-child {
@@ -853,8 +855,18 @@ input[type=number].no-arrow {
 }
 
 #PongResult-content .PongResult-players {
-	gap: 8%;
+	gap: 7%;
 	padding-bottom: 20px;
+}
+
+#PongResult-content .PongResult-players .PongResult-player:first-child:not(:last-child) {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+#PongResult-content .PongResult-players .PongResult-player:last-child:not(:first-child) {
+	margin-right: 0;
+	padding-right: 0;
 }
 
 #PongResult-content .PongResult-players {
@@ -863,6 +875,13 @@ input[type=number].no-arrow {
 
 #PongResult-content .PongResult-players .row {
 	display: inline-block;
+}
+
+#PongResult-content .PongResult-player img {
+	width: 82px;
+	height: 82px;
+	object-fit: cover;
+	padding: 0;
 }
 
 #PongResult-content .PongResult-ListPlayers::-webkit-scrollbar {

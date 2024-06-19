@@ -15,7 +15,7 @@ import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
 
-function Register(context) {
+async function Register(context) {
 	let div = document.createElement("div");
 	div.innerHTML = NavBar(getLang(context, "pages.register.title"), context);
 	div.innerHTML += Persistents(context);

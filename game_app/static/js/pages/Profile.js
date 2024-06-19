@@ -15,7 +15,7 @@ import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persist, persistCopy, persistError, redirect } from "../script.js";
 import { getJson, postJson } from "../utils.js";
 
-function Profile(context, username) {
+async function Profile(context, username) {
 	let persistentBackup = persistCopy(context);
 	let div = document.createElement("div");
 	div.innerHTML = NavBar(getLang(context, "pages.profile.title"), context);
@@ -145,9 +145,9 @@ function Profile(context, username) {
 
 function tablePage(context, uids, page, totalPage) {
 	if (page == 1)
-		window.history.replaceState(null, null, window.location.origin + window.location.pathname + window.location.search);
+		window.history.replaceState(null, null, window.location.origin + window.location.pathname + window.location.hash);
 	else
-		window.history.replaceState(null, null,window.location.origin + window.location.pathname + `?page=${page}` + window.location.search);
+		window.history.replaceState(null, null, window.location.origin + window.location.pathname + `?page=${page}` + window.location.hash);
 
 	let uidsPage = uids.slice((page - 1) * 8, page * 8);
 
@@ -169,13 +169,16 @@ function tablePage(context, uids, page, totalPage) {
 		if (gamesTable) {
 			gamesTable.innerHTML = "";
 			data.games.forEach(game => {
-				let won = game.winner === context.user.username;
+				let inProgress = game.waiting || game.playing;
+				let won = game.winner && game.winner.user && game.winner.user.username === context.user.username;
 				let date = new Date(game.waiting ? game.createdAt
 					: game.playing ? game.startedAt : game.endedAt)
 					.toLocaleDateString();
 				let tr = document.createElement("tr");
 				tr.innerHTML = /*html*/`
-					<td class="game-${won ? "won" : "lost"}">${won ? "Win" : "Lost"}</td>
+					<td class="${inProgress ? "" : won ? "game-won" : "game-lost"}">
+						${inProgress ? "In Progress..." : won ? "Won" : "Lost"}
+					</td>
 					<td><a href="/play/${game.uid}" data-link>PONG #${game.uid} !</a></td>
 					<td>${date}</td>
 				`;

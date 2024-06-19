@@ -99,11 +99,11 @@ class Game(models.Model):
 	created_at	= models.DateTimeField(auto_now=True, blank=False)
 	started_at	= models.DateTimeField(auto_now=False, blank=True, null=True, default=None)
 	ended_at	= models.DateTimeField(auto_now=False, blank=True, null=True, default=None)
-	winner		= models.ForeignKey(User, on_delete=models.SET_NULL, null=True, default=None)
-	best_streak	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None)
-	rebounces	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None)
-	ultimate	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None)
-	duration	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None)
+	winner:			'Stats'	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None) # type: ignore
+	best_streak:	'Stats'	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None) # type: ignore
+	rebounces:		'Stats'	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None) # type: ignore
+	ultimate:		'Stats'	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None) # type: ignore
+	duration:		'Stats'	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None) # type: ignore
 
 	@staticmethod
 	def new_uid():
@@ -120,11 +120,11 @@ class Game(models.Model):
 	def __str__(self):
 		return self.uid
 
-	def json(self, json_winner=True, json_stats=True):
+	def json(self, json_stats=True):
 		ended = self.ended_at is not None or self.winner is not None
 		playing = self.started_at is not None and not ended
 		waiting = not playing and not ended
-		winner = (self.winner.json() if json_winner else {'username': self.winner.username}) if self.winner is not None else None
+		winner = (self.winner.json(json_user=True, json_game=False) if json_stats else {'id': self.winner.id}) if self.winner is not None else None
 		best_streak = (self.best_streak.json(json_user=True, json_game=False) if json_stats else {'id': self.best_streak.id}) if self.best_streak is not None else None
 		rebounces = (self.rebounces.json(json_user=True, json_game=False) if json_stats else {'id': self.rebounces.id}) if self.rebounces is not None else None
 		ultimate = (self.ultimate.json(json_user=True, json_game=False) if json_stats else {'id': self.ultimate.id}) if self.ultimate is not None else None
@@ -154,9 +154,10 @@ class Stats(models.Model):
 	game		= models.ForeignKey(Game, on_delete=models.SET_NULL, null=True)
 	score		= models.IntegerField()
 	kills		= models.IntegerField()
-	bounces		= models.IntegerField()
+	best_streak	= models.IntegerField()
+	rebounces	= models.IntegerField()
 	ultimate	= models.FloatField()
-	time		= models.FloatField()
+	duration	= models.FloatField()
 	won			= models.BooleanField()
 
 	def __str__(self):
@@ -171,9 +172,10 @@ class Stats(models.Model):
 			'game': game,
 			'score': self.score,
 			'kills': self.kills,
-			'bounces': self.bounces,
+			'bestStreak': self.best_streak,
+			'rebounces': self.rebounces,
 			'ultimate': self.ultimate,
-			'time': self.time,
+			'duration': self.duration,
 			'won': self.won,
 		}
 

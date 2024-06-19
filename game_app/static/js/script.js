@@ -23,6 +23,7 @@ import { PongResult } from "./pages/PongResult.js";
 
 import { getJson } from "./utils.js";
 import { Settings } from "./pages/Settings.js";
+import { PlayWaiting } from "./pages/PlayWaiting.js";
 
 const SUPPORTED_LANGS = ["en", "fr"];
 const DEFAULT_LANG = SUPPORTED_LANGS[0];
@@ -99,13 +100,18 @@ const router = [
 		path: "/pong",
 		component: Pong,
 	},
-	{
-		path: "/result/<numbers>",
-		component: PongResult,
-	},
 ];
 
-const content = document.getElementById("body-content");
+const content = document.getElementById("body-content");;
+
+const loadComponent = async (component, ...args) => {
+	if (component === null || component === undefined)
+		return;
+	let inner = await component(global_context, ...args);
+	if (inner === null || inner === undefined)
+		return;
+	content.innerHTML = inner;
+}
 
 const loadPage = (path) => {
 	let next = new URLSearchParams(window.location.search).get("next");
@@ -147,10 +153,7 @@ const loadPage = (path) => {
 	}
 	if (!route)
 		route = router[0];
-	let inner = route.component(global_context, ...args);
-	if (inner === null || inner === undefined || inner === "")
-		return;
-	content.innerHTML = inner;
+	loadComponent(route.component, ...args);
 }
 
 const redirect = (path, addToHistory = true) => {
@@ -254,6 +257,7 @@ window.addEventListener("load", async () => {
 });
 
 export {
+	loadComponent,
 	redirect,
 	refresh,
 	popNext,
