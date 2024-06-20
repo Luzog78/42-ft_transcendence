@@ -21,14 +21,14 @@ function NavBar(title, context, fetchProfile = true) {
 		<nav id="#navbar" class="navbar">
 			<div class="container-fluid">
 				<div class="navbar-brand">
-					<img src="/static/img/menu.svg" alt="Menu" id="menu-trigger">
+					<img class="notSelectable" src="/static/img/menu.svg" alt="Menu" id="menu-trigger">
 					<div id="menu-container">
-						<img src="/static/img/circle1.svg" alt="">
-						<img src="/static/img/circle2.svg" alt="">
-						<img src="/static/img/circle1.svg" alt="">
-						<img src="/static/img/game.svg" alt="" id="goto-play">
-						<img src="/static/img/win.svg" alt="" id="goto-tour">
-						<img src="/static/img/chat.svg" alt="" id="goto-chat">
+						<img class="notSelectable" src="/static/img/circle1.svg" alt="">
+						<img class="notSelectable" src="/static/img/circle2.svg" alt="">
+						<img class="notSelectable" src="/static/img/circle1.svg" alt="">
+						<img class="notSelectable" src="/static/img/game.svg" alt="" id="goto-play">
+						<img class="notSelectable" src="/static/img/win.svg" alt="" id="goto-tour">
+						<img class="notSelectable" src="/static/img/chat.svg" alt="" id="goto-chat">
 					</div>
 				</div>
 				<h1>
@@ -44,7 +44,7 @@ function NavBar(title, context, fetchProfile = true) {
 	let next = window.location.pathname;
 	if (context.user.isAuthenticated) {
 		right.innerHTML = /*html*/`
-			<a type="button" class="" href="/profile" data-link><img class="profile-picture" src="${context.user.picture ? context.user.picture : '/static/img/user.svg'}" alt="${getLang(context, "navbar.profilePictureAlt")}" data-link></a>
+			<a type="button" class="" href="/profile" data-link><img class="profile-picture notSelectable" src="${context.user.picture ? context.user.picture : '/static/img/user.svg'}" alt="${getLang(context, "navbar.profilePictureAlt")}" data-link></a>
 			<div type="button" id="logout-btn-zone">${getLang(context, "navbar.logout")}</div>
 			<a type="button" class="a-no-style profile-name" href="/profile" data-link>${getLang(context, "loading")}</a>
 			<a type="button" class="btn btn-outline-danger nav-links" href="/logout?next=${next}" id="logout-btn" data-link>${getLang(context, "navbar.logout")}</a>
