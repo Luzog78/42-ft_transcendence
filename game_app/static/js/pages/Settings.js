@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Settings.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/19 16:38:02 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/21 00:44:18 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,14 @@ function Settings(context) {
 					<div class="settings">
 						<h4 class="title">${getLang(context, "pages.settings.titles.security")}</h4>
 						<form action="GET" class="form-ssm" id="security-form">
+							<div class="row col-12">
+								<div class="col-12">
+									<label for="editNewPass" class="form-label">
+										${getLang(context, "pages.settings.labels.oldPassword")}
+									</label>
+									<input type="password" class="form-control" id="editNewPassOld" name="editNewPassOld" placeholder="${getLang(context, "pages.settings.placeholders.oldPassword")}" required>
+								</div>
+							</div>
 							<div class="row col-12">
 								<div class="col-12">
 									<label for="editNewPass" class="form-label">
@@ -272,6 +280,7 @@ function Settings(context) {
 		let editEmail = document.getElementById("editEmail");
 
 		let securityForm = document.getElementById("security-form");
+		let editNewPassOld = document.getElementById("editNewPassOld");
 		let editNewPass = document.getElementById("editNewPass");
 		let editNewPassConfirm = document.getElementById("editNewPassConfirm");
 
@@ -342,14 +351,15 @@ function Settings(context) {
 			});
 		}
 
-		if (securityForm && editNewPass && editNewPassConfirm) {
+		if (securityForm && editNewPassOld && editNewPass && editNewPassConfirm) {
 			function checkActivation() {
 				clearFeedbacks(securityForm);
-				if (!checkPassword(context, "#editNewPass")
+				if (!checkPassword(context, "#editNewPassOld")
+					| !checkPassword(context, "#editNewPass")
 					| !checkPasswords(context, "#editNewPass", "#editNewPassConfirm"))
 					return;
 				let button = securityForm.querySelector("button[type=submit]");
-				if (editNewPass.value !== "" && editNewPass.value === editNewPassConfirm.value) {
+				if (editNewPassOld !== "" && editNewPass.value !== "" && editNewPass.value === editNewPassConfirm.value) {
 					button.removeAttribute("disabled");
 					button.classList.remove("btn-secondary");
 					button.classList.add("btn-success");
@@ -360,11 +370,13 @@ function Settings(context) {
 				}
 			}
 
+			editNewPassOld.addEventListener("input", checkActivation);
 			editNewPass.addEventListener("input", checkActivation);
 			editNewPassConfirm.addEventListener("input", checkActivation);
 			securityForm.addEventListener("submit", (e) => {
 				e.preventDefault();
 				setUserAttributes(context, {
+					oldPassword: editNewPassOld.value,
 					password: editNewPass.value
 				}).then(data => refresh());
 			});

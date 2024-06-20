@@ -79,6 +79,7 @@
 				"firstName": "First name",
 				"lastName": "Last name",
 				"email": "Email",
+				"oldPassword": "Old password",
 				"password": "New password",
 				"confirmPassword": "Confirmation",
 				"token": "2FA Key",
@@ -95,6 +96,7 @@
 				"firstName": "Doc",
 				"lastName": "... nobody knows...",
 				"email": "doc@42.fr",
+				"oldPassword": "Enter current password",
 				"password": "Enter a strong one...",
 				"confirmPassword": "Confirmation",
 				"token": "eyI0MiI6IllvdSBmb3VuZCBtZSA6cCAoQGx1em9nNzgpIiwiYWxnIjoiSFMyNTYifQ"

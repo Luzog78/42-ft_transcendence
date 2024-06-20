@@ -182,7 +182,7 @@ def view_user_set(request: HttpRequest, username: str):
 	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
 
 	for key, _ in data.items():
-		if key not in ['firstName', 'lastName', 'email', 'password', 'lang', 'a2f']:
+		if key not in ['firstName', 'lastName', 'email', 'oldPassword', 'password', 'lang', 'a2f']:
 			return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
 
 	success, error = [], []
@@ -213,9 +213,12 @@ def view_user_set(request: HttpRequest, username: str):
 				success.append('successes.emailSet')
 
 		if 'password' in data:
+			oldPassword = data['oldPassword']
 			password = data['password']
 			if not checker.password(password):
 				error.append('errors.invalidPassword')
+			elif not user.check_password(oldPassword):
+				error.append('errors.invalidCredentials')
 			else:
 				user.set_password(password)
 				success.append('successes.passwordSet')
