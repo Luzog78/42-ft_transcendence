@@ -52,6 +52,32 @@ var global_context = {
 	ChatConnexion: new ChatConnexion(),
 };
 
+/// test + exemple but still test only
+// global_context.ChatConnexion.onOpen(() => {
+// 	if (localStorage.getItem("ft_token")) {
+// 		global_context.ChatConnexion.authenticate(localStorage.getItem("ft_token"))
+// 			.then(() => {
+// 				global_context.ChatConnexion.sendMessage("abcd", "yo")
+// 					.then(messageData => {
+// 						console.log(`Message successfully sent, id: ${messageData["messageId"]}`)
+// 					})
+// 					.catch((err) => {
+// 						console.log("failed to send message : ", err)
+// 					})
+// 				global_context.ChatConnexion.getAllMessages()
+// 					.then(messages => {
+// 						console.log("messages table: ", messages)
+// 					})
+// 					.catch(err => {
+// 						console.log("failed to fetch messages : ", err)
+// 					})
+// 			})
+// 			.catch(err => {
+// 				console.log("failed to auth : ", err)
+// 			})
+// 	}
+// })
+
 /**
  * @note	Path arguments:
  * @note	- <numbers>		: Any number

@@ -16,7 +16,7 @@ class ChatConnexion
 	constructor()
 	{
 		const _this = this;
-		this.onOpen = null;
+		this.onOpenCb = null;
 		this.connected = false;
 		this.authenticated = false;
 		this.actualFrontendId = 0;
@@ -26,8 +26,8 @@ class ChatConnexion
 		this.socket.onopen = function(e) {
 			console.log("Chat socket opened");
 			this.connected = true;
-			if (_this.onOpen)
-				_this.onOpen();
+			if (_this.onOpenCb)
+				_this.onOpenCb();
 		};
 		this.socket.onmessage = function(e) {
 			var data = JSON.parse(e.data);
@@ -80,7 +80,7 @@ class ChatConnexion
 		if (this.connected)
 			callback();
 		else
-			this.onOpen = callback;
+			this.onOpenCb = callback;
 	}
 
 	// ChatConnexion.triggerCallback usage:
@@ -113,6 +113,11 @@ class ChatConnexion
 					reject(err);
 				});
 		});
+	}
+
+	getAllMessages()
+	{
+		return this.triggerCallback({ type: "get_previous_messages" });
 	}
 
 	sendMessage(target, content)
