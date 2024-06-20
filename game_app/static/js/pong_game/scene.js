@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/20 17:45:26 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/06/20 21:00:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ import * as Timer from 'timer';
 import { Ball } from "./ball.js"
 import { Server } from "./Server.js"
 import { ScreenShake } from "./screenShake.js"
-import { initMap, initCamera } from "./map.js"
+import { initMap } from "./map.js"
 
 class Scene
 {
@@ -68,10 +68,10 @@ class Scene
 	
 	initConnection(player_num)
 	{
-		initMap(this, player_num);
-		initCamera(this);
-
 		this.player_num = player_num;
+
+		initMap(this, player_num);
+
 		let my_player = this.get("player" + this.server.client_id);
 		window.addEventListener("keydown", my_player.keydown_event_func);
 		window.addEventListener("keyup", my_player.keyup_event_func);

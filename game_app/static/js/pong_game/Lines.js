@@ -79,7 +79,6 @@ class Lines
 			vertexColors: true,
 		});
 
-
 		this.mesh = new Line2( geometry, matLine );
 		this.mesh.computeLineDistances();
 

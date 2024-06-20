@@ -22,7 +22,7 @@ class Lobby():
 		self.lobby_id = len(self.gameServer.lobbys)
 
 		self.clients = []
-		self.clientsPerLobby = 3
+		self.clientsPerLobby = 6
 
 		self.ball = Ball(self, 0.15)
 
@@ -87,9 +87,7 @@ class Lobby():
 
 		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)
 		if (len(self.clients) == self.clientsPerLobby):
-			angleRad = math.radians(50)
-
-			self.ball.vel = Vector(math.cos(angleRad) * 1.2, 0, math.sin(angleRad) * 1.2)
+			self.ball.vel = Vector(1.2, 0, 1.2)
 
 			for c in self.clients:
 				await self.ball.updateBall()

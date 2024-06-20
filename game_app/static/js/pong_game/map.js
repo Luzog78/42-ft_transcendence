@@ -12,7 +12,10 @@ function initMap(scene, player_num)
 	if (player_num == 2)
 		init2PlayerMap(scene);
 	else
+	{
 		initNPlayerMap(scene, player_num);
+		initCamera(scene);
+	}
 }
 
 let middleVertexPositions = []
@@ -23,6 +26,7 @@ function initNPlayerMap(scene, number)
 	const mapRadius = Math.sqrt(number) * 2 + 2
 	
 	const geometry = new THREE.CircleGeometry(mapRadius, number);
+
 	const material = new THREE.MeshPhysicalMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	material.roughness = 0.6;
 	material.metalness = 0.1;
@@ -39,13 +43,13 @@ function initNPlayerMap(scene, number)
 	const vertex = new THREE.Vector3();
 	const nextVertex = new THREE.Vector3();
 
-	let distance = 0;
+	let playerSize = 0;
 	for (let i = 0; i < number; i++)
 	{
 		vertex.fromBufferAttribute( positionAttribute, i + 2);
 		nextVertex.fromBufferAttribute( positionAttribute, ((i + 1) % number) + 2 );
 		if (i == 0)
-			distance = vertex.distanceTo(nextVertex);
+			playerSize = vertex.distanceTo(nextVertex);
 
 		let middlePoint = new THREE.Vector3().addVectors(vertex, nextVertex).multiplyScalar(0.5);
 		middleVertexPositions.push(middlePoint);
@@ -61,20 +65,45 @@ function initNPlayerMap(scene, number)
 		let playerName = "player" + i
 
 		let color = new THREE.Color().setHSL(i / number, 1, 0.8, THREE.SRGBColorSpace);
-
-		scene.entities.push(new Player(scene, {color: color, emissive:color, emissiveIntensity:3.5}, distance, playerName));
+		scene.entities.push(new Player(scene, {color: color, emissive:color, emissiveIntensity:3.5}, playerSize, playerName));
 		
 		let player = scene.get(playerName);
 		player.player.position.set(mid.x, 0.15, mid.z - 0.075);
 		player.player.rotation.y = -angle;
 		player.angle = angle;
 	}
+
+	let points_wall = [];
+	let division = 50;
+
+	const geometry_wall = new THREE.CircleGeometry(mapRadius + 2, division);
+	geometry_wall.rotateX(-Math.PI / 2);
+	geometry_wall.rotateY(((2 * Math.PI) / number) * 2);
+	console.log(((2 * Math.PI) / number) * 2, Math.PI)
+
+	for (let i = 0; i < division; i++)
+	{
+		vertex.fromBufferAttribute(geometry_wall.getAttribute("position"), i + 2);
+		points_wall.push(vertex.clone());
+	}
+	points_wall.push(points_wall[0]);
+
+	let colors_wall = [];
+	for (let i = 0; i < number; i++)
+		colors_wall.push(new THREE.Color().setHSL(i / number, 1, 0.8, THREE.SRGBColorSpace));
+	colors_wall.push(colors_wall[0]);
+
+	for (let i = 0; i < 8; i++)
+	{
+		const wallLine = new WallLines(scene, points_wall, colors_wall, 5, "line" + i);
+		wallLine.line.mesh.position.y = -1 + 0.1 * i;
+		console.log(wallLine.line.mesh.position.y)
+		scene.entities.push(wallLine);
+	}
 }
 
 function initCamera(scene)
 {
-	if (middleVertexPositions.length == 0)
-		return;
 	let cameraTempPos = middleVertexPositions[scene.server.client_id];
 	scene.camera.position.set(cameraTempPos.x, 5, cameraTempPos.z);
 
@@ -90,7 +119,6 @@ function initCamera(scene)
 
 function init2PlayerMap(scene)
 {
-
 	let spotLight = new THREE.SpotLight( 0xffffff, 20);
 	spotLight.position.set( 0, 1, 6 );
 	spotLight.castShadow = true;
@@ -122,6 +150,7 @@ function init2PlayerMap(scene)
 		new THREE.Vector3(0, 0.75, 0),
 		new THREE.Vector3(0, 0.75, -4.2),
 	];
+
 	let colors_wall = [
 		new THREE.Color().setHSL(0.5, 1, 0.5, THREE.SRGBColorSpace),
 		new THREE.Color().setHSL(0.5, 1, 0.85, THREE.SRGBColorSpace),
@@ -184,4 +213,4 @@ function init2PlayerMap(scene)
 	scene.addText("5", {color: 0xffffff}, 0.5, new THREE.Vector3(-1.25,0.1,-0.5), "text2")
 }
 
-export { initMap, initCamera }
+export { initMap }
