@@ -127,10 +127,19 @@ async function Register(context) {
 					if (data.ok) {
 						persistSuccess(context, getLang(context, data.success));
 						try {
-							localStorage.setItem("ft_token", data.token);
 							context.user.token = data.token;
+							localStorage.setItem("ft_token", data.token);
 						} catch (e) {
 							console.log("[❌] Token could not be saved in localStorage.");
+						}
+						if (context.ChatConnexion.connected) {
+							context.ChatConnexion.authenticate(context.user.token)
+								.then(() => {
+									console.log("Successfully authenticated in chat")
+								})
+								.catch(err => {
+									console.log("Failed to authenticate : " + err.error);
+								})
 						}
 						redirect("/login?next=" + context.next);
 					} else {
