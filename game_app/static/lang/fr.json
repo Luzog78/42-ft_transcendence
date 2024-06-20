@@ -13,6 +13,14 @@
 		"profilePictureAlt": "Photo de profil"
 	},
 	"pages": {
+		"404": {
+			"title": "Erreur 404",
+			"h0": "Page non trouvée...",
+			"p0": "Il semblerait que la page que vous cherchez n'existe pas.",
+			"p1": "Revenir à la",
+			"p2": "page d'accueil",
+			"p3": "."
+		},
 		"home": {
 			"title": "PONG !",
 			"h0": "Une erreur s'est produite...",

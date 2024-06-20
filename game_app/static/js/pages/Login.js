@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 import { checkA2F, checkPassword, checkUsername, postJson } from "../utils.js";
-import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
+import { getLang, persistError, persistSuccess, popNext, redirect, onLogin } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 
@@ -108,9 +108,8 @@ async function Login(context) {
 					username: document.querySelector("#username").value,
 					password: document.querySelector("#password").value,
 					a2f_code: document.querySelector("#a2f_code") ? document.querySelector("#a2f_code").value : null
-				}).then(data => {
+				}).then(async data => {
 					if (data.ok) {
-						persistSuccess(context, getLang(context, data.success));
 						try {
 							localStorage.setItem("ft_token", data.token);
 						} catch (e) {
@@ -118,25 +117,8 @@ async function Login(context) {
 						}
 						context.user.isAuthenticated = true;
 						context.user.token = data.token;
-						context.user.username = data.username;
-						context.user.createdAt = data.createdAt;
-						context.user.email = data.email;
-						context.user.firstName = data.firstName;
-						context.user.lastName = data.lastName;
-						context.user.picture = data.picture;
-						context.user.lang = data.lang;
-						context.user.a2f = data.a2f;
-						context.user.isAdmin = data.isAdmin;
-						context.user.lastLogin = data.lastLogin;
-						if (context.ChatConnexion.connected) {
-							context.ChatConnexion.authenticate(context.user.token)
-								.then(() => {
-									console.log("Successfully authenticated in chat")
-								})
-								.catch(err => {
-									console.log("Failed to authenticate : " + err.error);
-								})
-						}
+						await onLogin(context, data, true);
+						persistSuccess(context, getLang(context, data.success));
 						redirect(context.next ? popNext(context) : "/");
 					} else if (data.error == "errors.missingA2F") {
 						context.user.isAuthenticated = false;

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { getLang, redirect } from "../script.js";
+import { getLang, loadLang, redirect } from "../script.js";
 import { getJson } from "../utils.js";
 
 var stunned = false;
@@ -60,25 +60,26 @@ function NavBar(title, context, fetchProfile = true) {
 			<a type="button" class="btn btn-outline-primary" href="/register?next=${next}" data-link>${getLang(context, "navbar.register")}</a>
 		`;
 	}
-	if (fetchProfile)
-		getJson(context, "/api/user").then(data => {
-			if (data.ok) {
-				context.user.username = data.username;
-				context.user.createdAt = data.createdAt;
-				context.user.email = data.email;
-				context.user.firstName = data.firstName;
-				context.user.lastName = data.lastName;
-				context.user.picture = data.picture;
-				context.user.lang = data.lang;
-				context.user.a2f = data.a2f;
-				context.user.isAdmin = data.isAdmin;
-				context.user.lastLogin = data.lastLogin;
-				if (!context.user.isAuthenticated) {
-					context.user.isAuthenticated = true;
-					overrideNavBar(title, context);
-				}
-			}
-		});
+	// if (fetchProfile)
+		// getJson(context, "/api/user").then(data => {
+		// 	if (data.ok) {
+		// 		context.user.username = data.username;
+		// 		context.user.createdAt = data.createdAt;
+		// 		context.user.email = data.email;
+		// 		context.user.firstName = data.firstName;
+		// 		context.user.lastName = data.lastName;
+		// 		context.user.picture = data.picture;
+		// 		context.user.lang = data.lang;
+		// 		context.user.a2f = data.a2f;
+		// 		context.user.isAdmin = data.isAdmin;
+		// 		context.user.lastLogin = data.lastLogin;
+		// 		if (!context.user.isAuthenticated) {
+		// 			context.user.isAuthenticated = true;
+		// 			overrideNavBar(title, context);
+		// 		}
+
+		// 	}
+		// });
 	setTimeout(() => {
 		let menu = document.getElementById("menu-trigger");
 		let menuContainer = document.getElementById("menu-container");

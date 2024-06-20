@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+import { overrideNavBar } from "./components/NavBar.js";
 import { Home } from "./pages/Home.js";
 import { Login } from "./pages/Login.js";
 import { Logout } from "./pages/Logout.js";
@@ -268,6 +269,51 @@ const getLang = (context, key) => {
 	return found;
 }
 
+const onLogin = async (context, loadedData=null, reloadNav=false) => {
+	var data;
+	if (loadedData)
+		data = loadedData;
+	else
+		data = getJson(context, "/api/user")
+	
+	context.ChatConnexion.onOpen(() => {
+		if (context.user.token) {
+			context.ChatConnexion.authenticate(context.user.token)
+				.then(() => {
+					console.log("Successfully authenticated in chat")
+				})
+				.catch(err => {
+					console.log("Failed to authenticate : " + err.error);
+				})
+		}
+	})
+
+	if (!loadedData)
+		data = await data
+	if (data.ok) {
+		context.user.username = data.username;
+		context.user.createdAt = data.createdAt;
+		context.user.email = data.email;
+		context.user.firstName = data.firstName;
+		context.user.lastName = data.lastName;
+		context.user.picture = data.picture;
+		context.user.lang = data.lang;
+		context.user.a2f = data.a2f;
+		context.user.isAdmin = data.isAdmin;
+		context.user.lastLogin = data.lastLogin;
+		if (!context.user.isAuthenticated) {
+			context.user.isAuthenticated = true;
+			if (reloadNav)
+				overrideNavBar(title, context);
+		}
+		await loadLang(context, data.lang);
+	}
+	else
+		await loadLang(context, DEFAULT_LANG);
+
+
+}
+
 window.addEventListener("load", async () => {
 	if (window.location.pathname !== "/" && window.location.pathname.endsWith("/"))
 		window.history.pushState(null, null, window.location.pathname.slice(0, -1)
@@ -290,18 +336,11 @@ window.addEventListener("load", async () => {
 	});
 
 	global_context.user.token = localStorage.getItem("ft_token");
-	global_context.ChatConnexion.onOpen(() => {
-		if (global_context.user.token) {
-			global_context.ChatConnexion.authenticate(global_context.user.token)
-				.then(() => {
-					console.log("Successfully authenticated in chat")
-				})
-				.catch(err => {
-					console.log("Failed to authenticate : " + err.error);
-				})
-		}
-	})
-	await loadLang(global_context, DEFAULT_LANG);
+	if (global_context.user.token)
+		await onLogin(global_context);
+	else
+		await loadLang(global_context, DEFAULT_LANG);
+
 	loadPage(window.location.pathname);
 });
 
@@ -316,6 +355,7 @@ export {
 	persist,
 	loadLang,
 	getLang,
+	onLogin,
 	SUPPORTED_LANGS,
 	DEFAULT_LANG,
 };
