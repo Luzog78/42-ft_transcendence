@@ -72,7 +72,7 @@ class Ball():
 
 		if ("player" not in wallname):
 			return
-
+		
 		player = self.lobby.clients[int(wallname.replace("player", "").replace("box", ""))]
 
 		player_up = player.keyboard["w"] if "w" in player.keyboard else False

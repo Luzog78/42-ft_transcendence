@@ -10,6 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
+import math
+
 from game_engine.Vector import Vector
 
 class Player():
@@ -19,35 +21,55 @@ class Player():
 
 		self.client_id = client_id
 
+		self.angle = 0
 		self.pos = Vector(0, 0, 0)
 
 		self.keyboard = {}
 
-		self.addSelfWall()
+	async def addSelfWall(self):
+		if (self.lobby.clientsPerLobby == 2):
+			vertex = self.lobby.walls["player" + str(self.client_id)]
+			middle = Vector((vertex[0]["x"] + vertex[1]["x"]) / 2, 0, (vertex[0]["y"] + vertex[1]["y"]) / 2)
+			self.pos = middle
+			
+			return
 
-	def addSelfWall(self):
-		playerName = "player" + str(self.client_id)
-		if (self.client_id == 0):
-			self.lobby.walls[playerName] = ({"x": 0.5, "y": 4}, {"x": -0.5, "y": 4})
-		elif (self.client_id == 1):
-			self.lobby.walls[playerName] = ({"x": 0.5, "y": -4}, {"x": -0.5, "y": -4})
+		mid = self.lobby.middleVertexPositions[self.client_id]
+		angle = self.lobby.angleVertex[self.client_id]
 
-		playerBox = self.lobby.walls[playerName]
-		middle = {"x": (playerBox[0]["x"] + playerBox[1]["x"]) / 2, "y": (playerBox[0]["y"] + playerBox[1]["y"]) / 2}
-		self.pos = Vector(middle["x"], 0, middle["y"])
+		self.angle = angle
+		self.pos = mid
+
+		playerSize = 0.5
+		playerForward = -0.075
+
+		firstPoint = Vector(mid.x + math.cos(angle) * playerSize, 0, mid.z + math.sin(angle) * playerSize)
+		secondPoint = Vector(mid.x + math.cos(angle - math.pi) * playerSize, 0, mid.z + math.sin(angle - math.pi) * playerSize)
+		
+		angleForward = angle + math.pi / 2
+		firstPoint.x += math.cos(angleForward) * playerForward
+		firstPoint.z += math.sin(angleForward) * playerForward
+		secondPoint.x += math.cos(angleForward) * playerForward
+		secondPoint.z += math.sin(angleForward) * playerForward
+
+		self.lobby.walls["player" + str(self.client_id)] = [{"x": firstPoint.x, "y": firstPoint.z},
+								  {"x": secondPoint.x, "y": secondPoint.z}]
+		await self.sendToOther("call", {"command": "newPlayer", "args": ["player" + str(self.client_id)]})
 
 	async def move(self, x, y):
 		playerBox = self.lobby.walls["player" + str(self.client_id)]
 
-		for point in playerBox:
-			point["x"] += x
-			point["y"] += y
+		rotate_x = math.cos(self.angle) * x
+		rotate_y = math.sin(self.angle) * y
 
-		self.pos += Vector(x, 0, y)
+		for point in playerBox:
+			point["x"] += rotate_x
+			point["y"] += rotate_y
+
+		self.pos += Vector(rotate_x, 0, rotate_y)
 
 		playerBoxJS = "scene.get('player" + str(self.client_id) + "').player"
-		await self.lobby.sendToOther(self, "modify",
-									{f"{playerBoxJS}.position.x": self.pos.x,
+		await self.sendToOther("modify", {f"{playerBoxJS}.position.x": self.pos.x,
 		  							f"{playerBoxJS}.position.z": self.pos.z})
 
 	async def update(self):
@@ -56,9 +78,12 @@ class Player():
 
 		if (any([key in "ws" for key in self.keyboard.keys() if self.keyboard[key] == True])):
 			if ("w" in self.keyboard and self.keyboard["w"] == True):
-				await self.move(-1.2 * self.lobby.gameServer.dt, 0)
+				await self.move(-1.2 * self.lobby.gameServer.dt, -1.2 * self.lobby.gameServer.dt)
 			elif ("s" in self.keyboard and self.keyboard["s"] == True):
-				await self.move(1.2 * self.lobby.gameServer.dt, 0)
+				await self.move(1.2 * self.lobby.gameServer.dt, 1.2 * self.lobby.gameServer.dt)
 
 	async def sendData(self, *args):
 		await self.client.sendData(*args)
+	
+	async def sendToOther(self, *args):
+		await self.lobby.sendToOther(self, *args)

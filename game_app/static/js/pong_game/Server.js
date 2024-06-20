@@ -24,6 +24,10 @@ class Server
 		this.socket.addEventListener('open', (event) => this.onOpen(this.scene, event));
 	}
 
+	newPlayer(player_name)
+	{
+		console.log("New player: " + player_name);
+	}
 
 	onOpen(scene, event)
 	{

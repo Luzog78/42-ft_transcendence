@@ -9,8 +9,8 @@ function initMap(scene)
 	let light = new THREE.AmbientLight( 0x555555 ); // soft white light
 	scene.scene.add(light);
 
-	init2PlayerMap(scene)
-	// initNPlayerMap(scene, 3)
+	// init2PlayerMap(scene)
+	initNPlayerMap(scene, 6)
 }
 
 let middleVertexPositions = []
@@ -29,7 +29,7 @@ function initNPlayerMap(scene, number)
 	const circle = new THREE.Mesh( geometry, material ); // floor
 	circle.position.set(0, 0.05, 0);
 	circle.geometry.rotateX(-Math.PI / 2);
-	circle.geometry.rotateY(Math.PI / 4);
+	// circle.geometry.rotateY(Math.PI / 4);
 	scene.add(circle, "circle");
 	
 	scene.get("ball").position.set(0,0.25,0);
@@ -42,13 +42,14 @@ function initNPlayerMap(scene, number)
 	{
 		vertex.fromBufferAttribute( positionAttribute, i + 2);
 		nextVertex.fromBufferAttribute( positionAttribute, ((i + 1) % number) + 2 );
-		
+		console.log(vertex)
 		let middlePoint = new THREE.Vector3().addVectors(vertex, nextVertex).multiplyScalar(0.5);
 		middleVertexPositions.push(middlePoint);
 
 		let angle = Math.atan2(nextVertex.z - vertex.z, nextVertex.x - vertex.x);
 		angleVertex.push(angle);
 	}
+	console.log(angleVertex)
 
 	for (let i = 0; i < number; i++)
 	{
