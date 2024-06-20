@@ -73,7 +73,7 @@ class Ball():
 		if ("player" not in wallname):
 			return
 		
-		player = self.lobby.clients[int(wallname.replace("player", "").replace("box", ""))]
+		player = self.lobby.clients[int(wallname.replace("player", ""))]
 
 		player_up = player.keyboard["w"] if "w" in player.keyboard else False
 		player_down = player.keyboard["s"] if "s" in player.keyboard else False
@@ -107,9 +107,8 @@ class Ball():
 
 			segmentClosestPoint = Ball.closestPointOnSegment(wall[0], wall[1], self.pos)
 			distance = math.hypot(segmentClosestPoint["x"] - self.pos.x, segmentClosestPoint["y"] - self.pos.z)
-			collision = distance <= self.radius
 
-			if (collision):
+			if (distance <= self.radius):
 				collisionNormal = {
 					"x": (self.pos.x - segmentClosestPoint["x"]) / distance,
 					"y": (self.pos.z - segmentClosestPoint["y"]) / distance

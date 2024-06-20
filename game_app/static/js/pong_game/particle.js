@@ -102,9 +102,8 @@ class Particle
 
 	update()
 	{
-		for (let update of this.updates) {
+		for (let update of this.updates)
             update.func(...update.args);
-        }
 	}
 }
 

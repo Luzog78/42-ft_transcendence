@@ -16,37 +16,6 @@ import math
 from game_engine.Ball import Ball
 from game_engine.Vector import Vector
 
-def init_map(lobby, num_players):
-	if (num_players == 2):
-		return {"wall1": [{"x": 2, "y": 4}, {"x": 2, "y": -4}],
-			"wall2": [{"x": -2, "y": 4}, {"x": -2, "y": -4}],
-			"player0": [{"x": 0.5, "y": 4}, {"x": -0.5, "y": 4}],
-			"player1": [{"x": 0.5, "y": -4}, {"x": -0.5, "y": -4}]}
-	
-	walls = {}
-	
-	mapRadius = math.sqrt(num_players) * 2 + 2
-	mapAngle = (2 * math.pi) / num_players
-	vertex = []
-	for i in range(num_players):
-		vertex.append(Vector(math.cos(mapAngle * i) * mapRadius, 0, math.sin(mapAngle * i) * mapRadius))
-	vertex.reverse()
-
-	middleVertexPositions = []
-	angleVertex = []
-	for i in range(num_players):
-		firstVertex = vertex[i]
-		nextVertex = vertex[(i + 1) % num_players]
-		
-		middleVertexPositions.append(Vector((firstVertex.x + nextVertex.x) / 2, 0,
-									(firstVertex.z + nextVertex.z) / 2))
-		angleVertex.append(math.atan2(nextVertex.z - firstVertex.z, nextVertex.x - firstVertex.x))
-
-	lobby.middleVertexPositions = middleVertexPositions
-	lobby.angleVertex = angleVertex
-
-	return walls
-
 class Lobby():
 	def __init__(self, gameServer):
 		self.gameServer = gameServer
@@ -59,7 +28,45 @@ class Lobby():
 
 		self.middleVertexPositions = []
 		self.angleVertex = []
-		self.walls = init_map(self, self.clientsPerLobby)
+
+		self.player_size = 0.5
+
+		self.walls = self.init_map(self.clientsPerLobby)
+
+	def init_map(self, num_players):
+		if (num_players == 2):
+			return {"wall1": [{"x": 2, "y": 4}, {"x": 2, "y": -4}],
+				"wall2": [{"x": -2, "y": 4}, {"x": -2, "y": -4}],
+				"player0": [{"x": 0.5, "y": 4}, {"x": -0.5, "y": 4}],
+				"player1": [{"x": 0.5, "y": -4}, {"x": -0.5, "y": -4}]}
+		
+		walls = {}
+		
+		mapRadius = math.sqrt(num_players) * 2 + 2
+		mapAngle = (2 * math.pi) / num_players
+		vertex = []
+		for i in range(num_players):
+			vertex.append(Vector(math.cos(mapAngle * i) * mapRadius, 0, math.sin(mapAngle * i) * mapRadius))
+		vertex.reverse()
+
+		middleVertexPositions = []
+		angleVertex = []
+
+		for i in range(num_players):
+			firstVertex = vertex[i]
+			nextVertex = vertex[(i + 1) % num_players]
+			
+			if (i == 0):
+				self.player_size = (firstVertex.distance(nextVertex) * 0.3) / 2
+
+			middleVertexPositions.append(Vector((firstVertex.x + nextVertex.x) / 2, 0,
+										(firstVertex.z + nextVertex.z) / 2))
+			angleVertex.append(math.atan2(nextVertex.z - firstVertex.z, nextVertex.x - firstVertex.x))
+
+		self.middleVertexPositions = middleVertexPositions
+		self.angleVertex = angleVertex
+
+		return walls
 
 	async def update(self):
 		await self.ball.update()

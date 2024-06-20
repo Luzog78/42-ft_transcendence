@@ -27,7 +27,6 @@ function initNPlayerMap(scene, number)
 	material.roughness = 0.6;
 	material.metalness = 0.1;
 
-
 	const circle = new THREE.Mesh( geometry, material ); // floor
 	circle.position.set(0, 0.05, 0);
 	circle.geometry.rotateX(-Math.PI / 2);
@@ -40,18 +39,20 @@ function initNPlayerMap(scene, number)
 	const vertex = new THREE.Vector3();
 	const nextVertex = new THREE.Vector3();
 
+	let distance = 0;
 	for (let i = 0; i < number; i++)
 	{
 		vertex.fromBufferAttribute( positionAttribute, i + 2);
 		nextVertex.fromBufferAttribute( positionAttribute, ((i + 1) % number) + 2 );
-		console.log(vertex)
+		if (i == 0)
+			distance = vertex.distanceTo(nextVertex);
+
 		let middlePoint = new THREE.Vector3().addVectors(vertex, nextVertex).multiplyScalar(0.5);
 		middleVertexPositions.push(middlePoint);
 
 		let angle = Math.atan2(nextVertex.z - vertex.z, nextVertex.x - vertex.x);
 		angleVertex.push(angle);
 	}
-	console.log(angleVertex)
 
 	for (let i = 0; i < number; i++)
 	{
@@ -61,7 +62,7 @@ function initNPlayerMap(scene, number)
 
 		let color = new THREE.Color().setHSL(i / number, 1, 0.8, THREE.SRGBColorSpace);
 
-		scene.entities.push(new Player(scene, {color: color, emissive:color, emissiveIntensity:3.5}, playerName));
+		scene.entities.push(new Player(scene, {color: color, emissive:color, emissiveIntensity:3.5}, distance, playerName));
 		
 		let player = scene.get(playerName);
 		player.player.position.set(mid.x, 0.15, mid.z - 0.075);
@@ -100,8 +101,8 @@ function init2PlayerMap(scene)
 	spotLight.castShadow = true;
 	scene.add( spotLight , "spotLight");
 
-	scene.entities.push(new Player(scene, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, "player0"));
-	scene.entities.push(new Player(scene, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, "player1"));
+	scene.entities.push(new Player(scene, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, 3, "player0"));
+	scene.entities.push(new Player(scene, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, 3, "player1"));
 
 	scene.get("player0").player.position.set(0,0.15,4.075);
 	scene.get("player1").player.position.set(0,0.15,-4.075);

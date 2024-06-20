@@ -40,12 +40,11 @@ class Player():
 		self.angle = angle
 		self.pos = mid
 
-		playerSize = 0.5
-		firstPoint = Vector(mid.x + math.cos(angle) * playerSize, 0, mid.z + math.sin(angle) * playerSize)
-		secondPoint = Vector(mid.x + math.cos(angle - math.pi) * playerSize, 0, mid.z + math.sin(angle - math.pi) * playerSize)
+		firstPoint = Vector(mid.x + math.cos(angle) * self.lobby.player_size, 0, mid.z + math.sin(angle) * self.lobby.player_size)
+		secondPoint = Vector(mid.x + math.cos(angle - math.pi) * self.lobby.player_size, 0, mid.z + math.sin(angle - math.pi) * self.lobby.player_size)
 
 		self.lobby.walls["player" + str(self.client_id)] = [{"x": firstPoint.x, "y": firstPoint.z},
-								  {"x": secondPoint.x, "y": secondPoint.z}]
+								  							{"x": secondPoint.x, "y": secondPoint.z}]
 		await self.sendToOther("call", {"command": "newPlayer", "args": ["player" + str(self.client_id)]})
 
 	async def move(self, x, y):

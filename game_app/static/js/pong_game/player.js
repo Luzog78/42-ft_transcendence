@@ -14,7 +14,7 @@ import * as THREE from 'three';
 
 class Player
 {
-	constructor(scene, options, name)
+	constructor(scene, options, size, name)
 	{
 		this.scene = scene;
 		this.name = this.scene.getName(name);
@@ -28,7 +28,7 @@ class Player
 		this.keydown_event_func = this.keydown_event.bind(this)
 		this.keyup_event_func = this.keyup_event.bind(this)
 
-		this.init();
+		this.init(size);
 	}
 
 	async keydown_event(e)
@@ -46,9 +46,9 @@ class Player
 		await this.scene.server.sendData("player_keyboard", this.keyboard);
 	}
 
-	init()
+	init(size)
 	{
-		this.player = this.scene.addBox(1, 0.25, 0.15, this.options, this.name + "box");
+		this.player = this.scene.addBox(0.3 * size, 0.1, 0.1, this.options, this.name + "box");
 		this.scene.elements[this.name] = this;
 	}
 
