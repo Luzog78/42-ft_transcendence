@@ -290,6 +290,17 @@ window.addEventListener("load", async () => {
 	});
 
 	global_context.user.token = localStorage.getItem("ft_token");
+	global_context.ChatConnexion.onOpen(() => {
+		if (global_context.user.token) {
+			global_context.ChatConnexion.authenticate(global_context.user.token)
+				.then(() => {
+					console.log("Successfully authenticated in chat")
+				})
+				.catch(err => {
+					console.log("Failed to authenticate : " + err.error);
+				})
+		}
+	})
 	await loadLang(global_context, DEFAULT_LANG);
 	loadPage(window.location.pathname);
 });

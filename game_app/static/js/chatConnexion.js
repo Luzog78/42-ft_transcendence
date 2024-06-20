@@ -25,7 +25,7 @@ class ChatConnexion
 
 		this.socket.onopen = function(e) {
 			console.log("Chat socket opened");
-			this.connected = true;
+			_this.connected = true;
 			if (_this.onOpenCb)
 				_this.onOpenCb();
 		};
@@ -117,16 +117,22 @@ class ChatConnexion
 
 	getAllMessages()
 	{
+		if (!this.authenticated)
+			return new Promise((_, rej) => rej({error: 'errors.notAuthenticated'}));
 		return this.triggerCallback({ type: "get_previous_messages" });
 	}
 
 	sendMessage(target, content)
 	{
+		if (!this.authenticated)
+			return new Promise((_, rej) => rej({error: 'errors.notAuthenticated'}));
 		return this.triggerCallback({ type: "send_message", target: target, content: content });
 	}
 
 	sendGameMessage(gameId, content)
 	{
+		if (!this.authenticated)
+			return new Promise((_, rej) => rej({error: 'errors.notAuthenticated'}));
 		return this.triggerCallback({ type: "send_game_message", gameId: gameId, content: content });
 	}
 }

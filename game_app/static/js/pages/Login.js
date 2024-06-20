@@ -128,6 +128,15 @@ async function Login(context) {
 						context.user.a2f = data.a2f;
 						context.user.isAdmin = data.isAdmin;
 						context.user.lastLogin = data.lastLogin;
+						if (context.ChatConnexion.connected) {
+							context.ChatConnexion.authenticate(context.user.token)
+								.then(() => {
+									console.log("Successfully authenticated in chat")
+								})
+								.catch(err => {
+									console.log("Failed to authenticate : " + err.error);
+								})
+						}
 						redirect(context.next ? popNext(context) : "/");
 					} else if (data.error == "errors.missingA2F") {
 						context.user.isAuthenticated = false;
