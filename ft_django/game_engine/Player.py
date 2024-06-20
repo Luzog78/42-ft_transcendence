@@ -41,16 +41,8 @@ class Player():
 		self.pos = mid
 
 		playerSize = 0.5
-		playerForward = -0.075
-
 		firstPoint = Vector(mid.x + math.cos(angle) * playerSize, 0, mid.z + math.sin(angle) * playerSize)
 		secondPoint = Vector(mid.x + math.cos(angle - math.pi) * playerSize, 0, mid.z + math.sin(angle - math.pi) * playerSize)
-		
-		angleForward = angle + math.pi / 2
-		firstPoint.x += math.cos(angleForward) * playerForward
-		firstPoint.z += math.sin(angleForward) * playerForward
-		secondPoint.x += math.cos(angleForward) * playerForward
-		secondPoint.z += math.sin(angleForward) * playerForward
 
 		self.lobby.walls["player" + str(self.client_id)] = [{"x": firstPoint.x, "y": firstPoint.z},
 								  {"x": secondPoint.x, "y": secondPoint.z}]

@@ -4,13 +4,15 @@ import { WallLines } from "./LineEffects.js"
 import { Lines } from "./Lines.js"
 import { Player } from "./player.js"
 
-function initMap(scene)
+function initMap(scene, player_num)
 {
 	let light = new THREE.AmbientLight( 0x555555 ); // soft white light
 	scene.scene.add(light);
 
-	// init2PlayerMap(scene)
-	initNPlayerMap(scene, 6)
+	if (player_num == 2)
+		init2PlayerMap(scene);
+	else
+		initNPlayerMap(scene, player_num);
 }
 
 let middleVertexPositions = []

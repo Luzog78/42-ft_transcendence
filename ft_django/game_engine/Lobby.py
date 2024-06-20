@@ -53,7 +53,7 @@ class Lobby():
 		self.lobby_id = len(self.gameServer.lobbys)
 
 		self.clients = []
-		self.clientsPerLobby = 6
+		self.clientsPerLobby = 3
 
 		self.ball = Ball(self, 0.15)
 
@@ -76,7 +76,7 @@ class Lobby():
 		await player.addSelfWall()
 		await player.sendData("modify", {"scene.server.lobby_id": self.lobby_id,
 								   		"scene.server.client_id": player.client_id})
-		await player.sendData("call", {"command": "scene.initConnection", "args": []})
+		await player.sendData("call", {"command": "scene.initConnection", "args": [self.clientsPerLobby]})
 
 		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)
 		if (len(self.clients) == self.clientsPerLobby):
