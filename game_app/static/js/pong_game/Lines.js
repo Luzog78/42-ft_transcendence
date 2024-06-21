@@ -15,6 +15,7 @@ import { Line2 } from 'line2';
 import { LineMaterial } from 'linematerial';
 import { LineGeometry } from 'linegeometry';
 
+
 class Lines
 {
 	constructor(scene, points, colors, divisionCount, linewidth=5, name="Line")
@@ -93,4 +94,5 @@ class Lines
 	}
 }
 
-export { Lines }
+
+export { Lines };

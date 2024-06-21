@@ -15,6 +15,7 @@ import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persist, persistCopy, persistError, redirect } from "../script.js";
 import { getJson, postJson } from "../utils.js";
 
+
 async function Profile(context, username) {
 	let persistentBackup = persistCopy(context);
 	let div = document.createElement("div");
@@ -205,5 +206,6 @@ function tablePage(context, uids, page, totalPage) {
 		}
 	});
 }
+
 
 export { Profile };

@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   screenShake.js                                     :+:      :+:    :+:   */
+/*   ScreenShake.js                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 00:42:48 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/17 17:46:30 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/21 02:34:50 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from 'three';
 
+
 function ScreenShake() {
-
 	return {
-
 		// When a function outside ScreenShake handle the camera, it should
 		// always check that ScreenShake.enabled is false before.
 		enabled: false,
@@ -27,7 +26,6 @@ function ScreenShake() {
 		_startPoint: undefined,
 
 		_endPoint: undefined,
-
 
 
 		// update(camera) must be called in the loop function of the renderer,
@@ -47,7 +45,6 @@ function ScreenShake() {
 		},
 
 
-
 		// This initialize the values of the shaking.
 		// vecToAdd param is the offset of the camera position at the climax of its wave.
 		shake: function shake(camera, vecToAdd, milliseconds) {
@@ -59,10 +56,7 @@ function ScreenShake() {
 		},
 
 
-
-
 		computePosition: function computePosition(camera, interval) {
-
 			// This creates the wavy movement of the camera along the interval.
 			// The first bloc call this.getQuadra() with a positive indice between
 			// 0 and 1, then the second call it again with a negative indice between
@@ -87,9 +81,8 @@ function ScreenShake() {
 		getQuadra: function getQuadra(t) {
 			return 9.436896e-16 + (4*t) - (4*(t*t)) ;
 		}
-
 	};
-
 };
 
-export { ScreenShake }
+
+export { ScreenShake };

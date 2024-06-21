@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.js                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/21 02:25:11 by ysabik            #+#    #+#             */
+/*   Updated: 2024/06/21 02:25:11 by ysabik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 import * as THREE from 'three';
 
-import { WallLines } from "./LineEffects.js"
-import { Lines } from "./Lines.js"
-import { Player } from "./player.js"
+import { WallLines } from "./LineEffects.js";
+import { Lines } from "./Lines.js";
+import { Player } from "./Player.js";
+
 
 function initMap(scene, player_num)
 {
@@ -24,7 +37,7 @@ let angleVertex = []
 function initNPlayerMap(scene, number)
 {
 	const mapRadius = Math.sqrt(number) * 2 + 2
-	
+
 	const geometry = new THREE.CircleGeometry(mapRadius, number);
 
 	const material = new THREE.MeshPhysicalMaterial( { color: 0x000000, side: THREE.DoubleSide } );
@@ -36,7 +49,7 @@ function initNPlayerMap(scene, number)
 	circle.geometry.rotateX(-Math.PI / 2);
 	// circle.geometry.rotateY(Math.PI / 4);
 	scene.add(circle, "circle");
-	
+
 	scene.get("ball").position.set(0,0.25,0);
 
 	const positionAttribute = geometry.getAttribute( 'position' );
@@ -66,7 +79,7 @@ function initNPlayerMap(scene, number)
 
 		let color = new THREE.Color().setHSL(i / number, 1, 0.8, THREE.SRGBColorSpace);
 		scene.entities.push(new Player(scene, {color: color, emissive:color, emissiveIntensity:3.5}, playerSize, playerName));
-		
+
 		let player = scene.get(playerName);
 		player.player.position.set(mid.x, 0.15, mid.z - 0.075);
 		player.player.rotation.y = -angle;
@@ -109,7 +122,7 @@ function initCamera(scene)
 
 	const lookAtPoint = new THREE.Vector3(0, 0, 0);
 	const direction = new THREE.Vector3().subVectors(scene.camera.position, lookAtPoint);
-	
+
 	direction.normalize();
 	direction.y = 0;
 
@@ -138,7 +151,7 @@ function init2PlayerMap(scene)
 
 	scene.camera.position.x = 1.5;
 	scene.camera.position.y = 4;
-	
+
 	scene.addBox(4, 0.1, 8, {color: 0x0}, "floor");
 	scene.addBox(0.2, 0.75, 8, {color: 0xbbbbbb, emissive:0xbbbbbb, emissiveIntensity:2, visible:false}, "wall1");
 	scene.addBox(0.2, 0.75, 8, {color: 0xbbbbbb, emissive:0xbbbbbb, emissiveIntensity:2, visible:false}, "wall2");
@@ -213,4 +226,5 @@ function init2PlayerMap(scene)
 	scene.addText("5", {color: 0xffffff}, 0.5, new THREE.Vector3(-1.25,0.1,-0.5), "text2")
 }
 
-export { initMap }
+
+export { initMap };

@@ -15,6 +15,7 @@ import { getLang } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 
+
 async function Home(context) {
 	let div = document.createElement("div");
 	div.innerHTML = NavBar(getLang(context, "pages.home.title"), context);
@@ -49,5 +50,6 @@ async function Home(context) {
 	});
 	return div.innerHTML;
 }
+
 
 export { Home };

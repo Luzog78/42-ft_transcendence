@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.js                                           :+:      :+:    :+:   */
+/*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/20 21:00:43 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/21 02:39:26 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ import * as UnrealBloomPass from 'unrealbloompass';
 import * as FontLoader from 'fontloader';
 import * as Timer from 'timer';
 
-import { Ball } from "./ball.js"
-import { Server } from "./Server.js"
-import { ScreenShake } from "./screenShake.js"
-import { initMap } from "./map.js"
+import { Ball } from "./Ball.js";
+import { Server } from "./Server.js";
+import { ScreenShake } from "./ScreenShake.js";
+import { initMap } from "./map.js";
+
 
 class Scene
 {
@@ -56,7 +57,7 @@ class Scene
 			0.4, 1.0, 0.5);
 		this.composer.addPass(bloomPass);
 	}
-	
+
 	init()
 	{
 		this.renderer.shadowMap.enabled = true;
@@ -65,7 +66,7 @@ class Scene
 		document.body.appendChild(this.renderer.domElement);
 
 	}
-	
+
 	initConnection(player_num)
 	{
 		this.player_num = player_num;
@@ -197,5 +198,6 @@ class Scene
 		this.scene.remove(element.mesh);
 	}
 }
+
 
 export {Scene};

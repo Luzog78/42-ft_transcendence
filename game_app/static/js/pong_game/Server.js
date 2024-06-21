@@ -63,6 +63,7 @@ class Server
 	{
 		this.sendData("message", message);
 	}
+
 	sendData(...args)
 	{
 		const data = {};
@@ -77,10 +78,12 @@ class Server
 
 		this.sendJson(data);
 	}
+
 	sendJson(message)
 	{
 		this.socket.send(JSON.stringify(message));
 	}
 }
 
-export { Server }
+
+export { Server };

@@ -12,7 +12,8 @@
 
 class ChatConnexion
 {
-	//* intern *\\ 
+	//* intern *\\
+
 	constructor()
 	{
 		const _this = this;
@@ -69,8 +70,6 @@ class ChatConnexion
 	{
 		console.log("TODO new message from : "  + data.from + " - " + data.content);
 	}
-
-
 
 
 	//* public *\\
@@ -136,7 +135,6 @@ class ChatConnexion
 		return this.triggerCallback({ type: "send_game_message", gameId: gameId, content: content });
 	}
 }
-
 
 
 export { ChatConnexion };

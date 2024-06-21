@@ -1,7 +1,6 @@
-from typing import Any
+import pyotp
 from django.http import HttpRequest
 from django.contrib.auth import authenticate
-import pyotp
 
 from .models import User
 from . import jwt

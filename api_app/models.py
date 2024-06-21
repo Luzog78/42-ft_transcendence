@@ -211,13 +211,13 @@ class GameChat(models.Model):
 		return self.id
 
 	def json(self, json_user=True, json_game=True):
-		author = (self.author.json() if json_users else {'username': self.author.username}) if self.author is not None else None
+		author = (self.author.json() if json_user else {'username': self.author.username}) if self.author is not None else None
 		game = (self.game.json() if json_game else {'uid': str(self.game)}) if self.game is not None else None
-		
+
 		return {
 			'id': self.id,
 			'send_at': self.send_at,
 			'author': author,
-			'game': target,
+			'game': game,
 			'content': self.content
 		}

@@ -13,6 +13,7 @@
 import { getLang, loadLang, redirect } from "../script.js";
 import { getJson } from "../utils.js";
 
+
 var stunned = false;
 
 function NavBar(title, context, fetchProfile = true) {
@@ -182,5 +183,6 @@ function overrideNavBar(title, context) {
 	if (container)
 		container.outerHTML = NavBar(title, context, false);
 }
+
 
 export { NavBar, overrideNavBar };

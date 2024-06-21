@@ -14,6 +14,7 @@ import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 import { getLang } from "../script.js";
 
+
 async function Err404(context) {
 	let div = document.createElement("div");
 	div.innerHTML = NavBar(getLang(context, "pages.404.title"), context);
@@ -33,5 +34,6 @@ async function Err404(context) {
 	`;
 	return div.innerHTML;
 }
+
 
 export { Err404 };

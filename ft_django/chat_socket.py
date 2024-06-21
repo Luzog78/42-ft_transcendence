@@ -1,6 +1,6 @@
 import json
 
-from game_engine.GameServer import GameServer
+from ft_django.game_engine.game_server import GameServer
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 from django.db.models import Q
@@ -88,7 +88,7 @@ class ChatSocket(AsyncWebsocketConsumer):
 				if not self in connected_sockets:
 					connected_sockets.append(self)
 				await self.reply(None, True, frontendId)
-	
+
 	async def send_message(self, data, frontendId):
 		if 'target' not in data or 'content' not in data \
 			or not isinstance(data['target'], str) or not isinstance(data['content'], str):
@@ -126,4 +126,3 @@ class ChatSocket(AsyncWebsocketConsumer):
 			'private_messages': private_messages,
 			'game_messages': [] # todo get game messages
 		}, True, frontendId)
-	

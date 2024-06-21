@@ -14,10 +14,11 @@ import time
 import asyncio
 import threading
 
-from game_engine.Lobby import Lobby
-from game_engine.Player import Player
+from .lobby import Lobby
+from .player import Player
 
-class GameServer():
+
+class GameServer:
 	def __init__(self):
 		self.lobbys = []
 		self.clients = []

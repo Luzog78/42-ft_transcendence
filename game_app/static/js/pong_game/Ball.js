@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ball.js                                            :+:      :+:    :+:   */
+/*   Ball.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,9 +11,11 @@
 /* ************************************************************************** */
 
 import * as THREE from 'three';
-import { RingBlob } from "./ringBlob.js"
-import { Trail } from "./trail.js"
-import { Particle } from "./particle.js"
+
+import { RingBlob } from "./RingBlob.js";
+import { Trail } from "./Trail.js";
+import { Particle } from "./Particle.js";
+
 
 class Ball
 {
@@ -72,7 +74,6 @@ class Ball
 
 			this.scene.entities.push(particle);
 		}
-
 	}
 
 	update(scene)
@@ -94,7 +95,7 @@ class Ball
 		// 	angle -= (2 * Math.PI) / scene.player_num;
 		// 	angle = THREE.MathUtils.radToDeg(angle);
 		// 	angle = 360 - angle;
-			
+
 		// 	ball_distance_ratio *= 0.2;
 		// 	ball_distance_ratio = 0.2 - ball_distance_ratio;
 		// 	color = new THREE.Color().setHSL((angle / 360), 1, 0.8 + ball_distance_ratio, THREE.SRGBColorSpace);
@@ -158,5 +159,6 @@ class Ball
 		this.acc.multiplyScalar(Math.pow(accelerationFactor, this.scene.dt));
 	}
 }
+
 
 export { Ball };

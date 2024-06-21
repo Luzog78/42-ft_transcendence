@@ -3,6 +3,7 @@ import { PlayWaiting } from "./PlayWaiting.js";
 import { Pong } from "./Pong.js";
 import { PongResult } from "./PongResult.js";
 
+
 async function PlayId(context, id) {
 	let data = await getJson(context, `/api/game/g/${id}`);
 
@@ -19,5 +20,6 @@ async function PlayId(context, id) {
 
 	// return PlayError(context, id, data);
 }
+
 
 export { PlayId };

@@ -1,5 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.js                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
+/*   Updated: 2024/06/21 02:34:28 by ysabik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 import * as THREE from 'three';
-import { Scene } from "./scene.js"
+
+import { Scene } from "./Scene.js";
+
 
 let scene;
 
@@ -34,8 +48,8 @@ function destroy_scene()
 		}
 	});
 
-	while(scene.scene.children.length > 0)
-        scene.scene.remove(scene.scene.children[0]);
+	while (scene.scene.children.length > 0)
+		scene.scene.remove(scene.scene.children[0]);
 
 	window.removeEventListener("keyup", scene.get("player" + scene.server.client_id).keyup_event_func);
 	window.removeEventListener("keydown", scene.get("player" + scene.server.client_id).keydown_event_func);
@@ -53,4 +67,5 @@ function animate()
 	scene.update();
 }
 
-export { init_scene, destroy_scene, animate }
+
+export { init_scene, destroy_scene, animate };

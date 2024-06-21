@@ -12,9 +12,10 @@
 
 import math
 
-from game_engine.Vector import Vector
+from .vector import Vector
 
-class Player():
+
+class Player:
 	def __init__(self, lobby, client, client_id):
 		self.lobby = lobby
 		self.client = client
@@ -31,7 +32,7 @@ class Player():
 			vertex = self.lobby.walls["player" + str(self.client_id)]
 			middle = Vector((vertex[0]["x"] + vertex[1]["x"]) / 2, 0, (vertex[0]["y"] + vertex[1]["y"]) / 2)
 			self.pos = middle
-			
+
 			return
 
 		mid = self.lobby.middleVertexPositions[self.client_id]
@@ -75,6 +76,6 @@ class Player():
 
 	async def sendData(self, *args):
 		await self.client.sendData(*args)
-	
+
 	async def sendToOther(self, *args):
 		await self.lobby.sendToOther(self, *args)

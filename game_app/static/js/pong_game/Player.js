@@ -12,6 +12,7 @@
 
 import * as THREE from 'three';
 
+
 class Player
 {
 	constructor(scene, options, size, name)
@@ -100,5 +101,6 @@ class Player
 			this.keyPressed();
 	}
 }
+
 
 export { Player };

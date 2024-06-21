@@ -12,6 +12,7 @@
 
 import * as THREE from 'three';
 
+
 class Particle
 {
 	constructor(scene, pos, vel, acc, accDec, radius, options, lifetime, name="particle")
@@ -103,8 +104,9 @@ class Particle
 	update()
 	{
 		for (let update of this.updates)
-            update.func(...update.args);
+			update.func(...update.args);
 	}
 }
 
-export { Particle }
+
+export { Particle };

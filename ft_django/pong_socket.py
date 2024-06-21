@@ -1,6 +1,6 @@
 import json
 
-from game_engine.GameServer import GameServer
+from ft_django.game_engine.game_server import GameServer
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 gameServer = GameServer()

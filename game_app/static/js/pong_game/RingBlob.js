@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ringBlob.js                                        :+:      :+:    :+:   */
+/*   RingBlob.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 01:13:05 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/19 00:08:39 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/21 02:35:11 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from 'three';
+
 
 class RingBlob
 {
@@ -60,5 +61,6 @@ class RingBlob
 		this.mesh.material.opacity -= 1 / this.timeToFade;
 	}
 }
+
 
 export { RingBlob };

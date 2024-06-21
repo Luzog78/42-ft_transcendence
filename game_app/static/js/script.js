@@ -22,12 +22,12 @@ import { PlayId } from "./pages/PlayId.js";
 import { Pong } from "./pages/Pong.js";
 import { PongResult } from "./pages/PongResult.js";
 import { GameConfig} from "./pages/GameConfig.js";
+import { Settings } from "./pages/Settings.js";
+
+import { ChatConnexion } from "./ChatConnexion.js";
 
 import { getJson } from "./utils.js";
-import { Settings } from "./pages/Settings.js";
-import { PlayWaiting } from "./pages/PlayWaiting.js";
 
-import { ChatConnexion } from "./chatConnexion.js";
 
 const SUPPORTED_LANGS = ["en", "fr"];
 const DEFAULT_LANG = SUPPORTED_LANGS[0];
@@ -344,6 +344,7 @@ window.addEventListener("load", async () => {
 	loadPage(window.location.pathname);
 });
 
+
 export {
 	loadComponent,
 	redirect,
@@ -359,5 +360,6 @@ export {
 	SUPPORTED_LANGS,
 	DEFAULT_LANG,
 };
+
 
 console.log("[✅] Scripts loaded successfully!");

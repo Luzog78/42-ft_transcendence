@@ -10,12 +10,13 @@
 #                                                                              #
 # **************************************************************************** #
 
+import time
 import math
 
-from game_engine.Vector import Vector
-import time
+from .vector import Vector
 
-class Ball():
+
+class Ball:
 	def __init__(self, lobby, radius):
 		self.lobby = lobby
 		self.radius = radius
@@ -72,7 +73,7 @@ class Ball():
 
 		if ("player" not in wallname):
 			return
-		
+
 		player = self.lobby.clients[int(wallname.replace("player", ""))]
 
 		player_up = player.keyboard["w"] if "w" in player.keyboard else False

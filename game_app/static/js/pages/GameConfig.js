@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   GameConfig.js                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
+/*   Updated: 2024/06/21 02:32:05 by ysabik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
-import { checkUID, clearFeedbacks } from "../utils.js";
+
 
 function GameConfig(context, id) {
-    let div = document.createElement("div");
-    div.innerHTML = NavBar("Game Settings", context);
-    div.innerHTML += Persistents(context);
-    div.innerHTML += /*html*/`
+	let div = document.createElement("div");
+	div.innerHTML = NavBar("Game Settings", context);
+	div.innerHTML += Persistents(context);
+	div.innerHTML += /*html*/`
 		<div id=GameConfig-content>
 			<div class="text-center fs-2 fw-bolder">#1234</div>
 			<div class="container-blur row" style="padding: 50px; margin-top: 75px; max-width: 75%;">
@@ -23,7 +35,8 @@ function GameConfig(context, id) {
 			</div>
 		</div>
 	`;
-    return div.outerHTML;
+	return div.outerHTML;
 }
+
 
 export { GameConfig };

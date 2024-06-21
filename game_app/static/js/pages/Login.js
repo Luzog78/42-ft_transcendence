@@ -15,6 +15,7 @@ import { getLang, persistError, persistSuccess, popNext, redirect, onLogin } fro
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 
+
 function createA2fInput(context) {
 	var row = document.createElement("div");
 	row.classList.add("row", "col-12");
@@ -155,5 +156,6 @@ async function Login(context) {
 		setTimeout(foo, 200);
 	return div.innerHTML;
 }
+
 
 export { Login };

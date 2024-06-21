@@ -14,6 +14,7 @@ import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 import { init_scene, animate } from "../pong_game/main.js";
 
+
 async function Pong(context)
 {
 	let div = document.createElement("div");
@@ -38,4 +39,5 @@ async function Pong(context)
 	return div.innerHTML;
 }
 
-export { Pong }
+
+export { Pong };

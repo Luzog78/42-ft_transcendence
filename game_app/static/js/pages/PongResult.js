@@ -16,6 +16,7 @@ import { getLang, persistError, redirect } from "../script.js";
 import { getJson } from "../utils.js";
 import { PlayId } from "./PlayId.js";
 
+
 async function PongResult(context, id, data=null) {
 	if (data === null)
 		return await PlayId(context, id);
@@ -173,5 +174,6 @@ async function PongResult(context, id, data=null) {
 	}, 200);
 	return div.outerHTML;
 }
+
 
 export { PongResult };

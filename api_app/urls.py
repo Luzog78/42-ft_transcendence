@@ -1,4 +1,5 @@
 from django.urls import path, re_path
+
 from .views import view_err404, view_test, \
 					view_root, view_login, view_register, \
 					view_user, view_user_set, view_user_del, \

@@ -14,6 +14,7 @@ import { getLang, persistError, persistSuccess, popNext, redirect } from "../scr
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 
+
 async function Logout(context) {
 	let div = document.createElement("div");
 	context.user = {
@@ -46,5 +47,6 @@ async function Logout(context) {
 	div.innerHTML += Persistents(context);
 	return div.innerHTML;
 }
+
 
 export { Logout };

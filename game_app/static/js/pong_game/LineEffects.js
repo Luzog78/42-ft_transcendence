@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   LineEffects.js                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 17:32:23 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/20 21:03:20 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/21 02:34:22 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { Lines } from "./Lines.js"
+import { Lines } from "./Lines.js";
+
 
 class WallLines
 {
@@ -34,13 +35,12 @@ class WallLines
 
 	update(scene)
 	{
-		
 		this.line.mesh.position.y += 0.001;
 		if (this.line.mesh.position.y >= -0.2)
 			this.line.mesh.position.y = -1;
 		// this.line.update(scene);
 	}
-
 }
 
-export { WallLines }
+
+export { WallLines };

@@ -10,13 +10,13 @@
 #                                                                              #
 # **************************************************************************** #
 
-import random
 import math
 
-from game_engine.Ball import Ball
-from game_engine.Vector import Vector
+from .ball import Ball
+from .vector import Vector
 
-class Lobby():
+
+class Lobby:
 	def __init__(self, gameServer):
 		self.gameServer = gameServer
 		self.lobby_id = len(self.gameServer.lobbys)
@@ -39,9 +39,9 @@ class Lobby():
 				"wall2": [{"x": -2, "y": 4}, {"x": -2, "y": -4}],
 				"player0": [{"x": 0.5, "y": 4}, {"x": -0.5, "y": 4}],
 				"player1": [{"x": 0.5, "y": -4}, {"x": -0.5, "y": -4}]}
-		
+
 		walls = {}
-		
+
 		mapRadius = math.sqrt(num_players) * 2 + 2
 		mapAngle = (2 * math.pi) / num_players
 		vertex = []
@@ -55,7 +55,7 @@ class Lobby():
 		for i in range(num_players):
 			firstVertex = vertex[i]
 			nextVertex = vertex[(i + 1) % num_players]
-			
+
 			if (i == 0):
 				self.player_size = (firstVertex.distance(nextVertex) * 0.3) / 2
 
