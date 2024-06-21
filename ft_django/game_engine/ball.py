@@ -103,11 +103,12 @@ class Ball:
 		for wall_name in self.lobby.walls:
 			wall = self.lobby.walls[wall_name]
 
-			closest_point = Ball.closestPointOnSegment(wall[0], wall[1], self.pos)
-			distance = closest_point.distance(self.pos)
+			predicted_ball_pos = self.pos + self.vel * self.lobby.gameServer.dt
+			closest_point = Ball.closestPointOnSegment(wall[0], wall[1], predicted_ball_pos)
+			distance = closest_point.distance(predicted_ball_pos)
 
 			if (distance <= self.radius):
-				collision_normal = (self.pos - closest_point).normalize()
+				collision_normal = (predicted_ball_pos - closest_point).normalize()
 
 				self.resolutionCollision(collision_normal, distance)
 				self.ballEffect(wall_name, collision_normal)
@@ -131,5 +132,5 @@ class Ball:
 
 		await self.checkCollision()
 
-		# if (self.vel.length() > self.terminal_velocity):
-		# 	self.vel.setLength(self.terminal_velocity)
+		if (self.vel.length() > self.terminal_velocity):
+			self.vel.setLength(self.terminal_velocity)

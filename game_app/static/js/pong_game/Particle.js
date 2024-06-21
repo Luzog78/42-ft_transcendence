@@ -69,7 +69,7 @@ class Particle
 	{
 		if (particle.mesh.material.opacity <= 0)
 		{
-			particle.mesh.position.set(object.position.x, object.position.y, object.position.z);
+			particle.mesh.position.copy(object.position);
 			particle.mesh.position.add(particle.positionOffset);
 
 			particle.mesh.material.opacity = 1;
@@ -97,7 +97,7 @@ class Particle
 		});
 		this.mesh = new THREE.Mesh( geometry, material );
 
-		this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z);
+		this.mesh.position.copy(this.pos);
 		this.scene.add(this.mesh, this.name);
 	}
 

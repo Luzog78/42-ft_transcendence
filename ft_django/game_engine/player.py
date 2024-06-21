@@ -34,7 +34,7 @@ class Player:
 
 			return
 
-		mid = self.lobby.middleVertexPositions[self.client_id]
+		mid = self.lobby.middle_vertex_positions[self.client_id]
 		angle = self.lobby.angleVertex[self.client_id]
 
 		self.angle = angle
@@ -48,18 +48,36 @@ class Player:
 
 	async def move(self, x, y):
 		player_vertex = self.lobby.walls["player" + str(self.client_id)]
-
 		rotate_pos = Vector(math.cos(self.angle) * x, math.sin(self.angle) * y)
+
+		computed_pos = self.pos + rotate_pos
+
+		if (self.lobby.clients_per_lobby != 2):
+			distance = computed_pos.distance(self.lobby.middle_vertex_positions[self.client_id])
+			if (distance > self.lobby.segment_size / 2 - self.lobby.player_size):
+				return
 
 		for i in range(len(player_vertex)):
 			player_vertex[i] += rotate_pos
-		self.pos += rotate_pos
+		self.pos = computed_pos
 
 		playerBoxJS = "scene.get('player" + str(self.client_id) + "').player"
 		await self.sendToOther("modify", {f"{playerBoxJS}.position.x": self.pos.x,
 		  							f"{playerBoxJS}.position.z": self.pos.y})
 
 	async def update(self):
+		# #
+		# direction = self.lobby.ball.pos.x - self.pos.x
+		# if (abs(direction) < 0.1):
+		# 	return
+		# if (direction > 0):
+		# 	direction = 1
+		# else:
+		# 	direction = -1
+
+		# await self.move(direction * 4 * self.lobby.gameServer.dt, direction * 4 * self.lobby.gameServer.dt)
+		# #
+
 		if (len(self.lobby.walls) == 0):
 			return
 

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 00:25:59 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/21 15:20:42 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/21 20:59:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,19 @@ class Trail
 
 	update(scene)
 	{
-		this.mesh.material.opacity -= (0.02 * this.scene.dt) / 0.006;
-		this.mesh.geometry.scale(0.96, 0.96, 0.96);
+		this.mesh.material.opacity -= 3.3333333 * this.scene.dt;
+		let scaleFactor = Math.pow(0.0011096997970157978, this.scene.dt);
+		this.mesh.geometry.scale(scaleFactor, scaleFactor, scaleFactor);
 
 		if (this.mesh.material.opacity < 0)
 		{
 			this.mesh.geometry.dispose();
-			this.mesh.geometry = new THREE.SphereGeometry(this.radius, 32, 32);
+			this.mesh.geometry = new THREE.SphereGeometry(this.radius, 16, 16);
 
 			this.mesh.material.color = this.ball.sphere.material.color;
 			this.mesh.material.emissive = this.ball.sphere.material.emissive;
 
-			this.mesh.position.set(this.ball.sphere.position.x, this.ball.sphere.position.y, this.ball.sphere.position.z);
+			this.mesh.position.copy(this.ball.sphere.position);
 			this.mesh.material.opacity = 1;
 		}
 	}

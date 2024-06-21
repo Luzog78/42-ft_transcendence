@@ -50,23 +50,24 @@ function initNPlayerMap(scene, number)
 	const vertex = new THREE.Vector3();
 	const next_vertex = new THREE.Vector3();
 
-	let playerSize = 0;
 	for (let i = 0; i < number; i++)
 	{
 		vertex.fromBufferAttribute( position_attribute, i + 2);
 		next_vertex.fromBufferAttribute( position_attribute, ((i + 1) % number) + 2 );
-		if (i == 0)
-			playerSize = vertex.distanceTo(next_vertex);
 
+		if (i == 0)
+			scene.segment_size = vertex.distanceTo(next_vertex);
+		
 		let player_name = "player" + i
+		let playerSize = vertex.distanceTo(next_vertex) * 0.3;
 		let middle_point = new THREE.Vector3().addVectors(vertex, next_vertex).multiplyScalar(0.5);
 		let color = new THREE.Color().setHSL(i / number, 1, 0.8, THREE.SRGBColorSpace);
 		let angle = Math.atan2(next_vertex.z - vertex.z, next_vertex.x - vertex.x);
 		
-		scene.entities.push(new Player(scene, {color: color, emissive:color, emissiveIntensity:3}, playerSize, player_name));
+		let player_position = new THREE.Vector3(middle_point.x, 0.15, middle_point.z - 0.075);
+		scene.entities.push(new Player(scene, {color: color, emissive:color, emissiveIntensity:3}, playerSize, player_position, player_name));
 		
 		let player = scene.get(player_name);
-		player.player.position.set(middle_point.x, 0.15, middle_point.z - 0.075);
 		player.player.rotation.y = -angle;
 		player.angle = angle;
 		
@@ -91,8 +92,7 @@ function initNPlayerMap(scene, number)
 		
 		let spotLight = new THREE.SpotLight( 0xffffff, 10);
 		spotLight.position.set(spotlight_pos.x, 1, spotlight_pos.z);
-		spotLight.castShadow = true;
-		scene.add( spotLight , "spotLight");
+		scene.add(spotLight , "spotLight" + i);
 	}
 
 	let points_wall = [];
@@ -149,11 +149,9 @@ function init2PlayerMap(scene)
 	spotLight.castShadow = true;
 	scene.add( spotLight , "spotLight");
 
-	scene.entities.push(new Player(scene, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, 3, "player0"));
-	scene.entities.push(new Player(scene, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, 3, "player1"));
+	scene.entities.push(new Player(scene, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, 1, new THREE.Vector3(0,0.15,4.075), "player0"));
+	scene.entities.push(new Player(scene, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, 1, new THREE.Vector3(0,0.15,-4.075), "player1"));
 
-	scene.get("player0").player.position.set(0,0.15,4.075);
-	scene.get("player1").player.position.set(0,0.15,-4.075);
 	scene.get("ball").position.set(0,0.25,0);
 
 	scene.camera.position.x = 1.5;

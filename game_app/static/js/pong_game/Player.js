@@ -15,12 +15,14 @@ import * as THREE from 'three';
 
 class Player
 {
-	constructor(scene, options, size, name)
+	constructor(scene, options, size, position, name)
 	{
 		this.scene = scene;
 		this.name = this.scene.getName(name);
 		this.options = options;
 
+		this.init_position = position
+		this.size = size;
 		this.angle = 0;
 
 		this.keyboard = {};
@@ -29,7 +31,7 @@ class Player
 		this.keydown_event_func = this.keydown_event.bind(this)
 		this.keyup_event_func = this.keyup_event.bind(this)
 
-		this.init(size);
+		this.init();
 	}
 
 	async keydown_event(e)
@@ -47,9 +49,10 @@ class Player
 		await this.scene.server.sendData("player_keyboard", this.keyboard);
 	}
 
-	init(size)
+	init()
 	{
-		this.player = this.scene.addBox(0.3 * size, 0.1, 0.1, this.options, this.name + "box");
+		this.player = this.scene.addBox(this.size, 0.1, 0.1, this.options, this.name + "box");
+		this.player.position.copy(this.init_position);
 		this.scene.elements[this.name] = this;
 	}
 
@@ -57,13 +60,23 @@ class Player
 	{
 		if (this.keyboard["w"] == true)
 		{
-			this.player.position.x -= Math.cos(this.angle) * 1.2 * this.scene.dt;
-			this.player.position.z -= Math.sin(this.angle) * 1.2 * this.scene.dt;
+			let computed_position = new THREE.Vector3().copy(this.player.position);
+			computed_position.x -= Math.cos(this.angle) * 1.2 * this.scene.dt;
+			computed_position.z -= Math.sin(this.angle) * 1.2 * this.scene.dt;
+			
+			if (computed_position.distanceTo(this.init_position) > this.scene.segment_size / 2 - this.size / 2)
+				return;
+			this.player.position.copy(computed_position);
 		}
 		if (this.keyboard["s"] == true)
 		{
-			this.player.position.x += Math.cos(this.angle) * 1.2 * this.scene.dt;
-			this.player.position.z += Math.sin(this.angle) * 1.2 * this.scene.dt;
+			let computed_position = new THREE.Vector3().copy(this.player.position);
+			computed_position.x += Math.cos(this.angle) * 1.2 * this.scene.dt;
+			computed_position.z += Math.sin(this.angle) * 1.2 * this.scene.dt;
+			
+			if (computed_position.distanceTo(this.init_position) > this.scene.segment_size / 2 - this.size / 2)
+				return;
+			this.player.position.copy(computed_position);
 		}
 	}
 

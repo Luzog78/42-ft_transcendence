@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/21 15:32:56 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/21 21:09:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ class Scene
 		this.shake = ScreenShake();
 
 		this.server = new Server(this);
+		this.segment_size = 4;
 		this.player_num = 0;
 
 		this.elements = {};
@@ -64,7 +65,6 @@ class Scene
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		document.body.appendChild(this.renderer.domElement);
-
 	}
 
 	initConnection(player_num)

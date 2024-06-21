@@ -12,7 +12,6 @@
 
 import * as THREE from 'three';
 
-import { RingBlob } from "./RingBlob.js";
 import { Trail } from "./Trail.js";
 import { Particle } from "./Particle.js";
 
@@ -46,8 +45,6 @@ class Ball
 		normal = new THREE.Vector3(normal.x, 0, normal.y);
 		normal.setLength(0.2);
 
-		if (wallname.includes("wall"))
-			this.scene.entities.push(new RingBlob(this.scene, 0.2, 100, {color: 0xffffff}, position));
 		if (wallname.includes("player"))
 		{
 			let player = this.scene.get(wallname.replace("box", ""));
@@ -106,7 +103,7 @@ class Ball
 		// this.sphere.position.x = Math.cos(Date.now() / 1000) * (Math.cos(Date.now() / 500) * 2);
 		// this.sphere.position.z = Math.sin(Date.now() / 1000) * (Math.cos(Date.now() / 500) * 2);
 
-		if (this.trails.length < this.trailsLength)
+		if (this.trails.length < this.trailsLength) // 
 		{
 			let trail = new Trail(scene, this, 0.15, {
 				color: this.sphere.material.color,
@@ -117,11 +114,11 @@ class Ball
 				alphaTest: 0.01
 			}, "trail");
 
-			trail.mesh.position.set(this.sphere.position.x, this.sphere.position.y, this.sphere.position.z);
+			trail.mesh.position.copy(this.sphere.position);
 			this.trails.push(trail);
 		}
 
-		if (this.groundTrailLength > 0 && Date.now() % 10 == 0)
+		if (this.groundTrailLength && Date.now() % 10 == 0) //
 		{
 			this.groundTrailLength--;
 

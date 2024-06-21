@@ -22,11 +22,12 @@ class Lobby:
 		self.lobby_id = len(self.gameServer.lobbys)
 
 		self.clients = []
-		self.clients_per_lobby = 6
+		self.clients_per_lobby = 2
 
 		self.ball = Ball(self, 0.15)
 
-		self.middleVertexPositions = []
+		self.segment_size = 0
+		self.middle_vertex_positions = []
 		self.angleVertex = []
 
 		self.player_size = 0.5
@@ -35,10 +36,10 @@ class Lobby:
 
 	def init_map(self, num_players):
 		if (num_players == 2):
-			return {"wall1": [Vector(2, 4), Vector(2, -4)],
-				"wall2": [Vector(-2, 4), Vector(-2, -4)],
-				"player0": [Vector(0.5, 4), Vector(-0.5, 4)],
-				"player1": [Vector(0.5, -4), Vector(-0.5, -4)]}
+			return {"wall1": [Vector(2, 5), Vector(2, -5)],
+				"wall2": [Vector(-2, 5), Vector(-2, -5)],
+				"player0": [Vector(0.5, 4.075), Vector(-0.5, 4.075)],
+				"player1": [Vector(0.5, -4.075), Vector(-0.5, -4.075)]}
 
 		walls = {}
 
@@ -49,7 +50,7 @@ class Lobby:
 			vertex.append(Vector(math.cos(mapAngle * i) * mapRadius, math.sin(mapAngle * i) * mapRadius))
 		vertex.reverse()
 
-		middleVertexPositions = []
+		middle_vertex_positions = []
 		angleVertex = []
 
 		for i in range(num_players):
@@ -58,12 +59,13 @@ class Lobby:
 
 			if (i == 0):
 				self.player_size = (firstVertex.distance(nextVertex) * 0.3) / 2
+				self.segment_size = firstVertex.distance(nextVertex)
 
-			middleVertexPositions.append(Vector((firstVertex.x + nextVertex.x) / 2,
+			middle_vertex_positions.append(Vector((firstVertex.x + nextVertex.x) / 2,
 										(firstVertex.y + nextVertex.y) / 2))
 			angleVertex.append(math.atan2(nextVertex.y - firstVertex.y, nextVertex.x - firstVertex.x))
 
-		self.middleVertexPositions = middleVertexPositions
+		self.middle_vertex_positions = middle_vertex_positions
 		self.angleVertex = angleVertex
 
 		return walls
