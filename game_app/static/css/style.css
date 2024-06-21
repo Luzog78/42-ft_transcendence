@@ -951,13 +951,158 @@ input[type=number].no-arrow {
 /* ------------------------------ GameConfig ------------------------------ */
 /* ************************************************************************** */
 
-#GameConfig-content .GameConfig-RadioMode {
-	width: 50%;
-	margin-left: 25%;
+.GameConfig-container {
+	max-width: 90%;
+	padding: 30px;
+	margin-top: 50px;
+	--points: none;
+	--time: none;
 }
 
-#GameConfig-content .btn-Mode {
+.GameConfig-ModeLabel {
 	color: white;
+}
+
+.GameConfig-Line {
+	height: 2px;
+	width: 60%;
+	margin-left: 20%;
+	background: linear-gradient(
+			to right,
+			#24bceb	 20%,
+			#9a66e0	 30%,
+			#3133ec 70%,
+			#c02ae7 80%
+	);
+	-webkit-text-fill-color: transparent;
+	background-size: 500% auto;
+	animation: PongResult-Shine 3s infinite alternate;
+}
+
+#GameConfig-content label {
+	border: none;
+}
+
+.GameConfig-ModeInput:checked + .GameConfig-ModeLabel {
+	background: linear-gradient(
+			to right,
+			#24bceb	 20%,
+			#9a66e0	 30%,
+			#3133ec 70%,
+			#c02ae7 80%
+	);
+	transform: scale(125%);
+	font-weight: bold;
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-size: 500% auto;
+	animation: PongResult-Shine 4s infinite alternate;
+}
+
+.GameConfig-ModeLabel:hover {
+	color: white !important;
+}
+
+.GameConfig-Points {
+	display: var(--points);
+}
+
+.GameConfig-Time {
+	display: var(--time);
+}
+
+.GameConfig-ThemeInput:checked + .GameConfig-ThemeLabel img {
+	opacity: 100%;
+	transform: scale(102%);
+}
+
+.GameConfig-ThemeLabel img {
+	opacity: 50%;
+}
+
+.GameConfig-Img {
+	min-width: 192px;
+	max-width: 320px;
+}
+
+.GameConfig-Img label {
+	width: 100%;
+	height: 100%;
+}
+
+#GameConfig-content img {
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+	border-radius: 24px;
+	border: 1px transparent;
+	box-shadow: 0 0 10px 0 #ffffff80;
+}
+
+#GameConfig-content input {
+	width: 30%;
+	background-color: transparent;
+	color: var(--c-fg);
+	border: 1px solid white;
+	border-radius: 12px;
+}
+
+#GameConfig-content input:hover, #GameConfig-content input:focus {
+	background-color: transparent;
+	box-shadow: 0 0 14px 0 #ffffff80;
+}
+
+.GameConfig-Speed .container-blur {
+	backdrop-filter: blur(8px);
+	background-color: #171617;
+	border-radius: 10px;
+	border: none;
+	box-shadow: none;
+}
+
+.GameConfig-SpeedInput:checked + .GameConfig-SpeedLabel {
+	transform: scale(125%);
+	font-weight: bold;
+}
+
+.GameConfig-SpeedLabel {
+	color: white !important;
+}
+
+#GameConfig-content .moving-point {
+	position: absolute;
+	height: 8px;
+	width: 8px;
+	display: flex;
+	background-color: white;
+	animation: gameConfig-move-point 5s 0s infinite linear;
+	border-radius: 500px;
+	border: 1px solid #fff;
+	box-shadow: 0 0 10px 0 #ffffff80;
+}
+
+@keyframes gameConfig-move-point {
+	0% {
+		top: calc(0% - 4px);
+		left: calc(0% - 4px);
+	}
+	40% {
+		top: calc(0% - 4px);
+		left: calc(100% - 4px);
+	}
+	50% {
+		top: calc(100% - 4px);
+		left: calc(100% - 4px);
+	}
+	90% {
+		top: calc(100% - 4px);
+		left: calc(0% - 4px);
+	}
+	100% {
+		top: calc(0% - 4px);
+		left: calc(0% - 4px);
+	}
 }
 
 /* ************************************************************************** */
