@@ -27,8 +27,8 @@ class GameServer:
 		self.dt = 1 / self.tps
 
 		self.running = True
-		self.gameServerThread = threading.Thread(target=asyncio.run, args=(self.update(),))
-		self.gameServerThread.start()
+		self.game_server_thread = threading.Thread(target=asyncio.run, args=(self.update(),))
+		self.game_server_thread.start()
 
 	async def update(self):
 		while self.running:
@@ -44,7 +44,7 @@ class GameServer:
 		# print("received ", json.dumps(data, indent=4))
 
 	def lobbysAreFull(self):
-		return len(self.lobbys) == 0 or len(self.lobbys[-1].clients) == self.lobbys[-1].clientsPerLobby
+		return len(self.lobbys) == 0 or len(self.lobbys[-1].clients) == self.lobbys[-1].clients_per_lobby
 
 	async def addClient(self, client):
 		if (self.lobbysAreFull()):

@@ -18,26 +18,26 @@ import { LineGeometry } from 'linegeometry';
 
 class Lines
 {
-	constructor(scene, points, colors, divisionCount, linewidth=5, name="Line")
+	constructor(scene, points, colors, division_count, linewidth=5, name="Line")
 	{
 		this.scene = scene;
 		this.name = this.scene.getName(name);
 
 		this.points = points;
 		this.colors = colors;
-		this.divisionCount = divisionCount;
+		this.division_count = division_count;
 		this.linewidth = linewidth;
 
 		this.init();
 	}
 
-	getPositionsColors(points, divisionCount)
+	getPositionsColors(points, division_count)
 	{
 		const colors = [];
 		const positions = [];
 
 		const spline = new THREE.CatmullRomCurve3(points);
-		const divisions = Math.round(divisionCount * points.length);
+		const divisions = Math.round(division_count * points.length);
 		const point = new THREE.Vector3();
 
 		for ( let i = 0; i < divisions; i ++ ) {
@@ -60,9 +60,9 @@ class Lines
 		return { positions, colors };
 	}
 
-	getGeometry(points, divisionCount)
+	getGeometry(points, division_count)
 	{
-		const { positions, colors } = this.getPositionsColors(points, divisionCount);
+		const { positions, colors } = this.getPositionsColors(points, division_count);
 
 		const geometry = new LineGeometry();
 		geometry.setPositions( positions );
@@ -73,7 +73,7 @@ class Lines
 
 	init()
 	{
-		const geometry = this.getGeometry(this.points, this.divisionCount);
+		const geometry = this.getGeometry(this.points, this.division_count);
 		const matLine = new LineMaterial({
 			color: 0xffffff,
 			linewidth: this.linewidth,
@@ -88,7 +88,7 @@ class Lines
 
 	update(scene)
 	{
-		const geometry = this.getGeometry(this.points, this.divisionCount);
+		const geometry = this.getGeometry(this.points, this.division_count);
 		this.mesh.geometry.dispose();
 		this.mesh.geometry = geometry;
 	}

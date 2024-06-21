@@ -89,10 +89,9 @@ function initNPlayerMap(scene, number)
 	let points_wall = [];
 	let division = 50;
 
-	const geometry_wall = new THREE.CircleGeometry(mapRadius + 2, division);
+	const geometry_wall = new THREE.CircleGeometry(mapRadius, division);
 	geometry_wall.rotateX(-Math.PI / 2);
 	geometry_wall.rotateY(((2 * Math.PI) / number) * 2);
-	console.log(((2 * Math.PI) / number) * 2, Math.PI)
 
 	for (let i = 0; i < division; i++)
 	{
@@ -108,8 +107,8 @@ function initNPlayerMap(scene, number)
 
 	for (let i = 0; i < 8; i++)
 	{
-		const wallLine = new WallLines(scene, points_wall, colors_wall, 5, "line" + i);
-		wallLine.line.mesh.position.y = -1 + 0.1 * i;
+		const wallLine = new WallLines(scene, points_wall, colors_wall, 5, "line" + i, -0.5, 0.3);
+		wallLine.line.mesh.position.y = -0.5 + 0.1 * i;
 		console.log(wallLine.line.mesh.position.y)
 		scene.entities.push(wallLine);
 	}

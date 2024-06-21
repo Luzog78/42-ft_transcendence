@@ -21,55 +21,52 @@ class Ball:
 		self.lobby = lobby
 		self.radius = radius
 
-		self.terminalVelocity = 8
-		self.currentVelLength = 0
+		self.terminal_velocity = 8
+		self.current_vel_length = 0
 
 		self.time = 0
 
-		self.pos = Vector(0, 0, 0)
-		self.vel = Vector(0, 0, 0)
-		self.acc = Vector(0, 0, 0)
+		self.pos = Vector(0, 0)
+		self.vel = Vector(0, 0)
+		self.acc = Vector(0, 0)
 
 	@staticmethod
 	def closestPointOnSegment(A, B, P):
-		AB = { "x": B["x"] - A["x"], "y": B["y"] - A["y"] }
-		AP = { "x": P.x - A["x"], "y": P.z - A["y"] }
-		AB_squared = AB["x"] * AB["x"] + AB["y"] * AB["y"]
+		AB = B - A
+		AP = P - A
 
+		AB_squared = AB.dot(AB)
 		if (AB_squared == 0):
 			return A
 
-		t = (AP["x"] * AB["x"] + AP["y"] * AB["y"]) / AB_squared
+		t = (AP.dot(AB)) / AB_squared
 		t = max(0, min(1, t))
 
-		return { "x": A["x"] + t * AB["x"], "y": A["y"] + t * AB["y"] }
+		return A + AB * t
 
 	async def updateBall(self):
 		await self.lobby.sendData("modify", {"scene.ball.sphere.position.x": self.pos.x,
-									   		"scene.ball.sphere.position.z": self.pos.z})
+									   		"scene.ball.sphere.position.z": self.pos.y})
 		await self.lobby.sendData("modify", {"scene.ball.vel.x": self.vel.x,
-									   		"scene.ball.vel.z": self.vel.z})
+									   		"scene.ball.vel.z": self.vel.y})
 		await self.lobby.sendData("modify", {"scene.ball.acc.x": self.acc.x,
-									   		"scene.ball.acc.z": self.acc.z})
+									   		"scene.ball.acc.z": self.acc.y})
 
-	def resolutionCollision(self, collisionNormal, minDistance):
-		penetrationDepth = (self.radius - minDistance)
-		newCircleCenter = {
-			"x": self.pos.x + penetrationDepth * collisionNormal["x"],
-			"y": self.pos.z + penetrationDepth * collisionNormal["y"]
-		}
-		self.pos.x = newCircleCenter["x"]
-		self.pos.z = newCircleCenter["y"]
+	def resolutionCollision(self, collision_normal, minDistance):
+		penetration_depth = self.radius - minDistance
+		new_circle_pos = self.pos + collision_normal * penetration_depth
 
-		self.vel = self.vel.reflect(Vector(collisionNormal["x"], 0, collisionNormal["y"]))
+		self.pos = new_circle_pos
+
+		self.vel = self.vel.reflect(collision_normal)
 		self.vel.setLength(self.vel.length() + 0.1)
 
-		self.currentVelLength = self.vel.length()
+		self.current_vel_length = self.vel.length()
 
-	def ballEffect(self, wallname, normal):
+	def ballEffect(self, wallname, collision_normal):
 		if (self.acc.length() > 0.5 and "wall" in wallname):
-			self.acc = Vector(0, 0, 0)
-			self.vel.setLength(self.currentVelLength - 0.25)
+			self.acc = Vector(0, 0)
+			self.vel.setLength(self.current_vel_length - 0.25)
 
 		if ("player" not in wallname):
 			return
@@ -80,47 +77,44 @@ class Ball:
 		player_down = player.keyboard["s"] if "s" in player.keyboard else False
 
 		if (player_up):
-			newVel = Vector(-1, 0, -0.5)
+			newVel = Vector(-1, -0.5)
 			newVel.setLength(self.vel.length() + 0.1)
 
 			self.vel = newVel
 
-			self.acc = Vector(1, 0, -0.5)
+			self.acc = Vector(1, -0.5)
 			self.acc.setLength(self.vel.length() * 2)
 
 		elif (player_down):
-			newVel = Vector(1, 0, -0.5)
+			newVel = Vector(1, -0.5)
 			newVel.setLength(self.vel.length() + 0.1)
 
 			self.vel = newVel
 
-			self.acc = Vector(-1, 0, -0.5)
+			self.acc = Vector(-1, -0.5)
 			self.acc.setLength(self.vel.length() * 2)
 
 		if (player_up or player_down):
-			self.vel.z *= 1 if normal["y"] < 0 else -1
-			self.acc.z *= 1 if normal["y"] < 0 else -1
+			self.vel.y *= 1 if collision_normal.y < 0 else -1
+			self.acc.y *= 1 if collision_normal.y < 0 else -1
 
 
 	async def checkCollision(self):
-		for wallname in self.lobby.walls:
-			wall = self.lobby.walls[wallname]
+		for wall_name in self.lobby.walls:
+			wall = self.lobby.walls[wall_name]
 
-			segmentClosestPoint = Ball.closestPointOnSegment(wall[0], wall[1], self.pos)
-			distance = math.hypot(segmentClosestPoint["x"] - self.pos.x, segmentClosestPoint["y"] - self.pos.z)
+			closest_point = Ball.closestPointOnSegment(wall[0], wall[1], self.pos)
+			distance = closest_point.distance(self.pos)
 
 			if (distance <= self.radius):
-				collisionNormal = {
-					"x": (self.pos.x - segmentClosestPoint["x"]) / distance,
-					"y": (self.pos.z - segmentClosestPoint["y"]) / distance
-				}
+				collision_normal = (self.pos - closest_point).normalize()
 
-				self.resolutionCollision(collisionNormal, distance)
-				self.ballEffect(wallname, collisionNormal)
+				self.resolutionCollision(collision_normal, distance)
+				self.ballEffect(wall_name, collision_normal)
 
 				await self.updateBall()
 				await self.lobby.sendData("call", {"command": 'scene.ball.effectCollision',
-									   				"args": ["'" + wallname + "'", segmentClosestPoint, collisionNormal]})
+									   				"args": ["'" + wall_name + "'", closest_point.json(), collision_normal.json()]})
 
 	async def update(self):
 		if (self.time == 0):
@@ -137,5 +131,5 @@ class Ball:
 
 		await self.checkCollision()
 
-		# if (self.vel.length() > self.terminalVelocity):
-		# 	self.vel.setLength(self.terminalVelocity)
+		# if (self.vel.length() > self.terminal_velocity):
+		# 	self.vel.setLength(self.terminal_velocity)

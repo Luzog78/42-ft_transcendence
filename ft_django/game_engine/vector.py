@@ -14,48 +14,39 @@ import math
 
 
 class Vector:
-	def __init__(self, x, y, z):
+	def __init__(self, x, y):
 		self.x = x
 		self.y = y
-		self.z = z
 
 	def __add__(self, other):
-		return Vector(self.x + other.x, self.y + other.y, self.z + other.z)
+		return Vector(self.x + other.x, self.y + other.y)
 
 	def __sub__(self, other):
-		return Vector(self.x - other.x, self.y - other.y, self.z - other.z)
+		return Vector(self.x - other.x, self.y - other.y)
 
 	def __mul__(self, other):
-		return Vector(self.x * other, self.y * other, self.z * other)
+		return Vector(self.x * other, self.y * other)
 
 	def __truediv__(self, other):
-		return Vector(self.x / other, self.y / other, self.z / other)
+		return Vector(self.x / other, self.y / other)
 
 	def __str__(self):
-		return f"({self.x}, {self.y}, {self.z})"
+		return f"({self.x}, {self.y})"
 
 	def length(self):
-		return (self.x ** 2 + self.y ** 2 + self.z ** 2) ** 0.5
+		return (self.x ** 2 + self.y ** 2) ** 0.5
 
 	def setLength(self, length):
 		currentLength = self.length()
 		self.x *= length / currentLength
 		self.y *= length / currentLength
-		self.z *= length / currentLength
 
 	def normalize(self):
 		length = self.length()
-		return Vector(self.x / length, self.y / length, self.z / length)
+		return Vector(self.x / length, self.y / length)
 
 	def dot(self, other):
-		return self.x * other.x + self.y * other.y + self.z * other.z
-
-	def cross(self, other):
-		return Vector(
-			self.y * other.z - self.z * other.y,
-			self.z * other.x - self.x * other.z,
-			self.x * other.y - self.y * other.x
-		)
+		return self.x * other.x + self.y * other.y
 
 	def angle(self, other):
 		return math.acos(self.dot(other) / (self.length() * other.length()))
@@ -66,13 +57,8 @@ class Vector:
 	def reflect(self, normal):
 		return self - normal * 2 * self.dot(normal)
 
-	def rotate(self, angle, axis):
-		cos = math.cos(angle)
-		sin = math.sin(angle)
-		return self * cos + axis.cross(self) * sin + axis * axis.dot(self) * (1 - cos)
-
-	def rotateAround(self, point, angle, axis):
-		return (self - point).rotate(angle, axis) + point
-
 	def distance(self, other):
 		return (self - other).length()
+	
+	def json(self):
+		return {"x": self.x, "y": self.y}

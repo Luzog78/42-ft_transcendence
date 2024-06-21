@@ -14,7 +14,6 @@ import math
 
 from .vector import Vector
 
-
 class Player:
 	def __init__(self, lobby, client, client_id):
 		self.lobby = lobby
@@ -23,14 +22,14 @@ class Player:
 		self.client_id = client_id
 
 		self.angle = 0
-		self.pos = Vector(0, 0, 0)
+		self.pos = Vector(0, 0)
 
 		self.keyboard = {}
 
 	async def addSelfWall(self):
-		if (self.lobby.clientsPerLobby == 2):
+		if (self.lobby.clients_per_lobby == 2):
 			vertex = self.lobby.walls["player" + str(self.client_id)]
-			middle = Vector((vertex[0]["x"] + vertex[1]["x"]) / 2, 0, (vertex[0]["y"] + vertex[1]["y"]) / 2)
+			middle = (vertex[0] + vertex[1]) / 2
 			self.pos = middle
 
 			return
@@ -41,28 +40,24 @@ class Player:
 		self.angle = angle
 		self.pos = mid
 
-		firstPoint = Vector(mid.x + math.cos(angle) * self.lobby.player_size, 0, mid.z + math.sin(angle) * self.lobby.player_size)
-		secondPoint = Vector(mid.x + math.cos(angle - math.pi) * self.lobby.player_size, 0, mid.z + math.sin(angle - math.pi) * self.lobby.player_size)
+		firstPoint = Vector(mid.x + math.cos(angle) * self.lobby.player_size, mid.y + math.sin(angle) * self.lobby.player_size)
+		secondPoint = Vector(mid.x + math.cos(angle - math.pi) * self.lobby.player_size, mid.y + math.sin(angle - math.pi) * self.lobby.player_size)
 
-		self.lobby.walls["player" + str(self.client_id)] = [{"x": firstPoint.x, "y": firstPoint.z},
-								  							{"x": secondPoint.x, "y": secondPoint.z}]
+		self.lobby.walls["player" + str(self.client_id)] = [firstPoint, secondPoint]
 		await self.sendToOther("call", {"command": "newPlayer", "args": ["player" + str(self.client_id)]})
 
 	async def move(self, x, y):
-		playerBox = self.lobby.walls["player" + str(self.client_id)]
+		player_vertex = self.lobby.walls["player" + str(self.client_id)]
 
-		rotate_x = math.cos(self.angle) * x
-		rotate_y = math.sin(self.angle) * y
+		rotate_pos = Vector(math.cos(self.angle) * x, math.sin(self.angle) * y)
 
-		for point in playerBox:
-			point["x"] += rotate_x
-			point["y"] += rotate_y
-
-		self.pos += Vector(rotate_x, 0, rotate_y)
+		for i in range(len(player_vertex)):
+			player_vertex[i] += rotate_pos
+		self.pos += rotate_pos
 
 		playerBoxJS = "scene.get('player" + str(self.client_id) + "').player"
 		await self.sendToOther("modify", {f"{playerBoxJS}.position.x": self.pos.x,
-		  							f"{playerBoxJS}.position.z": self.pos.z})
+		  							f"{playerBoxJS}.position.z": self.pos.y})
 
 	async def update(self):
 		if (len(self.lobby.walls) == 0):
