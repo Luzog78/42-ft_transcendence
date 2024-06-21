@@ -275,7 +275,7 @@ const onLogin = async (context, loadedData=null, reloadNav=false) => {
 		data = loadedData;
 	else
 		data = getJson(context, "/api/user")
-	
+
 	context.ChatConnexion.onOpen(() => {
 		if (context.user.token) {
 			context.ChatConnexion.authenticate(context.user.token)

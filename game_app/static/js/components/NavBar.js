@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { getLang, loadLang, redirect } from "../script.js";
-import { getJson } from "../utils.js";
+import { getLang, redirect } from "../script.js";
 
 
 var stunned = false;
@@ -43,15 +42,14 @@ function NavBar(title, context, fetchProfile = true) {
 	div.querySelector("#navbar-title").innerText = title;
 	let right = div.querySelector("#navbar-right");
 	let next = window.location.pathname;
-	if (next === "/login" || next === "/register" || next === "/logout")
-	{
+	if (next === "/login" || next === "/register" || next === "/logout") {
 		const urlParams = new URLSearchParams(window.location.search);
 		if (urlParams.has("next"))
 			next = urlParams.get("next");
 		else
 			next = "/";
 	}
-	
+
 	if (context.user.isAuthenticated) {
 		right.innerHTML = /*html*/`
 			<a type="button" class="" href="/profile" data-link><img class="profile-picture notSelectable" src="${context.user.picture ? context.user.picture : '/static/img/user.svg'}" alt="${getLang(context, "navbar.profilePictureAlt")}" data-link></a>
