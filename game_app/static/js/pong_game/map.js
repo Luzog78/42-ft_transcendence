@@ -31,65 +31,74 @@ function initMap(scene, player_num)
 	}
 }
 
-let middleVertexPositions = []
-let angleVertex = []
-
 function initNPlayerMap(scene, number)
 {
-	const mapRadius = Math.sqrt(number) * 2 + 2
+	const map_radius = Math.sqrt(number) * 2 + 2
 
-	const geometry = new THREE.CircleGeometry(mapRadius, number);
+	const floor_material = new THREE.MeshPhysicalMaterial( { color: 0x000000, side: THREE.DoubleSide } );
+	floor_material.roughness = 0.65;
+	floor_material.metalness = 0.0;
 
-	const material = new THREE.MeshPhysicalMaterial( { color: 0x000000, side: THREE.DoubleSide } );
-	material.roughness = 0.6;
-	material.metalness = 0.1;
-
-	const circle = new THREE.Mesh( geometry, material ); // floor
+	const circle = new THREE.Mesh(new THREE.CircleGeometry(map_radius, number), floor_material ); // floor
 	circle.position.set(0, 0.05, 0);
 	circle.geometry.rotateX(-Math.PI / 2);
-	// circle.geometry.rotateY(Math.PI / 4);
 	scene.add(circle, "circle");
 
 	scene.get("ball").position.set(0,0.25,0);
 
-	const positionAttribute = geometry.getAttribute( 'position' );
+	const position_attribute = circle.geometry.getAttribute( 'position' );
 	const vertex = new THREE.Vector3();
-	const nextVertex = new THREE.Vector3();
+	const next_vertex = new THREE.Vector3();
 
 	let playerSize = 0;
 	for (let i = 0; i < number; i++)
 	{
-		vertex.fromBufferAttribute( positionAttribute, i + 2);
-		nextVertex.fromBufferAttribute( positionAttribute, ((i + 1) % number) + 2 );
+		vertex.fromBufferAttribute( position_attribute, i + 2);
+		next_vertex.fromBufferAttribute( position_attribute, ((i + 1) % number) + 2 );
 		if (i == 0)
-			playerSize = vertex.distanceTo(nextVertex);
+			playerSize = vertex.distanceTo(next_vertex);
 
-		let middlePoint = new THREE.Vector3().addVectors(vertex, nextVertex).multiplyScalar(0.5);
-		middleVertexPositions.push(middlePoint);
-
-		let angle = Math.atan2(nextVertex.z - vertex.z, nextVertex.x - vertex.x);
-		angleVertex.push(angle);
-	}
-
-	for (let i = 0; i < number; i++)
-	{
-		let mid = middleVertexPositions[i];
-		let angle = angleVertex[i];
-		let playerName = "player" + i
-
+		let player_name = "player" + i
+		let middle_point = new THREE.Vector3().addVectors(vertex, next_vertex).multiplyScalar(0.5);
 		let color = new THREE.Color().setHSL(i / number, 1, 0.8, THREE.SRGBColorSpace);
-		scene.entities.push(new Player(scene, {color: color, emissive:color, emissiveIntensity:3.5}, playerSize, playerName));
-
-		let player = scene.get(playerName);
-		player.player.position.set(mid.x, 0.15, mid.z - 0.075);
+		let angle = Math.atan2(next_vertex.z - vertex.z, next_vertex.x - vertex.x);
+		
+		scene.entities.push(new Player(scene, {color: color, emissive:color, emissiveIntensity:3}, playerSize, player_name));
+		
+		let player = scene.get(player_name);
+		player.player.position.set(middle_point.x, 0.15, middle_point.z - 0.075);
 		player.player.rotation.y = -angle;
 		player.angle = angle;
+		
+
+		let line_points = [vertex.clone(), next_vertex.clone()];
+		for (let line of line_points)
+			line.y += 0.05;
+		let line_colors = i == scene.server.client_id ? 
+					[new THREE.Color(0xffffff), new THREE.Color(0xffffff)] :
+					[new THREE.Color().setHSL(i / number, 1, 0.8, THREE.SRGBColorSpace)]
+
+		new Lines(scene, line_points, line_colors, 5, 5, "line" + i);
+
+		angle += Math.PI / 2;
+		let direction = new THREE.Vector3(Math.cos(angle), 0, Math.sin(angle));
+		direction.normalize();
+		direction.y = 0;
+
+		let spotlight_pos = middle_point.clone();
+		spotlight_pos.addScaledVector(direction, 2);
+
+		
+		let spotLight = new THREE.SpotLight( 0xffffff, 10);
+		spotLight.position.set(spotlight_pos.x, 1, spotlight_pos.z);
+		spotLight.castShadow = true;
+		scene.add( spotLight , "spotLight");
 	}
 
 	let points_wall = [];
 	let division = 50;
 
-	const geometry_wall = new THREE.CircleGeometry(mapRadius, division);
+	const geometry_wall = new THREE.CircleGeometry(map_radius + 0.8, division);
 	geometry_wall.rotateX(-Math.PI / 2);
 	geometry_wall.rotateY(((2 * Math.PI) / number) * 2);
 
@@ -109,18 +118,17 @@ function initNPlayerMap(scene, number)
 	{
 		const wallLine = new WallLines(scene, points_wall, colors_wall, 5, "line" + i, -0.5, 0.3);
 		wallLine.line.mesh.position.y = -0.5 + 0.1 * i;
-		console.log(wallLine.line.mesh.position.y)
 		scene.entities.push(wallLine);
 	}
 }
 
 function initCamera(scene)
 {
-	let cameraTempPos = middleVertexPositions[scene.server.client_id];
-	scene.camera.position.set(cameraTempPos.x, 5, cameraTempPos.z);
+	let camera_pos = scene.get("player" + scene.server.client_id).player.position.clone();
+	scene.camera.position.set(camera_pos.x, 4, camera_pos.z);
 
-	const lookAtPoint = new THREE.Vector3(0, 0, 0);
-	const direction = new THREE.Vector3().subVectors(scene.camera.position, lookAtPoint);
+	const look_at_point = new THREE.Vector3(0, 0, 0);
+	const direction = new THREE.Vector3().subVectors(scene.camera.position, look_at_point);
 
 	direction.normalize();
 	direction.y = 0;
@@ -160,7 +168,7 @@ function init2PlayerMap(scene)
 	let points_wall = [
 		new THREE.Vector3(0, 0.75, 4),
 		new THREE.Vector3(0, 0.75, 0),
-		new THREE.Vector3(0, 0.75, -4.2),
+		new THREE.Vector3(0, 0.75, -4),
 	];
 
 	let colors_wall = [
@@ -172,38 +180,38 @@ function init2PlayerMap(scene)
 
 	for (let i = 0; i < 8; i++)
 	{
-		scene.entities.push(new WallLines(scene, points_wall, colors_wall, 10, "line" + i));
+		scene.entities.push(new WallLines(scene, points_wall, colors_wall, 10, "line" + i, -1, -0.2));
 
 		scene.get("line" + i).position.x = -2;
 		scene.get("line" + i).position.y = -1 + 0.1 * i;
 	}
 	for (let i = 0; i < 8; i++)
 	{
-		scene.entities.push(new WallLines(scene, points_wall, colors_wall, 10, "line2" + i));
+		scene.entities.push(new WallLines(scene, points_wall, colors_wall, 10, "line2" + i, -1, -0.2));
 
 		scene.get("line2" + i).position.x = 2;
 		scene.get("line2" + i).position.y = -1 + 0.1 * i;
 	}
 
 	let points_floor1 = [
-		new THREE.Vector3(-1.95, 0.05, 4),
-		new THREE.Vector3(-1.95, 0.05, 0),
-		new THREE.Vector3(-1.95, 0.05, -4.2),
+		new THREE.Vector3(-2, 0.05, 4),
+		new THREE.Vector3(-2, 0.05, 0),
+		new THREE.Vector3(-2, 0.05, -4),
 	];
 	let points_floor2 = [
-		new THREE.Vector3(-1.95, 0.05, -4),
+		new THREE.Vector3(-2, 0.05, -4),
 		new THREE.Vector3(0, 0.05, -4),
-		new THREE.Vector3(2.05, 0.05, -4),
+		new THREE.Vector3(2, 0.05, -4),
 	];
 	let points_floor3 = [
-		new THREE.Vector3(1.95, 0.05, 4),
-		new THREE.Vector3(1.95, 0.05, 0),
-		new THREE.Vector3(1.95, 0.05, -4.2),
+		new THREE.Vector3(2, 0.05, 4),
+		new THREE.Vector3(2, 0.05, 0),
+		new THREE.Vector3(2, 0.05, -4),
 	];
 	let points_floor4 = [
-		new THREE.Vector3(-1.95, 0.05, 4),
+		new THREE.Vector3(-2, 0.05, 4),
 		new THREE.Vector3(0, 0.05, 4),
-		new THREE.Vector3(2.05, 0.05, 4),
+		new THREE.Vector3(2, 0.05, 4),
 	];
 
 	let colors_floor = [
@@ -212,10 +220,10 @@ function init2PlayerMap(scene)
 		new THREE.Color().setHSL(0.75, 1,0.8, THREE.SRGBColorSpace),
 		new THREE.Color().setHSL(0.7, 1, 0.8, THREE.SRGBColorSpace),
 	]
-	new Lines(scene, points_floor1, colors_floor, 13, 4, "linefloor");
-	new Lines(scene, points_floor2, colors_floor, 13, 4, "linefloor");
-	new Lines(scene, points_floor3, colors_floor, 13, 4, "linefloor");
-	new Lines(scene, points_floor4, colors_floor, 13, 4, "linefloor");
+	new Lines(scene, points_floor1, colors_floor, 2, 4, "linefloor");
+	new Lines(scene, points_floor2, colors_floor, 2, 4, "linefloor");
+	new Lines(scene, points_floor3, colors_floor, 2, 4, "linefloor");
+	new Lines(scene, points_floor4, colors_floor, 2, 4, "linefloor");
 
 	//floor
 	for (let i = 0; i < 13; i++)

@@ -22,7 +22,7 @@ class Lobby:
 		self.lobby_id = len(self.gameServer.lobbys)
 
 		self.clients = []
-		self.clients_per_lobby = 3
+		self.clients_per_lobby = 6
 
 		self.ball = Ball(self, 0.15)
 
