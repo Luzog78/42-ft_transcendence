@@ -15,14 +15,13 @@ import math
 from .ball import Ball
 from .vector import Vector
 
-
 class Lobby:
 	def __init__(self, gameServer):
 		self.gameServer = gameServer
 		self.lobby_id = len(self.gameServer.lobbys)
 
 		self.clients = []
-		self.clients_per_lobby = 2
+		self.clients_per_lobby = 5
 
 		self.ball = Ball(self, 0.15)
 
@@ -36,8 +35,8 @@ class Lobby:
 
 	def init_map(self, num_players):
 		if (num_players == 2):
-			return {"wall1": [Vector(2, 5), Vector(2, -5)],
-				"wall2": [Vector(-2, 5), Vector(-2, -5)],
+			return {"wall1": [Vector(2, 4 + 0.2), Vector(2, -4 + 0.2)],
+				"wall2": [Vector(-2, 4 + 0.2), Vector(-2, -4 + 0.2)],
 				"player0": [Vector(0.5, 4.075), Vector(-0.5, 4.075)],
 				"player1": [Vector(0.5, -4.075), Vector(-0.5, -4.075)]}
 

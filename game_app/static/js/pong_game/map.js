@@ -16,7 +16,6 @@ import { WallLines } from "./LineEffects.js";
 import { Lines } from "./Lines.js";
 import { Player } from "./Player.js";
 
-
 function initMap(scene, player_num)
 {
 	let light = new THREE.AmbientLight( 0x555555 ); // soft white light
@@ -65,12 +64,15 @@ function initNPlayerMap(scene, number)
 		let angle = Math.atan2(next_vertex.z - vertex.z, next_vertex.x - vertex.x);
 		
 		let player_position = new THREE.Vector3(middle_point.x, 0.15, middle_point.z - 0.075);
-		scene.entities.push(new Player(scene, {color: color, emissive:color, emissiveIntensity:3}, playerSize, player_position, player_name));
-		
-		let player = scene.get(player_name);
+		let player = new Player(scene, {color: color, emissive:color, emissiveIntensity:3}, playerSize, player_position, player_name);
 		player.player.rotation.y = -angle;
 		player.angle = angle;
-		
+
+		console.log(i, scene.server.client_id)
+		if (i > scene.server.client_id)
+			player.player.visible = false
+
+		scene.entities.push(player);
 
 		let line_points = [vertex.clone(), next_vertex.clone()];
 		for (let line of line_points)
@@ -137,7 +139,7 @@ function initCamera(scene)
 	scene.camera.updateProjectionMatrix();
 }
 
-function init2PlayerMap(scene)
+async function init2PlayerMap(scene)
 {
 	let spotLight = new THREE.SpotLight( 0xffffff, 20);
 	spotLight.position.set( 0, 1, 6 );
@@ -153,7 +155,9 @@ function init2PlayerMap(scene)
 	scene.entities.push(new Player(scene, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, 1, new THREE.Vector3(0,0.15,-4.075), "player1"));
 
 	scene.get("ball").position.set(0,0.25,0);
-
+	if (scene.server.client_id == 0)
+		scene.get("player1").player.visible = false;
+	
 	scene.camera.position.x = 1.5;
 	scene.camera.position.y = 4;
 
@@ -226,10 +230,63 @@ function init2PlayerMap(scene)
 	//floor
 	for (let i = 0; i < 13; i++)
 		scene.addBox(0.13, 0.11, 0.13, {color: 0x999999, emissive:0x999999}, "floor" + i).position.set((i * 0.3) - 1.80, 0.01, 0);
-
-	scene.addText("0", {color: 0xffffff}, 0.5, new THREE.Vector3(-1.25,0.1,0.5), "text1")
-	scene.addText("5", {color: 0xffffff}, 0.5, new THREE.Vector3(-1.25,0.1,-0.5), "text2")
 }
 
+function initText(scene, player_num)
+{
+	if (player_num == 2)
+	{
+		const score_1_pos = new THREE.Vector3(-1.25,0.1,0.5);
+		const score_2_pos = new THREE.Vector3(-1.25,0.1,-0.5);
 
-export { initMap };
+		const score_1 = scene.addText("0", {color: 0xffffff}, 0.5, "text1")
+		const score_2 = scene.addText("5", {color: 0xffffff}, 0.5, "text2")
+		
+		score_1.geometry.rotateX(-Math.PI / 2);
+		score_1.geometry.rotateY(Math.PI / 2);
+		score_1.geometry.translate(score_1_pos);
+
+		score_2.geometry.rotateX(-Math.PI / 2);
+		score_2.geometry.rotateY(Math.PI / 2);
+		score_2.geometry.translate(score_2_pos)
+
+		let angle = Math.PI;
+		const player_0 = scene.addText("player0", {color: 0xffffff}, 0.25, "playertext0");
+		const direction_0 = new THREE.Vector3(Math.cos(angle - Math.PI / 2), 0, Math.sin(angle - Math.PI / 2));
+		const player_0_pos = scene.get("player0").player.position.clone();
+		
+		player_0.geometry.rotateY(angle);
+		player_0.geometry.translate(player_0_pos);
+		player_0.position.addScaledVector(direction_0, 0.5);
+
+		angle = 0;
+		const player_1 = scene.addText("player1", {color: 0xffffff}, 0.25, "playertext1");
+		const direction_1 = new THREE.Vector3(Math.cos(angle - Math.PI / 2), 0, Math.sin(angle - Math.PI / 2));
+		const player_1_pos = scene.get("player1").player.position.clone();
+
+		player_1.geometry.rotateY(angle);
+		player_1.geometry.translate(player_1_pos);
+		player_1.position.addScaledVector(direction_1, 0.5);
+	}
+	else
+	{
+		for (let i = 0; i < player_num; i++)
+		{
+			if (i == scene.server.client_id)
+				continue;
+
+			const player_name = "player" + i;
+			const player = scene.get(player_name);
+			const text_position = new THREE.Vector3().copy(player.player.position);
+			text_position.y += 1;
+			const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
+			text_position.addScaledVector(direction, 0.5);
+			
+			const text = scene.addText(player_name, {color: 0xffffff}, 0.5, "playertext" + i);
+			text.geometry.rotateY(Math.PI - player.angle);
+			text.geometry.translate(text_position);
+		}
+	}
+}
+
+export { initMap, initText };

@@ -26,7 +26,9 @@ class Server
 
 	newPlayer(player_name)
 	{
-		console.log("New player: " + player_name);
+		console.log("newPlayer", player_name)
+		let player = this.scene.get(player_name);
+		player.player.visible = true;
 	}
 
 	onOpen(scene, event)

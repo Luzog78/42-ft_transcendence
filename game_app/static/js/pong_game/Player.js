@@ -24,6 +24,7 @@ class Player
 		this.init_position = position
 		this.size = size;
 		this.angle = 0;
+		this.speed = 1.2;
 
 		this.keyboard = {};
 		this.player = null;
@@ -52,17 +53,23 @@ class Player
 	init()
 	{
 		this.player = this.scene.addBox(this.size, 0.1, 0.1, this.options, this.name + "box");
+		// this.scene.addText(this.name, {color: 0xffffff}, 0.5, this.init_position, this.name + "text")
+		
+		console.log(this.scene.get(this.name + "text"));
+
 		this.player.position.copy(this.init_position);
 		this.scene.elements[this.name] = this;
 	}
 
 	keyPressed()
 	{
+		const speed = this.speed * this.scene.dt * (this.size);
+
 		if (this.keyboard["w"] == true)
 		{
 			let computed_position = new THREE.Vector3().copy(this.player.position);
-			computed_position.x -= Math.cos(this.angle) * 1.2 * this.scene.dt;
-			computed_position.z -= Math.sin(this.angle) * 1.2 * this.scene.dt;
+			computed_position.x -= Math.cos(this.angle) * speed;
+			computed_position.z -= Math.sin(this.angle) * speed;
 			
 			if (computed_position.distanceTo(this.init_position) > this.scene.segment_size / 2 - this.size / 2)
 				return;
@@ -71,8 +78,8 @@ class Player
 		if (this.keyboard["s"] == true)
 		{
 			let computed_position = new THREE.Vector3().copy(this.player.position);
-			computed_position.x += Math.cos(this.angle) * 1.2 * this.scene.dt;
-			computed_position.z += Math.sin(this.angle) * 1.2 * this.scene.dt;
+			computed_position.x += Math.cos(this.angle) * speed;
+			computed_position.z += Math.sin(this.angle) * speed;
 			
 			if (computed_position.distanceTo(this.init_position) > this.scene.segment_size / 2 - this.size / 2)
 				return;

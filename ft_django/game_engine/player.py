@@ -23,10 +23,13 @@ class Player:
 
 		self.angle = 0
 		self.pos = Vector(0, 0)
+		self.speed = 1.2
 
 		self.keyboard = {}
 
 	async def addSelfWall(self):
+		await self.sendToOther("call", {"command": "scene.server.newPlayer", "args": ["'player" + str(self.client_id) + "'"]})
+
 		if (self.lobby.clients_per_lobby == 2):
 			vertex = self.lobby.walls["player" + str(self.client_id)]
 			middle = (vertex[0] + vertex[1]) / 2
@@ -44,7 +47,6 @@ class Player:
 		secondPoint = Vector(mid.x + math.cos(angle - math.pi) * self.lobby.player_size, mid.y + math.sin(angle - math.pi) * self.lobby.player_size)
 
 		self.lobby.walls["player" + str(self.client_id)] = [firstPoint, secondPoint]
-		await self.sendToOther("call", {"command": "newPlayer", "args": ["player" + str(self.client_id)]})
 
 	async def move(self, x, y):
 		player_vertex = self.lobby.walls["player" + str(self.client_id)]
@@ -81,11 +83,12 @@ class Player:
 		if (len(self.lobby.walls) == 0):
 			return
 
+		move_speed = self.speed * self.lobby.gameServer.dt * (self.lobby.player_size * 2)
 		if (any([key in "ws" for key in self.keyboard.keys() if self.keyboard[key] == True])):
 			if ("w" in self.keyboard and self.keyboard["w"] == True):
-				await self.move(-1.2 * self.lobby.gameServer.dt, -1.2 * self.lobby.gameServer.dt)
+				await self.move(-move_speed, -move_speed)
 			elif ("s" in self.keyboard and self.keyboard["s"] == True):
-				await self.move(1.2 * self.lobby.gameServer.dt, 1.2 * self.lobby.gameServer.dt)
+				await self.move(move_speed, move_speed)
 
 	async def sendData(self, *args):
 		await self.client.sendData(*args)

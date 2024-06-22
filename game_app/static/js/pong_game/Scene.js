@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/21 21:09:32 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/22 01:51:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ import * as Timer from 'timer';
 import { Ball } from "./Ball.js";
 import { Server } from "./Server.js";
 import { ScreenShake } from "./ScreenShake.js";
-import { initMap } from "./map.js";
+import { initMap, initText } from "./map.js";
 
 
 class Scene
@@ -47,6 +47,8 @@ class Scene
 		this.timer = new Timer.Timer();
 		this.dt = 0;
 
+		this.font = null;
+		
 		this.init();
 
 		this.renderScene = new RenderPass.RenderPass(this.scene, this.camera);
@@ -72,6 +74,12 @@ class Scene
 		this.player_num = player_num;
 
 		initMap(this, player_num);
+
+		const loader = new FontLoader.FontLoader();
+		loader.load('static/js/pong_game/Braciola MS_Regular.json', (font) => {
+			this.font = font;
+			initText(this, this.player_num);
+		});
 
 		let my_player = this.get("player" + this.server.client_id);
 		window.addEventListener("keydown", my_player.keydown_event_func);
@@ -117,33 +125,24 @@ class Scene
 		return this.elements[name];
 	}
 
-	addText(text, param, size, position, name="")
+	addText(text, param, size, name="")
 	{
 		if (name.length == 0)
 			name = "Text " + text;
-		let loader = new FontLoader.FontLoader();
-		loader.load('static/js/pong_game/Braciola MS_Regular.json', (font) => {
+		const shapes = this.font.generateShapes( text, size );
+		const geometry = new THREE.ShapeGeometry( shapes );
+		geometry.computeBoundingBox();
+		const xMid = -0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
+		geometry.translate( xMid, 0, 0 );
 
-			const shapes = font.generateShapes( text, size );
-			const geometry = new THREE.ShapeGeometry( shapes );
-			geometry.computeBoundingBox();
-			const xMid = -0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
-			geometry.translate( xMid, 0, 0 );
-
-			geometry.rotateX(-Math.PI / 2);
-			geometry.rotateY(Math.PI / 2);
-
-			geometry.translate(position);
-
-			const matLite = new THREE.MeshBasicMaterial({
-				side: THREE.DoubleSide,
-				color: param.color
-			});
-			const textMesh = new THREE.Mesh( geometry, matLite );
-			this.add(textMesh, name);
-
+		const matLite = new THREE.MeshBasicMaterial({
+			side: THREE.DoubleSide,
+			color: param.color
 		});
+		const textMesh = new THREE.Mesh( geometry, matLite );
+		this.add(textMesh, name);
 
+		return textMesh;
 	}
 
 	addSphere(radius, param, name="")
