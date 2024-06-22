@@ -64,13 +64,9 @@ function initNPlayerMap(scene, number)
 		let angle = Math.atan2(next_vertex.z - vertex.z, next_vertex.x - vertex.x);
 		
 		let player_position = new THREE.Vector3(middle_point.x, 0.15, middle_point.z - 0.075);
-		let player = new Player(scene, {color: color, emissive:color, emissiveIntensity:3}, playerSize, player_position, player_name);
-		player.player.rotation.y = -angle;
-		player.angle = angle;
-
-		console.log(i, scene.server.client_id)
+		let player = new Player(scene, {color: color, emissive:color, emissiveIntensity:3}, playerSize, angle, player_position, player_name);
 		if (i > scene.server.client_id)
-			player.player.visible = false
+			player.player.visible = false;
 
 		scene.entities.push(player);
 
@@ -151,8 +147,8 @@ async function init2PlayerMap(scene)
 	spotLight.castShadow = true;
 	scene.add( spotLight , "spotLight");
 
-	scene.entities.push(new Player(scene, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, 1, new THREE.Vector3(0,0.15,4.075), "player0"));
-	scene.entities.push(new Player(scene, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, 1, new THREE.Vector3(0,0.15,-4.075), "player1"));
+	scene.entities.push(new Player(scene, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, 1, 0, new THREE.Vector3(0,0.15,4.075), "player0"));
+	scene.entities.push(new Player(scene, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, 1, 0, new THREE.Vector3(0,0.15,-4.075), "player1"));
 
 	scene.get("ball").position.set(0,0.25,0);
 	if (scene.server.client_id == 0)
@@ -232,6 +228,19 @@ async function init2PlayerMap(scene)
 		scene.addBox(0.13, 0.11, 0.13, {color: 0x999999, emissive:0x999999}, "floor" + i).position.set((i * 0.3) - 1.80, 0.01, 0);
 }
 
+function initPlayerText(scene, player, name)
+{
+	const text_position = new THREE.Vector3().copy(player.player.position);
+	text_position.y += 1;
+
+	const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
+	text_position.addScaledVector(direction, 1);
+	
+	const text = scene.addText(name, {color: 0xffffff}, 0.5, player.name + "text");
+	text.geometry.rotateY(Math.PI - player.angle);
+	text.geometry.translate(text_position);
+}
+
 function initText(scene, player_num)
 {
 	if (player_num == 2)
@@ -239,8 +248,8 @@ function initText(scene, player_num)
 		const score_1_pos = new THREE.Vector3(-1.25,0.1,0.5);
 		const score_2_pos = new THREE.Vector3(-1.25,0.1,-0.5);
 
-		const score_1 = scene.addText("0", {color: 0xffffff}, 0.5, "text1")
-		const score_2 = scene.addText("5", {color: 0xffffff}, 0.5, "text2")
+		const score_1 = scene.addText("0", {color: 0xffffff}, 0.5, "score1");
+		const score_2 = scene.addText("5", {color: 0xffffff}, 0.5, "score2");
 		
 		score_1.geometry.rotateX(-Math.PI / 2);
 		score_1.geometry.rotateY(Math.PI / 2);
@@ -250,43 +259,25 @@ function initText(scene, player_num)
 		score_2.geometry.rotateY(Math.PI / 2);
 		score_2.geometry.translate(score_2_pos)
 
-		let angle = Math.PI;
-		const player_0 = scene.addText("player0", {color: 0xffffff}, 0.25, "playertext0");
-		const direction_0 = new THREE.Vector3(Math.cos(angle - Math.PI / 2), 0, Math.sin(angle - Math.PI / 2));
+		const player_0 = scene.addText("player0", {color: 0xffffff}, 0.25, "player0" + "text");
+		const direction_0 = new THREE.Vector3(0,0,1);
 		const player_0_pos = scene.get("player0").player.position.clone();
 		
-		player_0.geometry.rotateY(angle);
+		player_0.geometry.rotateY(Math.PI);
 		player_0.geometry.translate(player_0_pos);
 		player_0.position.addScaledVector(direction_0, 0.5);
 
-		angle = 0;
-		const player_1 = scene.addText("player1", {color: 0xffffff}, 0.25, "playertext1");
-		const direction_1 = new THREE.Vector3(Math.cos(angle - Math.PI / 2), 0, Math.sin(angle - Math.PI / 2));
+		const player_1 = scene.addText("player1", {color: 0xffffff}, 0.25, "player1" + "text");
+		const direction_1 = new THREE.Vector3(0,0,-1);
 		const player_1_pos = scene.get("player1").player.position.clone();
+		player_1_pos.addScaledVector(direction_1, 0.5);
 
-		player_1.geometry.rotateY(angle);
+		player_1.geometry.rotateY(0);
 		player_1.geometry.translate(player_1_pos);
-		player_1.position.addScaledVector(direction_1, 0.5);
 	}
 	else
-	{
-		for (let i = 0; i < player_num; i++)
-		{
-			if (i == scene.server.client_id)
-				continue;
-
-			const player_name = "player" + i;
-			const player = scene.get(player_name);
-			const text_position = new THREE.Vector3().copy(player.player.position);
-			text_position.y += 1;
-			const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
-			text_position.addScaledVector(direction, 0.5);
-			
-			const text = scene.addText(player_name, {color: 0xffffff}, 0.5, "playertext" + i);
-			text.geometry.rotateY(Math.PI - player.angle);
-			text.geometry.translate(text_position);
-		}
-	}
+		for (let i = 0; i < scene.server.client_id; i++)
+			initPlayerText(scene, scene.get("player" + i), "player" + i);
 }
 
-export { initMap, initText };
+export { initMap, initText, initPlayerText };

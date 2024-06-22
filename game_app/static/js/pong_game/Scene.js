@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/22 01:51:29 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/22 18:18:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,18 +167,35 @@ class Scene
 			name = "Box";
 		name = this.getName(name);
 
-		var geometry = new THREE.BoxGeometry(width, height, depth);
+		const geometry = new THREE.BoxGeometry(width, height, depth);
 		geometry.computeBoundingBox();
 
-		var material = new THREE.MeshPhysicalMaterial(param);
+		const material = new THREE.MeshPhysicalMaterial(param);
 		material.roughness = 0.6;
 		material.metalness = 0.1;
 
-		var cube = new THREE.Mesh(geometry, material);
+		const cube = new THREE.Mesh(geometry, material);
 		cube.castShadow = true;
 		cube.receiveShadow = true;
 
 		return this.add(cube, name);
+	}
+
+	addCapsule(radius, length, param, name="")
+	{
+		if (name.length == 0)
+			name = "Capsule";
+		name = this.getName(name);
+
+		const geometry = new THREE.CapsuleGeometry(radius, length, 32);
+		geometry.computeBoundingBox();
+
+		const material = new THREE.MeshLambertMaterial(param);
+		const capsule = new THREE.Mesh(geometry, material);
+		capsule.castShadow = true;
+		capsule.receiveShadow = true;
+
+		return this.add(capsule, name);
 	}
 
 	remove(element)

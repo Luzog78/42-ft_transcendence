@@ -15,7 +15,7 @@ import * as THREE from 'three';
 
 class Player
 {
-	constructor(scene, options, size, position, name)
+	constructor(scene, options, size, angle, position, name)
 	{
 		this.scene = scene;
 		this.name = this.scene.getName(name);
@@ -23,7 +23,7 @@ class Player
 
 		this.init_position = position
 		this.size = size;
-		this.angle = 0;
+		this.angle = angle;
 		this.speed = 1.2;
 
 		this.keyboard = {};
@@ -52,10 +52,10 @@ class Player
 
 	init()
 	{
-		this.player = this.scene.addBox(this.size, 0.1, 0.1, this.options, this.name + "box");
-		// this.scene.addText(this.name, {color: 0xffffff}, 0.5, this.init_position, this.name + "text")
-		
-		console.log(this.scene.get(this.name + "text"));
+		// this.player = this.scene.addBox(this.size, 0.1, 0.1, this.options, this.name + "box");
+		this.player = this.scene.addCapsule(0.075, this.size, this.options, this.name);
+		this.player.rotateY(-this.angle + Math.PI / 2);
+		this.player.rotateX(-Math.PI / 2);
 
 		this.player.position.copy(this.init_position);
 		this.scene.elements[this.name] = this;

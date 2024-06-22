@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+import { initPlayerText } from "./map.js";
+
 class Server
 {
 	constructor(scene)
@@ -29,6 +31,8 @@ class Server
 		console.log("newPlayer", player_name)
 		let player = this.scene.get(player_name);
 		player.player.visible = true;
+
+		initPlayerText(this.scene, player, player_name);
 	}
 
 	onOpen(scene, event)
