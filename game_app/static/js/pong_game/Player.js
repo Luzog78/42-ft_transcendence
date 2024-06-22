@@ -35,21 +35,6 @@ class Player
 		this.init();
 	}
 
-	async keydown_event(e)
-	{
-		if (this.keyboard[e.key] == true)
-			return;
-		this.keyboard[e.key] = true;
-		await this.scene.server.sendData("player_keyboard", this.keyboard);
-	}
-	async keyup_event(e)
-	{
-		if (this.keyboard[e.key] == false)
-			return;
-		this.keyboard[e.key] = false;
-		await this.scene.server.sendData("player_keyboard", this.keyboard);
-	}
-
 	init()
 	{
 		this.player = this.scene.addCapsule(0.075, this.size, this.options, this.name + "box");
@@ -64,7 +49,7 @@ class Player
 	{
 		const speed = this.speed * this.scene.dt * (this.size);
 
-		if (this.keyboard["w"] == true)
+		if (this.isUp())
 		{
 			let computed_position = new THREE.Vector3().copy(this.player.position);
 			computed_position.x -= Math.cos(this.angle) * speed;
@@ -74,7 +59,7 @@ class Player
 				return;
 			this.player.position.copy(computed_position);
 		}
-		if (this.keyboard["s"] == true)
+		if (this.isDown())
 		{
 			let computed_position = new THREE.Vector3().copy(this.player.position);
 			computed_position.x += Math.cos(this.angle) * speed;
@@ -118,6 +103,43 @@ class Player
 	{
 		if (this.name == "player" + this.scene.server.client_id)
 			this.keyPressed();
+	}
+
+	isUp()
+	{
+		let keys = ["w", "ArrowLeft"];
+		for (let key of keys)
+		{
+			if (this.keyboard[key])
+				return (true)
+		}
+		return false
+	}
+
+	isDown()
+	{
+		let keys = ["s", "ArrowRight"];
+		for (let key of keys)
+		{
+			if (this.keyboard[key])
+				return (true)
+		}
+		return false
+	}
+
+	async keydown_event(e)
+	{
+		if (this.keyboard[e.key] == true)
+			return;
+		this.keyboard[e.key] = true;
+		await this.scene.server.sendData("player_keyboard", this.keyboard);
+	}
+	async keyup_event(e)
+	{
+		if (this.keyboard[e.key] == false)
+			return;
+		this.keyboard[e.key] = false;
+		await this.scene.server.sendData("player_keyboard", this.keyboard);
 	}
 }
 

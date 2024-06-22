@@ -93,11 +93,24 @@ class Player:
 			return
 
 		move_speed = self.speed * self.lobby.gameServer.dt * (self.lobby.player_size * 2)
-		if (any([key in "ws" for key in self.keyboard.keys() if self.keyboard[key] == True])):
-			if ("w" in self.keyboard and self.keyboard["w"] == True):
-				await self.move(-move_speed, -move_speed)
-			elif ("s" in self.keyboard and self.keyboard["s"] == True):
-				await self.move(move_speed, move_speed)
+		if (self.isUp()):
+			await self.move(-move_speed, -move_speed)
+		elif (self.isDown()):
+			await self.move(move_speed, move_speed)
+
+	def isUp(self):
+		keys = ["w", "ArrowLeft"]
+		for key in keys:
+			if key in self.keyboard and self.keyboard[key] == True:
+				return True
+		return False
+
+	def isDown(self):
+		keys = ["s", "ArrowRight"]
+		for key in keys:
+			if key in self.keyboard and self.keyboard[key] == True:
+				return True
+		return False
 
 	async def sendData(self, *args):
 		await self.client.sendData(*args)

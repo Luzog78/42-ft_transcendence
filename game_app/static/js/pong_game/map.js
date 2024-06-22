@@ -231,7 +231,12 @@ function initPlayerText(scene, player, name)
 {
 	const text_position = new THREE.Vector3().copy(player.player.position);
 	const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
-	const max_size = scene.segment_size / 2;
+	
+	let max_size;
+	max_size = Math.min(scene.segment_size / 2, 2);
+	if (scene.player_num == 2)
+		max_size = 1;
+
 	const text_size = max_size / (name.length * 0.5);
 	const text = scene.addText(name, {color: 0xffffff}, text_size, player.name + "text");
 	

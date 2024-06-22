@@ -72,32 +72,28 @@ class Ball:
 			return
 
 		player = self.lobby.clients[int(wallname.replace("player", ""))]
+		player_space = player.keyboard[" "] if " " in player.keyboard else False
 
-		player_up = player.keyboard["w"] if "w" in player.keyboard else False
-		player_down = player.keyboard["s"] if "s" in player.keyboard else False
+		angle = 0
+		if (player.isUp() and player_space):
+			angle = -67.5
+		elif (player.isDown() and player_space):
+			angle = 67.5
+		else:
+			return
+		if (self.lobby.clients_per_lobby == 2):
+			angle = 67.5
 
-		if (player_up):
-			newVel = Vector(-1, -0.5)
-			newVel.setLength(self.vel.length() + 0.1)
+		rotated_vel = math.radians(angle)
+		direction = collision_normal.rotate(rotated_vel)
+		self.vel = direction
+		self.vel.setLength(self.current_vel_length + 0.1)
 
-			self.vel = newVel
-
-			self.acc = Vector(1, -0.5)
-			self.acc.setLength(self.vel.length() * 2)
-
-		elif (player_down):
-			newVel = Vector(1, -0.5)
-			newVel.setLength(self.vel.length() + 0.1)
-
-			self.vel = newVel
-
-			self.acc = Vector(-1, -0.5)
-			self.acc.setLength(self.vel.length() * 2)
-
-		if (player_up or player_down):
-			self.vel.y *= 1 if collision_normal.y < 0 else -1
-			self.acc.y *= 1 if collision_normal.y < 0 else -1
-
+		rotated_acc = math.radians(-angle)
+		direction = collision_normal.rotate(rotated_acc)
+		self.acc = direction
+		self.acc.setLength(self.vel.length() * 2)
+			
 
 	async def checkCollision(self):
 		for wall_name in self.lobby.walls:

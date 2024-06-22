@@ -56,6 +56,13 @@ class Vector:
 
 	def reflect(self, normal):
 		return self - normal * 2 * self.dot(normal)
+	
+	def rotate(self, angle):
+		cos_theta = math.cos(angle)
+		sin_theta = math.sin(angle)
+		x_new = self.x * cos_theta - self.y * sin_theta
+		y_new = self.x * sin_theta + self.y * cos_theta
+		return Vector(x_new, y_new)
 
 	def distance(self, other):
 		return (self - other).length()
