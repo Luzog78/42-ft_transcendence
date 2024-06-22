@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/22 18:18:45 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/22 19:46:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ import * as Timer from 'timer';
 import { Ball } from "./Ball.js";
 import { Server } from "./Server.js";
 import { ScreenShake } from "./ScreenShake.js";
-import { initMap, initText } from "./map.js";
+import { initMap, initTextScore } from "./map.js";
 
 
 class Scene
@@ -63,6 +63,11 @@ class Scene
 
 	init()
 	{
+		const loader = new FontLoader.FontLoader();
+		loader.load('static/js/pong_game/Braciola MS_Regular.json', (font) => {
+			this.font = font;
+		});
+
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -74,12 +79,7 @@ class Scene
 		this.player_num = player_num;
 
 		initMap(this, player_num);
-
-		const loader = new FontLoader.FontLoader();
-		loader.load('static/js/pong_game/Braciola MS_Regular.json', (font) => {
-			this.font = font;
-			initText(this, this.player_num);
-		});
+		initTextScore(this, this.player_num)
 
 		let my_player = this.get("player" + this.server.client_id);
 		window.addEventListener("keydown", my_player.keydown_event_func);

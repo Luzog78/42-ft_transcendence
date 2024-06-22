@@ -27,9 +27,7 @@ class Player:
 
 		self.keyboard = {}
 
-	async def addSelfWall(self):
-		await self.sendToOther("call", {"command": "scene.server.newPlayer", "args": ["'player" + str(self.client_id) + "'"]})
-
+	def addSelfWall(self):
 		if (self.lobby.clients_per_lobby == 2):
 			vertex = self.lobby.walls["player" + str(self.client_id)]
 			middle = (vertex[0] + vertex[1]) / 2
@@ -47,6 +45,17 @@ class Player:
 		secondPoint = Vector(mid.x + math.cos(angle - math.pi) * self.lobby.player_size, mid.y + math.sin(angle - math.pi) * self.lobby.player_size)
 
 		self.lobby.walls["player" + str(self.client_id)] = [firstPoint, secondPoint]
+	
+	async def updateName(self):
+		my_player_name = "'" + "name" + str(self.client_id) + "'" #get name from DB
+		await self.sendToOther("call", {"command": "scene.server.newPlayer",
+								  		"args": ["'player" + str(self.client_id) + "'", my_player_name]})
+
+		for i in range(self.client_id):
+			player = self.lobby.clients[i] 
+			player_name = "'" + "name" + str(i) + "'" #get name from DB
+			await self.sendData("call", {"command": "scene.server.newPlayer", 
+									"args": ["'player" + str(i) + "'", player_name]})
 
 	async def move(self, x, y):
 		player_vertex = self.lobby.walls["player" + str(self.client_id)]

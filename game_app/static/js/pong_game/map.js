@@ -231,17 +231,28 @@ async function init2PlayerMap(scene)
 function initPlayerText(scene, player, name)
 {
 	const text_position = new THREE.Vector3().copy(player.player.position);
-	text_position.y += 1;
-
 	const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
-	text_position.addScaledVector(direction, 1);
+	const text_size = player.size * 0.25;
+	const text = scene.addText(name, {color: 0xffffff}, text_size, player.name + "text");
 	
-	const text = scene.addText(name, {color: 0xffffff}, 0.5, player.name + "text");
-	text.geometry.rotateY(Math.PI - player.angle);
+	let visual_angle = Math.PI - player.angle;
+	let direction_scale = 1;
+	let y_offset = 1;
+	if (scene.player_num == 2)
+	{
+		direction_scale = 0;
+		visual_angle = (scene.server.client_id) * Math.PI; //turn the text to the player
+		y_offset = 0.5;
+	}
+	
+	text_position.y += y_offset;
+	text_position.addScaledVector(direction, direction_scale);
+	
+	text.geometry.rotateY(visual_angle);
 	text.geometry.translate(text_position);
 }
 
-function initText(scene, player_num)
+function initTextScore(scene, player_num)
 {
 	if (player_num == 2)
 	{
@@ -258,26 +269,7 @@ function initText(scene, player_num)
 		score_2.geometry.rotateX(-Math.PI / 2);
 		score_2.geometry.rotateY(Math.PI / 2);
 		score_2.geometry.translate(score_2_pos)
-
-		const player_0 = scene.addText("player0", {color: 0xffffff}, 0.25, "player0" + "text");
-		const direction_0 = new THREE.Vector3(0,0,1);
-		const player_0_pos = scene.get("player0").player.position.clone();
-		
-		player_0.geometry.rotateY(Math.PI);
-		player_0.geometry.translate(player_0_pos);
-		player_0.position.addScaledVector(direction_0, 0.5);
-
-		const player_1 = scene.addText("player1", {color: 0xffffff}, 0.25, "player1" + "text");
-		const direction_1 = new THREE.Vector3(0,0,-1);
-		const player_1_pos = scene.get("player1").player.position.clone();
-		player_1_pos.addScaledVector(direction_1, 0.5);
-
-		player_1.geometry.rotateY(0);
-		player_1.geometry.translate(player_1_pos);
 	}
-	else
-		for (let i = 0; i < scene.server.client_id; i++)
-			initPlayerText(scene, scene.get("player" + i), "player" + i);
 }
 
-export { initMap, initText, initPlayerText };
+export { initMap, initTextScore, initPlayerText };

@@ -52,8 +52,7 @@ class Player
 
 	init()
 	{
-		// this.player = this.scene.addBox(this.size, 0.1, 0.1, this.options, this.name + "box");
-		this.player = this.scene.addCapsule(0.075, this.size, this.options, this.name);
+		this.player = this.scene.addCapsule(0.075, this.size, this.options, this.name + "box");
 		this.player.rotateY(-this.angle + Math.PI / 2);
 		this.player.rotateX(-Math.PI / 2);
 

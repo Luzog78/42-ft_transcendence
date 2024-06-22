@@ -26,10 +26,9 @@ class Server
 		this.socket.addEventListener('open', (event) => this.onOpen(this.scene, event));
 	}
 
-	newPlayer(player_name)
+	newPlayer(player_id, player_name)
 	{
-		console.log("newPlayer", player_name)
-		let player = this.scene.get(player_name);
+		let player = this.scene.get(player_id);
 		player.player.visible = true;
 
 		initPlayerText(this.scene, player, player_name);
