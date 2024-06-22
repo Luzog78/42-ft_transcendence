@@ -223,7 +223,6 @@ async function init2PlayerMap(scene)
 	new Lines(scene, points_floor3, colors_floor, 2, 4, "linefloor");
 	new Lines(scene, points_floor4, colors_floor, 2, 4, "linefloor");
 
-	//floor
 	for (let i = 0; i < 13; i++)
 		scene.addBox(0.13, 0.11, 0.13, {color: 0x999999, emissive:0x999999}, "floor" + i).position.set((i * 0.3) - 1.80, 0.01, 0);
 }
@@ -232,7 +231,8 @@ function initPlayerText(scene, player, name)
 {
 	const text_position = new THREE.Vector3().copy(player.player.position);
 	const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
-	const text_size = player.size * 0.25;
+	const max_size = scene.segment_size / 2;
+	const text_size = max_size / (name.length * 0.5);
 	const text = scene.addText(name, {color: 0xffffff}, text_size, player.name + "text");
 	
 	let visual_angle = Math.PI - player.angle;
