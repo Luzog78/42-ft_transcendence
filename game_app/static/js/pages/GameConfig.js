@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GameConfig.js                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kbutor-b <kbutor-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/21 02:32:05 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/24 17:06:03 by kbutor-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ function GameConfig(context, id) {
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<div id="GameConfig-content">
-			<div class="text-center fs-2 fw-bolder">#1234</div>
-			<div class="GameConfig-container container-blur">
+		<div class="text-center fs-2 fw-bolder">#1234</div>
+		<div class="GameConfig-container container-blur">
 				<div class="GameConfig-Mode row d-flex justify-content-center">
 					<div class="col-md-5 text-center d-flex justify-content-around">
-						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn1" autocomplete="off" onclick="changeGameOptionPanel('points')">
+						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn1" autocomplete="off">
 						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn1">First To</label>
 						
-						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn2" autocomplete="off" checked onclick="changeGameOptionPanel('none')">
+						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn2" autocomplete="off" checked>
 						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn2">Battle Royal</label>
 						
-						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn3" autocomplete="off" onclick="changeGameOptionPanel('time')">
+						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn3" autocomplete="off">
 						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn3">Time up</label>
 					</div>
 				</div>
@@ -40,15 +40,13 @@ function GameConfig(context, id) {
 							<div class="text-center p-4 fs-3 fw-semibold">Players :</div>
 							<input type="number" class="form-control fs-4 text-center fw-light" value="2" min="2" max="100">
 						</div>
-						<div class="row py-2" id="GameConfig-Panel">
-							<div class="GameConfig-Points">
-								<div class="text-center pt-3">Points to Win</div>									
-								<input type="number" class="form-control" value="5">
-							</div>
-							<div class="GameConfig-Time">
-								<div class="text-center pt-3">Timer</div>									
-								<input type="time" class="form-control" value="03:00">
-							</div>
+						<div class="GameConfig-Points row d-flex justify-content-center">
+								<div class="text-center p-4 fs-3 fw-semibold">Points to Win :</div>									
+								<input type="number" class="form-control fs-4 text-center fw-light" value="5" min="1">
+						</div>
+						<div class="GameConfig-Time row d-flex justify-content-center d-none">
+								<div class="text-center p-4 fs-3 fw-semibold">Timer(mins) :</div>									
+								<input type="number" class="form-control fs-4 text-center fw-light" value="3" min="1" max="60">
 						</div>
 					</div>
 					<div class="col-md-5 my-5">
@@ -97,17 +95,17 @@ function GameConfig(context, id) {
 	return div.outerHTML;
 }
 
-function changeGameOptionPanel(panel) {
-	getComputedStyle(document.getElementById('GameConfig-Panel')).setProperty('--points', 'none');
-	getComputedStyle(document.getElementById('GameConfig-Panel')).setProperty('--time', 'none');
-	switch (panel) {
-		case 'points':
-			getComputedStyle(document.getElementById('GameConfig-Panel')).setProperty('--points', 'block');
-			break ;
-		case 'time':
-			getComputedStyle(document.getElementById('GameConfig-Panel')).setProperty('--time', 'block');
-			break ;
-	}
-}
+// function changeGameOptionPanel(panel) {
+// 	getComputedStyle(document.getElementById('GameConfig-Panel')).setProperty('--points', 'none');
+// 	getComputedStyle(document.getElementById('GameConfig-Panel')).setProperty('--time', 'none');
+// 	switch (panel) {
+// 		case 'points':
+// 			getComputedStyle(document.getElementById('GameConfig-Panel')).setProperty('--points', 'block');
+// 			break ;
+// 		case 'time':
+// 			getComputedStyle(document.getElementById('GameConfig-Panel')).setProperty('--time', 'block');
+// 			break ;
+// 	}
+// }
 
 export { GameConfig };

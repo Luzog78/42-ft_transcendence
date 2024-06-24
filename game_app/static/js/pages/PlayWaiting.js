@@ -20,25 +20,28 @@ async function PlayWaiting(context, id, data=null) {
 	div.innerHTML = NavBar(getLang(context, "pages.playId.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
+		<div class="text-center fs-2 fw-bolder">#1234</div>
 		<div id="playid-content" class="container-fluid container-blur" style="padding: 50px; margin-top: 100px;">
 		<div class="moving-point"></div>
 			<div class="row">
-			<div class="text-center search-text fs-1">
-				<span
-				>S</span><span
-				>e</span><span
-				>a</span><span
-				>r</span><span
-				>c</span><span
-				>h</span><span
-				>i</span><span
-				>n</span><span
-				>g</span>
-			</div>
+				<div class="text-center search-text fs-1">
+					<span
+					>S</span><span
+					>e</span><span
+					>a</span><span
+					>r</span><span
+					>c</span><span
+					>h</span><span
+					>i</span><span
+					>n</span><span
+					>g</span>
+				</div>
+				<span class="text-center fs-2 GameMode mt-4">Batlle Royal</span>
+				<div class="GameConfig-Line my-3"></div>
 				<div class="row fs-3 justify-content-center">
 					<p class="col-1">1</p>
 					<p class="col-1">/</p>
-					<p class="col-1">2</p>
+					<p class="col-1">X</p>
 				</div>
 			</div>
 		</div>
