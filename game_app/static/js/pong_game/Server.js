@@ -14,6 +14,7 @@ import * as THREE from 'three';
 
 import { initPlayerText, initMap } from "./map.js";
 import { Particle } from "./Particle.js";
+import { destroyObject } from './main.js';
 
 class Server
 {
@@ -63,11 +64,10 @@ class Server
 			this.scene.entities.push(particle);
 		}
 
-		if (this.scene.player_num != 2)
-		{
-			// this.scene.player_num--;
-			// initMap(this.scene, this.scene.player_num);
-		}	
+		if (this.scene.player_num == 2)
+			return;
+
+		destroyObject(this.scene);
 	}
 
 	onOpen(scene, event)

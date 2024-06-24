@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scene.js                                           :+:      :+:    :+:   */
+/*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/22 19:46:55 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/25 01:09:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ import * as UnrealBloomPass from 'unrealbloompass';
 import * as FontLoader from 'fontloader';
 import * as Timer from 'timer';
 
-import { Ball } from "./Ball.js";
 import { Server } from "./Server.js";
 import { ScreenShake } from "./ScreenShake.js";
 import { initMap, initTextScore } from "./map.js";
@@ -38,11 +37,10 @@ class Scene
 		this.segment_size = 4;
 		this.player_num = 0;
 
+		this.ball = null;
+
 		this.elements = {};
 		this.entities = []
-
-		this.ball = new Ball(this, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball")
-		this.entities.push(this.ball);
 
 		this.timer = new Timer.Timer();
 		this.dt = 0;
@@ -60,7 +58,7 @@ class Scene
 			0.4, 1.0, 0.5);
 		this.composer.addPass(bloomPass);
 	}
-
+	
 	init()
 	{
 		const loader = new FontLoader.FontLoader();
@@ -79,7 +77,8 @@ class Scene
 		this.player_num = player_num;
 
 		initMap(this, player_num);
-		initTextScore(this, this.player_num)
+		if (player_num == 2)
+			initTextScore(this, this.player_num)
 
 		let my_player = this.get("player" + this.server.client_id);
 		window.addEventListener("keydown", my_player.keydown_event_func);

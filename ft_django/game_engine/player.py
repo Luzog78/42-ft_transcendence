@@ -27,11 +27,21 @@ class Player:
 
 		self.keyboard = {}
 
+	async def initConnection(self):
+		self.addSelfWall()
+
+		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
+										"scene.server.client_id": self.client_id})
+		await self.sendData("call", {"command": "scene.initConnection", "args": [self.lobby.clients_per_lobby]})
+		print("sent initConnection to client", self.client_id)
+		await self.updateSelfToother()
+
 	def addSelfWall(self):
 		if (self.lobby.clients_per_lobby == 2):
 			vertex = self.lobby.walls["player" + str(self.client_id)]
 			middle = (vertex[0] + vertex[1]) / 2
 			self.pos = middle
+			self.angle = 0
 
 			return
 
@@ -47,7 +57,8 @@ class Player:
 		self.lobby.walls["player" + str(self.client_id)] = [firstPoint, secondPoint]
 
 
-	async def updateName(self):
+
+	async def updateSelfToother(self):
 		my_player_name = "'" + "name" + str(self.client_id) + "'" #get name from DB
 		await self.sendToOther("call", {"command": "scene.server.newPlayer",
 								  		"args": ["'player" + str(self.client_id) + "'", my_player_name]})
@@ -63,7 +74,6 @@ class Player:
 		rotate_pos = Vector(math.cos(self.angle) * x, math.sin(self.angle) * y)
 
 		computed_pos = self.pos + rotate_pos
-
 		if (self.lobby.clients_per_lobby != 2):
 			distance = computed_pos.distance(self.lobby.middle_vertex_positions[self.client_id])
 			if (distance > self.lobby.segment_size / 2 - self.lobby.player_size):

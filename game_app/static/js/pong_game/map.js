@@ -15,11 +15,15 @@ import * as THREE from 'three';
 import { WallLines } from "./LineEffects.js";
 import { Lines } from "./Lines.js";
 import { Player } from "./Player.js";
+import { Ball } from "./Ball.js";
 
 function initMap(scene, player_num)
 {
 	let light = new THREE.AmbientLight( 0x555555 ); // soft white light
 	scene.scene.add(light);
+
+	scene.ball = new Ball(scene, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball")
+	scene.entities.push(scene.ball);
 
 	if (player_num == 2)
 		init2PlayerMap(scene);
@@ -259,22 +263,19 @@ function initPlayerText(scene, player, name)
 
 function initTextScore(scene, player_num)
 {
-	if (player_num == 2)
-	{
-		const score_1_pos = new THREE.Vector3(-1.25,0.1,0.5);
-		const score_2_pos = new THREE.Vector3(-1.25,0.1,-0.5);
+	const score_1_pos = new THREE.Vector3(-1.25,0.1,0.5);
+	const score_2_pos = new THREE.Vector3(-1.25,0.1,-0.5);
 
-		const score_1 = scene.addText("0", {color: 0xffffff}, 0.5, "score1");
-		const score_2 = scene.addText("5", {color: 0xffffff}, 0.5, "score2");
-		
-		score_1.geometry.rotateX(-Math.PI / 2);
-		score_1.geometry.rotateY(Math.PI / 2);
-		score_1.geometry.translate(score_1_pos);
+	const score_1 = scene.addText("0", {color: 0xffffff}, 0.5, "score1");
+	const score_2 = scene.addText("5", {color: 0xffffff}, 0.5, "score2");
+	
+	score_1.geometry.rotateX(-Math.PI / 2);
+	score_1.geometry.rotateY(Math.PI / 2);
+	score_1.geometry.translate(score_1_pos);
 
-		score_2.geometry.rotateX(-Math.PI / 2);
-		score_2.geometry.rotateY(Math.PI / 2);
-		score_2.geometry.translate(score_2_pos)
-	}
+	score_2.geometry.rotateX(-Math.PI / 2);
+	score_2.geometry.rotateY(Math.PI / 2);
+	score_2.geometry.translate(score_2_pos)
 }
 
 export { initMap, initTextScore, initPlayerText };

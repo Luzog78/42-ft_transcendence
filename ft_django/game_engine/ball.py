@@ -107,12 +107,10 @@ class Ball:
 			if (distance <= self.radius):
 				if ("score" in wall_name):
 					player_name = wall_name.replace("score", "player")
-
-					self.pos = Vector(0, 0)
-					await self.updateBall()
-					await self.lobby.sendData("call", {"command": 'scene.server.playerDead', 
-														"args": ["'" + player_name + "'"]})
-					continue
+					await self.lobby.playerDied(player_name)
+					
+					break
+					
 
 				collision_normal = (predicted_ball_pos - closest_point).normalize()
 

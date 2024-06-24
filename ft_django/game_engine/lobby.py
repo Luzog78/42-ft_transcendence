@@ -21,7 +21,7 @@ class Lobby:
 		self.lobby_id = len(self.gameServer.lobbys)
 
 		self.clients = []
-		self.clients_per_lobby = 2
+		self.clients_per_lobby = 3
 
 		self.ball = Ball(self, 0.15)
 
@@ -39,8 +39,8 @@ class Lobby:
 				"wall2": [Vector(-2, 4 + 0.2), Vector(-2, -4 + 0.2)],
 				"player0": [Vector(0.5, 4.075), Vector(-0.5, 4.075)],
 				"player1": [Vector(0.5, -4.075), Vector(-0.5, -4.075)],
-				"score0": [Vector(-3, 4.4), Vector(3, 4.4)],
-				"score1": [Vector(-3, -4.4), Vector(3, -4.4)]}
+				"score0": [Vector(-3, 4.15), Vector(3, 4.15)],
+				"score1": [Vector(-3, -4.15), Vector(3, -4.15)]}
 
 		walls = {}
 
@@ -67,12 +67,10 @@ class Lobby:
 										(firstVertex.y + nextVertex.y) / 2))
 			angleVertex.append(angle)
 
-			print(firstVertex, nextVertex)
 			angle = angle + math.pi / 2
-			back_direction = Vector(math.cos(angle), math.sin(angle)) * 0.5
+			back_direction = Vector(math.cos(angle), math.sin(angle)) * 0.15
 			firstVertex += back_direction
 			nextVertex += back_direction
-			print(firstVertex, nextVertex)
 
 			walls["score" + str(i)] = [firstVertex, nextVertex]
 
@@ -80,6 +78,26 @@ class Lobby:
 		self.angleVertex = angleVertex
 
 		return walls
+
+	async def playerDied(self, dead_player):
+		self.ball.pos = Vector(0, 0)
+		self.ball.vel = Vector(0, 0)
+		self.clients_per_lobby -= 1
+
+		await self.sendData("call", {"command": 'scene.server.playerDead', 
+														"args": ["'" + dead_player + "'"]})
+		self.walls = self.init_map(self.clients_per_lobby)
+		player_id = int(dead_player.replace("player", ""))
+		player = self.clients[player_id]
+		
+		self.removeClient(player)
+		for c in self.clients:
+			if (c.client_id > player_id):
+				c.client_id -= 1
+			await c.initConnection()
+		
+
+		
 
 	async def update(self):
 		await self.ball.update()
@@ -93,14 +111,9 @@ class Lobby:
 
 	async def addClient(self, player):
 		self.clients.append(player)
+
+		await player.initConnection()
 		
-		player.addSelfWall()
-
-		await player.sendData("modify", {"scene.server.lobby_id": self.lobby_id,
-								   		"scene.server.client_id": player.client_id})
-		await player.sendData("call", {"command": "scene.initConnection", "args": [self.clients_per_lobby]})
-		await player.updateName()
-
 		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)
 		if (len(self.clients) == self.clients_per_lobby):
 			self.ball.vel = Vector(1.2, 1.2)
