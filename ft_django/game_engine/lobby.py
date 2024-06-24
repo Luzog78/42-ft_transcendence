@@ -21,7 +21,7 @@ class Lobby:
 		self.lobby_id = len(self.gameServer.lobbys)
 
 		self.clients = []
-		self.clients_per_lobby = 3
+		self.clients_per_lobby = 2
 
 		self.ball = Ball(self, 0.15)
 
@@ -38,7 +38,9 @@ class Lobby:
 			return {"wall1": [Vector(2, 4 + 0.2), Vector(2, -4 + 0.2)],
 				"wall2": [Vector(-2, 4 + 0.2), Vector(-2, -4 + 0.2)],
 				"player0": [Vector(0.5, 4.075), Vector(-0.5, 4.075)],
-				"player1": [Vector(0.5, -4.075), Vector(-0.5, -4.075)]}
+				"player1": [Vector(0.5, -4.075), Vector(-0.5, -4.075)],
+				"score0": [Vector(-3, 4.4), Vector(3, 4.4)],
+				"score1": [Vector(-3, -4.4), Vector(3, -4.4)]}
 
 		walls = {}
 
@@ -60,9 +62,19 @@ class Lobby:
 				self.player_size = (firstVertex.distance(nextVertex) * 0.3) / 2
 				self.segment_size = firstVertex.distance(nextVertex)
 
+			angle = math.atan2(nextVertex.y - firstVertex.y, nextVertex.x - firstVertex.x)
 			middle_vertex_positions.append(Vector((firstVertex.x + nextVertex.x) / 2,
 										(firstVertex.y + nextVertex.y) / 2))
-			angleVertex.append(math.atan2(nextVertex.y - firstVertex.y, nextVertex.x - firstVertex.x))
+			angleVertex.append(angle)
+
+			print(firstVertex, nextVertex)
+			angle = angle + math.pi / 2
+			back_direction = Vector(math.cos(angle), math.sin(angle)) * 0.5
+			firstVertex += back_direction
+			nextVertex += back_direction
+			print(firstVertex, nextVertex)
+
+			walls["score" + str(i)] = [firstVertex, nextVertex]
 
 		self.middle_vertex_positions = middle_vertex_positions
 		self.angleVertex = angleVertex
@@ -87,7 +99,6 @@ class Lobby:
 		await player.sendData("modify", {"scene.server.lobby_id": self.lobby_id,
 								   		"scene.server.client_id": player.client_id})
 		await player.sendData("call", {"command": "scene.initConnection", "args": [self.clients_per_lobby]})
-		
 		await player.updateName()
 
 		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)

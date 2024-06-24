@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Trail.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 00:25:59 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/21 20:59:30 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/24 14:51:00 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ class Trail
 
 	update(scene)
 	{
-		this.mesh.material.opacity -= 3.3333333 * this.scene.dt;
-		let scaleFactor = Math.pow(0.0011096997970157978, this.scene.dt);
+		this.mesh.material.opacity -= 0.025;
+		let scaleFactor = 0.94;
 		this.mesh.geometry.scale(scaleFactor, scaleFactor, scaleFactor);
 
 		if (this.mesh.material.opacity < 0)

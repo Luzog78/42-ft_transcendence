@@ -98,12 +98,22 @@ class Ball:
 	async def checkCollision(self):
 		for wall_name in self.lobby.walls:
 			wall = self.lobby.walls[wall_name]
+			
 
 			predicted_ball_pos = self.pos + self.vel * self.lobby.gameServer.dt
 			closest_point = Ball.closestPointOnSegment(wall[0], wall[1], predicted_ball_pos)
 			distance = closest_point.distance(predicted_ball_pos)
 
 			if (distance <= self.radius):
+				if ("score" in wall_name):
+					player_name = wall_name.replace("score", "player")
+
+					self.pos = Vector(0, 0)
+					await self.updateBall()
+					await self.lobby.sendData("call", {"command": 'scene.server.playerDead', 
+														"args": ["'" + player_name + "'"]})
+					continue
+
 				collision_normal = (predicted_ball_pos - closest_point).normalize()
 
 				self.resolutionCollision(collision_normal, distance)

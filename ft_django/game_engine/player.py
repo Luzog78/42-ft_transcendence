@@ -45,7 +45,8 @@ class Player:
 		secondPoint = Vector(mid.x + math.cos(angle - math.pi) * self.lobby.player_size, mid.y + math.sin(angle - math.pi) * self.lobby.player_size)
 
 		self.lobby.walls["player" + str(self.client_id)] = [firstPoint, secondPoint]
-	
+
+
 	async def updateName(self):
 		my_player_name = "'" + "name" + str(self.client_id) + "'" #get name from DB
 		await self.sendToOther("call", {"command": "scene.server.newPlayer",

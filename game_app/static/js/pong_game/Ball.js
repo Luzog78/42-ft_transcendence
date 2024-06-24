@@ -81,27 +81,9 @@ class Ball
 			color = 270 - this.sphere.position.z * 20;
 			color = new THREE.Color(`hsl(${color}, 100%, 80%)`);
 		}
-		// else
-		// {
-		// 	let ball_distance = this.sphere.position.distanceTo(new THREE.Vector3(0,0,0));
-		// 	let ball_distance_ratio = ball_distance / (Math.sqrt(scene.player_num) * 2)
-
-		// 	let angle = Math.atan2(this.sphere.position.z, this.sphere.position.x);
-		// 	if (angle < 0) angle += Math.PI * 2
-		// 	console.log(Math.PI, (2 * Math.PI) / scene.player_num)
-		// 	angle -= (2 * Math.PI) / scene.player_num;
-		// 	angle = THREE.MathUtils.radToDeg(angle);
-		// 	angle = 360 - angle;
-
-		// 	ball_distance_ratio *= 0.2;
-		// 	ball_distance_ratio = 0.2 - ball_distance_ratio;
-		// 	color = new THREE.Color().setHSL((angle / 360), 1, 0.8 + ball_distance_ratio, THREE.SRGBColorSpace);
-		// }
+		
 		this.sphere.material.color = color
 		this.sphere.material.emissive = color
-
-		// this.sphere.position.x = Math.cos(Date.now() / 1000) * (Math.cos(Date.now() / 500) * 2);
-		// this.sphere.position.z = Math.sin(Date.now() / 1000) * (Math.cos(Date.now() / 500) * 2);
 
 		if (this.trails.length < this.trailsLength) // 
 		{

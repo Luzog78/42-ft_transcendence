@@ -10,7 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { initPlayerText } from "./map.js";
+import * as THREE from 'three';
+
+import { initPlayerText, initMap } from "./map.js";
+import { Particle } from "./Particle.js";
 
 class Server
 {
@@ -32,6 +35,39 @@ class Server
 		player.player.visible = true;
 
 		initPlayerText(this.scene, player, player_name);
+	}
+
+	playerDead(player_id)
+	{
+		let player = this.scene.get(player_id);
+
+		for (let i = 0; i < 50; i++)
+		{
+			let position = player.init_position.clone();
+			let randomPosition = position.clone().add(new THREE.Vector3(Math.random() * 0.2 - 0.1,Math.random() * 0.2 - 0.1,Math.random() * 0.2 - 0.1));
+			let direction = randomPosition.clone().sub(position).multiplyScalar(30);
+			let acceleration = direction.clone().multiplyScalar(-1.8);
+
+			let accDec = 0.989
+
+			let radius = Math.random() * 0.02 + 0.005;
+			let color = player.player.material.color;
+			color = new THREE.Color(color).offsetHSL(0, 0, Math.random() * 0.2 - 0.1);
+
+			let particle = new Particle(this.scene, randomPosition, direction, acceleration, accDec,
+				radius, {color: color}, 2, "particleExplosion");
+			particle.addUpdate(Particle.updatePhysics);
+			particle.addUpdate(Particle.updateFadeOpacity);
+			particle.addUpdate(Particle.updateRemoveOnFade);
+
+			this.scene.entities.push(particle);
+		}
+
+		if (this.scene.player_num != 2)
+		{
+			// this.scene.player_num--;
+			// initMap(this.scene, this.scene.player_num);
+		}	
 	}
 
 	onOpen(scene, event)
