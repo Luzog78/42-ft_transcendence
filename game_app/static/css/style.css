@@ -637,6 +637,22 @@ input[type=number].no-arrow {
 /* ------------------------------ PlayId ------------------------------ */
 /* ******************************************************************** */
 
+#playid-content .GameMode {
+background: linear-gradient(
+			to right,
+			#24bceb	 20%,
+			#9a66e0	 30%,
+			#3133ec 70%,
+			#c02ae7 80%
+	);
+	/* transform: scale(125%); */
+	font-weight: bold;
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-size: 500% auto;
+	animation: PongResult-Shine 4s infinite alternate;
+}
 #playid-content .moving-point {
 	position: absolute;
 	height: 8px;
@@ -1004,12 +1020,21 @@ input[type=number].no-arrow {
 	color: white !important;
 }
 
+#GameConfig-content input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+#GameConfig-content input[type="time"]::-webkit-clear-button {
+    display: none;
+}
+
+
 .GameConfig-Points {
-	display: var(--points);
+	/* display: var(--points); */
 }
 
 .GameConfig-Time {
-	display: var(--time);
+	/* display: var(--time); */
 }
 
 .GameConfig-ThemeInput:checked + .GameConfig-ThemeLabel img {
