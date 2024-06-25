@@ -33,7 +33,6 @@ class Player:
 		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
 										"scene.server.client_id": self.client_id})
 		await self.sendData("call", {"command": "scene.initConnection", "args": [self.lobby.clients_per_lobby]})
-		print("sent initConnection to client", self.client_id)
 		await self.updateSelfToother()
 
 	def addSelfWall(self):
@@ -59,7 +58,7 @@ class Player:
 
 
 	async def updateSelfToother(self):
-		my_player_name = "'" + "name" + str(self.client_id) + "'" #get name from DB
+		my_player_name = f"'name{self.client_id}'" #get name from DB
 		await self.sendToOther("call", {"command": "scene.server.newPlayer",
 								  		"args": ["'player" + str(self.client_id) + "'", my_player_name]})
 

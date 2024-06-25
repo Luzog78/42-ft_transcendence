@@ -31,8 +31,8 @@ async function Pong(context)
 		</style>
 	`;
 
-	setTimeout(() => {
-		init_scene();
+	setTimeout(async () => {
+		await init_scene();
 		animate();
 	}, 200);
 

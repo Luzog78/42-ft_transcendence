@@ -158,8 +158,8 @@ async function init2PlayerMap(scene)
 	if (scene.server.client_id == 0)
 		scene.get("player1").player.visible = false;
 	
-	scene.camera.position.x = 1.5;
-	scene.camera.position.y = 4;
+	scene.camera.position.set(1.5, 4, 0)
+	scene.camera.updateProjectionMatrix();
 
 	scene.addBox(4, 0.1, 8, {color: 0x0}, "floor");
 	scene.addBox(0.2, 0.75, 8, {color: 0xbbbbbb, emissive:0xbbbbbb, emissiveIntensity:2, visible:false}, "wall1");

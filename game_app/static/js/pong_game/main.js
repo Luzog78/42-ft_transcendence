@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/25 00:33:03 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/25 15:18:10 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ import { Scene } from "./Scene.js";
 
 let scene;
 
-function init_scene()
+async function init_scene()
 {
 	scene = new Scene(75);
+	await scene.init()
 	scene.scene.background = new THREE.Color(0x101010);
 
 	scene.camera.castShadow = true;

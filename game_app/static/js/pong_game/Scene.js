@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/25 01:09:06 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/25 16:02:42 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ class Scene
 		this.renderer = new THREE.WebGLRenderer({antialias: true});
 		this.controls = new OrbitControls.OrbitControls(this.camera, this.renderer.domElement);
 		this.shake = ScreenShake();
-
-		this.server = new Server(this);
+		
+		this.server = null;
+		
 		this.segment_size = 4;
 		this.player_num = 0;
 
@@ -46,8 +47,16 @@ class Scene
 		this.dt = 0;
 
 		this.font = null;
-		
-		this.init();
+	}
+	
+	async init()
+	{
+		this.font = await new Promise(res => {new FontLoader.FontLoader().load('static/js/pong_game/Braciola MS_Regular.json', res);console.log("done")});
+		console.log(this.font == null);
+		this.renderer.shadowMap.enabled = true;
+		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		document.body.appendChild(this.renderer.domElement);
 
 		this.renderScene = new RenderPass.RenderPass(this.scene, this.camera);
 		this.composer = new EffectComposer.EffectComposer(this.renderer);
@@ -57,19 +66,8 @@ class Scene
 			new THREE.Vector2(window.innerWidth, window.innerHeight),
 			0.4, 1.0, 0.5);
 		this.composer.addPass(bloomPass);
-	}
-	
-	init()
-	{
-		const loader = new FontLoader.FontLoader();
-		loader.load('static/js/pong_game/Braciola MS_Regular.json', (font) => {
-			this.font = font;
-		});
-
-		this.renderer.shadowMap.enabled = true;
-		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
-		document.body.appendChild(this.renderer.domElement);
+		
+		this.server = new Server(this);
 	}
 
 	initConnection(player_num)
@@ -80,7 +78,7 @@ class Scene
 		if (player_num == 2)
 			initTextScore(this, this.player_num)
 
-		let my_player = this.get("player" + this.server.client_id);
+		let my_player = this.get("player" + this.server.client_id); // to change
 		window.addEventListener("keydown", my_player.keydown_event_func);
 		window.addEventListener("keyup", my_player.keyup_event_func);
 	}

@@ -21,7 +21,7 @@ class Lobby:
 		self.lobby_id = len(self.gameServer.lobbys)
 
 		self.clients = []
-		self.clients_per_lobby = 3
+		self.clients_per_lobby = 5
 
 		self.ball = Ball(self, 0.15)
 
@@ -81,7 +81,7 @@ class Lobby:
 
 	async def playerDied(self, dead_player):
 		self.ball.pos = Vector(0, 0)
-		self.ball.vel = Vector(0, 0)
+		self.ball.vel = Vector(1.2, 0)
 		self.clients_per_lobby -= 1
 
 		await self.sendData("call", {"command": 'scene.server.playerDead', 
@@ -95,8 +95,7 @@ class Lobby:
 			if (c.client_id > player_id):
 				c.client_id -= 1
 			await c.initConnection()
-		
-
+			await self.ball.updateBall()
 		
 
 	async def update(self):
@@ -106,8 +105,11 @@ class Lobby:
 			await c.update()
 
 	def receive(self, data):
-		if ("player_keyboard" in data):
-			self.clients[data["client_id"]].keyboard = data["player_keyboard"]
+		try:
+			if ("player_keyboard" in data):
+				self.clients[data["client_id"]].keyboard = data["player_keyboard"]
+		except Exception as e:
+			print("Error in lobby.receive: ", e)
 
 	async def addClient(self, player):
 		self.clients.append(player)
