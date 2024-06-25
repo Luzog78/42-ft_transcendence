@@ -25,16 +25,19 @@ class Lobby:
 
 		self.ball = Ball(self, 0.15)
 
-		self.segment_size = 0
+		self.player_size = 0.5
+		self.segment_size = 4
+
 		self.middle_vertex_positions = []
 		self.angleVertex = []
 
-		self.player_size = 0.5
 
 		self.walls = self.init_map(self.clients_per_lobby)
 
 	def init_map(self, num_players):
 		if (num_players == 2):
+			self.player_size = 0.5
+			self.segment_size = 4
 			return {"wall1": [Vector(2, 4 + 0.2), Vector(2, -4 + 0.2)],
 				"wall2": [Vector(-2, 4 + 0.2), Vector(-2, -4 + 0.2)],
 				"player0": [Vector(0.5, 4.075), Vector(-0.5, 4.075)],
@@ -105,11 +108,8 @@ class Lobby:
 			await c.update()
 
 	def receive(self, data):
-		try:
-			if ("player_keyboard" in data):
-				self.clients[data["client_id"]].keyboard = data["player_keyboard"]
-		except Exception as e:
-			print("Error in lobby.receive: ", e)
+		if ("player_keyboard" in data):
+			self.clients[data["client_id"]].keyboard = data["player_keyboard"]
 
 	async def addClient(self, player):
 		self.clients.append(player)

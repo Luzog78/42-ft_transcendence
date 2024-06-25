@@ -87,18 +87,6 @@ class Player:
 		  							f"{playerBoxJS}.position.z": self.pos.y})
 
 	async def update(self):
-		# #
-		# direction = self.lobby.ball.pos.x - self.pos.x
-		# if (abs(direction) < 0.1):
-		# 	return
-		# if (direction > 0):
-		# 	direction = 1
-		# else:
-		# 	direction = -1
-
-		# await self.move(direction * 4 * self.lobby.gameServer.dt, direction * 4 * self.lobby.gameServer.dt)
-		# #
-
 		if (len(self.lobby.walls) == 0):
 			return
 

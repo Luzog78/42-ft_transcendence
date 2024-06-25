@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/25 17:53:29 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/06/25 23:30:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ class Scene
 	
 	async init()
 	{
-		this.font = await new Promise(res => {new FontLoader.FontLoader().load('static/js/pong_game/Braciola MS_Regular.json', res);console.log("done")});
-		console.log(this.font == null);
+		this.font = await new Promise(res => new FontLoader.FontLoader().load('static/js/pong_game/Braciola MS_Regular.json', res));
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -73,7 +72,8 @@ class Scene
 	initConnection(player_num)
 	{
 		this.player_num = player_num;
-
+		
+		this.shake.reset();
 		initMap(this, player_num);
 		if (player_num == 2)
 			initTextScore(this, this.player_num)
@@ -81,28 +81,6 @@ class Scene
 		let my_player = this.get("player" + this.server.client_id); // to change
 		window.addEventListener("keydown", my_player.keydown_event_func);
 		window.addEventListener("keyup", my_player.keyup_event_func);
-	}
-
-	setCameraPosition(x, y, z)
-	{
-		console.log(this.camera.position.clone());
-		this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-		this.camera.position.set(x, y, z);
-		this.updateCamera();
-		console.log(this.camera.position.clone());
-	}
-
-	updateCamera()
-	{
-		this.camera.updateMatrix()
-		this.camera.updateMatrixWorld()
-		this.camera.updateProjectionMatrix()
-		this.camera.updateWorldMatrix()
-
-		this.shake.update(this.camera);
-
-		this.controls.update();
-		this.composer.render();
 	}
 
 	update()
@@ -114,7 +92,10 @@ class Scene
 			if (this.entities[el].update != undefined)
 				this.entities[el].update(this);
 
-		this.updateCamera();
+		this.shake.update(this.camera);
+
+		this.controls.update();
+		this.composer.render();
 	}
 
 	getName(name="")

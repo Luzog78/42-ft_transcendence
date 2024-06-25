@@ -128,11 +128,11 @@ function initCamera(scene, player_num)
 {
 	if (player_num == 2)
 	{
-		scene.setCameraPosition(1.5, 4, 0);
+		scene.camera.position.set(1.5, 4, 0);
 		return ;
 	}
 	let camera_pos = scene.get("player" + scene.server.client_id).player.position.clone();
-	scene.setCameraPosition(camera_pos.x, 4, camera_pos.z);
+	scene.camera.position.set(camera_pos.x, 4, camera_pos.z);
 
 	const look_at_point = new THREE.Vector3(0, 0, 0);
 	const direction = new THREE.Vector3().subVectors(scene.camera.position, look_at_point);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ScreenShake.js                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 00:42:48 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/21 02:34:50 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/25 23:31:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ function ScreenShake() {
 
 		_endPoint: undefined,
 
+		reset: function reset()
+		{
+			this.enabled = false;
+			this._timestampStart = undefined;
+			this._timestampEnd = undefined;
+			this._startPoint = undefined;
+			this._endPoint = undefined;
+		},
 
 		// update(camera) must be called in the loop function of the renderer,
 		// it will re-position the camera according to the requested shaking.
@@ -37,7 +45,7 @@ function ScreenShake() {
 					let interval = (Date.now() - this._timestampStart) /
 						(this._timestampEnd - this._timestampStart) ;
 					this.computePosition( camera, interval );
-				} else {
+				} else if (this._startPoint != undefined){
 					camera.position.copy(this._startPoint);
 					this.enabled = false;
 				};
