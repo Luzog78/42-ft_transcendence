@@ -33,7 +33,7 @@ async function Pong(context)
 
 	setTimeout(async () => {
 		await init_scene();
-		animate();
+		// animate();
 	}, 200);
 
 	return div.innerHTML;

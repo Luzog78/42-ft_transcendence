@@ -28,10 +28,10 @@ function initMap(scene, player_num)
 	if (player_num == 2)
 		init2PlayerMap(scene);
 	else
-	{
 		initNPlayerMap(scene, player_num);
-		initCamera(scene);
-	}
+	
+	initCamera(scene, player_num);
+	// scene.updateCamera();
 }
 
 function initNPlayerMap(scene, number)
@@ -124,10 +124,15 @@ function initNPlayerMap(scene, number)
 	}
 }
 
-function initCamera(scene)
+function initCamera(scene, player_num)
 {
+	if (player_num == 2)
+	{
+		scene.setCameraPosition(1.5, 4, 0);
+		return ;
+	}
 	let camera_pos = scene.get("player" + scene.server.client_id).player.position.clone();
-	scene.camera.position.set(camera_pos.x, 4, camera_pos.z);
+	scene.setCameraPosition(camera_pos.x, 4, camera_pos.z);
 
 	const look_at_point = new THREE.Vector3(0, 0, 0);
 	const direction = new THREE.Vector3().subVectors(scene.camera.position, look_at_point);
@@ -136,7 +141,6 @@ function initCamera(scene)
 	direction.y = 0;
 
 	scene.camera.position.addScaledVector(direction, 4);
-	scene.camera.updateProjectionMatrix();
 }
 
 async function init2PlayerMap(scene)
@@ -157,9 +161,6 @@ async function init2PlayerMap(scene)
 	scene.get("ball").position.set(0,0.25,0);
 	if (scene.server.client_id == 0)
 		scene.get("player1").player.visible = false;
-	
-	scene.camera.position.set(1.5, 4, 0)
-	scene.camera.updateProjectionMatrix();
 
 	scene.addBox(4, 0.1, 8, {color: 0x0}, "floor");
 	scene.addBox(0.2, 0.75, 8, {color: 0xbbbbbb, emissive:0xbbbbbb, emissiveIntensity:2, visible:false}, "wall1");

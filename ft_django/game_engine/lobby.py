@@ -118,7 +118,7 @@ class Lobby:
 		
 		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)
 		if (len(self.clients) == self.clients_per_lobby):
-			self.ball.vel = Vector(1.2, 1.2)
+			self.ball.vel = Vector(2.4, 2.4)
 
 			for c in self.clients:
 				await self.ball.updateBall()

@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/25 16:02:42 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/06/25 17:53:29 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,28 @@ class Scene
 		window.addEventListener("keyup", my_player.keyup_event_func);
 	}
 
+	setCameraPosition(x, y, z)
+	{
+		console.log(this.camera.position.clone());
+		this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+		this.camera.position.set(x, y, z);
+		this.updateCamera();
+		console.log(this.camera.position.clone());
+	}
+
+	updateCamera()
+	{
+		this.camera.updateMatrix()
+		this.camera.updateMatrixWorld()
+		this.camera.updateProjectionMatrix()
+		this.camera.updateWorldMatrix()
+
+		this.shake.update(this.camera);
+
+		this.controls.update();
+		this.composer.render();
+	}
+
 	update()
 	{
 		this.timer.update();
@@ -92,10 +114,7 @@ class Scene
 			if (this.entities[el].update != undefined)
 				this.entities[el].update(this);
 
-		this.shake.update(this.camera);
-
-		this.controls.update();
-		this.composer.render();
+		this.updateCamera();
 	}
 
 	getName(name="")

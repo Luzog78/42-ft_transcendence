@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/25 15:18:10 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/06/25 17:38:28 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ async function init_scene()
 {
 	scene = new Scene(75);
 	await scene.init()
+	
 	scene.scene.background = new THREE.Color(0x101010);
-
 	scene.camera.castShadow = true;
+
+	scene.renderer.setAnimationLoop( animate );
 }
 
 function destroyObject()
@@ -75,14 +77,13 @@ function animate(timestamp)
 {
 	if (scene == undefined)
 		return;
-
+	
 	if (timestamp - previous_timestamp > frame_rate_ms)
 	{
 		scene.update();
 		previous_timestamp = timestamp;
 	}
-
-	requestAnimationFrame( animate );
+	// requestAnimationFrame( animate );
 }
 
 
