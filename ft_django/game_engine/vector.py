@@ -56,7 +56,7 @@ class Vector:
 
 	def reflect(self, normal):
 		return self - normal * 2 * self.dot(normal)
-	
+
 	def rotate(self, angle):
 		cos_theta = math.cos(angle)
 		sin_theta = math.sin(angle)
@@ -66,6 +66,6 @@ class Vector:
 
 	def distance(self, other):
 		return (self - other).length()
-	
+
 	def json(self):
 		return {"x": self.x, "y": self.y}

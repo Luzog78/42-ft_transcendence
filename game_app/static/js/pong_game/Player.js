@@ -54,7 +54,7 @@ class Player
 			let computed_position = new THREE.Vector3().copy(this.player.position);
 			computed_position.x -= Math.cos(this.angle) * speed;
 			computed_position.z -= Math.sin(this.angle) * speed;
-			
+
 			if (computed_position.distanceTo(this.init_position) > this.scene.segment_size / 2 - this.size / 2)
 				return;
 			this.player.position.copy(computed_position);
@@ -64,7 +64,7 @@ class Player
 			let computed_position = new THREE.Vector3().copy(this.player.position);
 			computed_position.x += Math.cos(this.angle) * speed;
 			computed_position.z += Math.sin(this.angle) * speed;
-			
+
 			if (computed_position.distanceTo(this.init_position) > this.scene.segment_size / 2 - this.size / 2)
 				return;
 			this.player.position.copy(computed_position);

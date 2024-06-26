@@ -13,7 +13,7 @@
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persist, persistCopy, persistError, redirect } from "../script.js";
-import { getJson, postJson } from "../utils.js";
+import { HowLongAgo, getJson, postJson, toLocalDateStringFormat } from "../utils.js";
 
 
 async function Profile(context, username) {
@@ -103,7 +103,7 @@ async function Profile(context, username) {
 		let ratingRatio = document.getElementById("rating-ratio");
 		let navLabelTotal = document.getElementById("nav-label-total");
 
-		let uids = [];
+		let uidsDates = [];
 		let totalPage = 0;
 		let page = new URLSearchParams(window.location.search).get("page");
 		if (!page)
@@ -128,8 +128,8 @@ async function Profile(context, username) {
 				pushPersistents(context);
 				return;
 			}
-			uids = [...data.won, ...data.lost];
-			totalPage = Math.ceil(uids.length / 8);
+			uidsDates = [...data.won, ...data.lost, ...data.other];
+			totalPage = Math.ceil(uidsDates.length / 8);
 			if (ratingGamesWon)
 				ratingGamesWon.innerText = data.wonLength;
 			if (ratingGamesLost)
@@ -138,21 +138,25 @@ async function Profile(context, username) {
 				ratingRatio.innerText = data.winrate.substring(0, 5) + "%";
 			if (navLabelTotal)
 				navLabelTotal.innerText = totalPage;
-			tablePage(context, uids, page, totalPage);
+			uidsDates = uidsDates.map(item => [item[0], new Date(item[1])]);
+			uidsDates.sort((a, b) => b[1] - a[1]);
+			tablePage(context, uidsDates, page, totalPage);
 		});
 	}, 200);
 	return div.innerHTML;
 }
 
-function tablePage(context, uids, page, totalPage) {
+function tablePage(context, uidsDates, page, totalPage) {
 	if (page == 1)
 		window.history.replaceState(null, null, window.location.origin + window.location.pathname + window.location.hash);
 	else
 		window.history.replaceState(null, null, window.location.origin + window.location.pathname + `?page=${page}` + window.location.hash);
 
-	let uidsPage = uids.slice((page - 1) * 8, page * 8);
+	let sliced = uidsDates.slice((page - 1) * 8, page * 8);
+	let uids = sliced.map(uidDate => uidDate[0]);
+	let dates = sliced.map(uidDate => uidDate[1]);
 
-	postJson(context, "/api/game/l", { uids: uidsPage }).then(data => {
+	postJson(context, "/api/game/l", { uids: uids }).then(data => {
 		if (!data.ok) {
 			persistError(context, getLang(context, data.error) + " (/api/game/l)");
 			pushPersistents(context);
@@ -169,30 +173,39 @@ function tablePage(context, uids, page, totalPage) {
 
 		if (gamesTable) {
 			gamesTable.innerHTML = "";
+			for (let i = 0; i < data.games.length; i++)
+				data.games[i].date = dates[i];
 			data.games.forEach(game => {
 				let inProgress = game.waiting || game.playing;
 				let won = game.winner && game.winner.user && game.winner.user.username === context.user.username;
-				let date = new Date(game.waiting ? game.createdAt
-					: game.playing ? game.startedAt : game.endedAt)
-					.toLocaleDateString();
+				let date = toLocalDateStringFormat(game.date);
+				let ago = new HowLongAgo(game.date).toFixedString();
 				let tr = document.createElement("tr");
 				tr.innerHTML = /*html*/`
 					<td class="${inProgress ? "" : won ? "game-won" : "game-lost"}">
 						${inProgress ? "In Progress..." : won ? "Won" : "Lost"}
 					</td>
 					<td><a href="/play/${game.uid}" data-link>PONG #${game.uid} !</a></td>
-					<td>${date}</td>
+					<td date="${date}" ago="${ago}"></td>
 				`;
 				gamesTable.appendChild(tr);
 			});
 		}
+
+		// On hover, display the real date
+		let datesTd = gamesTable.querySelectorAll("td:nth-child(3)");
+		datesTd.forEach(td => {
+			td.onmouseover = () => td.innerText = td.getAttribute("date");
+			td.onmouseout = () => td.innerText = td.getAttribute("ago");
+			td.innerText = td.getAttribute("ago");
+		});
 
 		if (navPrevious) {
 			if (page <= 1)
 				navPrevious.disabled = true;
 			else {
 				navPrevious.disabled = false;
-				navPrevious.onclick = () => tablePage(context, uids, page - 1, totalPage);
+				navPrevious.onclick = () => tablePage(context, uidsDates, page - 1, totalPage);
 			}
 		}
 
@@ -201,7 +214,7 @@ function tablePage(context, uids, page, totalPage) {
 				navNext.disabled = true;
 			else {
 				navNext.disabled = false;
-				navNext.onclick = () => tablePage(context, uids, page + 1, totalPage);
+				navNext.onclick = () => tablePage(context, uidsDates, page + 1, totalPage);
 			}
 		}
 	});

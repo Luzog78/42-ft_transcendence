@@ -6,14 +6,14 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/21 02:34:00 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/26 06:46:14 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { SUPPORTED_LANGS, getLang, loadLang, persist, persistCopy, persistError, persistSuccess, redirect, refresh } from "../script.js";
-import { checkA2F, checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, clearFeedbacks, postJson } from "../utils.js";
+import { checkA2F, checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, clearFeedbacks, postJson, postRaw } from "../utils.js";
 
 
 async function setUserAttributes(context, data) {
@@ -240,15 +240,21 @@ function Settings(context) {
 
 		if (editProfilePicture) {
 			editProfilePicture.addEventListener("change", (e) => {
-				let file = e.target.files[0];
-				// if (file) {
-				// 	let reader = new FileReader();
-				// 	reader.onload = (e) => {
-				// 		profilePicture.src = e.target.result;
-				// 	}
-				// 	reader.readAsDataURL(file);
-				// }
-				console.log("File:", file);
+				let file = editProfilePicture.files[0];
+				let formData = new FormData();
+				formData.append("picture", file);
+
+				postRaw(context, `/api/user/${context.user.username}/set/pic`, formData)
+					.then(data => {
+						if (data.ok) {
+							persistSuccess(context, getLang(context, data.success));
+							context.user.picture = data.picture;
+							refresh();
+						} else {
+							persistError(context, getLang(context, data.error));
+							pushPersistents(context);
+						}
+					});
 			});
 		}
 

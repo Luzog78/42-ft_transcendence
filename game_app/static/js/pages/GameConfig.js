@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GameConfig.js                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbutor-b <kbutor-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/24 17:06:03 by kbutor-b         ###   ########.fr       */
+/*   Updated: 2024/06/26 06:46:14 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ function GameConfig(context, id) {
 					<div class="col-md-5 text-center d-flex justify-content-around">
 						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn1" autocomplete="off">
 						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn1">First To</label>
-						
+
 						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn2" autocomplete="off" checked>
 						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn2">Battle Royal</label>
-						
+
 						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn3" autocomplete="off">
 						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn3">Time up</label>
 					</div>
@@ -41,11 +41,11 @@ function GameConfig(context, id) {
 							<input type="number" class="form-control fs-4 text-center fw-light" value="2" min="2" max="100">
 						</div>
 						<div class="GameConfig-Points row d-flex justify-content-center">
-								<div class="text-center p-4 fs-3 fw-semibold">Points to Win :</div>									
+								<div class="text-center p-4 fs-3 fw-semibold">Points to Win :</div>
 								<input type="number" class="form-control fs-4 text-center fw-light" value="5" min="1">
 						</div>
 						<div class="GameConfig-Time row d-flex justify-content-center d-none">
-								<div class="text-center p-4 fs-3 fw-semibold">Timer(mins) :</div>									
+								<div class="text-center p-4 fs-3 fw-semibold">Timer(mins) :</div>
 								<input type="number" class="form-control fs-4 text-center fw-light" value="3" min="1" max="60">
 						</div>
 					</div>
@@ -76,10 +76,10 @@ function GameConfig(context, id) {
 								<div class="moving-point"></div>
 								<input type="radio" class="btn-check GameConfig-SpeedInput" name="SpeedRadio" id="SpeedRadio-btn1" autocomplete="off">
 								<label class="btn GameConfig-SpeedLabel" for="SpeedRadio-btn1">Slow</label>
-							
+
 								<input type="radio" class="btn-check GameConfig-SpeedInput" name="SpeedRadio" id="SpeedRadio-btn2" checked autocomplete="off">
 								<label class="btn GameConfig-SpeedLabel mx-3" for="SpeedRadio-btn2">Normal</label>
-							
+
 								<input type="radio" class="btn-check GameConfig-SpeedInput" name="SpeedRadio" id="SpeedRadio-btn3" autocomplete="off">
 								<label class="btn GameConfig-SpeedLabel" for="SpeedRadio-btn3">Fast</label>
 							</div>

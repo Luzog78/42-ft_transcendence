@@ -81,11 +81,11 @@ class Ball
 			color = 270 - this.sphere.position.z * 20;
 			color = new THREE.Color(`hsl(${color}, 100%, 80%)`);
 		}
-		
+
 		this.sphere.material.color = color
 		this.sphere.material.emissive = color
 
-		if (this.trails.length < this.trailsLength) // 
+		if (this.trails.length < this.trailsLength) //
 		{
 			let trail = new Trail(scene, this, 0.15, {
 				color: this.sphere.material.color,

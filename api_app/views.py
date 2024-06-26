@@ -1,3 +1,5 @@
+import os
+import time
 import json
 import random
 from django.http import JsonResponse, HttpRequest
@@ -5,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Game, Stats
 from . import auth, checker
+from ft_django import settings
 
 
 @csrf_exempt
@@ -255,6 +258,67 @@ def view_user_set(request: HttpRequest, username: str):
 
 
 @csrf_exempt
+def view_user_setpic(request: HttpRequest, username: str):
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+
+	if not (response := auth.is_authenticated(request)):
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+
+	if not (user := User.get(username)):
+		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
+
+	if response.user != username and not (
+			(client := User.objects.filter(username=response.user)) \
+			and client.is_admin): # type: ignore
+		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+
+	if 'picture' not in request.FILES:
+		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+
+	file = request.FILES['picture']
+
+	if file.size > 4194304:
+		return JsonResponse({'ok': False, 'error': 'errors.pictureTooBig'})
+
+	extension = None
+	match file.content_type:
+		case 'image/jpeg': extension = 'jpg'
+		case 'image/png': extension = 'png'
+		case 'image/gif': extension = 'gif'
+		case 'image/webp': extension = 'webp'
+		case 'image/svg+xml': extension = 'svg'
+		case 'image/bmp': extension = 'bmp'
+		case 'image/tiff': extension = 'tiff'
+		case 'image/x-icon': extension = 'ico'
+		case _: return JsonResponse({'ok': False, 'error': 'errors.invalidPictureType'})
+
+	basedir = f'{settings.BASE_DIR}/game_app'
+	static = '/static/img/pic'
+
+	realdir = f'{basedir}{static}'
+	name = f'{static}/{username}-{time.time()}.{extension}'
+	filename = f'{basedir}{name}'
+
+	try:
+		for dir_path, dir_names, file_names in os.walk(realdir):
+			if str(dir_path) == str(realdir):
+				for file_name in file_names:
+					if file_name.startswith(f'{username}-'):
+						os.remove(f'{dir_path}/{file_name}')
+
+		with open(filename, 'wb') as f:
+			f.write(request.FILES['picture'].read())
+
+		user.picture = name
+		user.save()
+	except Exception as e:
+		return JsonResponse({'ok': False, 'error': f'Error: {e}'})
+
+	return JsonResponse({'ok': True, 'success': 'successes.pictureSet', 'picture': name})
+
+
+@csrf_exempt
 def view_user_del(request: HttpRequest, username: str):
 	if not (response := auth.is_authenticated(request)):
 		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
@@ -335,15 +399,19 @@ def view_game_list(request: HttpRequest):
 @csrf_exempt
 def view_game_user(request: HttpRequest, username: str):
 	games = Game.objects.filter(players__contains=[username])
-	won, lost = [], []
+	won, lost, other = [], [], []
 	i = 0
 	try:
 		while True:
-			if games[i].winner and games[i].winner.user \
-				and games[i].winner.user.username == username: # type: ignore
-				won.append(games[i].uid)
+			item = [games[i].uid, games[i].get_date()]
+			if games[i].is_ended():
+				if games[i].winner and games[i].winner.user \
+					and games[i].winner.user.username == username: # type: ignore
+					won.append(item)
+				else:
+					lost.append(item)
 			else:
-				lost.append(games[i].uid)
+				other.append(item)
 			i += 1
 	except IndexError:
 		pass
@@ -358,6 +426,7 @@ def view_game_user(request: HttpRequest, username: str):
 		'winrate': winrate,
 		'won': won,
 		'lost': lost,
+		'other': other,
 	})
 
 

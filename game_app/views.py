@@ -46,6 +46,16 @@ def static(request):
 				mime_type = 'image/jpeg'
 			elif file_path.endswith('.svg'):
 				mime_type = 'image/svg+xml'
+			elif file_path.endswith('.gif'):
+				mime_type = 'image/gif'
+			elif file_path.endswith('.webp'):
+				mime_type = 'image/webp'
+			elif file_path.endswith('.bmp'):
+				mime_type = 'image/bmp'
+			elif file_path.endswith('.tiff'):
+				mime_type = 'image/tiff'
+			elif file_path.endswith('.ico'):
+				mime_type = 'image/x-icon'
 			elif file_path.endswith('.json'):
 				mime_type = 'application/json'
 			else:

@@ -46,19 +46,19 @@ class Tounament:
 			pools.append((player_count // n, n))
 			player_count //= n
 		return pools
-	
+
 	def add_player(self, player):
 		self.players.append(player)
 		if len(self.players) == self.player_count:
 			self.status = Status.ONGOING
-	
+
 	def dispatch(self):
 		pool = self.pools[self.current_pool]
 		players = self.players if self.current_pool == 0 else self.pools[self.current_pool - 1].get_winners()
 
 		for i, player in enumerate(players):
 			pool.matches[i // pool.player_per_match].add_player(player)
-	
+
 	def get_matches_uid(self) -> list[str]:
 		return [match.uid for pool in self.pools for match in pool.matches]
 
@@ -69,7 +69,7 @@ class Pool:
 		self.player_per_match = player_per_match
 		self.matches = [Match(player_per_match) for _ in range(matches_count)]
 		self.status = Status.PENDING
-	
+
 	def get_winners(self):
 		return [match.winner for match in self.matches]
 
@@ -81,12 +81,12 @@ class Match:
 		self.winner = None
 		self.status = Status.PENDING
 		self.uid: str = None # type: ignore
-	
+
 	def add_player(self, player):
 		self.players.append(player)
 		if len(self.players) == self.player_count:
 			self.start()
-	
+
 	def start(self):
 		self.status = Status.ONGOING
 		# TODO: start the match

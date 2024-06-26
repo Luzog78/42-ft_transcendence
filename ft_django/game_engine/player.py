@@ -63,9 +63,9 @@ class Player:
 								  		"args": ["'player" + str(self.client_id) + "'", my_player_name]})
 
 		for i in range(self.client_id):
-			player = self.lobby.clients[i] 
+			player = self.lobby.clients[i]
 			player_name = "'" + "name" + str(i) + "'" #get name from DB
-			await self.sendData("call", {"command": "scene.server.newPlayer", 
+			await self.sendData("call", {"command": "scene.server.newPlayer",
 									"args": ["'player" + str(i) + "'", player_name]})
 
 	async def move(self, x, y):

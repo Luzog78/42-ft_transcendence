@@ -87,19 +87,19 @@ class Lobby:
 		self.ball.vel = Vector(1.2, 0)
 		self.clients_per_lobby -= 1
 
-		await self.sendData("call", {"command": 'scene.server.playerDead', 
+		await self.sendData("call", {"command": 'scene.server.playerDead',
 														"args": ["'" + dead_player + "'"]})
 		self.walls = self.init_map(self.clients_per_lobby)
 		player_id = int(dead_player.replace("player", ""))
 		player = self.clients[player_id]
-		
+
 		self.removeClient(player)
 		for c in self.clients:
 			if (c.client_id > player_id):
 				c.client_id -= 1
 			await c.initConnection()
 			await self.ball.updateBall()
-		
+
 
 	async def update(self):
 		await self.ball.update()
@@ -115,7 +115,7 @@ class Lobby:
 		self.clients.append(player)
 
 		await player.initConnection()
-		
+
 		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)
 		if (len(self.clients) == self.clients_per_lobby):
 			self.ball.vel = Vector(2.4, 2.4)

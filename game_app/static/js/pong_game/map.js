@@ -60,13 +60,13 @@ function initNPlayerMap(scene, number)
 
 		if (i == 0)
 			scene.segment_size = vertex.distanceTo(next_vertex);
-		
+
 		let player_name = "player" + i
 		let playerSize = vertex.distanceTo(next_vertex) * 0.3;
 		let middle_point = new THREE.Vector3().addVectors(vertex, next_vertex).multiplyScalar(0.5);
 		let color = new THREE.Color().setHSL(i / number, 1, 0.8, THREE.SRGBColorSpace);
 		let angle = Math.atan2(next_vertex.z - vertex.z, next_vertex.x - vertex.x);
-		
+
 		let player_position = new THREE.Vector3(middle_point.x, 0.15, middle_point.z - 0.075);
 		let player = new Player(scene, {color: color, emissive:color, emissiveIntensity:3}, playerSize, angle, player_position, player_name);
 		if (i > scene.server.client_id)
@@ -77,7 +77,7 @@ function initNPlayerMap(scene, number)
 		let line_points = [vertex.clone(), next_vertex.clone()];
 		for (let line of line_points)
 			line.y += 0.05;
-		let line_colors = i == scene.server.client_id ? 
+		let line_colors = i == scene.server.client_id ?
 					[new THREE.Color(0xffffff), new THREE.Color(0xffffff)] :
 					[new THREE.Color().setHSL(i / number, 1, 0.8, THREE.SRGBColorSpace)]
 
@@ -91,7 +91,7 @@ function initNPlayerMap(scene, number)
 		let spotlight_pos = middle_point.clone();
 		spotlight_pos.addScaledVector(direction, 2);
 
-		
+
 		let spotLight = new THREE.SpotLight( 0xffffff, 10);
 		spotLight.position.set(spotlight_pos.x, 1, spotlight_pos.z);
 		scene.add(spotLight , "spotLight" + i);
@@ -236,7 +236,7 @@ function initPlayerText(scene, player, name)
 {
 	const text_position = new THREE.Vector3().copy(player.player.position);
 	const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
-	
+
 	let max_size;
 	max_size = Math.min(scene.segment_size / 2, 2);
 	if (scene.player_num == 2)
@@ -244,7 +244,7 @@ function initPlayerText(scene, player, name)
 
 	const text_size = max_size / (name.length * 0.5);
 	const text = scene.addText(name, {color: 0xffffff}, text_size, player.name + "text");
-	
+
 	let visual_angle = Math.PI - player.angle;
 	let direction_scale = 1;
 	let y_offset = 1;
@@ -254,10 +254,10 @@ function initPlayerText(scene, player, name)
 		visual_angle = (scene.server.client_id) * Math.PI; //turn the text to the player
 		y_offset = 0.5;
 	}
-	
+
 	text_position.y += y_offset;
 	text_position.addScaledVector(direction, direction_scale);
-	
+
 	text.geometry.rotateY(visual_angle);
 	text.geometry.translate(text_position);
 }
@@ -269,7 +269,7 @@ function initTextScore(scene, player_num)
 
 	const score_1 = scene.addText("0", {color: 0xffffff}, 0.5, "score1");
 	const score_2 = scene.addText("5", {color: 0xffffff}, 0.5, "score2");
-	
+
 	score_1.geometry.rotateX(-Math.PI / 2);
 	score_1.geometry.rotateY(Math.PI / 2);
 	score_1.geometry.translate(score_1_pos);

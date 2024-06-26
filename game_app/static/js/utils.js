@@ -12,6 +12,20 @@
 
 import { getLang } from "./script.js";
 
+
+function postRaw(context, url, body, jsonify = true) {
+	let promise = fetch(url, {
+		method: "POST",
+		headers: {
+			"Authorization": "Bearer " + context.user.token,
+		},
+		body: body,
+	});
+	if (jsonify)
+		promise = promise.then(res => res.json());
+	return promise;
+}
+
 function postJson(context, url, data, jsonify = true) {
 	let promise = fetch(url, {
 		method: "POST",
@@ -203,9 +217,158 @@ function checkA2F(context, a2fId, acceptEmpty = false) {
 	return true;
 }
 
+// function howLongAgo(date) {
+// 	let now = new Date();
+// 	let diff = now - date;
+// 	if (diff < 60000)
+// 		return "just now";
+// 	if (diff < 3600000)
+// 		return Math.floor(diff / 60000) + " minutes ago";
+// 	if (diff < 86400000)
+// 		return Math.floor(diff / 3600000) + " hours ago";
+// 	if (diff < 604800000)
+// 		return Math.floor(diff / 86400000) + " days ago";
+// 	if (diff < 2592000000)
+// 		return Math.floor(diff / 604800000) + " weeks ago";
+// 	if (diff < 31536000000)
+// 		return Math.floor(diff / 2592000000) + " months ago";
+// 	return Math.floor(diff / 31536000000) + " years ago";
+// }
+
+class HowLongAgo {
+	constructor(date) {
+		this.date = date;
+		this.now = new Date();
+		this.diff = this.now - this.date;
+
+		let diff = this.diff;
+		this.d = Math.floor(diff / 86400000);
+		diff -= this.d * 86400000;
+		this.h = Math.floor(diff / 3600000);
+		diff -= this.h * 3600000;
+		this.m = Math.floor(diff / 60000);
+		diff -= this.m * 60000;
+		this.s = Math.floor(diff / 1000);
+		diff -= this.s * 1000;
+		this.ms = diff;
+	}
+
+	toString({ days = true, hours = true, minutes = true, seconds = true} = {}) {
+		let d = 0;
+		let h = 0;
+		let m = 0;
+		let s = 0;
+
+		if (days) {
+			d = Math.floor(diff / 86400000);
+			diff -= d * 86400000;
+		}
+		if (hours) {
+			h = Math.floor(diff / 3600000);
+			diff -= h * 3600000;
+		}
+		if (minutes) {
+			m = Math.floor(diff / 60000);
+			diff -= m * 60000;
+		}
+		s = Math.floor(diff / 1000);
+
+		let result = "";
+		if (d > 0)
+			result += d + "d ";
+		if (h > 0)
+			result += h + "h ";
+		if (m > 0)
+			result += m + "m ";
+		if (result === "" && (!seconds || s <= 20))
+			return "just now";
+		if (seconds && s > 0)
+			result += s + "s ";
+		return result + "ago";
+	}
+
+	toFixedString(howManyFields = 2) {
+		if (howManyFields === 0 || howManyFields > 4)
+			return "...";
+
+		let fields = [
+			[this.d, "d "],
+			[this.h, "h "],
+			[this.m, "m "],
+			[this.s, "s "],
+		];
+		let fieldsIdx = 0;
+		for (let i = 0; i < fields.length; i++) {
+			if (fields[i][0] > 0) {
+				fieldsIdx = i;
+				break;
+			}
+		}
+
+		let result = "";
+		for (let i = fieldsIdx; i < fieldsIdx + howManyFields && i < fields.length; i++) {
+			if (i === 3 && result === "" && fields[i][0] <= 20)
+				return "just now";
+			if (fields[i][0] > 0)
+				result += fields[i][0] + fields[i][1];
+		}
+		if (result === "")
+			return "just now";
+		return result + "ago";
+	}
+
+	toCustomString(func) {
+		return this.toString(func(this));
+	}
+}
+
+function toLocalDate(date) {
+	return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+}
+
+/**
+ * Format a date to a string using the given format.
+ *
+ * @param {Date} date The date to format.
+ * @param {string} format The format to use.
+ *
+ * @note The format can contain the following placeholders:
+ *
+ * ---
+ *
+ * - DD: Day with leading zero.
+ * - MM: Month with leading zero.
+ * - YYYY: Year.
+ * - HH: Hours with leading zero.
+ * - mm: Minutes with leading zero.
+ * - ss: Seconds with leading zero.
+ *
+ * ---
+ *
+ * @returns {string} The formatted date.
+ */
+function toLocalDateStringFormat(date, format = "DD/MM/YYYY HH:mm:ss") {
+	let localDate = toLocalDate(date);
+	let day = localDate.getDate();
+	let month = localDate.getMonth() + 1;
+	let year = localDate.getFullYear();
+	let hours = localDate.getHours();
+	let minutes = localDate.getMinutes();
+	let seconds = localDate.getSeconds();
+	let result = format;
+	result = result.replace("DD", day < 10 ? "0" + day : day);
+	result = result.replace("MM", month < 10 ? "0" + month : month);
+	result = result.replace("YYYY", year);
+	result = result.replace("HH", hours < 10 ? "0" + hours : hours);
+	result = result.replace("mm", minutes < 10 ? "0" + minutes : minutes);
+	result = result.replace("ss", seconds < 10 ? "0" + seconds : seconds);
+	return result;
+}
+
 
 export {
 	getJson,
+	postRaw,
 	postJson,
 	validFeedback,
 	invalidFeedback,
@@ -218,4 +381,7 @@ export {
 	checkPasswords,
 	checkUID,
 	checkA2F,
+	HowLongAgo,
+	toLocalDate,
+	toLocalDateStringFormat,
 };

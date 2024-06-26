@@ -93,12 +93,12 @@ class Ball:
 		direction = collision_normal.rotate(rotated_acc)
 		self.acc = direction
 		self.acc.setLength(self.vel.length() * 2)
-			
+
 
 	async def checkCollision(self):
 		for wall_name in self.lobby.walls:
 			wall = self.lobby.walls[wall_name]
-			
+
 
 			predicted_ball_pos = self.pos + self.vel * self.lobby.gameServer.dt
 			closest_point = Ball.closestPointOnSegment(wall[0], wall[1], predicted_ball_pos)
@@ -108,9 +108,9 @@ class Ball:
 				if ("score" in wall_name):
 					player_name = wall_name.replace("score", "player")
 					await self.lobby.playerDied(player_name)
-					
+
 					break
-					
+
 
 				collision_normal = (predicted_ball_pos - closest_point).normalize()
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/25 23:30:57 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/26 06:48:24 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ class Scene
 		this.renderer = new THREE.WebGLRenderer({antialias: true});
 		this.controls = new OrbitControls.OrbitControls(this.camera, this.renderer.domElement);
 		this.shake = ScreenShake();
-		
+
 		this.server = null;
-		
+
 		this.segment_size = 4;
 		this.player_num = 0;
 
@@ -48,7 +48,7 @@ class Scene
 
 		this.font = null;
 	}
-	
+
 	async init()
 	{
 		this.font = await new Promise(res => new FontLoader.FontLoader().load('static/js/pong_game/Braciola MS_Regular.json', res));
@@ -65,7 +65,7 @@ class Scene
 			new THREE.Vector2(window.innerWidth, window.innerHeight),
 			0.4, 1.0, 0.5);
 		this.composer.addPass(bloomPass);
-		
+
 		this.server = new Server(this);
 	}
 

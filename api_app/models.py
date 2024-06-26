@@ -120,10 +120,19 @@ class Game(models.Model):
 	def __str__(self):
 		return self.uid
 
+	def is_ended(self) -> bool:
+		return self.ended_at is not None or self.winner is not None
+
+	def is_playing(self) -> bool:
+		return self.started_at is not None and not self.is_ended()
+
+	def is_waiting(self) -> bool:
+		return not self.is_playing() and not self.is_ended()
+
+	def get_date(self):
+		return self.created_at if self.is_waiting() else self.started_at if self.is_playing() else self.ended_at
+
 	def json(self, json_stats=True):
-		ended = self.ended_at is not None or self.winner is not None
-		playing = self.started_at is not None and not ended
-		waiting = not playing and not ended
 		winner = (self.winner.json(json_user=True, json_game=False) if json_stats else {'id': self.winner.id}) if self.winner is not None else None
 		best_streak = (self.best_streak.json(json_user=True, json_game=False) if json_stats else {'id': self.best_streak.id}) if self.best_streak is not None else None
 		rebounces = (self.rebounces.json(json_user=True, json_game=False) if json_stats else {'id': self.rebounces.id}) if self.rebounces is not None else None
@@ -142,9 +151,10 @@ class Game(models.Model):
 			'ultimate': ultimate,
 			'duration': duration,
 
-			'ended': ended,
-			'playing': playing,
-			'waiting': waiting,
+			'date': self.get_date(),
+			'ended': self.is_ended(),
+			'playing': self.is_playing(),
+			'waiting': self.is_waiting(),
 		}
 
 

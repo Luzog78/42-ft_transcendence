@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/25 23:27:41 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/26 06:47:28 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ function destroy_scene()
 }
 
 let frame_rate_ms = 1000 / 120;
-let previous_timestamp = 0; 
+let previous_timestamp = 0;
 
 function animate(timestamp)
 {
