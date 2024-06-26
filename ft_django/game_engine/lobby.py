@@ -11,6 +11,9 @@
 # **************************************************************************** #
 
 import math
+import asyncio
+import threading
+import time
 
 from .ball import Ball
 from .vector import Vector
@@ -20,8 +23,9 @@ class Lobby:
 		self.gameServer = gameServer
 		self.lobby_id = len(self.gameServer.lobbys)
 
+
 		self.clients = []
-		self.clients_per_lobby = 5
+		self.clients_per_lobby = 3
 
 		self.ball = Ball(self, 0.15)
 
@@ -31,8 +35,15 @@ class Lobby:
 		self.middle_vertex_positions = []
 		self.angleVertex = []
 
-
 		self.walls = self.init_map(self.clients_per_lobby)
+		
+		self.time = 0
+		self.dt = 0
+
+		self.running = True
+		self.update_thread = threading.Thread(target=asyncio.run, args=(self.update(),))
+		self.update_thread.start()
+
 
 	def init_map(self, num_players):
 		if (num_players == 2):
@@ -88,7 +99,11 @@ class Lobby:
 		self.clients_per_lobby -= 1
 
 		await self.sendData("call", {"command": 'scene.server.playerDead',
-														"args": ["'" + dead_player + "'"]})
+									"args": ["'" + dead_player + "'"]})
+		
+		time.sleep(3)
+		self.time = 0
+
 		self.walls = self.init_map(self.clients_per_lobby)
 		player_id = int(dead_player.replace("player", ""))
 		player = self.clients[player_id]
@@ -102,12 +117,23 @@ class Lobby:
 
 
 	async def update(self):
-		await self.ball.update()
+		while self.running:
+			if (self.time == 0):
+				self.time = time.time()
+				continue
+			self.dt = time.time() - self.time
+			self.time = time.time()
 
-		for c in self.clients:
-			await c.update()
+			time.sleep(self.gameServer.dt)
+			
+			await self.ball.update()
+
+			for c in self.clients:
+				await c.update()
 
 	def receive(self, data):
+		if ("client_id" not in data or data["client_id"] >= len(self.clients)):
+			return
 		if ("player_keyboard" in data):
 			self.clients[data["client_id"]].keyboard = data["player_keyboard"]
 
@@ -118,7 +144,7 @@ class Lobby:
 
 		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)
 		if (len(self.clients) == self.clients_per_lobby):
-			self.ball.vel = Vector(2.4, 2.4)
+			self.ball.vel = Vector(0, 2.4)
 
 			for c in self.clients:
 				await self.ball.updateBall()

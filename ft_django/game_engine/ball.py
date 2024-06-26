@@ -24,8 +24,6 @@ class Ball:
 		self.terminal_velocity = 8
 		self.current_vel_length = 0
 
-		self.time = 0
-
 		self.pos = Vector(0, 0)
 		self.vel = Vector(0, 0)
 		self.acc = Vector(0, 0)
@@ -96,8 +94,9 @@ class Ball:
 
 
 	async def checkCollision(self):
-		for wall_name in self.lobby.walls:
-			wall = self.lobby.walls[wall_name]
+		walls_copy = self.lobby.walls.copy()
+		for wall_name in walls_copy:
+			wall = walls_copy[wall_name]
 
 
 			predicted_ball_pos = self.pos + self.vel * self.lobby.gameServer.dt
@@ -122,17 +121,10 @@ class Ball:
 									   				"args": ["'" + wall_name + "'", closest_point.json(), collision_normal.json()]})
 
 	async def update(self):
-		if (self.time == 0):
-			self.time = time.time()
-			return
+		self.pos += self.vel * self.lobby.gameServer.dt
+		self.vel += self.acc * self.lobby.gameServer.dt
 
-		dt = time.time() - self.time
-		self.time = time.time()
-
-		self.pos += self.vel * dt
-		self.vel += self.acc * dt
-
-		self.acc *= 0.18729769509073987 ** dt
+		self.acc *= 0.18729769509073987 ** self.lobby.gameServer.dt
 
 		await self.checkCollision()
 

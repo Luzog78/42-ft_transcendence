@@ -33,18 +33,20 @@ class Server
 	newPlayer(player_id, player_name)
 	{
 		let player = this.scene.get(player_id);
-		player.player.visible = true;
+		if (player == null)
+			return;
 
+		player.player.visible = true;
 		initPlayerText(this.scene, player, player_name);
 	}
 
 	playerDead(player_id)
 	{
 		let player = this.scene.get(player_id);
+		let position = player.init_position.clone();
 
 		for (let i = 0; i < 50; i++)
 		{
-			let position = player.init_position.clone();
 			let randomPosition = position.clone().add(new THREE.Vector3(Math.random() * 0.2 - 0.1,Math.random() * 0.2 - 0.1,Math.random() * 0.2 - 0.1));
 			let direction = randomPosition.clone().sub(position).multiplyScalar(30);
 			let acceleration = direction.clone().multiplyScalar(-1.8);
@@ -63,11 +65,21 @@ class Server
 
 			this.scene.entities.push(particle);
 		}
+		let camera_look_at = position.clone().add(new THREE.Vector3(0, 0.5, 0));
+		let camera_position = position.clone()
+		let direction_to_center = new THREE.Vector3(0, 0, 0).sub(camera_position).normalize();
+		camera_position.add(direction_to_center.multiplyScalar(5));
+		camera_position.y = 2;
+		
+		this.scene.camera.smoothMoveTo(camera_position, camera_look_at);
 
-		if (this.scene.player_num == 2)
-			return;
-
-		destroyObject(this.scene);
+		setTimeout(() => {
+			this.scene.camera.controls.reset(false)
+			if (this.scene.player_num == 2)
+				return;
+	
+			destroyObject(this.scene);
+		}, 3000);
 	}
 
 	onOpen(scene, event)

@@ -71,7 +71,6 @@ function initNPlayerMap(scene, number)
 		let player = new Player(scene, {color: color, emissive:color, emissiveIntensity:3}, playerSize, angle, player_position, player_name);
 		if (i > scene.server.client_id)
 			player.player.visible = false;
-
 		scene.entities.push(player);
 
 		let line_points = [vertex.clone(), next_vertex.clone()];
@@ -128,19 +127,20 @@ function initCamera(scene, player_num)
 {
 	if (player_num == 2)
 	{
-		scene.camera.position.set(1.5, 4, 0);
+		scene.camera.setPosition(1.5, 4, 0);
 		return ;
 	}
+
 	let camera_pos = scene.get("player" + scene.server.client_id).player.position.clone();
-	scene.camera.position.set(camera_pos.x, 4, camera_pos.z);
+	camera_pos = new THREE.Vector3(camera_pos.x, 4, camera_pos.z);
 
 	const look_at_point = new THREE.Vector3(0, 0, 0);
-	const direction = new THREE.Vector3().subVectors(scene.camera.position, look_at_point);
-
+	const direction = new THREE.Vector3().subVectors(camera_pos, look_at_point);
 	direction.normalize();
 	direction.y = 0;
 
-	scene.camera.position.addScaledVector(direction, 4);
+	camera_pos.addScaledVector(direction, 4);	
+	scene.camera.setPosition(camera_pos.x, camera_pos.y, camera_pos.z);
 }
 
 async function init2PlayerMap(scene)

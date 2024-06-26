@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/26 07:34:46 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/26 14:38:15 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,10 @@ async function initScene()
 	if (scene !== undefined)
 		return;
 
-	scene = new Scene(75);
+	scene = new Scene();
 	await scene.init()
 
 	scene.scene.background = new THREE.Color(0x101010);
-	scene.camera.castShadow = true;
-
 	scene.renderer.setAnimationLoop( animate );
 }
 

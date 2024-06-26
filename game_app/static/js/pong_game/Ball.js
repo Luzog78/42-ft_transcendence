@@ -39,7 +39,7 @@ class Ball
 	effectCollision(wallname, position, normal)
 	{
 		let shake = Math.exp(this.vel.length() / 100) - 1;
-		this.scene.shake.shake(this.scene.camera, new THREE.Vector3(shake, 0), 400);
+		this.scene.camera.shake(new THREE.Vector3(shake, 0), 400);
 
 		position = new THREE.Vector3(position.x, 0.25, position.y);
 		normal = new THREE.Vector3(normal.x, 0, normal.y);

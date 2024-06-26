@@ -26,17 +26,6 @@ class GameServer:
 		self.tps = 20
 		self.dt = 1 / self.tps
 
-		self.running = True
-		self.game_server_thread = threading.Thread(target=asyncio.run, args=(self.update(),))
-		self.game_server_thread.start()
-
-	async def update(self):
-		while self.running:
-			time.sleep(self.dt)
-
-			for lobby in self.lobbys:
-				await lobby.update()
-
 	def receive(self, data):
 		lobby = self.lobbys[data["lobby_id"]]
 		lobby.receive(data)

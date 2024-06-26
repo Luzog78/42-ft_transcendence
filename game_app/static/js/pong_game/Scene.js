@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/26 07:34:46 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/26 15:30:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from 'three';
 import * as OrbitControls from 'orbitcontrols';
+
 import * as RenderPass from 'renderpass';
 import * as EffectComposer from 'effectcomposer';
 import * as UnrealBloomPass from 'unrealbloompass';
@@ -19,19 +20,17 @@ import * as FontLoader from 'fontloader';
 import * as Timer from 'timer';
 
 import { Server } from "./Server.js";
-import { ScreenShake } from "./ScreenShake.js";
 import { initMap, initTextScore } from "./map.js";
-
+import { Camera } from "./Camera.js";
 
 class Scene
 {
-	constructor(FOV)
+	constructor()
 	{
 		this.scene = new THREE.Scene();
-		this.camera = new THREE.PerspectiveCamera(FOV, window.innerWidth / window.innerHeight, 0.1, 1000);
 		this.renderer = new THREE.WebGLRenderer({antialias: true});
-		this.controls = new OrbitControls.OrbitControls(this.camera, this.renderer.domElement);
-		this.shake = ScreenShake();
+		this.camera = new Camera(this, this.renderer);
+		// this.controls = new OrbitControls.OrbitControls(this.camera.camera, this.renderer.domElement);
 
 		this.server = null;
 
@@ -57,7 +56,7 @@ class Scene
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		document.body.appendChild(this.renderer.domElement);
 
-		this.renderScene = new RenderPass.RenderPass(this.scene, this.camera);
+		this.renderScene = new RenderPass.RenderPass(this.scene, this.camera.camera);
 		this.composer = new EffectComposer.EffectComposer(this.renderer);
 		this.composer.addPass(this.renderScene);
 
@@ -73,7 +72,7 @@ class Scene
 	{
 		this.player_num = player_num;
 
-		this.shake.reset();
+		this.camera.resetShake();
 		initMap(this, player_num);
 		if (player_num == 2)
 			initTextScore(this, this.player_num)
@@ -87,14 +86,12 @@ class Scene
 	{
 		this.timer.update();
 		this.dt = this.timer.getDelta();
-
+		
 		for (let el in this.entities)
 			if (this.entities[el].update != undefined)
 				this.entities[el].update(this);
 
-		this.shake.update(this.camera);
-
-		this.controls.update();
+		this.camera.update(this.camera.camera);
 		this.composer.render();
 	}
 
