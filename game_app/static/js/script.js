@@ -28,6 +28,7 @@ import { ChatConnexion } from "./ChatConnexion.js";
 
 import { getJson } from "./utils.js";
 import { destroyScene } from "./pong_game/main.js";
+import { Tournament } from "./pages/Tournament.js";
 
 
 const SUPPORTED_LANGS = ["en", "fr"];
@@ -137,9 +138,17 @@ const router = [
 		component: PongResult,
 	},
 	{
-		path: "/gameConfig",
+		path: "/config",
 		component: GameConfig,
-	}
+	},
+	{
+		path: "/tournament",
+		component: Tournament,
+	},
+	{
+		path: "/tournament/<numbers>",
+		component: Tournament,
+	},
 ];
 
 const content = document.getElementById("body-content");

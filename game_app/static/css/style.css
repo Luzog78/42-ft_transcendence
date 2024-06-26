@@ -1203,6 +1203,110 @@ background: linear-gradient(
 }
 
 /* ************************************************************************** */
+/* ------------------------------- Tournament ------------------------------- */
+/* ************************************************************************** */
+
+#tournament-content {
+	position: absolute;
+	top: 80px;
+	left: 40px;
+	height: calc(100vh - 100px);
+	width: calc(100vw - 80px);
+	overflow: hidden;
+}
+
+#tournament-content > .block-blur-pad {
+	margin: 5px;
+}
+
+#tournament-content > .container-fluid {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	overflow: scroll;
+}
+
+#tournament-content #tournament-container {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	overflow: visible;
+}
+
+#tournament-content .user {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 125px;
+	width: 80px;
+	/* background-color: #f004; */
+	padding: 0;
+	margin: 2px;
+}
+
+#tournament-content .user-picture {
+	height: 80px;
+	width: 80px;
+	object-fit: cover;
+	border-radius: 1000%;
+	padding: 0;
+	margin: 0;
+}
+
+#tournament-content .user-name {
+	height: 45px;
+	width: 80px;
+	text-align: center;
+	font-size: min(14px, 1vw);
+	font-weight: 100;
+	overflow-wrap: anywhere;
+	overflow: hidden;
+	padding: 0;
+	margin: 0;
+}
+
+#tournament-content .ball {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 32px;
+	width: 32px;
+	background-color: #333;
+	border-radius: 1000%;
+	padding: 0;
+	margin: 0;
+	transform: translate(-12px, -12px);
+}
+
+#tournament-content .ball.active {
+	background-color: #00ce6a;
+}
+
+#tournament-content .link {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 6px;
+	width: 120px;
+	background-color: #333;
+	padding: 0;
+	margin: 0;
+	transform: translateX(2px);
+}
+
+#tournament-content .link.vertical {
+	height: 160px;
+	width: 6px;
+}
+
+#tournament-content .link.active {
+	background-color: #00fa8e;
+}
+
+/* ************************************************************************** */
 /* ------------------------------ Miscellanous ------------------------------ */
 /* ************************************************************************** */
 
