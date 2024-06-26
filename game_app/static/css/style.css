@@ -816,7 +816,14 @@ background: linear-gradient(
 	height: 42px;
 }
 
-#PongResult-content .circle {
+#PongResult-content .pongResult-Time img {
+	top: -15%;
+	position: absolute;
+	width: 35px;
+	height: 42px;
+}
+
+#PongResult-content .circle-streak {
 	top: 0;
 	left: calc(50% - 50px);
 	position: absolute;
@@ -827,6 +834,19 @@ background: linear-gradient(
 	border: 5px solid #FFA500;
 	border-top-color: transparent;
 	animation: PongResult-Flame 3s infinite alternate;
+}
+
+#PongResult-content .circle-time {
+	top: 0;
+	left: calc(50% - 50px);
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background: transparent;
+	border: 5px solid #0062ff;
+	border-top-color: transparent;
+	animation: PongResult-Ice 10s infinite alternate;
 }
 
 #pongResult-item span {
@@ -842,8 +862,18 @@ background: linear-gradient(
 	animation: PongResult-Appear 1s;
 }
 
+#pongResult-item .pongResult-Time {
+	position: relative;
+	animation: PongResult-Appear 1s;
+}
+
 #pongResult-item .pongResult-Streak span {
 	padding-top: 24px;
+}
+
+#pongResult-item .pongResult-Time span {
+	padding-top: 38px;
+	padding-bottom: 14px;
 }
 
 #pongResult-item .pongResult-BestStreak {
@@ -853,6 +883,21 @@ background: linear-gradient(
 		#c84a27 30%,
 		#e07215 70%,
 		#c84a27 80%
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-size: 500% auto;
+	animation: PongResult-Shine 5s infinite alternate;
+}
+
+#pongResult-item .pongResult-BestTime {
+	background: linear-gradient(
+		to right,
+		#470fd7 20%,
+		#02d5ff 30%,
+		#0084ff 70%,
+		#0011fd 80%
 	);
 	-webkit-background-clip: text;
 	background-clip: text;
@@ -959,6 +1004,33 @@ background: linear-gradient(
 	}
 	100% {
 		border: 4px solid #bd372f;
+		border-top-color: transparent;
+	}
+}
+
+@keyframes PongResult-Ice {
+	0% {
+		border: 4px solid #0062ff;
+		border-top-color: transparent;
+	}
+	20% {
+		border: 4px solid #470fd7;
+		border-top-color: transparent;
+	}
+	40% {
+		border: 4px solid #02d5ff;
+		border-top-color: transparent;
+	}
+	60% {
+		border: 4px solid #0084ff;
+		border-top-color: transparent;
+	}
+	80% {
+		border: 4px solid #0011fd;
+		border-top-color: transparent;
+	}
+	100% {
+		border: 4px solid #0062ff;
 		border-top-color: transparent;
 	}
 }

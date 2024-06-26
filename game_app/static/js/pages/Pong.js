@@ -13,6 +13,7 @@
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 import { initScene } from "../pong_game/main.js";
+import { getGameMode } from "../utils.js";
 
 
 async function Pong(context, id, data) {
@@ -29,10 +30,7 @@ async function Pong(context, id, data) {
 		</style>
 	`;
 	if (data && data.waiting) {
-		let mode = data.mode === "TO" ? "Time Out"
-			: data.mode === "FT" ? "First To"
-			: data.mode === "BR" ? "Battle Royale"
-			: `??? (${data.mode}) ???`;
+		let mode = getGameMode(data.mode);
 		div.innerHTML += /*html*/`
 			<div id="playid-content" class="container-fluid container-blur" style="padding: 50px; margin-top: 100px;">
 				<div class="moving-point"></div>

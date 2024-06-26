@@ -365,6 +365,13 @@ function toLocalDateStringFormat(date, format = "DD/MM/YYYY HH:mm:ss") {
 	return result;
 }
 
+function getGameMode(mode) {
+	return mode === "TO" ? "Time Out"
+			: mode === "FT" ? "First To"
+			: mode === "BR" ? "Battle Royale"
+			: `??? (${mode}) ???`;
+}
+
 
 export {
 	getJson,
@@ -384,4 +391,5 @@ export {
 	HowLongAgo,
 	toLocalDate,
 	toLocalDateStringFormat,
+	getGameMode,
 };
