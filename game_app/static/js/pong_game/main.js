@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/26 06:47:28 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/26 07:34:46 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,16 @@ import * as THREE from 'three';
 import { Scene } from "./Scene.js";
 
 
-let scene;
+let scene = undefined;
 
-async function init_scene()
+async function initScene()
 {
+	if (scene !== undefined)
+		return;
+
 	scene = new Scene(75);
 	await scene.init()
-	
+
 	scene.scene.background = new THREE.Color(0x101010);
 	scene.camera.castShadow = true;
 
@@ -53,8 +56,14 @@ function destroyObject()
 	scene.elements = {};
 }
 
-function destroy_scene()
+function destroyScene()
 {
+	if (scene === undefined)
+		return;
+
+	window.removeEventListener("keyup", scene.get("player" + scene.server.client_id).keyup_event_func);
+	window.removeEventListener("keydown", scene.get("player" + scene.server.client_id).keydown_event_func);
+
 	scene.renderer.clear();
 	const canvas = scene.renderer.domElement;
 	if (canvas && canvas.parentElement)
@@ -62,10 +71,9 @@ function destroy_scene()
 
 	destroyObject();
 
-	window.removeEventListener("keyup", scene.get("player" + scene.server.client_id).keyup_event_func);
-	window.removeEventListener("keydown", scene.get("player" + scene.server.client_id).keydown_event_func);
-
-	scene.server.disconnect();
+	let server = scene.server;
+	server.send("disconnect");
+	setTimeout(() => server.disconnect(), 250);
 
 	scene = undefined;
 }
@@ -77,7 +85,7 @@ function animate(timestamp)
 {
 	if (scene == undefined)
 		return;
-	
+
 	if (timestamp - previous_timestamp > frame_rate_ms)
 	{
 		scene.update();
@@ -87,4 +95,4 @@ function animate(timestamp)
 }
 
 
-export { init_scene, destroy_scene, destroyObject, animate };
+export { initScene, destroyScene, destroyObject, animate };

@@ -29,7 +29,7 @@ function initMap(scene, player_num)
 		init2PlayerMap(scene);
 	else
 		initNPlayerMap(scene, player_num);
-	
+
 	initCamera(scene, player_num);
 	// scene.updateCamera();
 }

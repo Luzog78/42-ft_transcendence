@@ -27,6 +27,7 @@ import { Settings } from "./pages/Settings.js";
 import { ChatConnexion } from "./ChatConnexion.js";
 
 import { getJson } from "./utils.js";
+import { destroyScene } from "./pong_game/main.js";
 
 
 const SUPPORTED_LANGS = ["en", "fr"];
@@ -141,7 +142,7 @@ const router = [
 	}
 ];
 
-const content = document.getElementById("body-content");;
+const content = document.getElementById("body-content");
 
 const loadComponent = async (component, ...args) => {
 	if (component === null || component === undefined)
@@ -153,6 +154,8 @@ const loadComponent = async (component, ...args) => {
 }
 
 const loadPage = (path) => {
+	console.log(`[🔀] Loading page: ${path}`);
+	destroyScene();
 	let next = new URLSearchParams(window.location.search).get("next");
 	if (next)
 		global_context.next = next;

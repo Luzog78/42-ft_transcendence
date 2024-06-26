@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/26 06:48:24 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/26 07:34:46 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ class Scene
 	initConnection(player_num)
 	{
 		this.player_num = player_num;
-		
+
 		this.shake.reset();
 		initMap(this, player_num);
 		if (player_num == 2)
