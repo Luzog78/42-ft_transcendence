@@ -91,21 +91,17 @@ class GameMode(models.TextChoices):
 	FIRST_TO		= 'FT', 'First To'
 	BATTLE_ROYALE	= 'BR', 'Battle Royale'
 
-	__items			= TIME_OUT, FIRST_TO, BATTLE_ROYALE
-	__mods			= TIME_OUT[0], FIRST_TO[0], BATTLE_ROYALE[0]
-	__names			= TIME_OUT[1], FIRST_TO[1], BATTLE_ROYALE[1]
-
 	@staticmethod
 	def items():
-		return GameMode.__items
+		return GameMode.TIME_OUT, GameMode.FIRST_TO, GameMode.BATTLE_ROYALE
 
 	@staticmethod
 	def mods():
-		return GameMode.__mods
+		return GameMode.TIME_OUT[0], GameMode.FIRST_TO[0], GameMode.BATTLE_ROYALE[0]
 
 	@staticmethod
 	def names():
-		return GameMode.__names
+		return GameMode.TIME_OUT[1], GameMode.FIRST_TO[1], GameMode.BATTLE_ROYALE[1]
 
 
 class Game(models.Model):
