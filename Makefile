@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/11 22:55:37 by ysabik            #+#    #+#              #
-#    Updated: 2024/06/21 03:16:26 by ysabik           ###   ########.fr        #
+#    Updated: 2024/06/27 10:40:25 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ help:
 
 all:
 	@$(MAKE) --no-print-directory up
-	@sleep 2
+	$(call wait)
 	@echo
 	@$(MAKE) --no-print-directory migrate
 	@echo
@@ -142,7 +142,7 @@ logs:
 
 sql:
 	@echo "$(RED)$$> $(MAGENTA)docker exec -it postgresql bash -c \"PGPASSWORD=***** psql -h localhost -p 5432 -U $(DB_USER) $(DB_NAME)\"$(RESET)"
-	@docker exec -it postgresql bash -c "PGPASSWORD=$(DB_PASSWD) psql -h localhost -p 5432 -U $(DB_USER) $(DB_NAME)"
+	@docker exec -it postgresql bash -c "PGPASSWORD='$(DB_PASSWD)' psql -h localhost -p 5432 -U $(DB_USER) $(DB_NAME)"
 
 
 console:
@@ -183,6 +183,15 @@ define exec
 		fi; \
 		echo; \
 	fi;
+endef
+
+
+define wait
+	@\
+	while ! docker exec -e PGPASSWORD="$(DB_PASSWD)" postgresql bash -c "psql -h localhost -p 5432 -U $(DB_USER) $(DB_NAME) -c 'SELECT;' &> /dev/null"; do \
+		echo "Waiting for PostgreSQL..."; \
+		sleep 1; \
+	done;
 endef
 
 
