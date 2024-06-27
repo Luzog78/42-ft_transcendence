@@ -139,7 +139,7 @@ function initCamera(scene, player_num)
 	direction.normalize();
 	direction.y = 0;
 
-	camera_pos.addScaledVector(direction, 4);	
+	camera_pos.addScaledVector(direction, 4);
 	scene.camera.setPosition(camera_pos.x, camera_pos.y, camera_pos.z);
 }
 

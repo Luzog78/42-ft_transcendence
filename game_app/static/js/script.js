@@ -138,7 +138,7 @@ const router = [
 		component: PongResult,
 	},
 	{
-		path: "/config",
+		path: "/new",
 		component: GameConfig,
 	},
 	{

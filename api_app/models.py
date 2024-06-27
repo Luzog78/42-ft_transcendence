@@ -91,6 +91,22 @@ class GameMode(models.TextChoices):
 	FIRST_TO		= 'FT', 'First To'
 	BATTLE_ROYALE	= 'BR', 'Battle Royale'
 
+	__items			= TIME_OUT, FIRST_TO, BATTLE_ROYALE
+	__mods			= TIME_OUT[0], FIRST_TO[0], BATTLE_ROYALE[0]
+	__names			= TIME_OUT[1], FIRST_TO[1], BATTLE_ROYALE[1]
+
+	@staticmethod
+	def items():
+		return GameMode.__items
+
+	@staticmethod
+	def mods():
+		return GameMode.__mods
+
+	@staticmethod
+	def names():
+		return GameMode.__names
+
 
 class Game(models.Model):
 	uid			= models.CharField(primary_key=True, max_length=5, blank=False, null=False)

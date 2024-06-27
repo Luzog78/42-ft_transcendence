@@ -30,7 +30,7 @@ class Camera
 		this.controls = new CameraControls(this.camera, renderer.domElement);
 		this.shakeObject = ScreenShake();
 	}
-	
+
 	update()
 	{
 		this.controls.update(this.scene.dt);

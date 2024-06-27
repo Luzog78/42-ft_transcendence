@@ -36,7 +36,7 @@ class Lobby:
 		self.angleVertex = []
 
 		self.walls = self.init_map(self.clients_per_lobby)
-		
+
 		self.time = 0
 		self.dt = 0
 
@@ -100,7 +100,7 @@ class Lobby:
 
 		await self.sendData("call", {"command": 'scene.server.playerDead',
 									"args": ["'" + dead_player + "'"]})
-		
+
 		time.sleep(3)
 		self.time = 0
 
@@ -125,7 +125,7 @@ class Lobby:
 			self.time = time.time()
 
 			time.sleep(self.gameServer.dt)
-			
+
 			await self.ball.update()
 
 			for c in self.clients:

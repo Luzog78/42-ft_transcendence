@@ -79,16 +79,7 @@ async function Play(context) {
 				}
 			});
 		};
-		document.querySelector("#create-button").onclick = () => {
-			getJson(context, "/api/game/new").then(data => {
-				if (data.ok)
-					redirect(`/play/${data.uid}`);
-				else {
-					persistError(context, getLang(context, data.error));
-					pushPersistents(context);
-				}
-			});
-		};
+		document.querySelector("#create-button").onclick = () => redirect("/new");
 	}, 200);
 	return div.innerHTML;
 }

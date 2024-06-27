@@ -81,7 +81,7 @@ class Server
 			this.scene.camera.controls.reset(false)
 			if (this.scene.player_num == 2)
 				return;
-	
+
 			destroyObject(this.scene);
 		}, 3000);
 	}

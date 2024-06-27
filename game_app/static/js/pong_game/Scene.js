@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/27 01:49:44 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/27 23:08:26 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ class Scene
 	{
 		this.timer.update();
 		this.dt = this.timer.getDelta();
-		
+
 		for (let el in this.entities)
 			if (this.entities[el].update != undefined)
 				this.entities[el].update(this);

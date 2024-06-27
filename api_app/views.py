@@ -5,7 +5,7 @@ import random
 from django.http import JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import User, Game, Stats
+from .models import GameMode, User, Game, Stats
 from . import auth, checker
 from ft_django import settings
 
@@ -168,11 +168,11 @@ def view_user(request: HttpRequest, username: str | None = None):
 
 @csrf_exempt
 def view_user_set(request: HttpRequest, username: str):
-	if request.method != 'POST':
-		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
-
 	if not (response := auth.is_authenticated(request)):
 		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
 
 	if not (user := User.get(username)):
 		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
@@ -434,9 +434,36 @@ def view_game_user(request: HttpRequest, username: str):
 def view_game_new(request):
 	if not (response := auth.is_authenticated(request)):
 		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+
+	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+
+	valid = 'mode' in data and data['mode'] in GameMode.mods() \
+		and 'players' in data and isinstance(data['players'], int) and 2 <= data['players'] <= 30 \
+		and 'theme' in data and isinstance(data['theme'], int) and 0 <= data['theme'] <= 3 \
+		and 'speed' in data and isinstance(data['speed'], int) and 0 <= data['speed'] <= 2
+
+	limit = None
+	if valid and data['mode'] == GameMode.TIME_OUT[0]:
+		valid = 'limitTO' in data and isinstance(data['limitTO'], int) and 2 <= data['limitTO'] <= 60
+		limit = data['limitTO']
+	if valid and data['mode'] == GameMode.FIRST_TO[0]:
+		valid = 'limitFT' in data and isinstance(data['limitFT'], int) and 2 <= data['limitFT'] <= 50
+		limit = data['limitFT']
+
+	if not valid:
+		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+	
+	# TODO: =======================================
+	# TODO: Create the game with the given settings
+	# TODO: =======================================
+
 	game = Game.objects.create(uid=Game.new_uid())
 	return JsonResponse({
 		'ok': True,
+		'success': 'successes.gameCreated',
 		**game.json(),
 	})
 

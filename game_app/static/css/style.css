@@ -1040,15 +1040,14 @@ background: linear-gradient(
 /* ************************************************************************** */
 
 .GameConfig-container {
-	max-width: 90%;
-	padding: 30px;
-	margin-top: 50px;
-	--points: none;
-	--time: none;
+	width: 60vw;
+	padding: 10px;
+	margin-top: 35px;
 }
 
 .GameConfig-ModeLabel {
 	color: white;
+	transition: .2s;
 }
 
 .GameConfig-Line {
@@ -1093,20 +1092,11 @@ background: linear-gradient(
 }
 
 #GameConfig-content input[type="time"]::-webkit-calendar-picker-indicator {
-    display: none;
+	display: none;
 }
 
 #GameConfig-content input[type="time"]::-webkit-clear-button {
-    display: none;
-}
-
-
-.GameConfig-Points {
-	/* display: var(--points); */
-}
-
-.GameConfig-Time {
-	/* display: var(--time); */
+	display: none;
 }
 
 .GameConfig-ThemeInput:checked + .GameConfig-ThemeLabel img {
@@ -1116,16 +1106,18 @@ background: linear-gradient(
 
 .GameConfig-ThemeLabel img {
 	opacity: 50%;
+	transition: .2s;
 }
 
 .GameConfig-Img {
-	min-width: 192px;
-	max-width: 320px;
+	min-width: 128px;
+	max-width: 256px;
 }
 
 .GameConfig-Img label {
 	width: 100%;
 	height: 100%;
+	transition: .2s;
 }
 
 #GameConfig-content img {
@@ -1165,6 +1157,7 @@ background: linear-gradient(
 
 .GameConfig-SpeedLabel {
 	color: white !important;
+	transition: .2s;
 }
 
 #GameConfig-content .moving-point {
