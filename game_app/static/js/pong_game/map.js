@@ -230,6 +230,9 @@ async function init2PlayerMap(scene)
 
 	for (let i = 0; i < 13; i++)
 		scene.addBox(0.13, 0.11, 0.13, {color: 0x999999, emissive:0x999999}, "floor" + i).position.set((i * 0.3) - 1.80, 0.01, 0);
+	
+	scene.segment_size = 4
+	
 }
 
 function initPlayerText(scene, player, name)

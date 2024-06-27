@@ -25,7 +25,7 @@ class Lobby:
 
 
 		self.clients = []
-		self.clients_per_lobby = 3
+		self.clients_per_lobby = 5
 
 		self.ball = Ball(self, 0.15)
 
@@ -95,7 +95,7 @@ class Lobby:
 
 	async def playerDied(self, dead_player):
 		self.ball.pos = Vector(0, 0)
-		self.ball.vel = Vector(1.2, 0)
+		self.ball.vel = Ball.getBallSpeed(self.clients_per_lobby)
 		self.clients_per_lobby -= 1
 
 		await self.sendData("call", {"command": 'scene.server.playerDead',
@@ -144,7 +144,7 @@ class Lobby:
 
 		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)
 		if (len(self.clients) == self.clients_per_lobby):
-			self.ball.vel = Vector(1.2, 2.4)
+			self.ball.vel = Ball.getBallSpeed(self.clients_per_lobby)
 
 			for c in self.clients:
 				await self.ball.updateBall()

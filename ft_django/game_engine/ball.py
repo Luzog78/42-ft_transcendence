@@ -12,6 +12,7 @@
 
 import time
 import math
+import random
 
 from .vector import Vector
 
@@ -41,6 +42,16 @@ class Ball:
 		t = max(0, min(1, t))
 
 		return A + AB * t
+
+	@staticmethod
+	def getBallSpeed(player_number):
+		if (player_number == 2):
+			direction = Vector(0.5,0.5)
+		else:
+			direction = Vector(random.uniform(0,1) - 0.5, random.uniform(0,1) - 0.5)
+		direction.setLength(math.sqrt(player_number) * 0.8)
+
+		return direction
 
 	async def updateBall(self):
 		await self.lobby.sendData("modify", {"scene.ball.sphere.position.x": self.pos.x,

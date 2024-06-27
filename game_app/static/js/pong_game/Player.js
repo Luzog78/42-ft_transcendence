@@ -49,26 +49,21 @@ class Player
 	{
 		const speed = this.speed * this.scene.dt * (this.size);
 
+		let computed_position = new THREE.Vector3().copy(this.player.position);
 		if (this.isUp())
 		{
-			let computed_position = new THREE.Vector3().copy(this.player.position);
 			computed_position.x -= Math.cos(this.angle) * speed;
 			computed_position.z -= Math.sin(this.angle) * speed;
-
-			if (computed_position.distanceTo(this.init_position) > this.scene.segment_size / 2 - this.size / 2)
-				return;
-			this.player.position.copy(computed_position);
 		}
 		if (this.isDown())
 		{
-			let computed_position = new THREE.Vector3().copy(this.player.position);
 			computed_position.x += Math.cos(this.angle) * speed;
 			computed_position.z += Math.sin(this.angle) * speed;
-
-			if (computed_position.distanceTo(this.init_position) > this.scene.segment_size / 2 - this.size / 2)
-				return;
-			this.player.position.copy(computed_position);
 		}
+		console.log(computed_position.distanceTo(this.init_position), this.scene.segment_size / 2 - this.size / 2)
+		if (computed_position.distanceTo(this.init_position) > this.scene.segment_size / 2 - this.size / 2)
+			return;
+		this.player.position.copy(computed_position);
 	}
 
 	bump(normal)

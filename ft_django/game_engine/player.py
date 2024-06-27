@@ -23,6 +23,7 @@ class Player:
 
 		self.angle = 0
 		self.pos = Vector(0, 0)
+		self.init_pos = Vector(0, 0)
 		self.speed = 1.2
 
 		self.keyboard = {}
@@ -40,6 +41,7 @@ class Player:
 			vertex = self.lobby.walls["player" + str(self.client_id)]
 			middle = (vertex[0] + vertex[1]) / 2
 			self.pos = middle
+			self.init_pos = middle
 			self.angle = 0
 
 			return
@@ -77,6 +79,12 @@ class Player:
 			distance = computed_pos.distance(self.lobby.middle_vertex_positions[self.client_id])
 			if (distance > self.lobby.segment_size / 2 - self.lobby.player_size):
 				return
+		else:
+			distance = computed_pos.distance(self.init_pos)
+			if (distance > self.lobby.segment_size / 2 - self.lobby.player_size):
+				print("distance too big", distance, self.lobby.segment_size / 2 - self.lobby.player_size)
+				return
+
 
 		for i in range(len(player_vertex)):
 			player_vertex[i] += rotate_pos
