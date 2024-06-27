@@ -45,13 +45,24 @@ class Server
 		let player = this.scene.get(player_id);
 		let position = player.init_position.clone();
 
-		for (let i = 0; i < 50; i++)
+		player.player.material.emissiveIntensity = 0;
+
+		let camera_look_at = position.clone().add(new THREE.Vector3(0, 0.5, 0));
+		let camera_position = position.clone()
+		let direction_to_center = new THREE.Vector3(0, 0, 0).sub(camera_position).normalize();
+		camera_position.add(direction_to_center.multiplyScalar(5));
+		camera_position.y = 2;
+
+		this.scene.camera.setPosition(camera_position.x, camera_position.y, camera_position.z, 
+			camera_look_at.x, camera_look_at.y, camera_look_at.z, true);
+
+		for (let i = 0; i < 100; i++)
 		{
 			let randomPosition = position.clone().add(new THREE.Vector3(Math.random() * 0.2 - 0.1,Math.random() * 0.2 - 0.1,Math.random() * 0.2 - 0.1));
-			let direction = randomPosition.clone().sub(position).multiplyScalar(30);
-			let acceleration = direction.clone().multiplyScalar(-1.8);
+			let direction = randomPosition.clone().sub(position).multiplyScalar(13*4);
+			let acceleration = direction.clone().multiplyScalar(-1.8*4);
 
-			let accDec = 0.989
+			let accDec = 0.95
 
 			let radius = Math.random() * 0.02 + 0.005;
 			let color = player.player.material.color;
@@ -65,14 +76,7 @@ class Server
 
 			this.scene.entities.push(particle);
 		}
-		let camera_look_at = position.clone().add(new THREE.Vector3(0, 0.5, 0));
-		let camera_position = position.clone()
-		let direction_to_center = new THREE.Vector3(0, 0, 0).sub(camera_position).normalize();
-		camera_position.add(direction_to_center.multiplyScalar(5));
-		camera_position.y = 2;
 		
-		this.scene.camera.smoothMoveTo(camera_position, camera_look_at);
-
 		setTimeout(() => {
 			this.scene.camera.controls.reset(false)
 			if (this.scene.player_num == 2)

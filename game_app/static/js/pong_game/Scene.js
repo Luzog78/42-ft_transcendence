@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/26 15:30:53 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/27 01:49:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ class Scene
 	{
 		this.player_num = player_num;
 
-		this.camera.resetShake();
 		initMap(this, player_num);
 		if (player_num == 2)
 			initTextScore(this, this.player_num)

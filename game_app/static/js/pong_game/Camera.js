@@ -37,28 +37,19 @@ class Camera
 		this.shakeObject.update(this.camera);
 	}
 
-	smoothMoveTo(position, look_at, animation = true)
-	{
-		this.controls.setLookAt(position.x, position.y, position.z, look_at.x, look_at.y, look_at.z, animation);
-	}
-
 	getPosition()
 	{
 		return this.camera.position;
 	}
-	setPosition(x, y, z)
+	setPosition(x, y, z, x_look=0, y_look=0, z_look=0, animation = true)
 	{
-		this.controls.setPosition(x, y, z);
-		this.camera.position.set(x, y, z);
+		this.shakeObject.reset();
+		this.controls.setLookAt(x, y, z, x_look, y_look, z_look, animation);
 	}
 
 	shake(vecToAdd, milliseconds)
 	{
 		this.shakeObject.shake(this.camera, vecToAdd, milliseconds);
-	}
-	resetShake()
-	{
-		this.shakeObject.reset();
 	}
 }
 
