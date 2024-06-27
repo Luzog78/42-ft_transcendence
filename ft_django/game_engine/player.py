@@ -82,7 +82,6 @@ class Player:
 		else:
 			distance = computed_pos.distance(self.init_pos)
 			if (distance > self.lobby.segment_size / 2 - self.lobby.player_size):
-				print("distance too big", distance, self.lobby.segment_size / 2 - self.lobby.player_size)
 				return
 
 

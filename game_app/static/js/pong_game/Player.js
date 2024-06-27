@@ -60,7 +60,6 @@ class Player
 			computed_position.x += Math.cos(this.angle) * speed;
 			computed_position.z += Math.sin(this.angle) * speed;
 		}
-		console.log(computed_position.distanceTo(this.init_position), this.scene.segment_size / 2 - this.size / 2)
 		if (computed_position.distanceTo(this.init_position) > this.scene.segment_size / 2 - this.size / 2)
 			return;
 		this.player.position.copy(computed_position);
