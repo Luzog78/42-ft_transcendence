@@ -254,17 +254,19 @@ function initPlayerText(scene, player, name)
 	if (scene.player_num == 2)
 		max_size = 1;
 
-	const dynamic_text = "0";
 	const text_size = max_size / (name.length * 0.5);
-	const dynamic_text_size = max_size / (dynamic_text.length * 0.5);
 
 	const text_position = new THREE.Vector3().copy(player.player.position);
 	const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
 	
-	const rotation = new THREE.Vector3(Math.PI / 2, Math.PI + visual_angle, 0);
+	const rotation = new THREE.Vector3(-Math.PI / 2, Math.PI + visual_angle, 0);
 	const dynamic_text_position = text_position.clone();
 	dynamic_text_position.addScaledVector(direction, -1);
-	new DynamicText(scene, dynamic_text, dynamic_text_position, rotation, text_size, 0xffffff, player.name + "textscore");
+	const dynamic_text = new DynamicText(scene, "0", dynamic_text_position, rotation, text_size, 0xffffff, player.name + "textscore");
+
+	setInterval(() => {
+		dynamic_text.updateText(String(Number(dynamic_text.text) + 1));
+	}, 1000);
 
 	if (player.name == "player" + scene.server.client_id)
 		return;

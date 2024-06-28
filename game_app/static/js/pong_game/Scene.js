@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/28 22:45:59 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 23:24:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,9 +203,16 @@ class Scene
 		if (element.destroy != undefined)
 			{element.destroy(); return ;}
 
-		element.mesh.geometry.dispose();
-		element.mesh.material.dispose();
-		this.scene.remove(element.mesh);
+		this.removeMesh(element.mesh);
+	}
+
+	removeMesh(mesh)
+	{
+		if (mesh == undefined)
+			return ;
+		mesh.geometry.dispose();
+		mesh.material.dispose();
+		this.scene.remove(mesh);
 	}
 }
 

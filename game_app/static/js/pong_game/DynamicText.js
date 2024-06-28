@@ -19,21 +19,24 @@ class DynamicText
 
 		this.text = text;
 		this.position = position;
+		this.rotation = rotation;
 		this.size = size;
 		this.color = color;
 
-		this.mesh = this.scene.addText(this.text, {color: this.color}, this.size, this.name);
-		this.mesh.geometry.rotateX(rotation.x);
-		this.mesh.geometry.rotateY(rotation.y);
-		this.mesh.geometry.rotateZ(rotation.z);
-		this.mesh.geometry.translate(this.position.x, this.position.y, this.position.z);
+		this.updateText(this.text);
+		this.scene.elements[this.name] = this;
 	}
 
 	updateText(text)
 	{
-		this.scene.remove(this);
+		this.scene.removeMesh(this.mesh);
 		this.text = text;
-		this.mesh = this.scene.addText(this.text, {color: this.color}, this.size, this.name);
+
+		this.mesh = this.scene.addText(this.text, {color: this.color}, this.size, this.name + "element");
+		this.mesh.geometry.rotateX(this.rotation.x);
+		this.mesh.geometry.rotateY(this.rotation.y);
+		this.mesh.geometry.rotateZ(this.rotation.z);
+		this.mesh.geometry.translate(this.position.x, this.position.y, this.position.z);
 	}
 }
 
