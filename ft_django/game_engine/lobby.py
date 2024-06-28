@@ -23,9 +23,9 @@ class Lobby:
 		self.gameServer = gameServer
 		self.lobby_id = len(self.gameServer.lobbys)
 
-
 		self.clients = []
-		self.clients_per_lobby = 5
+		self.clients_per_lobby = 30
+		self.client_ready = []
 
 		self.ball = Ball(self, 0.15)
 
@@ -46,6 +46,8 @@ class Lobby:
 
 
 	def init_map(self, num_players):
+		self.client_ready = [False] * num_players
+
 		if (num_players == 2):
 			self.player_size = 0.5
 			self.segment_size = 4
@@ -95,7 +97,8 @@ class Lobby:
 
 	async def playerDied(self, dead_player):
 		self.ball.pos = Vector(0, 0)
-		self.ball.vel = Ball.getBallSpeed(self.clients_per_lobby)
+		self.ball.vel = Vector(0, 0)
+		# self.ball.vel = Ball.getBallSpeed(self.clients_per_lobby)
 		self.clients_per_lobby -= 1
 
 		await self.sendData("call", {"command": 'scene.server.playerDead',
@@ -131,11 +134,22 @@ class Lobby:
 			for c in self.clients:
 				await c.update()
 
-	def receive(self, data):
-		if ("client_id" not in data or data["client_id"] >= len(self.clients)):
+	async def receive(self, data):
+		client_id = data["client_id"]
+		if ("client_id" not in data or client_id >= len(self.clients)):
 			return
+		
+		if ("ready" in data):
+			self.client_ready[client_id] = True
+			if (all(self.client_ready)):
+				self.ball.vel = Ball.getBallSpeed(self.clients_per_lobby)
+
+				for c in self.clients:
+					await self.ball.updateBall()
+					await c.sendData("game_status", "START")
+
 		if ("player_keyboard" in data):
-			self.clients[data["client_id"]].keyboard = data["player_keyboard"]
+			self.clients[client_id].keyboard = data["player_keyboard"]
 
 	async def addClient(self, player):
 		self.clients.append(player)
@@ -143,12 +157,6 @@ class Lobby:
 		await player.initConnection()
 
 		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)
-		if (len(self.clients) == self.clients_per_lobby):
-			self.ball.vel = Ball.getBallSpeed(self.clients_per_lobby)
-
-			for c in self.clients:
-				await self.ball.updateBall()
-				await c.sendData("game_status", "START")
 
 	def removeClient(self, client):
 		self.clients.remove(client)

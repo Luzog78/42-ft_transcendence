@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/27 23:08:26 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/06/28 22:45:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ class Scene
 		let my_player = this.get("player" + this.server.client_id); // to change
 		window.addEventListener("keydown", my_player.keydown_event_func);
 		window.addEventListener("keyup", my_player.keyup_event_func);
+
+		this.server.sendData("ready", []);
 	}
 
 	update()
@@ -193,10 +195,9 @@ class Scene
 
 	remove(element)
 	{
-		if (!this.entities.includes(element))
-			return ;
+		if (this.entities.includes(element))
+			this.entities.splice(this.entities.indexOf(element), 1);
 
-		this.entities.splice(this.entities.indexOf(element), 1);
 		delete this.elements[element.name]
 
 		if (element.destroy != undefined)

@@ -24,7 +24,7 @@ class PongSocket(AsyncWebsocketConsumer):
 
 	async def receive(self, text_data):
 		data = json.loads(text_data)
-		gameServer.receive(data)
+		await gameServer.receive(data)
 
 	async def sendData(self, *args):
 		data = {}

@@ -16,6 +16,7 @@ import { WallLines } from "./LineEffects.js";
 import { Lines } from "./Lines.js";
 import { Player } from "./Player.js";
 import { Ball } from "./Ball.js";
+import { DynamicText } from "./DynamicText.js";
 
 function initMap(scene, player_num)
 {
@@ -237,17 +238,7 @@ async function init2PlayerMap(scene)
 
 function initPlayerText(scene, player, name)
 {
-	const text_position = new THREE.Vector3().copy(player.player.position);
-	const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
-
-	let max_size;
-	max_size = Math.min(scene.segment_size / 2, 2);
-	if (scene.player_num == 2)
-		max_size = 1;
-
-	const text_size = max_size / (name.length * 0.5);
-	const text = scene.addText(name, {color: 0xffffff}, text_size, player.name + "text");
-
+	
 	let visual_angle = Math.PI - player.angle;
 	let direction_scale = 1;
 	let y_offset = 1;
@@ -258,8 +249,31 @@ function initPlayerText(scene, player, name)
 		y_offset = 0.5;
 	}
 
+	let max_size;
+	max_size = Math.min(scene.segment_size / 2, 2);
+	if (scene.player_num == 2)
+		max_size = 1;
+
+	const dynamic_text = "0";
+	const text_size = max_size / (name.length * 0.5);
+	const dynamic_text_size = max_size / (dynamic_text.length * 0.5);
+
+	const text_position = new THREE.Vector3().copy(player.player.position);
+	const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
+	
+	const rotation = new THREE.Vector3(Math.PI / 2, Math.PI + visual_angle, 0);
+	const dynamic_text_position = text_position.clone();
+	dynamic_text_position.addScaledVector(direction, -1);
+	new DynamicText(scene, dynamic_text, dynamic_text_position, rotation, text_size, 0xffffff, player.name + "textscore");
+
+	if (player.name == "player" + scene.server.client_id)
+		return;
+
 	text_position.y += y_offset;
 	text_position.addScaledVector(direction, direction_scale);
+
+	
+	const text = scene.addText(name, {color: 0xffffff}, text_size, player.name + "text");
 
 	text.geometry.rotateY(visual_angle);
 	text.geometry.translate(text_position);

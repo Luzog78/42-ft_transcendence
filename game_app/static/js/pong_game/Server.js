@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 
-import { initPlayerText, initMap } from "./map.js";
+import { initPlayerText } from "./map.js";
 import { Particle } from "./Particle.js";
 import { destroyObject } from './main.js';
 
@@ -77,13 +77,19 @@ class Server
 			this.scene.entities.push(particle);
 		}
 		
-		setTimeout(() => {
-			this.scene.camera.controls.reset(false)
-			if (this.scene.player_num == 2)
-				return;
+		let scene = this.scene;
+		var beginTime = (new Date()).getTime();
+		var intervalId = setInterval(function(){
+			var timePassed = (new Date()).getTime() - beginTime;
+			if(timePassed >= 3000) {
+				scene.camera.controls.reset(false)
+				if (scene.player_num == 2)
+					return;
 
-			destroyObject(this.scene);
-		}, 3000);
+				destroyObject(scene);
+				clearInterval(intervalId);
+			}
+		}, 30);
 	}
 
 	onOpen(scene, event)

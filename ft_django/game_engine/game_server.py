@@ -26,9 +26,9 @@ class GameServer:
 		self.tps = 20
 		self.dt = 1 / self.tps
 
-	def receive(self, data):
+	async def receive(self, data):
 		lobby = self.lobbys[data["lobby_id"]]
-		lobby.receive(data)
+		await lobby.receive(data)
 
 		# print("received ", json.dumps(data, indent=4))
 

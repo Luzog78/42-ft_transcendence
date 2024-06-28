@@ -64,7 +64,7 @@ class Player:
 		await self.sendToOther("call", {"command": "scene.server.newPlayer",
 								  		"args": ["'player" + str(self.client_id) + "'", my_player_name]})
 
-		for i in range(self.client_id):
+		for i in range(self.client_id + 1):
 			player = self.lobby.clients[i]
 			player_name = "'" + "name" + str(i) + "'" #get name from DB
 			await self.sendData("call", {"command": "scene.server.newPlayer",
