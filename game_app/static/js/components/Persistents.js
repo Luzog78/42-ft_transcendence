@@ -44,17 +44,30 @@ function pushPersistents(context, dom=null) {
 			</div>
 		`;
 		container.querySelector(`#persistent-container-${i} .content`).innerText = persistent.message;
-		setTimeout((i) => {
-			try {
-				document.getElementById(`persistent-container-${i}`).remove();
-			} catch (ignored) {
-			}
-		}, 4000 + 130 * j, i);
+		setTimeout((i) => removePersistent(context, i), 4000 + 130 * j, i);
 		i++;
 		j++;
 		if (i > 100000)
 			i = 0;
 	}
+}
+
+
+function removePersistent(context, id) {
+	let container = document.getElementById(`persistent-container-${id}`);
+	if (!container)
+		return;
+
+	let interval = setInterval(() => {
+		let f = parseFloat(container.style.opacity);
+		if (isNaN(f))
+			f = 1;
+		if (f <= 0) {
+			container.remove()
+			clearInterval(interval);
+		}
+		container.style.opacity = `${f - 0.015}`;
+	}, 1);
 }
 
 

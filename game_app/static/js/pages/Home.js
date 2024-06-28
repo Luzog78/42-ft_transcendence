@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 
 import { getJson } from "../utils.js";
-import { getLang } from "../script.js";
+import { getLang, persistError, persistSuccess } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
-import { Persistents } from "../components/Persistents.js";
+import { Persistents, pushPersistents } from "../components/Persistents.js";
 
 
 async function Home(context) {
@@ -47,6 +47,12 @@ async function Home(context) {
 			`;
 			content.querySelector(".home-error").innerText = getLang(context, data.error);
 		}
+
+		document.getElementById("1234").onclick = () => {
+			persistSuccess(context, "This is a success !");
+			persistError(context, "This is an error...");
+			pushPersistents(context);
+		};
 	});
 	return div.innerHTML;
 }

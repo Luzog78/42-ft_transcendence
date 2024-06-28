@@ -25,7 +25,7 @@ class Lobby:
 
 
 		self.clients = []
-		self.clients_per_lobby = 130
+		self.clients_per_lobby = 5
 
 		self.ball = Ball(self, 0.15)
 
