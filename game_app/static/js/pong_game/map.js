@@ -17,9 +17,13 @@ import { Lines } from "./Lines.js";
 import { Player } from "./Player.js";
 import { Ball } from "./Ball.js";
 import { DynamicText } from "./DynamicText.js";
+import { destroyObject } from './main.js';
 
 function initMap(scene, player_num)
 {
+	clearInterval(scene.intervalId);
+	destroyObject(scene);
+
 	let light = new THREE.AmbientLight( 0x555555 ); // soft white light
 	scene.scene.add(light);
 
@@ -31,8 +35,8 @@ function initMap(scene, player_num)
 	else
 		initNPlayerMap(scene, player_num);
 
+	initText(scene, player_num);
 	initCamera(scene, player_num);
-	// scene.updateCamera();
 }
 
 function initNPlayerMap(scene, number)
@@ -238,7 +242,6 @@ async function init2PlayerMap(scene)
 
 function initPlayerText(scene, player, name)
 {
-	
 	let visual_angle = Math.PI - player.angle;
 	let direction_scale = 1;
 	let y_offset = 1;
@@ -259,14 +262,13 @@ function initPlayerText(scene, player, name)
 	const text_position = new THREE.Vector3().copy(player.player.position);
 	const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
 	
+	if (scene.player_num == 2)
+		return;
+	
 	const rotation = new THREE.Vector3(-Math.PI / 2, Math.PI + visual_angle, 0);
-	const dynamic_text_position = text_position.clone();
-	dynamic_text_position.addScaledVector(direction, -1);
-	const dynamic_text = new DynamicText(scene, "0", dynamic_text_position, rotation, text_size, 0xffffff, player.name + "textscore");
-
-	setInterval(() => {
-		dynamic_text.updateText(String(Number(dynamic_text.text) + 1));
-	}, 1000);
+	const dynamic_score_position = text_position.clone();
+	dynamic_score_position.addScaledVector(direction, -1);
+	const dynamic_score = new DynamicText(scene, "0", dynamic_score_position, rotation, text_size, 0xffffff, player.name + "textscore");
 
 	if (player.name == "player" + scene.server.client_id)
 		return;
@@ -281,21 +283,32 @@ function initPlayerText(scene, player, name)
 	text.geometry.translate(text_position);
 }
 
-function initTextScore(scene, player_num)
+function initText(scene, player_num)
 {
+	if (player_num != 2)
+	{
+		const my_player = scene.get("player" + scene.server.client_id);
+
+		let text_size = (1 / scene.segment_size ) * 4;
+		const rotation = new THREE.Vector3(-Math.PI / 2, Math.PI - my_player.angle + Math.PI, 0);
+		
+		if (scene.player_num == 2)
+		{
+			text_size = 0.5;
+			rotation.y = Math.PI / 2;
+		}
+
+		const text_position = new THREE.Vector3(0,0.1,0);
+		const timer_text = new DynamicText(scene, "03:00", text_position, rotation, text_size, 0xffffff, "timertext");
+		return ;
+	}
+
 	const score_1_pos = new THREE.Vector3(-1.25,0.1,0.5);
 	const score_2_pos = new THREE.Vector3(-1.25,0.1,-0.5);
 
-	const score_1 = scene.addText("0", {color: 0xffffff}, 0.5, "score1");
-	const score_2 = scene.addText("5", {color: 0xffffff}, 0.5, "score2");
-
-	score_1.geometry.rotateX(-Math.PI / 2);
-	score_1.geometry.rotateY(Math.PI / 2);
-	score_1.geometry.translate(score_1_pos);
-
-	score_2.geometry.rotateX(-Math.PI / 2);
-	score_2.geometry.rotateY(Math.PI / 2);
-	score_2.geometry.translate(score_2_pos)
+	const rotation_score = new THREE.Vector3(-Math.PI / 2, Math.PI / 2, 0);
+	const dynamic_score_1 = new DynamicText(scene, "0", score_1_pos, rotation_score, 0.5, 0xffffff, "player0textscore");
+	const dynamic_score_2 = new DynamicText(scene, "0", score_2_pos, rotation_score, 0.5, 0xffffff, "player1textscore");
 }
 
-export { initMap, initTextScore, initPlayerText };
+export { initMap, initPlayerText };

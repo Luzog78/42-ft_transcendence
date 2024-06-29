@@ -6,12 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/28 23:24:32 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/29 17:30:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from 'three';
-import * as OrbitControls from 'orbitcontrols';
 
 import * as RenderPass from 'renderpass';
 import * as EffectComposer from 'effectcomposer';
@@ -20,7 +19,7 @@ import * as FontLoader from 'fontloader';
 import * as Timer from 'timer';
 
 import { Server } from "./Server.js";
-import { initMap, initTextScore } from "./map.js";
+import { initMap } from "./map.js";
 import { Camera } from "./Camera.js";
 
 class Scene
@@ -30,10 +29,10 @@ class Scene
 		this.scene = new THREE.Scene();
 		this.renderer = new THREE.WebGLRenderer({antialias: true});
 		this.camera = new Camera(this, this.renderer);
-		// this.controls = new OrbitControls.OrbitControls(this.camera.camera, this.renderer.domElement);
 
 		this.server = null;
 
+		this.interval_timer_id = 0
 		this.segment_size = 4;
 		this.player_num = 0;
 
@@ -68,13 +67,35 @@ class Scene
 		this.server = new Server(this);
 	}
 
+	updateGameStatus(status)
+	{
+		if (status == "START")
+		{
+			if (this.player_num == 2)
+				return ;
+			const timer_text = this.get("timertext");
+			this.interval_timer_id = setInterval(() => {
+				const timer_split = timer_text.text.split(":");		
+				let minutes = parseInt(timer_split[0]);
+				let seconds = parseInt(timer_split[1]);
+				seconds -= 1;
+				if (seconds < 0)
+				{
+					seconds = 59;
+					minutes -= 1;
+				}
+				if (minutes < 0)
+					clearInterval(interval_id);
+				timer_text.updateText(minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'));
+			}, 1000);
+		}
+	}
+
 	initConnection(player_num)
 	{
 		this.player_num = player_num;
 
 		initMap(this, player_num);
-		if (player_num == 2)
-			initTextScore(this, this.player_num)
 
 		let my_player = this.get("player" + this.server.client_id); // to change
 		window.addEventListener("keydown", my_player.keydown_event_func);

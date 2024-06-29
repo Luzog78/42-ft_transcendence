@@ -77,19 +77,20 @@ class Server
 			this.scene.entities.push(particle);
 		}
 		
-		let scene = this.scene;
-		var beginTime = (new Date()).getTime();
-		var intervalId = setInterval(function(){
-			var timePassed = (new Date()).getTime() - beginTime;
-			if(timePassed >= 3000) {
-				scene.camera.controls.reset(false)
-				if (scene.player_num == 2)
-					return;
+		// let scene = this.scene;
+		// var beginTime = (new Date()).getTime();
+		// var intervalId = setInterval(function(){
+		// 	var timePassed = (new Date()).getTime() - beginTime;
+		// 	if(timePassed >= 3000)
+		// 	{
+		// 		scene.camera.controls.reset(false)
+		// 		if (scene.player_num == 2)
+		// 			return;
 
-				destroyObject(scene);
-				clearInterval(intervalId);
-			}
-		}, 30);
+		// 		destroyObject(scene);
+		// 		clearInterval(intervalId);
+		// 	}
+		// }, 30);
 	}
 
 	onOpen(scene, event)
@@ -114,6 +115,8 @@ class Server
 			let functionCall = `${message.call.command}(${args.join(', ')})`;
 			eval(functionCall)
 		}
+		if (message.game_status)
+			scene.updateGameStatus(message.game_status);
 
 	}
 

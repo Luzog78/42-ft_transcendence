@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/28 22:22:04 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/29 17:28:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ async function initScene()
 
 function destroyObject()
 {
+	clearInterval(scene.interval_timer_id);
 	scene.scene.traverse(object => {
 		if (!object.isMesh)
 			return;

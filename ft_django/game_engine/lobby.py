@@ -24,7 +24,7 @@ class Lobby:
 		self.lobby_id = len(self.gameServer.lobbys)
 
 		self.clients = []
-		self.clients_per_lobby = 30
+		self.clients_per_lobby = 4
 		self.client_ready = []
 
 		self.ball = Ball(self, 0.15)
@@ -98,7 +98,10 @@ class Lobby:
 	async def playerDied(self, dead_player):
 		self.ball.pos = Vector(0, 0)
 		self.ball.vel = Vector(0, 0)
-		# self.ball.vel = Ball.getBallSpeed(self.clients_per_lobby)
+		
+		#maybe wait for ready here
+		self.ball.vel = Ball.getBallSpeed(self.clients_per_lobby)
+		
 		self.clients_per_lobby -= 1
 
 		await self.sendData("call", {"command": 'scene.server.playerDead',
@@ -141,7 +144,8 @@ class Lobby:
 		
 		if ("ready" in data):
 			self.client_ready[client_id] = True
-			if (all(self.client_ready)):
+			# if (all(self.client_ready)):
+			if (len(self.clients) == self.clients_per_lobby):
 				self.ball.vel = Ball.getBallSpeed(self.clients_per_lobby)
 
 				for c in self.clients:
