@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/29 17:28:14 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/30 20:35:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ function destroyObject()
 		scene.scene.remove(scene.scene.children[0]);
 
 	scene.entities = [];
+	scene.balls = [];
 	scene.elements = {};
 }
 

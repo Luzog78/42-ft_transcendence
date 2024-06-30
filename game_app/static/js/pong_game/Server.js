@@ -76,21 +76,14 @@ class Server
 
 			this.scene.entities.push(particle);
 		}
-		
-		// let scene = this.scene;
-		// var beginTime = (new Date()).getTime();
-		// var intervalId = setInterval(function(){
-		// 	var timePassed = (new Date()).getTime() - beginTime;
-		// 	if(timePassed >= 3000)
-		// 	{
-		// 		scene.camera.controls.reset(false)
-		// 		if (scene.player_num == 2)
-		// 			return;
 
-		// 		destroyObject(scene);
-		// 		clearInterval(intervalId);
-		// 	}
-		// }, 30);
+		setTimeout(() => {
+			if (player_id == "player" + this.client_id)
+			{
+				destroyObject();
+				// spectator
+			}
+		}, 3000);
 	}
 
 	onOpen(scene, event)

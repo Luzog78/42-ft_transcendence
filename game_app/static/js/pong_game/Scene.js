@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/29 17:30:01 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/30 20:22:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ class Scene
 		this.segment_size = 4;
 		this.player_num = 0;
 
-		this.ball = null;
+		this.balls = [];
 
 		this.elements = {};
 		this.entities = []

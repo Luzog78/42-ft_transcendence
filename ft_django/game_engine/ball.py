@@ -10,7 +10,6 @@
 #                                                                              #
 # **************************************************************************** #
 
-import time
 import math
 import random
 
@@ -18,7 +17,7 @@ from .vector import Vector
 
 
 class Ball:
-	def __init__(self, lobby, radius):
+	def __init__(self, lobby, radius, id):
 		self.lobby = lobby
 		self.radius = radius
 
@@ -28,6 +27,10 @@ class Ball:
 		self.pos = Vector(0, 0)
 		self.vel = Vector(0, 0)
 		self.acc = Vector(0, 0)
+
+		self.last_player = None
+
+		self.id = id
 
 	@staticmethod
 	def closestPointOnSegment(A, B, P):
@@ -54,12 +57,12 @@ class Ball:
 		return direction
 
 	async def updateBall(self):
-		await self.lobby.sendData("modify", {"scene.ball.sphere.position.x": self.pos.x,
-									   		"scene.ball.sphere.position.z": self.pos.y})
-		await self.lobby.sendData("modify", {"scene.ball.vel.x": self.vel.x,
-									   		"scene.ball.vel.z": self.vel.y})
-		await self.lobby.sendData("modify", {"scene.ball.acc.x": self.acc.x,
-									   		"scene.ball.acc.z": self.acc.y})
+		await self.lobby.sendData("modify", {f"scene.balls[{self.id}].sphere.position.x": self.pos.x,
+									   		f"scene.balls[{self.id}].sphere.position.z": self.pos.y})
+		await self.lobby.sendData("modify", {f"scene.balls[{self.id}].vel.x": self.vel.x,
+									   		f"scene.balls[{self.id}].vel.z": self.vel.y})
+		await self.lobby.sendData("modify", {f"scene.balls[{self.id}].acc.x": self.acc.x,
+									   		f"scene.balls[{self.id}].acc.z": self.acc.y})
 
 	def resolutionCollision(self, collision_normal, minDistance):
 		penetration_depth = self.radius - minDistance
@@ -117,10 +120,15 @@ class Ball:
 			if (distance <= self.radius):
 				if ("score" in wall_name):
 					player_name = wall_name.replace("score", "player")
-					await self.lobby.playerDied(player_name)
+					await self.lobby.playerDied(self, player_name)
 
 					break
-
+				
+				if ("player" in wall_name):
+					player = self.lobby.clients[int(wall_name.replace("player", ""))]
+					player.rebounces += 1
+					player.ultimate_speed = self.vel.length()
+					self.last_player = player
 
 				collision_normal = (predicted_ball_pos - closest_point).normalize()
 
@@ -128,7 +136,7 @@ class Ball:
 				self.ballEffect(wall_name, collision_normal)
 
 				await self.updateBall()
-				await self.lobby.sendData("call", {"command": 'scene.ball.effectCollision',
+				await self.lobby.sendData("call", {"command": f'scene.balls[{self.id}].effectCollision',
 									   				"args": ["'" + wall_name + "'", closest_point.json(), collision_normal.json()]})
 
 	async def update(self):

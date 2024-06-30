@@ -27,7 +27,7 @@ class Lobby:
 		self.clients_per_lobby = 4
 		self.client_ready = []
 
-		self.ball = Ball(self, 0.15)
+		self.balls = [Ball(self, 0.15, 0)]
 
 		self.player_size = 0.5
 		self.segment_size = 4
@@ -95,12 +95,12 @@ class Lobby:
 
 		return walls
 
-	async def playerDied(self, dead_player):
-		self.ball.pos = Vector(0, 0)
-		self.ball.vel = Vector(0, 0)
-		
+	async def playerDied(self, ball, dead_player):
+		if (ball.last_player):
+			ball.last_player.kills += 1
+		self.balls = [Ball(self, 0.15, 0)]
 		#maybe wait for ready here
-		self.ball.vel = Ball.getBallSpeed(self.clients_per_lobby)
+		self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
 		
 		self.clients_per_lobby -= 1
 
@@ -114,12 +114,14 @@ class Lobby:
 		player_id = int(dead_player.replace("player", ""))
 		player = self.clients[player_id]
 
+		player.die()
+
 		self.removeClient(player)
 		for c in self.clients:
 			if (c.client_id > player_id):
 				c.client_id -= 1
 			await c.initConnection()
-			await self.ball.updateBall()
+			await self.balls[0].updateBall()
 
 
 	async def update(self):
@@ -132,7 +134,8 @@ class Lobby:
 
 			time.sleep(self.gameServer.dt)
 
-			await self.ball.update()
+			for ball in self.balls:
+				await ball.update()
 
 			for c in self.clients:
 				await c.update()
@@ -146,10 +149,10 @@ class Lobby:
 			self.client_ready[client_id] = True
 			# if (all(self.client_ready)):
 			if (len(self.clients) == self.clients_per_lobby):
-				self.ball.vel = Ball.getBallSpeed(self.clients_per_lobby)
+				self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
 
 				for c in self.clients:
-					await self.ball.updateBall()
+					await self.balls[0].updateBall()
 					await c.sendData("game_status", "START")
 
 		if ("player_keyboard" in data):

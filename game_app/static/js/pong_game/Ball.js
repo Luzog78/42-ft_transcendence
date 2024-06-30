@@ -18,7 +18,7 @@ import { Particle } from "./Particle.js";
 
 class Ball
 {
-	constructor(scene, radius, options, name)
+	constructor(scene, radius, options, name, id)
 	{
 		this.scene = scene;
 		this.name = this.scene.getName(name);
@@ -34,6 +34,9 @@ class Ball
 
 		this.radius = radius;
 		this.sphere = this.scene.addSphere(this.radius, options, this.name);
+		this.sphere.position.y = 0.25;
+
+		this.id = id;
 	}
 
 	effectCollision(wallname, position, normal)

@@ -27,8 +27,9 @@ function initMap(scene, player_num)
 	let light = new THREE.AmbientLight( 0x555555 ); // soft white light
 	scene.scene.add(light);
 
-	scene.ball = new Ball(scene, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball")
-	scene.entities.push(scene.ball);
+	let ball = new Ball(scene, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball");
+	scene.balls.push(ball);
+	scene.entities.push(ball);
 
 	if (player_num == 2)
 		init2PlayerMap(scene);
@@ -51,8 +52,6 @@ function initNPlayerMap(scene, number)
 	circle.position.set(0, 0.05, 0);
 	circle.geometry.rotateX(-Math.PI / 2);
 	scene.add(circle, "circle");
-
-	scene.get("ball").position.set(0,0.25,0);
 
 	const position_attribute = circle.geometry.getAttribute( 'position' );
 	const vertex = new THREE.Vector3();
@@ -163,7 +162,6 @@ async function init2PlayerMap(scene)
 	scene.entities.push(new Player(scene, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, 1, 0, new THREE.Vector3(0,0.15,4.075), "player0"));
 	scene.entities.push(new Player(scene, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, 1, 0, new THREE.Vector3(0,0.15,-4.075), "player1"));
 
-	scene.get("ball").position.set(0,0.25,0);
 	if (scene.server.client_id == 0)
 		scene.get("player1").player.visible = false;
 

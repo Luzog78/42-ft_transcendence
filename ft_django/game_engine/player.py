@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 import math
+import datetime
 
 from .vector import Vector
 
@@ -26,7 +27,20 @@ class Player:
 		self.init_pos = Vector(0, 0)
 		self.speed = 1.2
 
+		self.kills = 0 #done
+		self.deaths = 0 #done
+		self.best_streak = 0
+		self.rebounces = 0 #done
+		self.ultimate_speed = 0 #done
+		self.duration = 0 #done
+
+		self.start_time = datetime.datetime.timestamp(datetime.datetime.now())
+
 		self.keyboard = {}
+
+	def die(self):
+		self.deaths += 1
+		self.duration = datetime.datetime.timestamp(datetime.datetime.now()) - self.start_time
 
 	async def initConnection(self):
 		self.addSelfWall()
@@ -56,7 +70,6 @@ class Player:
 		secondPoint = Vector(mid.x + math.cos(angle - math.pi) * self.lobby.player_size, mid.y + math.sin(angle - math.pi) * self.lobby.player_size)
 
 		self.lobby.walls["player" + str(self.client_id)] = [firstPoint, secondPoint]
-
 
 
 	async def updateSelfToother(self):
