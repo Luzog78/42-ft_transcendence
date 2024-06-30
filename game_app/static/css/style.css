@@ -127,6 +127,7 @@ input[type=number].no-arrow {
 
 #persistent-container {
 	position: absolute;
+	left: 0;
 	top: 65px;
 	height: 1px;
 	overflow: visible;
