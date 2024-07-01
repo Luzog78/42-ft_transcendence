@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/06/30 20:22:59 by marvin           ###   ########.fr       */
+/*   Updated: 2024/07/01 12:14:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ import * as Timer from 'timer';
 import { Server } from "./Server.js";
 import { initMap } from "./map.js";
 import { Camera } from "./Camera.js";
+import { Ball } from "./Ball.js";
 
 class Scene
 {
@@ -159,6 +160,13 @@ class Scene
 		this.add(textMesh, name);
 
 		return textMesh;
+	}
+	
+	addBall(_)
+	{
+		let ball = new Ball(this, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball");
+		this.balls.push(ball);
+		this.entities.push(ball);
 	}
 
 	addSphere(radius, param, name="")

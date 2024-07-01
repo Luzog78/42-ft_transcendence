@@ -112,7 +112,6 @@ class Ball:
 		for wall_name in walls_copy:
 			wall = walls_copy[wall_name]
 
-
 			predicted_ball_pos = self.pos + self.vel * self.lobby.gameServer.dt
 			closest_point = Ball.closestPointOnSegment(wall[0], wall[1], predicted_ball_pos)
 			distance = closest_point.distance(predicted_ball_pos)
@@ -129,6 +128,14 @@ class Ball:
 					player.rebounces += 1
 					player.ultimate_speed = self.vel.length()
 					self.last_player = player
+
+					await self.lobby.sendData("call", {"command": f'scene.addBall',
+														"args": []})
+
+					new_ball = Ball(self.lobby, 0.15, len(self.lobby.balls))
+					self.lobby.balls.append(new_ball)
+					new_ball.vel = Ball.getBallSpeed(self.lobby.clients_per_lobby)
+					await new_ball.updateBall()
 
 				collision_normal = (predicted_ball_pos - closest_point).normalize()
 

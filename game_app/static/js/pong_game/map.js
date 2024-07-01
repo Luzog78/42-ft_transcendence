@@ -27,9 +27,7 @@ function initMap(scene, player_num)
 	let light = new THREE.AmbientLight( 0x555555 ); // soft white light
 	scene.scene.add(light);
 
-	let ball = new Ball(scene, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball");
-	scene.balls.push(ball);
-	scene.entities.push(ball);
+	scene.addBall();
 
 	if (player_num == 2)
 		init2PlayerMap(scene);
