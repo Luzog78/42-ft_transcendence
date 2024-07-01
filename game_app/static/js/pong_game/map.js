@@ -15,7 +15,6 @@ import * as THREE from 'three';
 import { WallLines } from "./LineEffects.js";
 import { Lines } from "./Lines.js";
 import { Player } from "./Player.js";
-import { Ball } from "./Ball.js";
 import { DynamicText } from "./DynamicText.js";
 import { destroyObject } from './main.js';
 
@@ -91,7 +90,6 @@ function initNPlayerMap(scene, number)
 
 		let spotlight_pos = middle_point.clone();
 		spotlight_pos.addScaledVector(direction, 2);
-
 
 		let spotLight = new THREE.SpotLight( 0xffffff, 10);
 		spotLight.position.set(spotlight_pos.x, 1, spotlight_pos.z);
@@ -233,7 +231,6 @@ async function init2PlayerMap(scene)
 		scene.addBox(0.13, 0.11, 0.13, {color: 0x999999, emissive:0x999999}, "floor" + i).position.set((i * 0.3) - 1.80, 0.01, 0);
 	
 	scene.segment_size = 4
-	
 }
 
 function initPlayerText(scene, player, name)
@@ -258,13 +255,14 @@ function initPlayerText(scene, player, name)
 	const text_position = new THREE.Vector3().copy(player.player.position);
 	const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
 	
-	if (scene.player_num == 2)
-		return;
+	if (scene.player_num != 2 && scene.game_mode != "BR")
+	{
+		const rotation = new THREE.Vector3(-Math.PI / 2, Math.PI + visual_angle, 0);
+		const dynamic_score_position = text_position.clone();
+		dynamic_score_position.addScaledVector(direction, -1);
+		new DynamicText(scene, "0", dynamic_score_position, rotation, text_size, 0xffffff, player.name + "textscore");
+	}
 	
-	const rotation = new THREE.Vector3(-Math.PI / 2, Math.PI + visual_angle, 0);
-	const dynamic_score_position = text_position.clone();
-	dynamic_score_position.addScaledVector(direction, -1);
-	const dynamic_score = new DynamicText(scene, "0", dynamic_score_position, rotation, text_size, 0xffffff, player.name + "textscore");
 
 	if (player.name == "player" + scene.server.client_id)
 		return;
@@ -281,6 +279,8 @@ function initPlayerText(scene, player, name)
 
 function initText(scene, player_num)
 {
+	if (scene.game_mode == "BR")
+		return ;
 	if (player_num != 2)
 	{
 		const my_player = scene.get("player" + scene.server.client_id);

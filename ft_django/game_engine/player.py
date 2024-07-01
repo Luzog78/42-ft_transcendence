@@ -47,7 +47,8 @@ class Player:
 
 		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
 										"scene.server.client_id": self.client_id})
-		await self.sendData("call", {"command": "scene.initConnection", "args": [self.lobby.clients_per_lobby]})
+		await self.sendData("call", {"command": "scene.initConnection",
+							   		"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'"]})
 		await self.updateSelfToother()
 
 	def addSelfWall(self):
@@ -110,7 +111,7 @@ class Player:
 		if (len(self.lobby.walls) == 0):
 			return
 
-		move_speed = self.speed * self.lobby.gameServer.dt * (self.lobby.player_size * 2)
+		move_speed = self.speed * self.lobby.game_server.dt * (self.lobby.player_size * 2)
 		if (self.isUp()):
 			await self.move(-move_speed, -move_speed)
 		elif (self.isDown()):

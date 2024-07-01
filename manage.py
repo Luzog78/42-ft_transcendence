@@ -3,7 +3,7 @@
 import os
 import sys
 
-from ft_django.pong_socket import gameServer
+from ft_django.pong_socket import game_server
 
 
 def main():
@@ -25,4 +25,4 @@ if __name__ == '__main__':
 		main()
 	except KeyboardInterrupt:
 		print("\n[[ KeyboardInterrupt: Stopping game server... ]]\n")
-	gameServer.running = False
+	game_server.running = False

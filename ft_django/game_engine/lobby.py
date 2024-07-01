@@ -19,9 +19,10 @@ from .ball import Ball
 from .vector import Vector
 
 class Lobby:
-	def __init__(self, gameServer):
-		self.gameServer = gameServer
-		self.lobby_id = len(self.gameServer.lobbys)
+	def __init__(self, game_server, game_mode):
+		self.game_server = game_server
+		self.lobby_id = len(self.game_server.lobbys)
+		self.game_mode = game_mode
 
 		self.clients = []
 		self.clients_per_lobby = 4
@@ -132,7 +133,7 @@ class Lobby:
 			self.dt = time.time() - self.time
 			self.time = time.time()
 
-			time.sleep(self.gameServer.dt)
+			time.sleep(self.game_server.dt)
 
 			for ball in self.balls:
 				await ball.update()
@@ -169,7 +170,7 @@ class Lobby:
 		self.clients.remove(client)
 
 		if (len(self.clients) == 0):
-			self.gameServer.lobbys.remove(self)
+			self.game_server.lobbys.remove(self)
 
 	async def sendData(self, *args):
 		for c in self.clients:

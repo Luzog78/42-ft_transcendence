@@ -3,7 +3,7 @@ import json
 from ft_django.game_engine.game_server import GameServer
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-gameServer = GameServer()
+game_server = GameServer()
 
 class PongSocket(AsyncWebsocketConsumer):
 	def __init__(self, *args, **kwargs):
@@ -16,15 +16,15 @@ class PongSocket(AsyncWebsocketConsumer):
 		self.room_group_name = 'pong_group'
 
 		await self.accept()
-		await gameServer.addClient(self)
+		await game_server.addClient(self)
 
 	async def disconnect(self, close_code):
 		if (close_code != 1001): # to remove
-			gameServer.removeClient(self)
+			game_server.removeClient(self)
 
 	async def receive(self, text_data):
 		data = json.loads(text_data)
-		await gameServer.receive(data)
+		await game_server.receive(data)
 
 	async def sendData(self, *args):
 		data = {}

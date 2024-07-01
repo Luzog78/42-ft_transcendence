@@ -112,7 +112,7 @@ class Ball:
 		for wall_name in walls_copy:
 			wall = walls_copy[wall_name]
 
-			predicted_ball_pos = self.pos + self.vel * self.lobby.gameServer.dt
+			predicted_ball_pos = self.pos + self.vel * self.lobby.game_server.dt
 			closest_point = Ball.closestPointOnSegment(wall[0], wall[1], predicted_ball_pos)
 			distance = closest_point.distance(predicted_ball_pos)
 
@@ -147,10 +147,10 @@ class Ball:
 									   				"args": ["'" + wall_name + "'", closest_point.json(), collision_normal.json()]})
 
 	async def update(self):
-		self.pos += self.vel * self.lobby.gameServer.dt
-		self.vel += self.acc * self.lobby.gameServer.dt
+		self.pos += self.vel * self.lobby.game_server.dt
+		self.vel += self.acc * self.lobby.game_server.dt
 
-		self.acc *= 0.18729769509073987 ** self.lobby.gameServer.dt
+		self.acc *= 0.18729769509073987 ** self.lobby.game_server.dt
 
 		await self.checkCollision()
 

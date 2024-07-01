@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/01 12:14:04 by marvin           ###   ########.fr       */
+/*   Updated: 2024/07/01 18:31:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class Scene
 		this.interval_timer_id = 0
 		this.segment_size = 4;
 		this.player_num = 0;
+		this.game_mode = undefined;
 
 		this.balls = [];
 
@@ -72,7 +73,7 @@ class Scene
 	{
 		if (status == "START")
 		{
-			if (this.player_num == 2)
+			if (this.player_num == 2 || this.game_mode == "BR")
 				return ;
 			const timer_text = this.get("timertext");
 			this.interval_timer_id = setInterval(() => {
@@ -92,9 +93,11 @@ class Scene
 		}
 	}
 
-	initConnection(player_num)
+	initConnection(player_num, game_mode)
 	{
 		this.player_num = player_num;
+		this.game_mode = game_mode;
+		console.log("Player num: " + player_num + " Game mode: " + game_mode);
 
 		initMap(this, player_num);
 
