@@ -270,7 +270,6 @@ function initPlayerText(scene, player, name)
 	text_position.y += y_offset;
 	text_position.addScaledVector(direction, direction_scale);
 
-
 	const text = scene.addText(name, {color: 0xffffff}, text_size, player.name + "text");
 
 	text.geometry.rotateY(visual_angle);

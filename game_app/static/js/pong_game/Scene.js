@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/02 17:32:05 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/02 18:09:51 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ class Scene
 
 	async init(uid)
 	{
-		this.font = await new Promise(res => new FontLoader.FontLoader().load('static/js/pong_game/Braciola MS_Regular.json', res));
+		this.font = await new Promise(res => new FontLoader.FontLoader().load('/static/js/pong_game/Braciola MS_Regular.json', res));
+
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
