@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/30 20:35:45 by marvin           ###   ########.fr       */
+/*   Updated: 2024/07/02 17:05:12 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ import { Scene } from "./Scene.js";
 
 let scene = undefined;
 
-async function initScene()
+async function initScene(uid)
 {
 	if (scene !== undefined)
 		return;
 
 	scene = new Scene();
-	await scene.init()
+	await scene.init(uid);
 
 	scene.scene.background = new THREE.Color(0x101010);
 	scene.renderer.setAnimationLoop( animate );

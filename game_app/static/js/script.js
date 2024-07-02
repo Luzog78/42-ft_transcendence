@@ -371,6 +371,7 @@ export {
 	onLogin,
 	SUPPORTED_LANGS,
 	DEFAULT_LANG,
+	global_context,
 };
 
 

@@ -15,12 +15,14 @@ import * as THREE from 'three';
 import { initPlayerText } from "./map.js";
 import { Particle } from "./Particle.js";
 import { destroyObject } from './main.js';
+import { global_context } from '../script.js';
 
 class Server
 {
-	constructor(scene)
+	constructor(scene, uid)
 	{
 		this.scene = scene;
+		this.uid = uid
 
 		this.lobby_id = 0;
 		this.client_id = 0;
@@ -81,7 +83,9 @@ class Server
 			if (player_id == "player" + this.client_id)
 			{
 				destroyObject();
-				// spectator
+				if (this.scene.game_mode == "BR")
+				{} // spectator
+
 			}
 		}, 3000);
 	}
@@ -89,6 +93,7 @@ class Server
 	onOpen(scene, event)
 	{
 		console.log('WebSocket connection established.');
+		this.sendData("uid", this.uid, "username", global_context.user.username);
 	}
 
 	onMessage(scene, event)

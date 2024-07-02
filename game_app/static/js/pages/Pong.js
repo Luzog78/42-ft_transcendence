@@ -16,7 +16,7 @@ import { initScene } from "../pong_game/main.js";
 import { getGameMode } from "../utils.js";
 
 
-async function Pong(context, id, data) {
+async function Pong(context, uid, data) {
 	let div = document.createElement("div");
 	div.innerHTML = NavBar("Profile", context);
 	div.innerHTML += Persistents(context);
@@ -38,7 +38,7 @@ async function Pong(context, id, data) {
 					<div class="row">
 						<span class="text-center fs-2 GameMode mt-4">${mode}</span>
 						<div class="GameConfig-Line my-3"></div>
-						<div class="text-center">#${id}</div>
+						<div class="text-center">#${uid}</div>
 						<div class="text-center search-text fs-1">...</div>
 						<div class="row fs-3 justify-content-center">
 							<p class="col-1" id="current-amount">...</p>
@@ -50,7 +50,7 @@ async function Pong(context, id, data) {
 			</div>
 		`;
 	}
-	setTimeout(() => {
+	setTimeout(async () => {
 		let search = document.querySelector(".search-text");
 		if (search) {
 			search.innerHTML = "";
@@ -62,7 +62,7 @@ async function Pong(context, id, data) {
 				search.appendChild(span);
 			}
 		}
-		initScene();
+		await initScene(uid);
 	}, 200);
 	return div.innerHTML;
 }

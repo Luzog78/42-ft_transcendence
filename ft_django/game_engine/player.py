@@ -48,7 +48,7 @@ class Player:
 		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
 										"scene.server.client_id": self.client_id})
 		await self.sendData("call", {"command": "scene.initConnection",
-							   		"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'"]})
+							   		"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'"]}) #todo theme
 		await self.updateSelfToother()
 
 	def addSelfWall(self):
@@ -74,15 +74,13 @@ class Player:
 
 
 	async def updateSelfToother(self):
-		my_player_name = f"'name{self.client_id}'" #get name from DB
 		await self.sendToOther("call", {"command": "scene.server.newPlayer",
-								  		"args": ["'player" + str(self.client_id) + "'", my_player_name]})
+								  		"args": [f"'player{self.client_id}'", f"'{self.client.username}'"]})
 
 		for i in range(self.client_id + 1):
 			player = self.lobby.clients[i]
-			player_name = "'" + "name" + str(i) + "'" #get name from DB
 			await self.sendData("call", {"command": "scene.server.newPlayer",
-									"args": ["'player" + str(i) + "'", player_name]})
+									"args": [f"'player{i}'", f"'{player.client.username}'"]})
 
 	async def move(self, x, y):
 		player_vertex = self.lobby.walls["player" + str(self.client_id)]

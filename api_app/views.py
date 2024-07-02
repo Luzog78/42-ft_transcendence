@@ -9,6 +9,7 @@ from .models import GameMode, User, Game, Stats
 from . import auth, checker
 from ft_django import settings
 from ft_django.tournament import pool as tournament_manager
+from ft_django import pong_socket
 
 
 @csrf_exempt
@@ -441,27 +442,33 @@ def view_game_new(request):
 
 	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
 
-	valid = 'mode' in data and data['mode'] in GameMode.mods() \
+	valid = 'mode' in data and data['mode'] in ["TO", "FT", "BR"] \
 		and 'players' in data and isinstance(data['players'], int) and 2 <= data['players'] <= 30 \
 		and 'theme' in data and isinstance(data['theme'], int) and 0 <= data['theme'] <= 3 \
 		and 'speed' in data and isinstance(data['speed'], int) and 0 <= data['speed'] <= 2
 
 	limit = None
-	if valid and data['mode'] == GameMode.TIME_OUT[0]:
+	if valid and data['mode'] == "TO":
 		valid = 'limitTO' in data and isinstance(data['limitTO'], int) and 2 <= data['limitTO'] <= 60
 		limit = data['limitTO']
-	if valid and data['mode'] == GameMode.FIRST_TO[0]:
+	if valid and data['mode'] == "FT":
 		valid = 'limitFT' in data and isinstance(data['limitFT'], int) and 2 <= data['limitFT'] <= 50
 		limit = data['limitFT']
 
 	if not valid:
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
 
-	# TODO: =======================================
-	# TODO: Create the game with the given settings
-	# TODO: =======================================
-
 	game = Game.objects.create(uid=Game.new_uid())
+
+	pong_socket.game_server.createLobby(
+		uid=game.uid,
+		game_mode=data["mode"],
+		player_num=data["players"],
+		theme=data["theme"],
+		ball_speed=data["speed"],
+		limit=limit,
+	)
+
 	return JsonResponse({
 		'ok': True,
 		'success': 'successes.gameCreated',

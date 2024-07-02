@@ -20,31 +20,40 @@ from .player import Player
 
 class GameServer:
 	def __init__(self):
-		self.lobbys = []
-		self.clients = []
+		self.lobbies: list[Lobby] = []
+		self.clients: list[Player] = []
 
 		self.tps = 20
 		self.dt = 1 / self.tps
 
 	async def receive(self, data):
-		lobby = self.lobbys[data["lobby_id"]]
+		lobby = self.lobbies[data["lobby_id"]]
 		await lobby.receive(data)
 
-		# print("received ", json.dumps(data, indent=4))
+	def lobbiesAreFull(self):
+		return len(self.lobbies) == 0 or len(self.lobbies[-1].clients) == self.lobbies[-1].clients_per_lobby
 
-	def lobbysAreFull(self):
-		return len(self.lobbys) == 0 or len(self.lobbys[-1].clients) == self.lobbys[-1].clients_per_lobby
+	def createLobby(self, uid, game_mode, player_num, theme, ball_speed, limit):
+		self.lobbies.append(Lobby(self, uid, game_mode, player_num, theme, ball_speed, limit))
 
-	async def addClient(self, client):
-		if (self.lobbysAreFull()):
-			self.lobbys.append(Lobby(self, "TU"))
-		lobby = self.lobbys[-1]
+	def findLobby(self, uid:str):
+		for lobby in self.lobbies:
+			if lobby.uid == uid:
+				return lobby
+		return None
+
+	async def addClient(self, client, uid:str):
+		lobby = self.findLobby(uid)
+		if (not lobby):
+			return None
 
 		print("new client in lobby id: ", lobby.lobby_id)
-		player = Player(lobby, client, len(lobby.clients))
-
-		self.clients.append(player)
-		await lobby.addClient(player)
+		if (len(lobby.clients) == lobby.clients_per_lobby):
+			pass #spectator
+		else:
+			player = Player(lobby, client, len(lobby.clients))
+			self.clients.append(player)
+			await lobby.addClient(player)
 
 	def removeClient(self, client):
 		for player in self.clients:

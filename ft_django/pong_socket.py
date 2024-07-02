@@ -8,15 +8,15 @@ game_server = GameServer()
 class PongSocket(AsyncWebsocketConsumer):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		self.room_name = None
-		self.room_group_name = None
+		
+		self.registered = False
+		self.username = None
 
 	async def connect(self):
 		self.room_name = 'pong'
 		self.room_group_name = 'pong_group'
 
 		await self.accept()
-		await game_server.addClient(self)
 
 	async def disconnect(self, close_code):
 		if (close_code != 1001): # to remove
@@ -24,7 +24,15 @@ class PongSocket(AsyncWebsocketConsumer):
 
 	async def receive(self, text_data):
 		data = json.loads(text_data)
-		await game_server.receive(data)
+
+		if not self.registered:
+			if "uid" in data and isinstance(data["uid"], str) \
+				and "username" in data and isinstance(data["username"], str):
+				self.username = data["username"]
+				await game_server.addClient(self, data["uid"])
+				self.registered = True
+		else:
+			await game_server.receive(data)
 
 	async def sendData(self, *args):
 		data = {}

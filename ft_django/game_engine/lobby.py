@@ -9,7 +9,7 @@
 #    Updated: 2024/06/15 14:43:10 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
+ 
 import math
 import asyncio
 import threading
@@ -17,16 +17,22 @@ import time
 
 from .ball import Ball
 from .vector import Vector
+from .player import Player
 
 class Lobby:
-	def __init__(self, game_server, game_mode):
+	def __init__(self, game_server, uid, game_mode, player_num, theme, ball_speed, limit):
 		self.game_server = game_server
-		self.lobby_id = len(self.game_server.lobbys)
+		self.lobby_id = len(self.game_server.lobbies)
+		
+		self.uid = uid
 		self.game_mode = game_mode
+		self.clients_per_lobby = player_num
+		self.theme = theme
+		self.ball_speed = ball_speed
+		self.limit = limit
 
-		self.clients = []
-		self.clients_per_lobby = 4
-		self.client_ready = []
+		self.clients: list[Player] = []
+		self.client_ready: list[Player] = []
 
 		self.balls = [Ball(self, 0.15, 0)]
 
@@ -95,27 +101,70 @@ class Lobby:
 		self.angleVertex = angleVertex
 
 		return walls
+	
+	def onEnd(self):
+		from api_app.models import Game as Game, User, Stats
+
+		game = Game.objects.get(uid=self.uid)
+		assert game is not None
+
+		stats: list[Stats] = []
+
+		for player in self.clients:
+			user = User.objects.get(username=player.username) # TODO: get player.username
+			assert user is not None
+
+			stat = Stats.objects.create(
+				user=user,
+				game=game,
+				score=player.kills,
+				kills=player.deaths,
+				best_streak=player.best_streak,
+				rebounces=player.rebounces,
+				ultimate=player.ultimate_speed,
+				duration=player.duration,
+				won=False,
+			)
+
+			stat.save()
+			stats.append(stat)
+
+
+		# game.ended_at = ...
+		# game.winner = ...
+		game.best_streak = max(stats, key=lambda s: s.best_streak)
+		game.rebounces = max(stats, key=lambda s: s.rebounces)
+		game.ultimate = max(stats, key=lambda s: s.ultimate_speed)
+		game.duration = max(stats, key=lambda s: s.duration)
+
+		game.save()
 
 	async def playerDied(self, ball, dead_player):
 		if (ball.last_player):
 			ball.last_player.kills += 1
-		self.balls = [Ball(self, 0.15, 0)]
-		#maybe wait for ready here
-		self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
 
-		self.clients_per_lobby -= 1
+
+		self.balls = [Ball(self, 0.15, 0)]
+		self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
+		#maybe wait for ready here
+
+		player_id = int(dead_player.replace("player", ""))
+		player = self.clients[player_id]
+		player.die()
 
 		await self.sendData("call", {"command": 'scene.server.playerDead',
 									"args": ["'" + dead_player + "'"]})
+		
+		if (self.game_mode == "BR" and self.clients_per_lobby == 2):
+			self.onEnd()
+			return
 
 		time.sleep(3)
+
+		self.clients_per_lobby -= 1
 		self.time = 0
 
 		self.walls = self.init_map(self.clients_per_lobby)
-		player_id = int(dead_player.replace("player", ""))
-		player = self.clients[player_id]
-
-		player.die()
 
 		self.removeClient(player)
 		for c in self.clients:
@@ -161,7 +210,6 @@ class Lobby:
 
 	async def addClient(self, player):
 		self.clients.append(player)
-
 		await player.initConnection()
 
 		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)
@@ -170,7 +218,7 @@ class Lobby:
 		self.clients.remove(client)
 
 		if (len(self.clients) == 0):
-			self.game_server.lobbys.remove(self)
+			self.game_server.lobbies.remove(self)
 
 	async def sendData(self, *args):
 		for c in self.clients:

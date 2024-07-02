@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/02 07:38:11 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/02 17:32:05 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ import { Server } from "./Server.js";
 import { initMap } from "./map.js";
 import { Camera } from "./Camera.js";
 import { Ball } from "./Ball.js";
+import { remWaiting } from '../pages/Pong.js';
 
 class Scene
 {
@@ -49,7 +50,7 @@ class Scene
 		this.font = null;
 	}
 
-	async init()
+	async init(uid)
 	{
 		this.font = await new Promise(res => new FontLoader.FontLoader().load('static/js/pong_game/Braciola MS_Regular.json', res));
 		this.renderer.shadowMap.enabled = true;
@@ -66,13 +67,15 @@ class Scene
 			0.4, 1.0, 0.5);
 		this.composer.addPass(bloomPass);
 
-		this.server = new Server(this);
+		this.server = new Server(this, uid);
 	}
 
 	updateGameStatus(status)
 	{
 		if (status == "START")
 		{
+			remWaiting();
+			
 			if (this.player_num == 2 || this.game_mode == "BR")
 				return ;
 			const timer_text = this.get("timertext");
