@@ -649,15 +649,29 @@ input[type=number].no-arrow {
 /* ------------------------------ PlayId ------------------------------ */
 /* ******************************************************************** */
 
+#playid-content {
+	overflow: visible;
+	position: fixed;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+
+#playid-content .content {
+	height: fit-content !important;
+	width: fit-content !important;
+	padding: 40px;
+}
+
 #playid-content .GameMode {
-background: linear-gradient(
+	background: linear-gradient(
 			to right,
 			#24bceb	 20%,
 			#9a66e0	 30%,
 			#3133ec 70%,
 			#c02ae7 80%
 	);
-	/* transform: scale(125%); */
 	font-weight: bold;
 	-webkit-background-clip: text;
 	background-clip: text;
@@ -665,6 +679,7 @@ background: linear-gradient(
 	background-size: 500% auto;
 	animation: PongResult-Shine 4s infinite alternate;
 }
+
 #playid-content .moving-point {
 	position: absolute;
 	height: 8px;
@@ -677,54 +692,24 @@ background: linear-gradient(
 	box-shadow: 0 0 10px 0 #ffffff80;
 }
 
+#playid-content .search-text {
+	display: flex;
+	justify-content: center;
+}
+
 #playid-content .search-text span {
 	position: relative;
 	animation: playid-jump-letter 3s infinite;
-}
-
-#playid-content .search-text span:nth-child(2) {
-	animation-delay: 0.1s;
-}
-
-#playid-content .search-text span:nth-child(3) {
-	animation-delay: 0.2s;
-}
-
-#playid-content .search-text span:nth-child(4) {
-	animation-delay: 0.3s;
-}
-
-#playid-content .search-text span:nth-child(5) {
-	animation-delay: 0.4s;
-}
-
-#playid-content .search-text span:nth-child(6) {
-	animation-delay: 0.5s;
-}
-
-#playid-content .search-text span:nth-child(7) {
-	animation-delay: 0.6s;
-}
-
-#playid-content .search-text span:nth-child(8) {
-	animation-delay: 0.7s;
-}
-
-#playid-content .search-text span:nth-child(9) {
-	animation-delay: 0.8s;
 }
 
 @keyframes playid-jump-letter {
 	0% {
 		bottom: 0px;
 	}
-	8% {
-		bottom: 2px;
+	5% {
+		bottom: 3px;
 	}
-	16% {
-		bottom: 0px;
-	}
-	100% {
+	10% {
 		bottom: 0px;
 	}
 }

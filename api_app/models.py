@@ -106,8 +106,9 @@ class GameMode(models.TextChoices):
 
 class Game(models.Model):
 	uid			= models.CharField(primary_key=True, max_length=5, blank=False, null=False)
-	mode		= models.CharField(max_length=2, choices=GameMode.choices, default=GameMode.TIME_OUT)
+	mode		= models.CharField(max_length=2, choices=GameMode.choices, default=GameMode.BATTLE_ROYALE)
 	players		= ArrayField(models.CharField(max_length=24), default=list)
+	restricted	= models.BooleanField(default=False)
 	created_at	= models.DateTimeField(auto_now=True, blank=False)
 	started_at	= models.DateTimeField(auto_now=False, blank=True, null=True, default=None)
 	ended_at	= models.DateTimeField(auto_now=False, blank=True, null=True, default=None)
@@ -154,6 +155,7 @@ class Game(models.Model):
 			'uid': self.uid,
 			'mode': self.mode,
 			'players': self.players,
+			'restricted': self.restricted,
 			'createdAt': self.created_at,
 			'startedAt': self.started_at,
 			'endedAt': self.ended_at,
@@ -243,3 +245,19 @@ class GameChat(models.Model):
 			'game': game,
 			'content': self.content
 		}
+	
+
+class Tounament(models.Model):
+	tid			= models.CharField(primary_key=True, max_length=5, blank=False, null=False)
+	content		= models.JSONField(default=dict)
+	ended		= models.BooleanField(default=False)
+
+	def __str__(self):
+		return self.tid
+	
+	def json(self):
+		return {
+			'tid': self.tid,
+			'content': self.content,
+			'ended': self.ended
+	}

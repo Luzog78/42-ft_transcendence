@@ -32,34 +32,38 @@ async function Pong(context, id, data) {
 	if (data && data.waiting) {
 		let mode = getGameMode(data.mode);
 		div.innerHTML += /*html*/`
-			<div id="playid-content" class="container-fluid container-blur" style="padding: 50px; margin-top: 100px;">
-				<div class="moving-point"></div>
-				<div class="row">
-					<span class="text-center fs-2 GameMode mt-4">${mode}</span>
-					<div class="GameConfig-Line my-3"></div>
-					<div class="text-center">#${id}</div>
-					<div class="text-center search-text fs-1">
-						<span
-						>S</span><span
-						>e</span><span
-						>a</span><span
-						>r</span><span
-						>c</span><span
-						>h</span><span
-						>i</span><span
-						>n</span><span
-						>g</span>
-					</div>
-					<div class="row fs-3 justify-content-center">
-						<p class="col-1" id="current-amount">...</p>
-						<p class="col-1">/</p>
-						<p class="col-1" id="total-amount">...</p>
+			<div id="playid-content">
+				<div class="container-fluid container-blur content">
+					<div class="moving-point"></div>
+					<div class="row">
+						<span class="text-center fs-2 GameMode mt-4">${mode}</span>
+						<div class="GameConfig-Line my-3"></div>
+						<div class="text-center">#${id}</div>
+						<div class="text-center search-text fs-1">...</div>
+						<div class="row fs-3 justify-content-center">
+							<p class="col-1" id="current-amount">...</p>
+							<p class="col-1">/</p>
+							<p class="col-1" id="total-amount">...</p>
+						</div>
 					</div>
 				</div>
 			</div>
 		`;
 	}
-	setTimeout(() => initScene(), 200);
+	setTimeout(() => {
+		let search = document.querySelector(".search-text");
+		if (search) {
+			search.innerHTML = "";
+			let searchText = "Searching...";
+			for (let i = 0; i < searchText.length; i++) {
+				let span = document.createElement("span");
+				span.innerText = searchText[i];
+				span.style.animationDelay = `${i * 0.1 + 1}s`;
+				search.appendChild(span);
+			}
+		}
+		initScene();
+	}, 200);
 	return div.innerHTML;
 }
 
