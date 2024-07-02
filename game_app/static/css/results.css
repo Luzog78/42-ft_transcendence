@@ -1,0 +1,295 @@
+/* ******************************************************************** */
+/* ------------------------------ PongResult -------------------------- */
+/* ******************************************************************** */
+
+
+.PongResult-container {
+	width: 70%;
+}
+
+#PongResult-content {
+	--PongResultWidth: 48px;
+	--PongResultHeight: 48px;
+}
+
+@media (min-width: 992px) {
+	#PongResult-content {
+		--PongResultWidth: 96px;
+		--PongResultHeight: 96px;
+	}
+}
+
+#PongResult-content img {
+	width: var(--PongResultWidth);
+	height: var(--PongResultHeight);
+	object-fit: cover;
+	border-radius: 1000%;
+}
+
+#PongResult-content .PongResult-winner img:first-child {
+	transform: rotate(-10deg);
+}
+
+#PongResult-content .PongResult-winner img:last-child {
+	transform: rotate(10deg);
+}
+
+#PongResult-content .line {
+	height: 1px;
+	width: 20%;
+	background-color: white;
+	margin-left: 40%;
+}
+
+#PongResult-content .linear-wipe {
+	background: linear-gradient(
+			to right,
+			#7953cd 20%,
+			#00affa 30%,
+			#0190cd 70%,
+			#764ada 80%
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-size: 500% auto;
+	animation: PongResult-Shine 5s infinite;
+}
+
+#PongResult-content .result-by {
+	font-size: .6em;
+	transform: translateY(-.2em);
+	color: #aaa;
+}
+
+#PongResult-content .result-by-user {
+	font-size: 1.2em;
+	margin-left: 4px;
+	color: #aaa;
+}
+
+#PongResult-content .pongResult-Streak img {
+	top: -15%;
+	position: absolute;
+	width: 35px;
+	height: 42px;
+}
+
+#PongResult-content .pongResult-Time img {
+	top: -15%;
+	position: absolute;
+	width: 35px;
+	height: 42px;
+}
+
+#PongResult-content .circle-streak {
+	top: 0;
+	left: calc(50% - 50px);
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background: transparent;
+	border: 5px solid #FFA500;
+	border-top-color: transparent;
+	animation: PongResult-Flame 3s infinite alternate;
+}
+
+#PongResult-content .circle-time {
+	top: 0;
+	left: calc(50% - 50px);
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background: transparent;
+	border: 5px solid #0062ff;
+	border-top-color: transparent;
+	animation: PongResult-Ice 10s infinite alternate;
+}
+
+#pongResult-item span {
+	font-weight: 800;
+}
+
+#pongResult-item .pongResult-Rebounds {
+	animation: PongResult-Appear 2s;
+}
+
+#pongResult-item .pongResult-Streak {
+	position: relative;
+	animation: PongResult-Appear 1s;
+}
+
+#pongResult-item .pongResult-Time {
+	position: relative;
+	animation: PongResult-Appear 1s;
+}
+
+#pongResult-item .pongResult-Streak span {
+	padding-top: 24px;
+}
+
+#pongResult-item .pongResult-Time span {
+	padding-top: 38px;
+	padding-bottom: 14px;
+}
+
+#pongResult-item .pongResult-BestStreak {
+	background: linear-gradient(
+		to right,
+		#bd372f 20%,
+		#c84a27 30%,
+		#e07215 70%,
+		#c84a27 80%
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-size: 500% auto;
+	animation: PongResult-Shine 5s infinite alternate;
+}
+
+#pongResult-item .pongResult-BestTime {
+	background: linear-gradient(
+		to right,
+		#470fd7 20%,
+		#02d5ff 30%,
+		#0084ff 70%,
+		#0011fd 80%
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-size: 500% auto;
+	animation: PongResult-Shine 5s infinite alternate;
+}
+
+#pongResult-item .pongResult-Ball {
+	animation: PongResult-Appear 2s;
+}
+
+#PongResult-content a {
+	color: white;
+	text-decoration: none;
+}
+
+#PongResult-content .PongResult-players {
+	gap: 7%;
+	padding-bottom: 20px;
+}
+
+#PongResult-content .PongResult-players .PongResult-player:first-child:not(:last-child) {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+#PongResult-content .PongResult-players .PongResult-player:last-child:not(:first-child) {
+	margin-right: 0;
+	padding-right: 0;
+}
+
+#PongResult-content .PongResult-players {
+	overflow-x: auto;
+}
+
+#PongResult-content .PongResult-players .row {
+	display: inline-block;
+}
+
+#PongResult-content .PongResult-player img {
+	width: 82px;
+	height: 82px;
+	object-fit: cover;
+	padding: 0;
+}
+
+#PongResult-content .PongResult-ListPlayers::-webkit-scrollbar {
+	width: 4px;
+}
+
+#PongResult-content .PongResult-ListPlayers::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(200,200,200,1);
+	border-radius: 20px;
+}
+
+#PongResult-content .PongResult-ListPlayers::-webkit-scrollbar-thumb {
+	border-radius: 20px;
+	background-color: rgba(255,255,255,0.1);
+	-webkit-box-shadow: inset 0 0 6px rgba(90,90,90,0.7);
+}
+
+@keyframes PongResult-Appear {
+	0% {
+		opacity: 0%;
+	}
+	50% {
+		opacity: 0%;
+	}
+	100% {
+		opacity: 100%;
+	}
+}
+
+@keyframes PongResult-Shine {
+	0% {
+		background-position: 0% 50%;
+	}
+	100% {
+		background-position: 100% 50%;
+	}
+}
+
+@keyframes PongResult-Flame {
+	0% {
+		border: 4px solid #bd372f;
+		border-top-color: transparent;
+	}
+	20% {
+		border: 4px solid #c84a27;
+		border-top-color: transparent;
+	}
+	40% {
+		border: 4px solid #e07215;
+		border-top-color: transparent;
+	}
+	60% {
+		border: 4px solid #ec850e;
+		border-top-color: transparent;
+	}
+	80% {
+		border: 4px solid #c84a27;
+		border-top-color: transparent;
+	}
+	100% {
+		border: 4px solid #bd372f;
+		border-top-color: transparent;
+	}
+}
+
+@keyframes PongResult-Ice {
+	0% {
+		border: 4px solid #0062ff;
+		border-top-color: transparent;
+	}
+	20% {
+		border: 4px solid #470fd7;
+		border-top-color: transparent;
+	}
+	40% {
+		border: 4px solid #02d5ff;
+		border-top-color: transparent;
+	}
+	60% {
+		border: 4px solid #0084ff;
+		border-top-color: transparent;
+	}
+	80% {
+		border: 4px solid #0011fd;
+		border-top-color: transparent;
+	}
+	100% {
+		border: 4px solid #0062ff;
+		border-top-color: transparent;
+	}
+}

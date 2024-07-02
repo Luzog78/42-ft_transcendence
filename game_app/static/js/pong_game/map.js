@@ -229,7 +229,7 @@ async function init2PlayerMap(scene)
 
 	for (let i = 0; i < 13; i++)
 		scene.addBox(0.13, 0.11, 0.13, {color: 0x999999, emissive:0x999999}, "floor" + i).position.set((i * 0.3) - 1.80, 0.01, 0);
-	
+
 	scene.segment_size = 4
 }
 
@@ -254,7 +254,7 @@ function initPlayerText(scene, player, name)
 
 	const text_position = new THREE.Vector3().copy(player.player.position);
 	const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
-	
+
 	if (scene.player_num != 2 && scene.game_mode != "BR")
 	{
 		const rotation = new THREE.Vector3(-Math.PI / 2, Math.PI + visual_angle, 0);
@@ -262,7 +262,7 @@ function initPlayerText(scene, player, name)
 		dynamic_score_position.addScaledVector(direction, -1);
 		new DynamicText(scene, "0", dynamic_score_position, rotation, text_size, 0xffffff, player.name + "textscore");
 	}
-	
+
 
 	if (player.name == "player" + scene.server.client_id)
 		return;
@@ -270,7 +270,7 @@ function initPlayerText(scene, player, name)
 	text_position.y += y_offset;
 	text_position.addScaledVector(direction, direction_scale);
 
-	
+
 	const text = scene.addText(name, {color: 0xffffff}, text_size, player.name + "text");
 
 	text.geometry.rotateY(visual_angle);
@@ -287,7 +287,7 @@ function initText(scene, player_num)
 
 		let text_size = (1 / scene.segment_size ) * 4;
 		const rotation = new THREE.Vector3(-Math.PI / 2, Math.PI - my_player.angle + Math.PI, 0);
-		
+
 		if (scene.player_num == 2)
 		{
 			text_size = 0.5;

@@ -1,0 +1,213 @@
+/* ************************************************************************** */
+/* ------------------------------- Tournament ------------------------------- */
+/* ************************************************************************** */
+
+
+#tournament-content {
+	position: absolute;
+	top: 80px;
+	left: 40px;
+	height: calc(100vh - 100px);
+	width: calc(100vw - 80px);
+	overflow: hidden;
+}
+
+#tournament-content > .block-blur-pad {
+	margin: 5px;
+}
+
+#tournament-content > .container-fluid {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	overflow: scroll;
+}
+
+#tournament-content #tournament-container {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	overflow: visible;
+}
+
+#tournament-content .user {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 125px;
+	width: 80px;
+	/* background-color: #f004; */
+	padding: 0;
+	margin: 2px;
+}
+
+#tournament-content .user-picture {
+	height: 80px;
+	width: 80px;
+	object-fit: cover;
+	border-radius: 1000%;
+	padding: 0;
+	margin: 0;
+}
+
+#tournament-content .user-name {
+	height: 45px;
+	width: 80px;
+	text-align: center;
+	font-size: min(14px, 1vw);
+	font-weight: 100;
+	overflow-wrap: anywhere;
+	overflow: hidden;
+	padding: 0;
+	margin: 0;
+}
+
+#tournament-content .ball {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 32px;
+	width: 32px;
+	background-color: #333;
+	border-radius: 1000%;
+	padding: 0;
+	margin: 0;
+	transform: translate(-12px, -12px);
+}
+
+#tournament-content .ball.active {
+	background-color: #00ce6a;
+}
+
+#tournament-content .ball[selected] {
+	background-color: #ff9500 !important;
+}
+
+#tournament-content .game-tooltip {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 0;
+	margin: 0;
+	transform: translate(-50%, -50%);
+}
+
+#tournament-content .game-tooltip .tooltip-container {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+#tournament-content .link {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 6px;
+	width: 120px;
+	background-color: #333;
+	padding: 0;
+	margin: 0;
+	transform: translateX(2px);
+}
+
+#tournament-content .link.vertical {
+	height: 160px;
+	width: 6px;
+}
+
+#tournament-content .link.active {
+	background-color: #00fa8e;
+}
+
+#tournament-content .link[selected] {
+	background-color: #edfa00 !important;
+}
+
+@keyframes tournament-appear {
+	0% {
+		width: 0;
+		height: 0;
+		padding-left: 0;
+		padding-right: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+	2% {
+		width: 0;
+		height: 0;
+		padding-left: 3px;
+		padding-right: 3px;
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+	40% {
+		width: 100%;
+		height: 0;
+		padding-left: 20px;
+		padding-right: 20px;
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+	80% {
+		width: 100%;
+		height: 100%;
+		padding-left: 20px;
+		padding-right: 20px;
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+	100% {
+		width: 100%;
+		height: 100%;
+		padding-left: 20px;
+		padding-right: 20px;
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+}
+
+@keyframes tournament-disappear {
+	0% {
+		width: 100%;
+		height: 100%;
+		padding-left: 20px;
+		padding-right: 20px;
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+	40% {
+		width: 100%;
+		height: 0;
+		padding-left: 20px;
+		padding-right: 20px;
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+	78% {
+		width: 0;
+		height: 0;
+		padding-left: 3px;
+		padding-right: 3px;
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+	80% {
+		width: 0;
+		height: 0;
+		padding-left: 0;
+		padding-right: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+	100% {
+		width: 0;
+		height: 0;
+		padding-left: 0;
+		padding-right: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}

@@ -1,0 +1,127 @@
+/* ******************************************************************** */
+/* ------------------------------ Settings ----------------------------- */
+/* ******************************************************************** */
+
+
+#settings-content > .container-fluid {
+	display: flex;
+	height: 80vh;
+}
+
+#settings-content .left {
+	width: 30%;
+	height: 100%;
+	text-align: center;
+	position: relative;
+}
+
+#settings-content .right {
+	width: 70%;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	overflow: scroll;
+	scrollbar-width: thin;
+	scrollbar-color: #aaa3 #0000;
+}
+
+#settings-content #profile-picture {
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+	border-radius: 1000%;
+	margin-bottom: 15px;
+	position: relative;
+	transition: .3s;
+	cursor: pointer;
+}
+
+#settings-content #profile-picture:hover {
+	opacity: .5;
+}
+
+#settings-content #profile-name {
+	font-size: 1.2em;
+	font-weight: 500;
+	color: #aaa;
+}
+
+#settings-content .lang {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	font-size: 1.2em;
+	font-weight: 500;
+	color: #aaa;
+}
+
+#settings-content .trigger {
+	cursor: pointer;
+}
+
+#settings-content #lang-img {
+	width: 1.2em;
+	height: 1.2em;
+	object-fit: cover;
+	border-radius: 1000%;
+}
+
+#settings-content #back {
+	position: absolute;
+	top: 0;
+	right: 15px;
+}
+
+#settings-content #back img {
+	width: 50px;
+	height: 50px;
+}
+
+#settings-content .sep {
+	height: .5rem;
+}
+
+#settings-content .settings {
+	margin-top: 3rem;
+}
+
+#settings-content .settings .title {
+	margin-bottom: 2rem;
+}
+
+#settings-content .settings form {
+	padding-right: 3rem;
+}
+
+#settings-content .settings .btn-group {
+	padding-left: 1rem;
+	padding-right: 6rem;
+}
+
+#settings-content .settings:last-child {
+	margin-top: 6rem;
+	text-align: right;
+}
+
+#settings-content .settings #btn-delete {
+	height: fit-content;
+	width: fit-content;
+	opacity: .5;
+	transition: .25s;
+	cursor: pointer;
+	display: inline-block;
+}
+
+#settings-content .settings #btn-delete:hover {
+	opacity: 1;
+}
+
+#settings-content .settings #btn-delete > * {
+	padding: .75rem 1.25rem;
+	font-size: 1.8em;
+	font-weight: 500;
+}
+
+#settings-content button[type="submit"] {
+	transition: .25s;
+}

@@ -102,7 +102,7 @@ class Lobby:
 		self.balls = [Ball(self, 0.15, 0)]
 		#maybe wait for ready here
 		self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
-		
+
 		self.clients_per_lobby -= 1
 
 		await self.sendData("call", {"command": 'scene.server.playerDead',
@@ -145,7 +145,7 @@ class Lobby:
 		client_id = data["client_id"]
 		if ("client_id" not in data or client_id >= len(self.clients)):
 			return
-		
+
 		if ("ready" in data):
 			self.client_ready[client_id] = True
 			# if (all(self.client_ready)):

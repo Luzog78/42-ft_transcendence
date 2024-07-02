@@ -37,10 +37,10 @@ class Tounament:
 	@staticmethod
 	def from_json(json: dict) -> 'Tounament | None':
 		try:
-			tounament = Tounament(json["tid"], json["player_count"])
+			tounament = Tounament(json["tid"], json["playerCount"])
 			tounament.players = [User.objects.get(username=username) for username in json["players"]]
 			tounament.pools = [Pool.from_json(j) for j in json["pools"]]
-			tounament.current_pool = json["current_pool"]
+			tounament.current_pool = json["currentPool"]
 			tounament.status = json["status"]
 			return tounament
 		except Exception as e:
@@ -59,14 +59,14 @@ class Tounament:
 			pools.append((player_count // n, n))
 			player_count //= n
 		return pools
-	
+
 	def json(self) -> dict:
 		return {
 			"tid": self.tid,
-			"player_count": self.player_count,
+			"playerCount": self.player_count,
 			"players": [player.username for player in self.players],
 			"pools": [pool.json() for pool in self.pools],
-			"current_pool": self.current_pool,
+			"currentPool": self.current_pool,
 			"status": self.status,
 		}
 
@@ -74,7 +74,7 @@ class Tounament:
 		t, created = TounamentModel.objects.get_or_create(tid=self.tid)
 		t.content = self.json()
 		t.save()
-	
+
 	def register(self):
 		active_tounaments.append(self)
 		self.save()
@@ -84,7 +84,7 @@ class Tounament:
 		if len(self.players) == self.player_count:
 			self.dispatch()
 			self.status = Status.ONGOING
-	
+
 	def quit(self, player):
 		self.players.remove(player)
 
@@ -116,15 +116,15 @@ class Pool:
 
 	@staticmethod
 	def from_json(json: dict) -> 'Pool':
-		pool = Pool(json["matches_count"], json["player_per_match"])
+		pool = Pool(json["matchesCount"], json["playerPerMatch"])
 		pool.matches = [Match.from_json(j) for j in json["matches"]]
 		pool.status = json["status"]
 		return pool
-	
+
 	def json(self) -> dict:
 		return {
-			"matches_count": self.matches_count,
-			"player_per_match": self.player_per_match,
+			"matchesCount": self.matches_count,
+			"playerPerMatch": self.player_per_match,
 			"matches": [match.json() for match in self.matches],
 			"status": self.status,
 		}
@@ -148,7 +148,7 @@ class Match:
 
 	@staticmethod
 	def from_json(json: dict) -> 'Match':
-		match = Match(json["player_count"])
+		match = Match(json["playerCount"])
 		match.players = [User.objects.get(username=username) for username in json["players"]]
 		match.winner = User.objects.get(username=json["winner"]) if json["winner"] is not None else None
 		match.status = json["status"]
@@ -158,7 +158,7 @@ class Match:
 
 	def json(self) -> dict:
 		return {
-			"player_count": self.player_count,
+			"playerCount": self.player_count,
 			"players": [player.username for player in self.players],
 			"winner": self.winner.username if self.winner is not None else None,
 			"status": self.status,

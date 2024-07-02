@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/01 18:31:03 by marvin           ###   ########.fr       */
+/*   Updated: 2024/07/02 07:38:11 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ class Scene
 				return ;
 			const timer_text = this.get("timertext");
 			this.interval_timer_id = setInterval(() => {
-				const timer_split = timer_text.text.split(":");		
+				const timer_split = timer_text.text.split(":");
 				let minutes = parseInt(timer_split[0]);
 				let seconds = parseInt(timer_split[1]);
 				seconds -= 1;
@@ -164,7 +164,7 @@ class Scene
 
 		return textMesh;
 	}
-	
+
 	addBall(_)
 	{
 		let ball = new Ball(this, 0.15, {color: 0xffffff, emissive:0xffffff, emissiveIntensity:3}, "ball");

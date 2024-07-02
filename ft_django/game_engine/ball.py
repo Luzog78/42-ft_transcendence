@@ -122,7 +122,7 @@ class Ball:
 					await self.lobby.playerDied(self, player_name)
 
 					break
-				
+
 				if ("player" in wall_name):
 					player = self.lobby.clients[int(wall_name.replace("player", ""))]
 					player.rebounces += 1

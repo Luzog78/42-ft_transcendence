@@ -53,7 +53,7 @@ class Server
 		camera_position.add(direction_to_center.multiplyScalar(5));
 		camera_position.y = 2;
 
-		this.scene.camera.setPosition(camera_position.x, camera_position.y, camera_position.z, 
+		this.scene.camera.setPosition(camera_position.x, camera_position.y, camera_position.z,
 			camera_look_at.x, camera_look_at.y, camera_look_at.z, true);
 
 		for (let i = 0; i < 100; i++)

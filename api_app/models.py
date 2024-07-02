@@ -245,7 +245,7 @@ class GameChat(models.Model):
 			'game': game,
 			'content': self.content
 		}
-	
+
 
 class Tounament(models.Model):
 	tid			= models.CharField(primary_key=True, max_length=5, blank=False, null=False)
@@ -254,7 +254,7 @@ class Tounament(models.Model):
 
 	def __str__(self):
 		return self.tid
-	
+
 	def json(self):
 		return {
 			'tid': self.tid,

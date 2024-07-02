@@ -1,0 +1,45 @@
+/* ************************************************************************** */
+/* --------------------------- Root: Every pages ---------------------------- */
+/* ************************************************************************** */
+
+
+:root {
+	--c-bg: #00244d;
+	--c-fg: #fff;
+}
+
+body {
+	padding: 0px;
+	padding-top: 10px;
+	background-color: var(--c-bg);
+}
+
+* {
+	font-family: "Kodchasan", sans-serif;
+	font-weight: 300;
+	font-size: 1.02em;
+	font-style: normal;
+	color: var(--c-fg);
+}
+
+.background-image {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: -100;
+	background: url("https://cdn.prod.website-files.com/6206183801c03c3c7c7e316c/65a1654270406c29d7c7c227_1background-banner.png") no-repeat center center fixed;
+	background-size: cover;
+}
+
+input.no-arrow::-webkit-outer-spin-button,
+input.no-arrow::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type=number].no-arrow {
+	appearance: textfield;
+	-moz-appearance: textfield;
+}

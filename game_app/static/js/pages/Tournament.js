@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/02 07:20:49 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/02 08:09:53 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ async function Tournament(context, playerCount = 30) {
 	`;
 	setTimeout(() => {
 		let container = document.getElementById("tournament-container");
+		console.log(container);
 		let pools = calcPools(playerCount);
 		pools.push([1, 1]);
 
@@ -101,7 +102,13 @@ function createUser(container, x, y, pool, match, idx) {
 	div.setAttribute("data-pool", pool);
 	div.setAttribute("data-match", match);
 	div.setAttribute("data-idx", idx);
-	div.onclick = () => console.log(`user-${pool}-${match}-${idx}  |  x: ${x}  y: ${y}`);
+	div.onclick = () => {
+		console.log(`user-${pool}-${match}-${idx}  |  x: ${x}  y: ${y}`);
+		if (div.hasAttribute("selected"))
+			div.removeAttribute("selected");
+		else
+			div.setAttribute("selected", true);
+	};
 	div.style.left = x + "px";
 	div.style.top = y + "px";
 	return div;
@@ -115,19 +122,25 @@ function createBall(container, x, y, pool, match) {
 	div.setAttribute("data-set", false);
 	div.setAttribute("data-pool", pool);
 	div.setAttribute("data-match", match);
-	div.onclick = () => console.log(`ball-${pool}-${match}  |  x: ${x}  y: ${y}`);
+	div.onclick = () => {
+		console.log(`ball-${pool}-${match}  |  x: ${x}  y: ${y}`);
+		if (div.hasAttribute("selected"))
+			div.removeAttribute("selected");
+		else
+			div.setAttribute("selected", true);
+	};
 	div.style.left = x + "px";
 	div.style.top = y + "px";
 
 	div.onmouseenter = () => {
-		if (div.getAttribute("cooldown") == "true")
-			return;
-		div.setAttribute("cooldown", true);
 		let animationDuration = 0.3;
 		let tooltip = document.getElementById(`game-${pool}-${match}`);
 		let tooltipContainer = tooltip ? tooltip.querySelector(".tooltip-container") : null;
 		let tooltipContent = tooltip ? tooltip.querySelector(".tooltip-content") : null;
 		if (tooltip && tooltipContainer) {
+			if (div.getAttribute("cooldown") == "true")
+				return;
+			div.setAttribute("cooldown", true);
 			if (tooltipContent)
 				tooltipContent.style.opacity = "0";
 			tooltip.style.display = "block";
@@ -190,7 +203,16 @@ function createTool(container, x, y, pool, match) {
 	div.setAttribute("data-set", false);
 	div.setAttribute("data-pool", pool);
 	div.setAttribute("data-match", match);
-	div.onclick = () => console.log(`game-${pool}-${match}  |  x: ${x}  y: ${y}`);
+	div.onclick = () => {
+		console.log(`game-${pool}-${match}  |  x: ${x}  y: ${y}`);
+		if (div.hasAttribute("selected"))
+			div.removeAttribute("selected");
+		else
+			div.setAttribute("selected", true);
+		let ball = document.getElementById(`ball-${pool}-${match}`);
+		if (ball)
+			ball.onclick();
+	};
 	div.style.left = x + "px";
 	div.style.top = y + "px";
 	div.style.display = "none";
@@ -216,7 +238,13 @@ function createLink(container, x, y, pool, match, idx = undefined) {
 	div.setAttribute("data-match", match);
 	if (idx !== undefined)
 		div.setAttribute("data-idx", idx);
-	div.onclick = () => console.log(`link-${pool}-${match}` + (idx !== undefined ? `-${idx}` : "") + `  |  x: ${x}  y: ${y}`);
+	div.onclick = () => {
+		console.log(`link-${pool}-${match}` + (idx !== undefined ? `-${idx}` : "") + `  |  x: ${x}  y: ${y}`);
+		if (div.hasAttribute("selected"))
+			div.removeAttribute("selected");
+		else
+			div.setAttribute("selected", true);
+	};
 	div.style.left = x + "px";
 	div.style.top = y + "px";
 	return div;
@@ -231,7 +259,13 @@ function createVerticalLink(container, x, y, height, pool, match, idx) {
 	div.setAttribute("data-pool", pool);
 	div.setAttribute("data-match", match);
 	div.setAttribute("data-idx", idx);
-	div.onclick = () => console.log(`link-vert-${pool}-${match}-${idx}  |  x: ${x}  y: ${y}`);
+	div.onclick = () => {
+		console.log(`link-vert-${pool}-${match}-${idx}  |  x: ${x}  y: ${y}`);
+		if (div.hasAttribute("selected"))
+			div.removeAttribute("selected");
+		else
+			div.setAttribute("selected", true);
+	};
 	div.style.left = x + "px";
 	div.style.top = y + "px";
 	div.style.height = (height + 6) + "px";

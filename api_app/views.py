@@ -456,7 +456,7 @@ def view_game_new(request):
 
 	if not valid:
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
-	
+
 	# TODO: =======================================
 	# TODO: Create the game with the given settings
 	# TODO: =======================================
@@ -587,7 +587,7 @@ def view_tournament_new(request: HttpRequest):
 
 	if not valid:
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
-	
+
 	tounament = tournament_manager.Tounament(Game.new_uid(), data['players'])
 	tounament.register()
 
@@ -606,7 +606,7 @@ def view_tournament_tid(request: HttpRequest, tid: str):
 def view_tournament_join(request: HttpRequest, tid: str, username: str):
 	if not (response := auth.is_authenticated(request)):
 		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
-	
+
 	tounament = None
 	for t in tournament_manager.active_tounaments:
 		if t.tid == tid:
@@ -633,7 +633,7 @@ def view_tournament_join(request: HttpRequest, tid: str, username: str):
 def view_tournament_quit(request: HttpRequest, tid: str, username: str):
 	if not (response := auth.is_authenticated(request)):
 		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
-	
+
 	tounament = None
 	for t in tournament_manager.active_tounaments:
 		if t.tid == tid:
@@ -649,7 +649,7 @@ def view_tournament_quit(request: HttpRequest, tid: str, username: str):
 			(client := User.objects.filter(username=response.user)) \
 			and client.is_admin): # type: ignore
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
-	
+
 	if tounament.status != tournament_manager.Status.PENDING:
 		return JsonResponse({'ok': False, 'error': 'errors.tournamentAlreadyStarted'})
 
@@ -680,6 +680,14 @@ def view_test(request: HttpRequest, whatever: int):
 		user('1111'),
 		user('2222'),
 		user('3333'),
+		user('4444'),
+		user('5555'),
+		user('6666'),
+		user('7777'),
+		user('8888'),
+		user('9999'),
+		user('aaaa'),
+		user('bbbb'),
 	]
 
 	Game.objects.create(uid=Game.new_uid(), players=[u.username for u in us])
@@ -754,6 +762,9 @@ def view_test(request: HttpRequest, whatever: int):
 	g3.duration = s[15]
 	g3.save()
 
+	t = tournament_manager.Tounament(Game.new_uid(), len(us))
+	t.register()
+
 	s = request.headers.get('Authorization', None)
 
 	return JsonResponse({
@@ -761,4 +772,5 @@ def view_test(request: HttpRequest, whatever: int):
 		'success': 'Whatever...',
 		'whatever': whatever,
 		'str': s,
+		'tounament': t.json(),
 	})
