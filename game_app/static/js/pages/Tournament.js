@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/26 16:55:20 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/02 07:20:49 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ async function Tournament(context, playerCount = 30) {
 						console.log(i, j, k);
 						createLink(container, x - DIV_W * 1.5, y + DIV_H / 2, i - 1, j * pools[i - 1][1] + k);
 						createBall(container, x - DIV_W * 1.5, y + DIV_H / 2, i - 1, j * pools[i - 1][1] + k);
+						createTool(container, x - DIV_W * 1.5, y + DIV_H / 2, i - 1, j * pools[i - 1][1] + k);
 					}
 					createUser(container, x, y, i, j, k);
 					if (i != pools.length - 1)
@@ -117,6 +118,91 @@ function createBall(container, x, y, pool, match) {
 	div.onclick = () => console.log(`ball-${pool}-${match}  |  x: ${x}  y: ${y}`);
 	div.style.left = x + "px";
 	div.style.top = y + "px";
+
+	div.onmouseenter = () => {
+		if (div.getAttribute("cooldown") == "true")
+			return;
+		div.setAttribute("cooldown", true);
+		let animationDuration = 0.3;
+		let tooltip = document.getElementById(`game-${pool}-${match}`);
+		let tooltipContainer = tooltip ? tooltip.querySelector(".tooltip-container") : null;
+		let tooltipContent = tooltip ? tooltip.querySelector(".tooltip-content") : null;
+		if (tooltip && tooltipContainer) {
+			if (tooltipContent)
+				tooltipContent.style.opacity = "0";
+			tooltip.style.display = "block";
+			tooltipContainer.style.animation = "none";
+			tooltipContainer.offsetHeight; // trigger reflow
+			tooltipContainer.style.animation = `tournament-appear ${animationDuration + .1}s`;
+			setTimeout(() => {
+				if (tooltipContent) {
+					let interval = setInterval(() => {
+						let opacity = parseFloat(tooltipContent.style.opacity);
+						if (opacity < 1)
+							tooltipContent.style.opacity = `${opacity + 0.03}`;
+						else {
+							tooltipContent.style.opacity = "1";
+							clearInterval(interval);
+						}
+					}, 1);
+				}
+				tooltipContainer.style.animation = "none";
+				tooltipContainer.offsetHeight; // trigger reflow
+				tooltip.onmouseleave = () => {
+					if (tooltip.getAttribute("cooldown") == "true")
+						return;
+					tooltip.setAttribute("cooldown", true);
+					if (tooltipContent) {
+						let interval = setInterval(() => {
+							let opacity = parseFloat(tooltipContent.style.opacity);
+							if (opacity > 0)
+								tooltipContent.style.opacity = `${opacity - 0.03}`;
+							else {
+								tooltipContent.style.opacity = "0";
+								clearInterval(interval);
+							}
+						}, 1);
+					}
+					setTimeout(() => {
+						tooltipContainer.style.animation = "none";
+						tooltipContainer.offsetHeight; // trigger reflow
+						tooltipContainer.style.animation = `tournament-disappear ${animationDuration + .1}s`;
+						setTimeout(() => {
+							tooltipContainer.style.animation = "none";
+							tooltipContainer.offsetHeight; // trigger reflow
+							tooltip.style.display = "none";
+							tooltip.setAttribute("cooldown", false);
+							div.setAttribute("cooldown", false);
+						}, animationDuration * 1000);
+					}, 500);
+				};
+			}, animationDuration * 1000);
+		}
+	};
+	return div;
+}
+
+function createTool(container, x, y, pool, match) {
+	let div = document.createElement("div");
+	container.appendChild(div);
+	div.classList.add("game-tooltip");
+	div.id = `game-${pool}-${match}`;
+	div.setAttribute("data-set", false);
+	div.setAttribute("data-pool", pool);
+	div.setAttribute("data-match", match);
+	div.onclick = () => console.log(`game-${pool}-${match}  |  x: ${x}  y: ${y}`);
+	div.style.left = x + "px";
+	div.style.top = y + "px";
+	div.style.display = "none";
+	div.innerHTML = /*html*/`
+		<div class="container-blur tooltip-container">
+			<div class="container-fluid tooltip-content">
+				<span class="game-tooltip-title">Game #${pool}-${match}</span>
+				<div class="game-tooltip-line">This is a game</div>
+				<div class="game-tooltip-players"></div>
+			</div>
+		</div>
+	`;
 	return div;
 }
 
