@@ -52,7 +52,7 @@ class Ball:
 			direction = Vector(0.5,0.5)
 		else:
 			direction = Vector(random.uniform(0,1) - 0.5, random.uniform(0,1) - 0.5)
-		direction.setLength(math.sqrt(player_number) * 0.8)
+		direction.setLength(math.sqrt(player_number) * 0.8 * 2)
 
 		return direction
 

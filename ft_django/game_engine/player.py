@@ -32,7 +32,7 @@ class Player:
 		self.best_streak = 0
 		self.rebounces = 0 #done
 		self.ultimate_speed = 0 #done
-		self.duration = 0 #done
+		self.duration = -1 #done
 
 		self.start_time = datetime.datetime.timestamp(datetime.datetime.now())
 

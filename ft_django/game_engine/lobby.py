@@ -14,6 +14,7 @@ import math
 import asyncio
 import threading
 import time
+from datetime import datetime
 
 from .ball import Ball
 from .vector import Vector
@@ -111,7 +112,7 @@ class Lobby:
 		stats: list[Stats] = []
 
 		for player in self.clients:
-			user = User.objects.get(username=player.username) # TODO: get player.username
+			user = User.objects.get(username=player.client.username)
 			assert user is not None
 
 			stat = Stats.objects.create(
@@ -125,24 +126,33 @@ class Lobby:
 				duration=player.duration,
 				won=False,
 			)
-
+	
 			stat.save()
 			stats.append(stat)
+		
 
+		best_score = max(stats, key=lambda s: s.score)
 
-		# game.ended_at = ...
-		# game.winner = ...
+		game.ended_at = datetime.now()
 		game.best_streak = max(stats, key=lambda s: s.best_streak)
 		game.rebounces = max(stats, key=lambda s: s.rebounces)
-		game.ultimate = max(stats, key=lambda s: s.ultimate_speed)
+		game.ultimate = max(stats, key=lambda s: s.ultimate)
 		game.duration = max(stats, key=lambda s: s.duration)
+
+		if self.game_mode == "BR":
+			game.winner = game.duration
+			game.duration.won = True
+			game.duration.save()
+		else:
+			game.winner = best_score
+			best_score.won = True
+			best_score.save()
 
 		game.save()
 
 	async def playerDied(self, ball, dead_player):
 		if (ball.last_player):
 			ball.last_player.kills += 1
-
 
 		self.balls = [Ball(self, 0.15, 0)]
 		self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
@@ -156,6 +166,7 @@ class Lobby:
 									"args": ["'" + dead_player + "'"]})
 		
 		if (self.game_mode == "BR" and self.clients_per_lobby == 2):
+			ball.last_player.duration = datetime.timestamp(datetime.now()) - ball.last_player.start_time + 1
 			self.onEnd()
 			return
 
