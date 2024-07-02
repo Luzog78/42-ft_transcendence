@@ -74,12 +74,19 @@ class Tounament:
 		t, created = TounamentModel.objects.get_or_create(tid=self.tid)
 		t.content = self.json()
 		t.save()
+	
+	def register(self):
+		active_tounaments.append(self)
+		self.save()
 
 	def add_player(self, player):
 		self.players.append(player)
 		if len(self.players) == self.player_count:
 			self.dispatch()
 			self.status = Status.ONGOING
+	
+	def quit(self, player):
+		self.players.remove(player)
 
 	def dispatch(self):
 		pool = self.pools[self.current_pool]
@@ -201,4 +208,4 @@ def load_tounaments():
 	for tounament in TounamentModel.objects.filter(ended=False):
 		t = Tounament.from_json(tounament.json())
 		if t is not None:
-			active_tounaments.append(t)
+			t.register()

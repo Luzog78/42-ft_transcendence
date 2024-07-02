@@ -119,7 +119,7 @@ class Game(models.Model):
 	duration:		'Stats'	= models.ForeignKey('Stats', related_name='+', on_delete=models.SET_NULL, null=True, default=None) # type: ignore
 
 	@staticmethod
-	def new_uid():
+	def new_uid() -> str:
 		charset1 = 'abcdefghijklmnopqrstuvwxyz'
 		charset2 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 		max_tries = len(set(charset1)) ** 2 * len(set(charset2)) ** 3
@@ -128,7 +128,7 @@ class Game(models.Model):
 			if not Game.objects.filter(uid=uid).exists():
 				return uid
 			max_tries -= 1
-		return None
+		return None # type: ignore
 
 	def __str__(self):
 		return self.uid
