@@ -128,7 +128,7 @@ async function PongResult(context, id, data=null) {
 				bestScore.innerText = data.winner.score + " pts"
 			else {
 				let min = Math.floor(data.winner.duration / 60);
-				let sec = data.winner.duration % 60;
+				let sec = Math.floor(data.winner.duration % 60);
 				bestScore.innerText = (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
 			}
 		}
@@ -155,7 +155,7 @@ async function PongResult(context, id, data=null) {
 		}
 		if (data.duration) {
 			let min = Math.floor(data.duration.duration / 60);
-			let sec = data.duration.duration % 60;
+			let sec = Math.floor(data.duration.duration % 60);
 			bestTime.innerText = `${min < 10 ? "0" : ""}${min}:${sec < 10 ? "0" : ""}${sec}`;
 			if (data.mode === "BR" && data.duration.user)
 				bestTimeBy.innerText = data.duration.user.username;
@@ -202,7 +202,7 @@ async function PongResult(context, id, data=null) {
 							score = player.score + " pts"
 						else {
 							let min = Math.floor(player.duration / 60);
-							let sec = player.duration % 60;
+							let sec = Math.floor(player.duration % 60);
 							score = (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
 						}
 						let div = document.createElement("div");

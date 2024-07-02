@@ -148,6 +148,8 @@ class Lobby:
 			best_score.won = True
 			best_score.save()
 
+		game.players = [p.client.username for p in self.clients]
+
 		game.save()
 
 	async def playerDied(self, ball, dead_player):
@@ -166,7 +168,8 @@ class Lobby:
 									"args": ["'" + dead_player + "'"]})
 		
 		if (self.game_mode == "BR" and self.clients_per_lobby == 2):
-			ball.last_player.duration = datetime.timestamp(datetime.now()) - ball.last_player.start_time + 1
+			player = self.clients[player_id - 1]
+			player.duration = datetime.timestamp(datetime.now()) - ball.last_player.start_time + 1
 			self.onEnd()
 			return
 
