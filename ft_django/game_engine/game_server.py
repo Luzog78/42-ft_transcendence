@@ -23,29 +23,29 @@ class GameServer:
 		self.lobbies: list[Lobby] = []
 		self.clients: list[Player] = []
 
-		self.tps = 20
-		self.dt = 1 / self.tps
+		self.tps: int = 20
+		self.dt: float = 1 / self.tps
 
 	async def receive(self, data):
 		lobby = self.lobbies[data["lobby_id"]]
 		await lobby.receive(data)
 
-	def lobbiesAreFull(self):
+	def lobbiesAreFull(self) -> bool:
 		return len(self.lobbies) == 0 or len(self.lobbies[-1].clients) == self.lobbies[-1].clients_per_lobby
 
-	def createLobby(self, uid, game_mode, player_num, theme, ball_speed, limit):
+	def createLobby(self, uid: str, game_mode: str, player_num: int, theme: int, ball_speed: float, limit):
 		self.lobbies.append(Lobby(self, uid, game_mode, player_num, theme, ball_speed, limit))
 
-	def findLobby(self, uid:str):
+	def findLobby(self, uid:str) -> Lobby:
 		for lobby in self.lobbies:
 			if lobby.uid == uid:
 				return lobby
 		return None
 
-	async def addClient(self, client, uid:str):
+	async def addClient(self, client, uid:str) -> bool:
 		lobby = self.findLobby(uid)
 		if (not lobby):
-			return None
+			return False
 
 		print("new client in lobby id: ", lobby.lobby_id)
 		if (len(lobby.clients) == lobby.clients_per_lobby):
@@ -54,10 +54,12 @@ class GameServer:
 			player = Player(lobby, client, len(lobby.clients))
 			self.clients.append(player)
 			await lobby.addClient(player)
+		return True
 
-	def removeClient(self, client):
+	def removeClient(self, client) -> bool:
 		for player in self.clients:
 			if (player.client == client):
 				player.lobby.removeClient(player)
 				self.clients.remove(player)
-				break
+				return True
+		return False

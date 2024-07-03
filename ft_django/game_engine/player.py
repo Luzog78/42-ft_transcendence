@@ -16,27 +16,27 @@ import datetime
 from .vector import Vector
 
 class Player:
-	def __init__(self, lobby, client, client_id):
-		self.lobby = lobby
-		self.client = client
+	def __init__(self, lobby: 'Lobby', client: 'Player', client_id: int):
+		self.lobby: 	Lobby 	= lobby
+		self.client: 	Player 	= client
 
-		self.client_id = client_id
+		self.client_id: int	= client_id
 
-		self.angle = 0
-		self.pos = Vector(0, 0)
-		self.init_pos = Vector(0, 0)
-		self.speed = 1.2
+		self.angle:		float 	= 0
+		self.pos:		Vector 	= Vector(0, 0)
+		self.init_pos:	Vector 	= Vector(0, 0)
+		self.speed:		float	= 1.2
 
-		self.kills = 0 #done
-		self.deaths = 0 #done
-		self.best_streak = 0
-		self.rebounces = 0 #done
-		self.ultimate_speed = 0 #done
-		self.duration = -1 #done
+		self.kills:				int 	= 0 #done
+		self.deaths:			int		= 0 #done
+		self.best_streak:		int		= 0
+		self.rebounces:			int		= 0 #done
+		self.ultimate_speed:	float	= 0 #done
+		self.duration:			float	= -1 #done
 
 		self.start_time = datetime.datetime.timestamp(datetime.datetime.now())
 
-		self.keyboard = {}
+		self.keyboard: dict = {}
 
 	def die(self):
 		self.deaths += 1
@@ -82,7 +82,7 @@ class Player:
 			await self.sendData("call", {"command": "scene.server.newPlayer",
 									"args": [f"'player{i}'", f"'{player.client.username}'"]})
 
-	async def move(self, x, y):
+	async def move(self, x: float, y: float):
 		player_vertex = self.lobby.walls["player" + str(self.client_id)]
 		rotate_pos = Vector(math.cos(self.angle) * x, math.sin(self.angle) * y)
 

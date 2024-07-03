@@ -21,39 +21,40 @@ from .vector import Vector
 from .player import Player
 
 class Lobby:
-	def __init__(self, game_server, uid, game_mode, player_num, theme, ball_speed, limit):
-		self.game_server = game_server
-		self.lobby_id = len(self.game_server.lobbies)
+	def __init__(self, game_server, uid: str, game_mode: str, player_num: int, theme: int, ball_speed: float, limit):
+		self.game_server		= game_server
+		self.lobby_id: 		int = len(self.game_server.lobbies)
 		
-		self.uid = uid
-		self.game_mode = game_mode
-		self.clients_per_lobby = player_num
-		self.theme = theme
-		self.ball_speed = ball_speed
-		self.limit = limit
+		self.uid: 				str 		= uid
+		self.game_mode: 		str 		= game_mode
+		self.clients_per_lobby: int 		= player_num
+		self.theme: 			int 		= theme
+		self.ball_speed: 		float 		= ball_speed
+		self.limit 							= limit
 
-		self.clients: list[Player] = []
+		self.clients: list[Player] 		= []
+		self.dead_clients: list[Player] = []
 		self.client_ready: list[Player] = []
 
-		self.balls = [Ball(self, 0.15, 0)]
+		self.balls: list[Ball] = [Ball(self, 0.15, 0)]
 
-		self.player_size = 0.5
-		self.segment_size = 4
+		self.player_size: 	float 	= 0.5
+		self.segment_size: 	float 	= 4
 
-		self.middle_vertex_positions = []
-		self.angleVertex = []
+		self.middle_vertex_positions: 	list[Vector] 	= []
+		self.angleVertex: 				list[float]		= []
 
-		self.walls = self.init_map(self.clients_per_lobby)
+		self.walls: list[dict] = self.init_map(self.clients_per_lobby)
 
-		self.time = 0
-		self.dt = 0
+		self.time 	= 0
+		self.dt 	= 0
 
-		self.running = True
-		self.update_thread = threading.Thread(target=asyncio.run, args=(self.update(),))
+		self.running 		= True
+		self.update_thread 	= threading.Thread(target=asyncio.run, args=(self.update(),))
 		self.update_thread.start()
 
 
-	def init_map(self, num_players):
+	def init_map(self, num_players: int) -> list[dict]:
 		self.client_ready = [False] * num_players
 
 		if (num_players == 2):
@@ -111,7 +112,9 @@ class Lobby:
 
 		stats: list[Stats] = []
 
-		for player in self.clients:
+		player_list = self.clients + self.dead_clients
+
+		for player in player_list:
 			user = User.objects.get(username=player.client.username)
 			assert user is not None
 
@@ -152,7 +155,7 @@ class Lobby:
 
 		game.save()
 
-	async def playerDied(self, ball, dead_player):
+	async def playerDied(self, ball: Ball, dead_player: str):
 		if (ball.last_player):
 			ball.last_player.kills += 1
 
@@ -168,8 +171,8 @@ class Lobby:
 									"args": ["'" + dead_player + "'"]})
 		
 		if (self.game_mode == "BR" and self.clients_per_lobby == 2):
-			player = self.clients[player_id - 1]
-			player.duration = datetime.timestamp(datetime.now()) - ball.last_player.start_time + 1
+			winner = self.clients[player_id - 1]
+			winner.duration = datetime.timestamp(datetime.now()) - ball.last_player.start_time + 2
 			self.onEnd()
 			return
 
@@ -177,10 +180,11 @@ class Lobby:
 
 		self.clients_per_lobby -= 1
 		self.time = 0
-
 		self.walls = self.init_map(self.clients_per_lobby)
 
+		self.dead_clients.append(player)
 		self.removeClient(player)
+
 		for c in self.clients:
 			if (c.client_id > player_id):
 				c.client_id -= 1
@@ -193,6 +197,7 @@ class Lobby:
 			if (self.time == 0):
 				self.time = time.time()
 				continue
+
 			self.dt = time.time() - self.time
 			self.time = time.time()
 
@@ -200,11 +205,10 @@ class Lobby:
 
 			for ball in self.balls:
 				await ball.update()
-
 			for c in self.clients:
 				await c.update()
 
-	async def receive(self, data):
+	async def receive(self, data: dict):
 		client_id = data["client_id"]
 		if ("client_id" not in data or client_id >= len(self.clients)):
 			return
@@ -222,13 +226,13 @@ class Lobby:
 		if ("player_keyboard" in data):
 			self.clients[client_id].keyboard = data["player_keyboard"]
 
-	async def addClient(self, player):
+	async def addClient(self, player: Player):
 		self.clients.append(player)
 		await player.initConnection()
 
 		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)
 
-	def removeClient(self, client):
+	def removeClient(self, client: Player):
 		self.clients.remove(client)
 
 		if (len(self.clients) == 0):
