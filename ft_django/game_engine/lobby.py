@@ -32,9 +32,9 @@ class Lobby:
 		self.ball_speed: 		float 		= ball_speed
 		self.limit 							= limit
 
-		self.clients: list[Player] 		= []
-		self.dead_clients: list[Player] = []
-		self.client_ready: list[Player] = []
+		self.clients: 		list[Player] = []
+		self.dead_clients:	list[Player] = []
+		self.client_ready: 	list[Player] = []
 
 		self.balls: list[Ball] = [Ball(self, 0.15, 0)]
 

@@ -10,10 +10,6 @@
 #                                                                              #
 # **************************************************************************** #
 
-import time
-import asyncio
-import threading
-
 from .lobby import Lobby
 from .player import Player
 
@@ -29,9 +25,6 @@ class GameServer:
 	async def receive(self, data):
 		lobby = self.lobbies[data["lobby_id"]]
 		await lobby.receive(data)
-
-	def lobbiesAreFull(self) -> bool:
-		return len(self.lobbies) == 0 or len(self.lobbies[-1].clients) == self.lobbies[-1].clients_per_lobby
 
 	def createLobby(self, uid: str, game_mode: str, player_num: int, theme: int, ball_speed: float, limit):
 		self.lobbies.append(Lobby(self, uid, game_mode, player_num, theme, ball_speed, limit))

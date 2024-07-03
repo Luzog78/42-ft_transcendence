@@ -14,13 +14,12 @@ import math
 import random
 
 from .vector import Vector
-# from .lobby import Lobby
 from .player import Player
 
 class Ball:
 	def __init__(self, lobby, radius, id):
-		self.lobby: Lobby = lobby
-		self.radius: int = radius
+		self.lobby: 	Lobby	= lobby
+		self.radius: 	int		= radius
 
 		self.terminal_velocity: float = 8
 		self.current_vel_length: float = 0
@@ -117,7 +116,6 @@ class Ball:
 		await self.updateBall()
 		await self.lobby.sendData("call", {"command": f'scene.balls[{self.id}].effectCollision',
 											"args": ["'" + wall_name + "'", closest_point.json(), collision_normal.json()]})
-		return False
 
 	async def checkCollision(self):
 		walls_copy = self.lobby.walls.copy()
