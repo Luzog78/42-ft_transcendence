@@ -12,7 +12,7 @@ from .views import view_err404, view_test, \
 
 urlpatterns = [ re_path('.*', view_err404) ]
 
-def r(v, p): urlpatterns.insert(0, path(p, v, name='api-' + v.__name__))
+def r(v, p): urlpatterns.insert(-1, path(p, v, name='api-' + v.__name__))
 
 
 r(view_root,		'')
@@ -33,7 +33,7 @@ r(view_stats_id,	'stats/<int:id>')
 r(view_stats_user,	'stats/u/<str:username>')
 r(view_stats_game,	'stats/g/<str:uid>')
 r(view_tournament_get,	'tounament/get')
-r(view_tournament_get,	'tounament/new')
+r(view_tournament_new,	'tounament/new')
 r(view_tournament_tid,	'tounament/<str:tid>')
 r(view_tournament_join,	'tounament/<str:tid>/join/<str:username>')
 r(view_tournament_quit,	'tounament/<str:tid>/quit/<str:username>')

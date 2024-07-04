@@ -669,6 +669,36 @@ def view_tournament_quit(request: HttpRequest, tid: str, username: str):
 
 @csrf_exempt
 def view_test(request: HttpRequest, whatever: int):
+	if whatever == 0:
+
+		if not tournament_manager.active_tounaments:
+			t = tournament_manager.Tounament(Game.new_uid(), 10)
+			t.register()
+
+		t = tournament_manager.active_tounaments[0]
+
+		users = User.objects.all()
+
+		i = 0
+		for u in users:
+			if i >= 10:
+				break
+			t.add_player(u)
+			i += 1
+		
+
+		a = User.objects.get(username='aaaa')
+		t.pools[0].matches[0].winner = a
+		t.pools[0].matches[0].status = tournament_manager.Status.FINISHED
+		t.pools[1].matches[0].add_player(a)
+		a = User.objects.get(username='6666')
+		t.pools[0].matches[1].winner = a
+		t.pools[0].matches[1].status = tournament_manager.Status.FINISHED
+		t.pools[1].matches[0].add_player(a)
+		t.current_pool += 1
+
+		return JsonResponse({'ok': True, 'success': 'Whatever...'})
+
 	def user(usrnm) -> User:
 		res = auth.register(request,
 			username=f'{usrnm}',
@@ -677,8 +707,6 @@ def view_test(request: HttpRequest, whatever: int):
 			email=f'{usrnm}@42.fr',
 			password='1234',
 			picture='https://media.senscritique.com/media/000019789638/300/doc.jpg')
-		print(usrnm, res.ok, res.message, res.user)
-		res = auth.login(request, username=f'{usrnm}', password='1234')
 		print(usrnm, res.ok, res.message, res.user)
 		return res.user # type: ignore
 

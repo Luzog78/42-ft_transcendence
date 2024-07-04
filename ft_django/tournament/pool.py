@@ -79,13 +79,13 @@ class Tounament:
 		active_tounaments.append(self)
 		self.save()
 
-	def add_player(self, player):
+	def add_player(self, player: User):
 		self.players.append(player)
 		if len(self.players) == self.player_count:
 			self.dispatch()
 			self.status = Status.ONGOING
 
-	def quit(self, player):
+	def quit(self, player: User):
 		self.players.remove(player)
 
 	def dispatch(self):
@@ -176,7 +176,7 @@ class Match:
 		self.game = Game.objects.create(
 			uid=Game.new_uid(),
 			mode=GameMode.BATTLE_ROYALE,
-			player=self.players,
+			players=self.players,
 			restricted=True,
 		)
 		self.uid = self.game.uid

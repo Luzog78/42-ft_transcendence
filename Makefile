@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/11 22:55:37 by ysabik            #+#    #+#              #
-#    Updated: 2024/07/02 17:43:33 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/04 03:49:36 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ include			srcs/.env
 
 COMPOSE_FILE	=	srcs/docker-compose.yml
 MANAGE_FILE		=	manage.py
+PORT			=	8000
 
 
 RESET			=	\033[0m
@@ -71,7 +72,7 @@ all:
 
 run:
 	@echo "$(RED)$$> $(MAGENTA)python3 $(MANAGE_FILE) runserver$(RESET)"
-	@python3 $(MANAGE_FILE) runserver
+	@python3 $(MANAGE_FILE) runserver 0.0.0.0:$(PORT)
 
 
 migrate:

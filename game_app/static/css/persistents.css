@@ -9,4 +9,5 @@
 	top: 65px;
 	height: 1px;
 	overflow: visible;
+	z-index: 1000;
 }

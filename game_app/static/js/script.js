@@ -145,10 +145,6 @@ const router = [
 		path: "/tournament",
 		component: Tournament,
 	},
-	{
-		path: "/tournament/<numbers>",
-		component: Tournament,
-	},
 ];
 
 const content = document.getElementById("body-content");

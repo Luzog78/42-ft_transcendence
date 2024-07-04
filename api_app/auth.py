@@ -67,7 +67,7 @@ def register(request: HttpRequest, username: str, first_name: str,
 			password=password,
 			**extra_fields)
 		user.save()
-		return Response()
+		return Response(user=user, username=user.username)
 	except Exception as e:
 		return Response(str(e))
 

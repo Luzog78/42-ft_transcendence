@@ -23,11 +23,23 @@
 	overflow: scroll;
 }
 
+#tournament-content h1 {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: fit-content;
+	font-size: 24px;
+	z-index: 20;
+}
+
 #tournament-content #tournament-container {
 	position: relative;
-	height: 100%;
+	margin-top: 24px;
+	height: calc(100% - 24px);
 	width: 100%;
 	overflow: visible;
+	z-index: 2;
 }
 
 #tournament-content .user {
@@ -39,9 +51,19 @@
 	align-items: center;
 	height: 125px;
 	width: 80px;
-	/* background-color: #f004; */
 	padding: 0;
 	margin: 2px;
+	cursor: pointer;
+	z-index: 10;
+}
+
+#tournament-content .user.eliminated {
+	opacity: 0.5;
+	color: #f00;
+}
+
+#tournament-content .user.eliminated > * {
+	color: #f44;
 }
 
 #tournament-content .user-picture {
@@ -76,14 +98,17 @@
 	padding: 0;
 	margin: 0;
 	transform: translate(-12px, -12px);
+	z-index: 7;
 }
 
 #tournament-content .ball.active {
 	background-color: #00ce6a;
+	z-index: 8;
 }
 
 #tournament-content .ball[selected] {
 	background-color: #ff9500 !important;
+	z-index: 9;
 }
 
 #tournament-content .game-tooltip {
@@ -93,12 +118,30 @@
 	padding: 0;
 	margin: 0;
 	transform: translate(-50%, -50%);
+	z-index: 12;
 }
 
 #tournament-content .game-tooltip .tooltip-container {
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+}
+
+#tournament-content .game-tooltip .tooltip-line {
+	display: flex;
+	width: 100%;
+	gap: 10px;
+}
+
+#tournament-content .game-tooltip .tooltip-label {
+	width: fit-content;
+	text-align: left;
+	font-weight: bold;
+}
+
+#tournament-content .game-tooltip .tooltip-value {
+	width: 100%;
+	text-align: right;
 }
 
 #tournament-content .link {
@@ -111,6 +154,7 @@
 	padding: 0;
 	margin: 0;
 	transform: translateX(2px);
+	z-index: 4;
 }
 
 #tournament-content .link.vertical {
@@ -118,12 +162,18 @@
 	width: 6px;
 }
 
+#tournament-content .link.eliminated {
+	background-color: #400;
+}
+
 #tournament-content .link.active {
 	background-color: #00fa8e;
+	z-index: 5;
 }
 
 #tournament-content .link[selected] {
 	background-color: #edfa00 !important;
+	z-index: 6;
 }
 
 @keyframes tournament-appear {
