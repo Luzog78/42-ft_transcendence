@@ -13,7 +13,7 @@
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 import { initScene } from "../pong_game/main.js";
-import { getGameMode } from "../utils.js";
+import { getGameMode, setupCopyKBDSpan } from "../utils.js";
 
 
 async function Pong(context, uid, data) {
@@ -38,7 +38,12 @@ async function Pong(context, uid, data) {
 					<div class="row">
 						<span class="text-center fs-2 GameMode mt-4">${mode}</span>
 						<div class="GameConfig-Line my-3"></div>
-						<div class="text-center">#${uid}</div>
+						<div class="container-fluid d-flex justify-content-center">
+							<div class="kbd-span">
+								<span class="pointer notSelectable" id="game-uid">#${uid}</span>
+								<span class="pointer notSelectable" id="game-icon">⌛</span>
+							</div>
+						</div>
 						<div class="text-center search-text fs-1">...</div>
 						<div class="row fs-3 justify-content-center">
 							<p class="col-1" id="current-amount">...</p>
@@ -51,7 +56,13 @@ async function Pong(context, uid, data) {
 		`;
 	}
 	setTimeout(async () => {
+		let gameUid = document.getElementById("game-uid");
+		let gameIcon = document.getElementById("game-icon");
 		let search = document.querySelector(".search-text");
+
+		if (gameUid && gameIcon)
+			setupCopyKBDSpan(uid, gameIcon, [ gameUid ]);
+
 		if (search) {
 			search.innerHTML = "";
 			let searchText = "Searching...";

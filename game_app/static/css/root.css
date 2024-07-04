@@ -6,6 +6,9 @@
 :root {
 	--c-bg: #00244d;
 	--c-fg: #fff;
+
+	--kbd-bg: #3338;
+	--kbd-fg: #333;
 }
 
 body {

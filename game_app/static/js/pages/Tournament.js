@@ -6,14 +6,14 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/04 03:47:02 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/04 05:14:00 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persistError, redirect, refresh } from "../script.js";
-import { getJson } from "../utils.js";
+import { getJson, setupCopyKBDSpan } from "../utils.js";
 
 
 var DIV_H = 125;
@@ -27,6 +27,12 @@ async function Tournament(context) {
 		<div id="tournament-content" class="block-blur">
 			<div class="block-blur-pad"></div>
 			<div class="container-fluid">
+				<div id="title">
+					<div class="kbd-span" id="title">
+						<h1 class="pointer notSelectable" id="game-uid">...</h1>
+						<span class="pointer notSelectable" id="game-icon">⌛</span>
+					</div>
+				</div>
 				<div class="container-fluid" id="tournament-container">
 				</div>
 			</div>
@@ -35,23 +41,25 @@ async function Tournament(context) {
 	`;
 	setTimeout(async () => {
 		let container = document.getElementById("tournament-container");
-		if (!container) {
+		let title = document.getElementById("title");
+		let titleH1 = document.getElementById("game-uid");
+		let titleIcon = document.getElementById("game-icon");
+
+		if (!container || !title || !titleH1) {
 			setTimeout(() => refresh(context), 1000);
 			return;
 		}
 
-		let title = document.createElement("h1");
-
 		let data = await getJson(context, "/api/tounament/get");
 		if (data.ok) {
 			if (data.length == 0) {
+				title.innerHTML = "";
 				title.innerText = getLang(context, "pages.tournament.noTournament");
-				container.parentElement.insertBefore(title, container);
 				return;
 			}
 			data = {...data, ...data.tournaments[0]};
-			title.innerText = "#" + data.tid;
-			container.parentElement.insertBefore(title, container);
+			titleH1.innerText = "#" + data.tid;
+			setupCopyKBDSpan(data.tid, titleIcon, [ titleH1 ]);
 		} else {
 			persistError(context, getLang(context, data.error));
 			pushPersistents(context);

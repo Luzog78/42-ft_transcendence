@@ -373,6 +373,57 @@ function getGameMode(mode) {
 }
 
 
+function setupCopyKBDSpan(text, copySpan, spans = [],
+							fromColor = "#0f03", toColor = "#0f00") {
+	copySpan.innerHTML = "📋";
+	copySpan.style.cursor = "pointer";
+	spans.forEach(s => s.style.cursor = "pointer");
+
+	function copy() {
+		navigator.clipboard.writeText(text).then(() => {
+			let signature = Math.random().toString(36).substring(2);
+			copySpan.setAttribute("signature", signature);
+
+			copySpan.innerHTML = "📋";
+			copySpan.style.transition = "all 0s";
+			copySpan.style.backgroundColor = null;
+			spans.forEach(s => s.style.transition = "all 0s");
+			spans.forEach(s => s.style.backgroundColor = null);
+			setTimeout((signature) => {
+				if (copySpan.getAttribute("signature") !== signature)
+					return;
+				copySpan.style.backgroundColor = fromColor;
+				spans.forEach(s => s.style.backgroundColor = fromColor);
+			}, 10, signature);
+			setTimeout((signature) => {
+				if (copySpan.getAttribute("signature") !== signature)
+					return;
+				copySpan.innerText = "✅";
+				copySpan.style.transition = "all 1.9s";
+				copySpan.style.backgroundColor = toColor;
+				spans.forEach(s => s.style.transition = "all 1.9s");
+				spans.forEach(s => s.style.backgroundColor = toColor);
+			}, 80, signature);
+			setTimeout((signature) => {
+				if (copySpan.getAttribute("signature") !== signature)
+					return;
+				copySpan.innerHTML = "📋";
+				copySpan.style.transition = null;
+				copySpan.style.backgroundColor = null;
+				spans.forEach(s => s.style.transition = null);
+				spans.forEach(s => s.style.backgroundColor = null);
+			}, 1920, signature);
+		}).catch(err => {
+			copySpan.innerHTML = "❌";
+			console.error('[❌] Failed to copy: ', err);
+		});
+	}
+
+	copySpan.onclick = () => copy();
+	spans.forEach(s => s.onclick = () => copy());
+}
+
+
 export {
 	getJson,
 	postRaw,
@@ -392,4 +443,5 @@ export {
 	toLocalDate,
 	toLocalDateStringFormat,
 	getGameMode,
+	setupCopyKBDSpan,
 };

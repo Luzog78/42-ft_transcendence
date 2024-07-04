@@ -37,3 +37,39 @@
 	-webkit-user-select: none;
 	-ms-user-select: none;
 }
+
+
+.pointer {
+	cursor: pointer;
+}
+
+
+.kbd-span {
+	display: flex;
+}
+
+.kbd-span > * {
+	padding: 6px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--kbd-fg);
+	transition: .2s;
+}
+
+.kbd-span > *:hover {
+	background-color: var(--kbd-bg);
+}
+
+.kbd-span > *:first-child {
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+.kbd-span > *:last-child {
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.kbd-span > *:not(:first-child) {
+	border-left: none;
+}

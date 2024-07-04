@@ -13,7 +13,7 @@
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persistError, redirect } from "../script.js";
-import { getGameMode, getJson } from "../utils.js";
+import { getGameMode, getJson, setupCopyKBDSpan } from "../utils.js";
 import { PlayId } from "./PlayId.js";
 
 
@@ -36,7 +36,12 @@ async function PongResult(context, id, data=null) {
 				<div class="container-fluid">
 					<div id="game-mode" class="d-flex justify-content-center fs-2">${getLang(context, "loading")}</div>
 					<div class="GameConfig-Line my-3"></div>
-					<div id="game-uid" class="d-flex justify-content-center">${getLang(context, "loading")}</div>
+					<div class="container-fluid d-flex justify-content-center">
+						<div class="kbd-span">
+							<span class="pointer notSelectable" id="game-uid">${getLang(context, "loading")}</span>
+							<span class="pointer notSelectable" id="game-icon">⌛</span>
+						</div>
+					</div>
 
 					<div id="pongResult-item" class="py-2" style="margin-top: 20px;">
 						<div class="row" style="padding-bottom: 35px; margin-left: 24%; margin-right: 24%;">
@@ -111,12 +116,15 @@ async function PongResult(context, id, data=null) {
 		let bestTimeBy = document.querySelector("#best-time-by");
 		let gameMode = document.querySelector("#game-mode");
 		let gameUid = document.querySelector("#game-uid");
+		let gameIcon = document.querySelector("#game-icon");
 		let pongResultPlayers = document.querySelector(".PongResult-players");
 
 		if (data.mode)
 			gameMode.innerText = getGameMode(data.mode);
-		if (data.uid)
+		if (data.uid) {
 			gameUid.innerText = `#${data.uid}`;
+			setupCopyKBDSpan(data.uid, gameIcon, [ gameUid ]);
+		}
 		if (data.winner) {
 			if (data.winner.user) {
 				if (data.winner.user.picture)

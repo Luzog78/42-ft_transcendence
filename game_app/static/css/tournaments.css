@@ -23,14 +23,24 @@
 	overflow: scroll;
 }
 
-#tournament-content h1 {
+#tournament-content #title {
 	position: absolute;
 	top: 0;
 	left: 50%;
 	transform: translateX(-50%);
 	width: fit-content;
-	font-size: 24px;
 	z-index: 20;
+}
+
+#tournament-content #title > * {
+	margin: 0;
+	font-size: 26px;
+	width: fit-content;
+	line-height: 26px;
+}
+
+#tournament-content #title #game-icon {
+	font-size: 18px;
 }
 
 #tournament-content #tournament-container {
