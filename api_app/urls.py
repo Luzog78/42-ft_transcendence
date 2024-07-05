@@ -6,8 +6,8 @@ from .views import view_err404, view_test, \
 					view_games, view_game_list, view_game_user, view_game_uid, \
 					view_game_new, view_game_rand, \
 					view_stats_id, view_stats_user, view_stats_game, \
-					view_tournament_get, view_tournament_new, view_tournament_tid, \
-					view_tournament_join, view_tournament_quit
+					view_tournament_get, view_tournament_new, view_tournament_lst,\
+					view_tournament_tid, view_tournament_join, view_tournament_quit
 
 
 urlpatterns = [ re_path('.*', view_err404) ]
@@ -32,9 +32,10 @@ r(view_game_rand,	'game/rand')
 r(view_stats_id,	'stats/<int:id>')
 r(view_stats_user,	'stats/u/<str:username>')
 r(view_stats_game,	'stats/g/<str:uid>')
-r(view_tournament_get,	'tounament/get')
-r(view_tournament_new,	'tounament/new')
-r(view_tournament_tid,	'tounament/<str:tid>')
-r(view_tournament_join,	'tounament/<str:tid>/join/<str:username>')
-r(view_tournament_quit,	'tounament/<str:tid>/quit/<str:username>')
+r(view_tournament_get,	'tournament/get')
+r(view_tournament_new,	'tournament/new')
+r(view_tournament_lst,	'tournament/list')
+r(view_tournament_tid,	'tournament/<str:tid>')
+r(view_tournament_join,	'tournament/<str:tid>/join/<str:username>')
+r(view_tournament_quit,	'tournament/<str:tid>/quit/<str:username>')
 r(view_test,		'<int:whatever>')

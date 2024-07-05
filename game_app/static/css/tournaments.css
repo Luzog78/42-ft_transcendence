@@ -186,6 +186,30 @@
 	z-index: 6;
 }
 
+#tournament-content #no-tournament hr {
+	margin-top: 30px;
+	margin-bottom: 50px;
+}
+
+#tournament-content #no-tournament .kbd-span {
+	justify-content: left;
+	margin-bottom: 15px;
+}
+
+#tournament-content #no-tournament input::-webkit-outer-spin-button,
+#tournament-content #no-tournament input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+#tournament-content #no-tournament input {
+	-moz-appearance: textfield;
+	width: 50px;
+	text-align: center;
+	background-color: transparent;
+	color: var(--c-fg);
+}
+
 @keyframes tournament-appear {
 	0% {
 		width: 0;

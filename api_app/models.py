@@ -92,19 +92,47 @@ class GameMode(models.TextChoices):
 	BATTLE_ROYALE	= 'BR', 'Battle Royale'
 
 	@staticmethod
-	def items():
+	def get_items():
 		return GameMode.TIME_OUT, GameMode.FIRST_TO, GameMode.BATTLE_ROYALE
 
 	@staticmethod
-	def mods():
+	def get_mods():
 		return GameMode.TIME_OUT[0], GameMode.FIRST_TO[0], GameMode.BATTLE_ROYALE[0]
 
 	@staticmethod
-	def names():
+	def get_names():
 		return GameMode.TIME_OUT[1], GameMode.FIRST_TO[1], GameMode.BATTLE_ROYALE[1]
+
+	@staticmethod
+	def parse(mode):
+		mode = mode.upper()
+		for k, v in GameMode.get_items():
+			if mode == k or mode == v:
+				return k, v
+		return None
 
 
 class Game(models.Model):
+	'''
+	Required fields:
+		uid: str
+
+	Auto fields:
+		created_at: datetime
+
+	Additionnal fields:
+		mode: str
+		players: list[str]
+		restricted: bool
+		started_at: datetime
+		ended_at: datetime
+		winner: Stats
+		best_streak: Stats
+		rebounces: Stats
+		ultimate: Stats
+		duration: Stats
+	'''
+
 	uid			= models.CharField(primary_key=True, max_length=5, blank=False, null=False)
 	mode		= models.CharField(max_length=2, choices=GameMode.choices, default=GameMode.BATTLE_ROYALE)
 	players		= ArrayField(models.CharField(max_length=24), default=list)
@@ -173,6 +201,22 @@ class Game(models.Model):
 
 
 class Stats(models.Model):
+	'''
+	Required fields:
+		user: User
+		game: Game
+		score: int
+		kills: int
+		best_streak: int
+		rebounces: int
+		ultimate: float
+		duration: float
+		won: bool
+
+	Auto fields:
+		id: int
+	'''
+
 	id			= models.AutoField(primary_key=True)
 	user		= models.ForeignKey(User, on_delete=models.CASCADE)
 	game		= models.ForeignKey(Game, on_delete=models.SET_NULL, null=True)
@@ -203,7 +247,19 @@ class Stats(models.Model):
 			'won': self.won,
 		}
 
+
 class PrivateChat(models.Model):
+	'''
+	Required fields:
+		author: User
+		target: User
+		content: str
+
+	Auto fields:
+		id: int
+		send_at: datetime
+	'''
+
 	id			= models.AutoField(primary_key=True)
 	send_at		= models.DateTimeField(auto_now=True)
 	author		= models.ForeignKey(User, related_name='+', on_delete=models.SET_NULL, null=True)
@@ -224,7 +280,19 @@ class PrivateChat(models.Model):
 			'content': self.content
 		}
 
+
 class GameChat(models.Model):
+	'''
+	Required fields:
+		author: User
+		game: Game
+		content: str
+
+	Auto fields:
+		id: int
+		send_at: datetime
+	'''
+
 	id			= models.AutoField(primary_key=True)
 	send_at		= models.DateTimeField(auto_now=True)
 	author		= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -247,17 +315,282 @@ class GameChat(models.Model):
 		}
 
 
-class Tounament(models.Model):
-	tid			= models.CharField(primary_key=True, max_length=5, blank=False, null=False)
-	content		= models.JSONField(default=dict)
-	ended		= models.BooleanField(default=False)
+class Status(models.TextChoices):
+	PENDING		= 'P', 'Pending'
+	ONGOING		= 'O', 'Ongoing'
+	FINISHED	= 'F', 'Finished'
+
+	@staticmethod
+	def get_items():
+		return Status.PENDING, Status.ONGOING, Status.FINISHED
+
+	@staticmethod
+	def get_mods():
+		return Status.PENDING[0], Status.ONGOING[0], Status.FINISHED[0]
+
+	@staticmethod
+	def get_names():
+		return (Status.PENDING[1], Status.ONGOING[1], Status.FINISHED[1])
+
+	@staticmethod
+	def parse(status):
+		status = status.upper()
+		for k, v in Status.get_items():
+			if status == k or status == v:
+				return k, v
+		return None
+
+
+class Match(models.Model):
+	'''
+	Required fields:
+		player_count: int
+
+	Auto fields:
+		id: int
+
+	Additionnal fields:
+		players: list[str]
+		winner: User
+		status: str
+		uid: str
+		game: Game
+	'''
+
+	id				= models.AutoField(primary_key=True)
+	player_count	= models.IntegerField()
+	players			= ArrayField(models.CharField(max_length=24), default=list)
+	winner			= models.ForeignKey(User, on_delete=models.SET_NULL, null=True) # type: ignore
+	status			= models.CharField(max_length=1, choices=Status.choices, default=Status.PENDING)
+	game			= models.ForeignKey(Game, on_delete=models.SET_NULL, null=True) # type: ignore
+
+	def __str__(self):
+		return self.id
+
+	def json(self):
+		return {
+			'id': self.id,
+			'playerCount': self.player_count,
+			'players': self.players,
+			'winner': self.winner.username if self.winner is not None else None,
+			'status': self.status,
+			'game': self.game.uid if self.game is not None else None,
+
+			'ended': self.status == Status.FINISHED,
+		}
+
+	def add_player(self, player_username: str):
+		self.players.append(player_username)
+		if len(self.players) == self.player_count:
+			self.start()
+		else:
+			self.save()
+
+	def start(self):
+		self.status = Status.ONGOING
+		self.game = Game.objects.create(
+			uid=Game.new_uid(),
+			mode=GameMode.BATTLE_ROYALE,
+			players=self.players,
+			restricted=True,
+		)
+		self.save()
+
+	def end(self):
+		assert self.game is not None
+		self.winner = self.game.winner.user
+		self.status = Status.FINISHED
+		self.save()
+
+
+class Pool(models.Model):
+	'''
+	Required fields:
+		matches_count: int
+		player_per_match: int
+
+	Auto fields:
+		id: int
+		matches: list[Match]  ->> In the manager
+
+	Additionnal fields:
+		status: str
+	'''
+
+	id					= models.AutoField(primary_key=True)
+	matches_count		= models.IntegerField()
+	player_per_match	= models.IntegerField()
+	matches				= ArrayField(models.CharField(max_length=24), default=list)
+	status				= models.CharField(max_length=1, choices=Status.choices, default=Status.PENDING)
+
+	def __str__(self):
+		return self.id
+
+	def json(self, json_matches=True):
+		matches: list = [] if json_matches else self.matches
+		if json_matches:
+			for match in self.matches:
+				m = Match.objects.get(id=match)
+				if m:
+					matches.append(m.json())
+		return {
+			'id': self.id,
+			'matchesCount': self.matches_count,
+			'playerPerMatch': self.player_per_match,
+			'matches': matches,
+			'status': self.status,
+
+			'ended': self.status == Status.FINISHED,
+		}
+
+	def init(self):
+		self.save()
+		self.matches = []
+		for _ in range(self.matches_count):
+			match = Match.objects.create(player_count=self.player_per_match)
+			self.matches.append(match.id)
+		self.save()
+		return self
+
+	def get_match(self, index: int):
+		return Match.objects.get(id=self.matches[index])
+
+	def try_to_end(self):
+		if all(self.get_match(i).status == Status.FINISHED for i in range(len(self.matches))):
+			self.status = Status.FINISHED
+			self.save()
+
+	def get_winners(self):
+		return [self.get_match(i).winner for i in range(len(self.matches))]
+
+
+class Tournament(models.Model):
+	'''
+	Required fields:
+		tid: str
+		player_count: int
+
+	Auto fields:
+		id: int
+		pools: list[int]  ->> In the manager
+
+	Additionnal fields:
+		players: list[str]
+		current_pool: int
+		status: str
+	'''
+
+	tid				= models.CharField(primary_key=True, max_length=5, blank=False, null=False)
+	player_count	= models.IntegerField()
+	players			= ArrayField(models.CharField(max_length=24), default=list)
+	pools			= ArrayField(models.IntegerField(), default=list)
+	current_pool	= models.IntegerField(default=0)
+	status			= models.CharField(max_length=1, choices=Status.choices, default=Status.PENDING)
 
 	def __str__(self):
 		return self.tid
 
-	def json(self):
+	def json(self, json_pools=True, json_matches=True):
+		pools: list = [] if json_pools else self.pools
+		if json_pools:
+			for pool in self.pools:
+				p = Pool.objects.get(id=pool)
+				if p:
+					pools.append(p.json(json_matches))
 		return {
 			'tid': self.tid,
-			'content': self.content,
-			'ended': self.ended
-	}
+			'playerCount': self.player_count,
+			'players': self.players,
+			'pools': pools,
+			'currentPool': self.current_pool,
+			'status': self.status,
+
+			'ended': self.status == Status.FINISHED,
+		}
+
+	def init(self):
+		self.save()
+		self.pools = []
+		calcs = self.calc_pools(self.player_count)
+		for m, p in calcs:
+			pool = Pool.objects.create(matches_count=m, player_per_match=p).init()
+			self.pools.append(pool.id)
+		self.save()
+		return self
+
+	@staticmethod
+	def decompose(n: int) -> list[int]:
+		"""
+		Takes a positive integer n >= 2.
+		Decomposes it into its prime factors.
+		Sorts the factors in descending order.
+		"""
+		factors = []
+		divisor = 2
+		while n > 1:
+			while n % divisor == 0:
+				factors.append(divisor)
+				n //= divisor
+			divisor += 1
+		return factors[::-1]
+
+	@staticmethod
+	def calc_pools(player_count: int) -> list[tuple[int, int]]:
+		"""
+		Calculates the number of pools and the number of players per match for each pool.
+		Returns a list of tuples of (matches_count, player_per_match).
+		"""
+		factors = Tournament.decompose(player_count)
+		pools = []
+		for n in factors:
+			pools.append((player_count // n, n))
+			player_count //= n
+		return pools
+
+	@staticmethod
+	def on_game_end(uid: str):
+		tournaments = Tournament.objects.all()
+		for tournament in tournaments:
+			pools = [tournament.get_pool(i) for i in range(len(tournament.pools))]
+			for pool in pools:
+				matches = [pool.get_match(i) for i in range(len(pool.matches))]
+				for match in matches:
+					if match.game and match.game.uid == uid:
+						match.end()
+						pool.try_to_end()
+						if pool.status == Status.FINISHED:
+							tournament.end_pool()
+						return
+
+	def get_pool(self, index: int):
+		return Pool.objects.get(id=self.pools[index])
+
+	def add_player(self, player_username: str):
+		self.players.append(player_username)
+		if len(self.players) == self.player_count:
+			self.dispatch()
+			self.status = Status.ONGOING
+		self.save()
+
+	def quit(self, player_username: str):
+		self.players.remove(player_username)
+		self.save()
+
+	def dispatch(self):
+		pool = self.get_pool(self.current_pool)
+		players = self.players if self.current_pool == 0 else [
+			winner.username
+			for winner in self.get_pool(self.current_pool - 1).get_winners()
+			if winner is not None
+		]
+
+		for i, player in enumerate(players):
+			pool.get_match(i // pool.player_per_match).add_player(player)
+
+	def end_pool(self):
+		self.current_pool += 1
+		if self.current_pool < len(self.pools):
+			self.dispatch()
+		else:
+			self.status = Status.FINISHED
+			self.save()

@@ -16,9 +16,14 @@ import datetime
 from .vector import Vector
 
 class Player:
-	def __init__(self, lobby: 'Lobby', client: 'Player', client_id: int):
-		self.lobby:		Lobby	= lobby
-		self.client:	Player	= client
+
+	def __init__(self, lobby, client, client_id: int):
+		from .lobby import Lobby
+		from ft_django.pong_socket import PongSocket
+		assert isinstance(lobby, Lobby)
+		assert isinstance(client, PongSocket)
+		self.lobby:		Lobby					= lobby
+		self.client:	PongSocket	= client
 
 		self.client_id: int	= client_id
 

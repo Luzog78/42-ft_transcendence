@@ -7,7 +7,7 @@ import { PongResult } from "./PongResult.js";
 async function PlayId(context, id) {
 	let data = await getJson(context, `/api/game/g/${id}`);
 
-	if (data.ok) {
+	if (data && data.ok) {
 		if (data.waiting || data.playing)
 			return Pong(context, id, data);
 

@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/05 04:09:48 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/05 04:46:15 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,8 @@ async function GameConfig(context, id = null) {
 			normalizeOther(playerCount);
 			normalizeOther(limitFT);
 		});
-		document.querySelectorAll("input[type=number]").forEach(e =>
+		document.querySelectorAll("input[type=number]").forEach(e => {
+			e.addEventListener("focus", (e) => e.target.select());
 			e.addEventListener("wheel", event => {
 				event.preventDefault();
 				let input = event.target;
@@ -152,10 +153,8 @@ async function GameConfig(context, id = null) {
 				normalizeTime(limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni);
 				normalizeOther(playerCount);
 				normalizeOther(limitFT);
-			})
-		);
-		document.querySelectorAll("input[type=number]").forEach(e =>
-			e.addEventListener("focus", (e) => e.target.select()));
+			});
+		});
 
 		limitTOMinDec.addEventListener("input", (e) =>
 			inputTime(e.target, limitTOMinUni, limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni));

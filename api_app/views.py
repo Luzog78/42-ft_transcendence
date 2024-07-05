@@ -1,14 +1,14 @@
 import os
+from re import T
 import time
 import json
 import random
 from django.http import JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import GameMode, User, Game, Stats
+from .models import GameMode, User, Game, Stats, Status, Tournament
 from . import auth, checker
 from ft_django import settings
-from ft_django.tournament import pool as tournament_manager
 from ft_django import pong_socket
 
 
@@ -442,7 +442,7 @@ def view_game_new(request):
 
 	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
 
-	valid = 'mode' in data and data['mode'] in ["TO", "FT", "BR"] \
+	valid = 'mode' in data and data['mode'] in GameMode.get_mods() \
 		and 'players' in data and isinstance(data['players'], int) and 2 <= data['players'] <= 30 \
 		and 'theme' in data and isinstance(data['theme'], int) and 0 <= data['theme'] <= 3 \
 		and 'speed' in data and isinstance(data['speed'], int) and 0 <= data['speed'] <= 2
@@ -571,13 +571,12 @@ def view_stats_game(request: HttpRequest, uid: str):
 
 @csrf_exempt
 def view_tournament_get(request: HttpRequest):
-	if tournament_manager.active_tounaments:
-		return JsonResponse({
-			'ok': True,
-			'length': len(tournament_manager.active_tounaments),
-			'tournaments': [t.json() for t in tournament_manager.active_tounaments],
-		})
-	return JsonResponse({'ok': True, 'length': 0, 'tournaments': []})
+	tournaments = Tournament.objects.all();
+	return JsonResponse({
+		'ok': True,
+		'length': len(tournaments),
+		'tournaments': [t.tid for t in tournaments],
+	})
 
 
 @csrf_exempt
@@ -595,17 +594,54 @@ def view_tournament_new(request: HttpRequest):
 	if not valid:
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
 
-	tounament = tournament_manager.Tounament(Game.new_uid(), data['players'])
-	tounament.register()
+	tournament = Tournament.objects.create(tid=Game.new_uid(), player_count=data['players']).init()
+	return JsonResponse({'ok': True, 'success': 'successes.tournamentCreated', **tournament.json()})
 
-	return JsonResponse({'ok': True, 'success': 'successes.tournamentCreated', **tounament.json()})
+
+@csrf_exempt
+def view_tournament_lst(request: HttpRequest):
+	if not (response := auth.is_authenticated(request)):
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+
+	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+
+	valid = 'tids' in data and isinstance(data['tids'], list)
+
+	if 'details' in data:
+		valid = valid and isinstance(data['details'], bool)
+	else:
+		data['details'] = False
+
+	if not valid:
+		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+
+	tids = data['tids']
+	found = []
+	not_found = []
+	for tid in tids:
+		t = Tournament.objects.filter(tid=tid)
+		if not t:
+			not_found.append(tid)
+			continue
+		found.append(t[0].json(False))
+
+	return JsonResponse({
+		'ok': True,
+		'foundLength': len(found),
+		'notFoundLength': len(not_found),
+		'found': found,
+		'notFound': not_found
+	})
 
 
 @csrf_exempt
 def view_tournament_tid(request: HttpRequest, tid: str):
-	for t in tournament_manager.active_tounaments:
-		if t.tid == tid:
-			return JsonResponse({'ok': True, **t.json()})
+	t = Tournament.objects.filter(tid=tid)
+	if t:
+		return JsonResponse({'ok': True, **t[0].json()})
 	return JsonResponse({'ok': False, 'error': 'errors.tournamentNotFound'})
 
 
@@ -614,13 +650,10 @@ def view_tournament_join(request: HttpRequest, tid: str, username: str):
 	if not (response := auth.is_authenticated(request)):
 		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
 
-	tounament = None
-	for t in tournament_manager.active_tounaments:
-		if t.tid == tid:
-			tounament = t
-			break
-	if tounament is None:
+	tournament = Tournament.objects.filter(tid=tid)
+	if not tournament:
 		return JsonResponse({'ok': False, 'error': 'errors.tournamentNotFound'})
+	tournament = tournament[0]
 
 	if not (user := User.get(username)):
 		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
@@ -630,7 +663,7 @@ def view_tournament_join(request: HttpRequest, tid: str, username: str):
 			and client.is_admin): # type: ignore
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
 
-	if tounament.status != tournament_manager.Status.PENDING:
+	if tournament.status != Status.PENDING:
 		return JsonResponse({'ok': False, 'error': 'errors.tournamentAlreadyStarted'})
 
 	return JsonResponse({'ok': True, 'success': 'successes.tournamentJoined'})
@@ -641,13 +674,10 @@ def view_tournament_quit(request: HttpRequest, tid: str, username: str):
 	if not (response := auth.is_authenticated(request)):
 		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
 
-	tounament = None
-	for t in tournament_manager.active_tounaments:
-		if t.tid == tid:
-			tounament = t
-			break
-	if tounament is None:
+	tournament = Tournament.objects.filter(tid=tid)
+	if not tournament:
 		return JsonResponse({'ok': False, 'error': 'errors.tournamentNotFound'})
+	tournament = tournament[0]
 
 	if not (user := User.get(username)):
 		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
@@ -657,10 +687,10 @@ def view_tournament_quit(request: HttpRequest, tid: str, username: str):
 			and client.is_admin): # type: ignore
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
 
-	if tounament.status != tournament_manager.Status.PENDING:
+	if tournament.status != Status.PENDING:
 		return JsonResponse({'ok': False, 'error': 'errors.tournamentAlreadyStarted'})
 
-	tounament.quit(user)
+	tournament.quit(user.username)
 
 	return JsonResponse({'ok': True, 'success': 'successes.tournamentQuit'})
 
@@ -671,31 +701,31 @@ def view_tournament_quit(request: HttpRequest, tid: str, username: str):
 def view_test(request: HttpRequest, whatever: int):
 	if whatever == 0:
 
-		if not tournament_manager.active_tounaments:
-			t = tournament_manager.Tounament(Game.new_uid(), 10)
-			t.register()
+		# if not tournament_manager.active_tournaments:
+		# 	t = tournament_manager.Tournament(Game.new_uid(), 10)
+		# 	t.register()
 
-		t = tournament_manager.active_tounaments[0]
+		# t = tournament_manager.active_tournaments[0]
 
-		users = User.objects.all()
+		# users = User.objects.all()
 
-		i = 0
-		for u in users:
-			if i >= 10:
-				break
-			t.add_player(u)
-			i += 1
+		# i = 0
+		# for u in users:
+		# 	if i >= 10:
+		# 		break
+		# 	t.add_player(u)
+		# 	i += 1
 
 
-		a = User.objects.get(username='aaaa')
-		t.pools[0].matches[0].winner = a
-		t.pools[0].matches[0].status = tournament_manager.Status.FINISHED
-		t.pools[1].matches[0].add_player(a)
-		a = User.objects.get(username='6666')
-		t.pools[0].matches[1].winner = a
-		t.pools[0].matches[1].status = tournament_manager.Status.FINISHED
-		t.pools[1].matches[0].add_player(a)
-		t.current_pool += 1
+		# a = User.objects.get(username='aaaa')
+		# t.pools[0].matches[0].winner = a
+		# t.pools[0].matches[0].status = tournament_manager.Status.FINISHED
+		# t.pools[1].matches[0].add_player(a)
+		# a = User.objects.get(username='6666')
+		# t.pools[0].matches[1].winner = a
+		# t.pools[0].matches[1].status = tournament_manager.Status.FINISHED
+		# t.pools[1].matches[0].add_player(a)
+		# t.current_pool += 1
 
 		return JsonResponse({'ok': True, 'success': 'Whatever...'})
 
@@ -797,8 +827,8 @@ def view_test(request: HttpRequest, whatever: int):
 	g3.duration = s[15]
 	g3.save()
 
-	t = tournament_manager.Tounament(Game.new_uid(), len(us))
-	t.register()
+	# t = tournament_manager.Tournament(Game.new_uid(), len(us))
+	# t.register()
 
 	s = request.headers.get('Authorization', None)
 
@@ -807,5 +837,5 @@ def view_test(request: HttpRequest, whatever: int):
 		'success': 'Whatever...',
 		'whatever': whatever,
 		'str': s,
-		'tounament': t.json(),
+		# 'tournament': t.json(),
 	})

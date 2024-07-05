@@ -29,7 +29,7 @@ class GameServer:
 	def createLobby(self, uid: str, game_mode: str, player_num: int, theme: int, ball_speed: float, limit):
 		self.lobbies.append(Lobby(self, uid, game_mode, player_num, theme, ball_speed, limit))
 
-	def findLobby(self, uid:str) -> Lobby:
+	def findLobby(self, uid:str) -> Lobby | None:
 		for lobby in self.lobbies:
 			if lobby.uid == uid:
 				return lobby

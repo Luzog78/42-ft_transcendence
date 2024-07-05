@@ -52,16 +52,17 @@ function NavBar(title, context, fetchProfile = true) {
 
 	if (context.user.isAuthenticated) {
 		right.innerHTML = /*html*/`
-			<a type="button" class="" href="/profile" data-link><img class="profile-picture notSelectable" src="${context.user.picture ? context.user.picture : '/static/img/user.svg'}" alt="${getLang(context, "navbar.profilePictureAlt")}" data-link></a>
+			<a type="button" class="" href="/profile" id="" data-link><img class="profile-picture notSelectable" src="${context.user.picture ? context.user.picture : '/static/img/user.svg'}" alt="${getLang(context, "navbar.profilePictureAlt")}" data-link></a>
 			<div type="button" id="logout-btn-zone">${getLang(context, "navbar.logout")}</div>
 			<a type="button" class="a-no-style profile-name" href="/profile" data-link>${getLang(context, "loading")}</a>
 			<a type="button" class="btn btn-outline-danger nav-links" href="/logout?next=${next}" id="logout-btn" data-link>${getLang(context, "navbar.logout")}</a>
 		`;
 		right.classList.add("profile");
 		right.querySelector(".profile-name").innerText = context.user.username;
-		right.querySelector("#logout-btn-zone").onclick = () => {
-			redirect("/profile");
-		};
+		setTimeout(() => {
+			document.querySelectorAll("#navbar-right div").forEach(e => e.onclick = () => redirect("/profile"));
+			document.querySelectorAll("#navbar-right img").forEach(e => e.onclick = () => redirect("/profile"));
+		}, 200);
 	} else {
 		right.innerHTML = /*html*/`
 			<a type="button" class="btn btn-outline-secondary" href="/login?next=${next}" data-link>${getLang(context, "navbar.login")}</a>

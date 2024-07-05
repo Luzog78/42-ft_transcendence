@@ -16,6 +16,8 @@ import threading
 import time
 from datetime import datetime
 
+from api_app.models import Tournament
+
 from .ball import Ball
 from .vector import Vector
 from .player import Player
@@ -32,9 +34,9 @@ class Lobby:
 		self.ball_speed:		float	= ball_speed
 		self.limit						= limit
 
-		self.clients:		list[Player] = []
-		self.dead_clients:	list[Player] = []
-		self.client_ready:	list[Player] = []
+		self.clients:		list[Player]	= []
+		self.dead_clients:	list[Player]	= []
+		self.client_ready:	list[bool]		= []
 
 		self.balls: list[Ball] = [Ball(self, 0.15, 0)]
 
@@ -44,7 +46,7 @@ class Lobby:
 		self.middle_vertex_positions:	list[Vector]	= []
 		self.angleVertex:				list[float]		= []
 
-		self.walls: list[dict] = self.init_map(self.clients_per_lobby)
+		self.walls: dict[str, list[Vector]]	= self.init_map(self.clients_per_lobby)
 
 		self.time	= 0
 		self.dt		= 0
@@ -54,7 +56,7 @@ class Lobby:
 		self.update_thread.start()
 
 
-	def init_map(self, num_players: int) -> list[dict]:
+	def init_map(self, num_players: int) -> dict[str, list[Vector]]:
 		self.client_ready = [False] * num_players
 
 		if (num_players == 2):
@@ -106,7 +108,6 @@ class Lobby:
 
 	def onEnd(self):
 		from api_app.models import Game, User, Stats
-		from tournament import pool as tournament_manager
 
 		game = Game.objects.get(uid=self.uid)
 		assert game is not None
@@ -152,11 +153,11 @@ class Lobby:
 			best_score.won = True
 			best_score.save()
 
-		game.players = [p.client.username for p in self.clients]
+		game.players = [p.client.username for p in self.clients] # TODO: what to do if if p.client.username is None ?
 
 		game.save()
 
-		tournament_manager.on_game_end(self.uid)
+		Tournament.on_game_end(self.uid)
 
 	async def playerDied(self, ball: Ball, dead_player: str):
 		if (ball.last_player):
@@ -175,7 +176,7 @@ class Lobby:
 
 		if (self.game_mode == "BR" and self.clients_per_lobby == 2):
 			winner = self.clients[player_id - 1]
-			winner.duration = datetime.timestamp(datetime.now()) - ball.last_player.start_time + 2
+			winner.duration = datetime.timestamp(datetime.now()) - ball.last_player.start_time + 2 # TODO: Issue when ball.lst_player is None
 			self.onEnd()
 			time.sleep(3)
 			await self.sendData("call", {"command": 'refresh', "args": []})

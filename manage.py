@@ -3,13 +3,14 @@
 import os
 import sys
 
-from ft_django.pong_socket import game_server
-
 
 def main():
 	"""Run administrative tasks."""
 	os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ft_django.settings')
 	try:
+		import django
+		django.setup()
+
 		from django.core.management import execute_from_command_line
 	except ImportError as exc:
 		raise ImportError(
@@ -25,4 +26,3 @@ if __name__ == '__main__':
 		main()
 	except KeyboardInterrupt:
 		print("\n[[ KeyboardInterrupt: Stopping game server... ]]\n")
-	game_server.running = False

@@ -18,6 +18,7 @@ from .player import Player
 
 class Ball:
 	def __init__(self, lobby, radius, id):
+		from .lobby import Lobby
 		self.lobby:		Lobby	= lobby
 		self.radius:	int		= radius
 
@@ -28,7 +29,7 @@ class Ball:
 		self.vel: Vector = Vector(0, 0)
 		self.acc: Vector = Vector(0, 0)
 
-		self.last_player: Player = None
+		self.last_player: Player | None = None
 
 		self.id: int = id
 

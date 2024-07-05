@@ -6,20 +6,20 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/04 09:33:02 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/05 13:21:55 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persistError, redirect, refresh } from "../script.js";
-import { getJson, setupCopyKBDSpan } from "../utils.js";
+import { getJson, postJson, setupCopyKBDSpan } from "../utils.js";
 
 
 var DIV_H = 125;
 var DIV_W = 80;
 
-async function Tournament(context) {
+async function Tournament(context, tid, data = null) {
 	let div = document.createElement("div");
 	div.innerHTML = NavBar("Tournament", context);
 	div.innerHTML += Persistents(context);
@@ -50,19 +50,25 @@ async function Tournament(context) {
 			return;
 		}
 
-		let data = await getJson(context, "/api/tounament/get");
-		if (data.ok) {
-			if (data.length == 0) {
-				title.innerHTML = "";
-				title.innerText = getLang(context, "pages.tournament.noTournament");
-				return;
-			}
-			data = {...data, ...data.tournaments[0]};
+		// if (!data)
+		// 	data = await getJson(context, `/api/tournament/${tid}`);
+		if (data && data.ok) {
 			titleH1.innerText = "#" + data.tid;
 			setupCopyKBDSpan(data.tid, titleIcon, [ titleH1 ]);
 		} else {
-			persistError(context, getLang(context, data.error));
-			pushPersistents(context);
+			titleH1.innerText = `#${tid}`;
+			titleIcon.innerText = "❌";
+			container.innerHTML += /*html*/`
+				<br><br><br>
+				<h1 class="notSelectable">${getLang(context, "pages.tournament.noTournament")}</h1>
+				<hr style="margin-top: 30px; margin-bottom: 15px">
+				<p>${getLang(context, "pages.tournament.noTournamentDesc")}</p>
+				<a class="no-style btn btn-outline-warning" href="/create" data-link>${getLang(context, "pages.tournament.create")}</a>
+			`;
+			if (data) {
+				persistError(context, getLang(context, data.error));
+				pushPersistents(context);
+			}
 			return;
 		}
 
@@ -159,7 +165,7 @@ async function Tournament(context) {
 function createUser(container, x, y, pool, match, idx, player = null, eliminated = false) {
 	let div = document.createElement("div");
 	div.innerHTML = /*html*/`
-		<img class="user-picture" src="${player && player.picture ? player.picture : './static/img/user.svg'}" alt="Profile picture">
+		<img class="user-picture" src="${player && player.picture ? player.picture : '/static/img/user.svg'}" alt="Profile picture">
 		<span class="user-name">${player ? player.username : ''}</span>
 	`;
 	container.appendChild(div);

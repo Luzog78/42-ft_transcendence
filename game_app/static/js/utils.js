@@ -26,7 +26,7 @@ function postRaw(context, url, body, jsonify = true) {
 	return promise;
 }
 
-function postJson(context, url, data, jsonify = true) {
+function postJson(context, url, data, jsonify = true, catches = true) {
 	let promise = fetch(url, {
 		method: "POST",
 		headers: {
@@ -37,16 +37,27 @@ function postJson(context, url, data, jsonify = true) {
 	});
 	if (jsonify)
 		promise = promise.then(res => res.json());
+	if (catches)
+		promise = promise
+			.catch(e => console.log("[❌] Error on POST.\n\n",
+				"URL: ", url, "\n\nData: ", data, "\n\nError: ", e))
+			.then(data => data ? data : {});
 	return promise;
 }
 
-function getJson(context, url) {
-	return fetch(url, {
+function getJson(context, url, catches = true) {
+	let promise = fetch(url, {
 		method: "GET",
 		headers: {
 			"Authorization": "Bearer " + context.user.token,
 		},
 	}).then(res => res.json());
+	if (catches)
+		promise = promise
+			.catch(e => console.log("[❌] Error on GET.\n\n",
+				"URL: ", url, "\n\nError: ", e))
+			.then(data => data ? data : {});
+	return promise
 }
 
 function validFeedback(child, message) {

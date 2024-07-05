@@ -164,6 +164,7 @@
 	right: 0;
 	bottom: -100%;
 	display: none;
+	z-index: 101;
 }
 
 .navbar #logout-btn-zone {
@@ -174,7 +175,7 @@
 	opacity: 0;
 	height: 100%;
 	padding-top: 100px;
-	z-index: -1;
+	z-index: 101;
 }
 
 .navbar .profile #logout-btn:hover,
@@ -185,5 +186,4 @@
 .navbar .profile:hover #logout-btn-zone,
 .navbar .profile #logout-btn-zone:hover {
 	display: inline-block;
-	z-index: 0;
 }

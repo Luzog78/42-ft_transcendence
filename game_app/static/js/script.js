@@ -29,6 +29,7 @@ import { ChatConnexion } from "./ChatConnexion.js";
 import { getJson } from "./utils.js";
 import { destroyScene } from "./pong_game/main.js";
 import { Tournament } from "./pages/Tournament.js";
+import { NewTournament } from "./pages/NewTournament.js";
 
 
 const SUPPORTED_LANGS = ["en", "fr"];
@@ -126,7 +127,7 @@ const router = [
 		component: Play,
 	},
 	{
-		path: "/play/<any>",
+		path: "/play/<alphanum>",
 		component: PlayId,
 	},
 	{
@@ -134,16 +135,16 @@ const router = [
 		component: Pong,
 	},
 	{
-		path: "/result/<numbers>",
-		component: PongResult,
-	},
-	{
 		path: "/new",
 		component: GameConfig,
 	},
 	{
-		path: "/tournament",
+		path: "/tournament/<alphanum>",
 		component: Tournament,
+	},
+	{
+		path: "/create",
+		component: NewTournament,
 	},
 ];
 
@@ -158,8 +159,8 @@ const loadComponent = async (component, ...args) => {
 	content.innerHTML = inner;
 }
 
-const loadPage = (path) => {
-	console.log(`[🔀] Loading page: ${path}`);
+const loadPage = (path, ...additionnalArgs) => {
+	console.log(`[🔀] Loading page: ${path}`, ...additionnalArgs);
 	destroyScene();
 	let next = new URLSearchParams(window.location.search).get("next");
 	if (next)
@@ -200,16 +201,16 @@ const loadPage = (path) => {
 	}
 	if (!route)
 		route = router[0];
-	loadComponent(route.component, ...args);
+	loadComponent(route.component, ...args, ...additionnalArgs);
 }
 
-const redirect = (path, addToHistory = true) => {
+const redirect = (path, addToHistory = true, ...args) => {
 	let href = window.location.origin + path;
 	if (addToHistory)
 		window.history.pushState(null, null, href);
 	else
 		window.history.replaceState(null, null, href);
-	loadPage(path.split("?")[0].split("#")[0]);
+	loadPage(path.split("?")[0].split("#")[0], ...args);
 }
 
 const refresh = () => {
@@ -257,7 +258,7 @@ const persist = (context, copy) => {
 
 const loadLang = async (context, lang) => {
 	context.lang = await getJson(context, `/static/lang/${lang}.json`);
-	if (!context.lang.locale)
+	if (!context.lang || !context.lang.locale)
 		console.error(`[❌] Failed to fetch language file: ${lang}.json`);
 	else
 		console.log(`[✅] Loaded language file: ${lang}.json`, context.lang);
@@ -265,7 +266,7 @@ const loadLang = async (context, lang) => {
 
 const getLang = (context, key) => {
 	const notFound = `{'${key}' not found}`;
-	let pathes = key.split(".");
+	let pathes = `${key}`.split(".");
 	let found = context.lang;
 	for (let path of pathes) {
 		if (!found[path])
