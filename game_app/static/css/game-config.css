@@ -4,9 +4,10 @@
 
 
 .GameConfig-container {
-	width: 60vw;
+	width: 55vw;
 	padding: 10px;
 	margin-top: 35px;
+	margin-bottom: 35px;
 }
 
 .GameConfig-ModeLabel {
@@ -20,8 +21,8 @@
 	margin-left: 20%;
 	background: linear-gradient(
 			to right,
-			#24bceb	 20%,
-			#9a66e0	 30%,
+			#24bceb 20%,
+			#9a66e0 30%,
 			#3133ec 70%,
 			#c02ae7 80%
 	);
@@ -37,8 +38,8 @@
 .GameConfig-ModeInput:checked + .GameConfig-ModeLabel {
 	background: linear-gradient(
 			to right,
-			#24bceb	 20%,
-			#9a66e0	 30%,
+			#24bceb 20%,
+			#9a66e0 30%,
 			#3133ec 70%,
 			#c02ae7 80%
 	);
@@ -71,17 +72,17 @@
 .GameConfig-ThemeLabel img {
 	opacity: 50%;
 	transition: .2s;
+	width: 12vw !important;
+	height: 5vw;
+}
+
+.GameConfig-ThemeLabel {
+	transition: .2s;
 }
 
 .GameConfig-Img {
 	min-width: 128px;
 	max-width: 256px;
-}
-
-.GameConfig-Img label {
-	width: 100%;
-	height: 100%;
-	transition: .2s;
 }
 
 #GameConfig-content img {
@@ -93,12 +94,26 @@
 	box-shadow: 0 0 10px 0 #ffffff80;
 }
 
+#GameConfig-content input::-webkit-outer-spin-button,
+#GameConfig-content input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
 #GameConfig-content input {
-	width: 30%;
+	-moz-appearance: textfield;
+	width: 40px;
+	text-align: center;
 	background-color: transparent;
 	color: var(--c-fg);
-	border: 1px solid white;
-	border-radius: 12px;
+}
+
+#GameConfig-content input.w100 {
+	width: 50px;
+}
+
+#GameConfig-content input.w09 {
+	width: 30px;
 }
 
 #GameConfig-content input:hover, #GameConfig-content input:focus {
@@ -106,7 +121,17 @@
 	box-shadow: 0 0 14px 0 #ffffff80;
 }
 
-.GameConfig-Speed .container-blur {
+#GameConfig-content .ball-speed-container {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	padding: 10px;
+	margin-top: 15px;
+	margin-bottom: 40px;
+}
+
+#GameConfig-content .GameConfig-Speed .container-blur {
 	backdrop-filter: blur(8px);
 	background-color: #171617;
 	border-radius: 10px;
@@ -114,12 +139,12 @@
 	box-shadow: none;
 }
 
-.GameConfig-SpeedInput:checked + .GameConfig-SpeedLabel {
+#GameConfig-content .GameConfig-SpeedInput:checked + .GameConfig-SpeedLabel {
 	transform: scale(125%);
 	font-weight: bold;
 }
 
-.GameConfig-SpeedLabel {
+#GameConfig-content .GameConfig-SpeedLabel {
 	color: white !important;
 	transition: .2s;
 }

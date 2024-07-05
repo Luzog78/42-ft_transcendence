@@ -685,7 +685,7 @@ def view_test(request: HttpRequest, whatever: int):
 				break
 			t.add_player(u)
 			i += 1
-		
+
 
 		a = User.objects.get(username='aaaa')
 		t.pools[0].matches[0].winner = a

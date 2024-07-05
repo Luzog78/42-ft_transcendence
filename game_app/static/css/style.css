@@ -44,8 +44,19 @@
 }
 
 
+.no-cursor {
+	cursor: none;
+}
+
+
+.default-cursor {
+	cursor: default;
+}
+
+
 .kbd-span {
 	display: flex;
+	justify-content: center;
 }
 
 .kbd-span > * {

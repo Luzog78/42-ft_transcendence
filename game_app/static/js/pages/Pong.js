@@ -46,9 +46,9 @@ async function Pong(context, uid, data) {
 						</div>
 						<div class="text-center search-text fs-1">...</div>
 						<div class="row fs-3 justify-content-center">
-							<p class="col-1" id="current-amount">...</p>
+							<p class="col-1" id="current-amount">0</p>
 							<p class="col-1">/</p>
-							<p class="col-1" id="total-amount">...</p>
+							<p class="col-1" id="total-amount">0</p>
 						</div>
 					</div>
 				</div>
@@ -78,16 +78,21 @@ async function Pong(context, uid, data) {
 	return div.innerHTML;
 }
 
-function setCurrentAmount(amount) {
-	let elem = document.getElementById("current-amount");
+function setWaitingTotalPlayerCount(amount) {
+	let elem = document.getElementById("total-amount");
 	if (elem)
 		elem.innerHTML = amount;
 }
 
-function setTotalAmount(amount) {
-	let elem = document.getElementById("total-amount");
-	if (elem)
-		elem.innerHTML = amount;
+function incrementWaitingPlayerCount() {
+	let elem = document.getElementById("current-amount");
+	if (elem) {
+		let count = parseInt(elem.innerHTML);
+		if (isNaN(count))
+			elem.innerHTML = 1;
+		else
+			elem.innerHTML = count + 1;
+	}
 }
 
 function remWaiting() {
@@ -97,4 +102,4 @@ function remWaiting() {
 }
 
 
-export { Pong, setCurrentAmount, setTotalAmount, remWaiting };
+export { Pong, remWaiting, setWaitingTotalPlayerCount, incrementWaitingPlayerCount };

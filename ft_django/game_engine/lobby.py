@@ -9,7 +9,7 @@
 #    Updated: 2024/06/15 14:43:10 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
- 
+
 import math
 import asyncio
 import threading
@@ -23,34 +23,34 @@ from .player import Player
 class Lobby:
 	def __init__(self, game_server, uid: str, game_mode: str, player_num: int, theme: int, ball_speed: float, limit):
 		self.game_server		= game_server
-		self.lobby_id: 		int = len(self.game_server.lobbies)
-		
-		self.uid: 				str 		= uid
-		self.game_mode: 		str 		= game_mode
-		self.clients_per_lobby: int 		= player_num
-		self.theme: 			int 		= theme
-		self.ball_speed: 		float 		= ball_speed
-		self.limit 							= limit
+		self.lobby_id:		int = len(self.game_server.lobbies)
 
-		self.clients: 		list[Player] = []
+		self.uid:				str		= uid
+		self.game_mode:			str		= game_mode
+		self.clients_per_lobby:	int		= player_num
+		self.theme:				int		= theme
+		self.ball_speed:		float	= ball_speed
+		self.limit						= limit
+
+		self.clients:		list[Player] = []
 		self.dead_clients:	list[Player] = []
-		self.client_ready: 	list[Player] = []
+		self.client_ready:	list[Player] = []
 
 		self.balls: list[Ball] = [Ball(self, 0.15, 0)]
 
-		self.player_size: 	float 	= 0.5
-		self.segment_size: 	float 	= 4
+		self.player_size:	float	= 0.5
+		self.segment_size:	float	= 4
 
-		self.middle_vertex_positions: 	list[Vector] 	= []
-		self.angleVertex: 				list[float]		= []
+		self.middle_vertex_positions:	list[Vector]	= []
+		self.angleVertex:				list[float]		= []
 
 		self.walls: list[dict] = self.init_map(self.clients_per_lobby)
 
-		self.time 	= 0
-		self.dt 	= 0
+		self.time	= 0
+		self.dt		= 0
 
-		self.running 		= True
-		self.update_thread 	= threading.Thread(target=asyncio.run, args=(self.update(),))
+		self.running		= True
+		self.update_thread	= threading.Thread(target=asyncio.run, args=(self.update(),))
 		self.update_thread.start()
 
 
@@ -103,9 +103,10 @@ class Lobby:
 		self.angleVertex = angleVertex
 
 		return walls
-	
+
 	def onEnd(self):
-		from api_app.models import Game as Game, User, Stats
+		from api_app.models import Game, User, Stats
+		from tournament import pool as tournament_manager
 
 		game = Game.objects.get(uid=self.uid)
 		assert game is not None
@@ -129,10 +130,10 @@ class Lobby:
 				duration=player.duration,
 				won=False,
 			)
-	
+
 			stat.save()
 			stats.append(stat)
-		
+
 
 		best_score = max(stats, key=lambda s: s.score)
 
@@ -155,6 +156,8 @@ class Lobby:
 
 		game.save()
 
+		tournament_manager.on_game_end(self.uid)
+
 	async def playerDied(self, ball: Ball, dead_player: str):
 		if (ball.last_player):
 			ball.last_player.kills += 1
@@ -169,11 +172,13 @@ class Lobby:
 
 		await self.sendData("call", {"command": 'scene.server.playerDead',
 									"args": ["'" + dead_player + "'"]})
-		
+
 		if (self.game_mode == "BR" and self.clients_per_lobby == 2):
 			winner = self.clients[player_id - 1]
 			winner.duration = datetime.timestamp(datetime.now()) - ball.last_player.start_time + 2
 			self.onEnd()
+			time.sleep(3)
+			await self.sendData("call", {"command": 'refresh', "args": []})
 			return
 
 		time.sleep(3)
@@ -228,6 +233,8 @@ class Lobby:
 
 	async def addClient(self, player: Player):
 		self.clients.append(player)
+		await self.sendData("call", {"command": 'setWaitingTotalPlayerCount',
+									"args": [ f'{self.clients_per_lobby}' ]})
 		await player.initConnection()
 
 		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)

@@ -50,9 +50,9 @@ async function Profile(context, username) {
 				<table class="table table-striped" id="games-table">
 					<thead>
 						<tr>
-							<th scope="col">${getLang(context, "pages.profile.result")}</th>
-							<th scope="col">${getLang(context, "pages.profile.gameLink")}</th>
-							<th scope="col">${getLang(context, "pages.profile.date")}</th>
+							<th scope="col" style="width: 20%;">${getLang(context, "pages.profile.result")}</th>
+							<th scope="col" style="width: 45%;">${getLang(context, "pages.profile.gameLink")}</th>
+							<th scope="col" style="width: 35%;">${getLang(context, "pages.profile.date")}</th>
 						</tr>
 					</thead>
 					<tbody>

@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/27 22:56:57 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/05 04:09:48 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,51 +36,67 @@ async function GameConfig(context, id = null) {
 					</div>
 				</div>
 				<div class="GameConfig-Line my-4" style="margin-bottom: 15px !important;"></div>
-				<div class="row d-flex justify-content-center">
+				<div class="row d-flex justify-content-between px-4">
 					<div class="col-md-3 my-3">
 						<div class="row py-2 d-flex justify-content-center">
-							<div class="text-center p-4 fs-3 fw-semibold">Players :</div>
-							<input type="number" id="player-count" class="form-control fs-4 text-center fw-light" value="2" min="2" max="100">
+							<div class="text-center p-4 fs-3 fw-semibold">Players:</div>
+							<div class="kbd-span">
+								<span class="pointer notSelectable" decr="player-count">-</span>
+								<input type="number" id="player-count" class="fs-5 text-center fw-light" value="2" min="2" max="30">
+								<span class="pointer notSelectable" incr="player-count">+</span>
+							</div>
 						</div>
 						<div class="GameConfig-Points row justify-content-center" style="display: none;">
-								<div class="text-center p-4 fs-3 fw-semibold">Points to Win :</div>
-								<input type="number" id="limit-ft" class="form-control fs-4 text-center fw-light" value="5" min="1" max="30">
+							<div class="text-center p-4 fs-3 fw-semibold">Points to Win:</div>
+							<div class="kbd-span">
+								<span class="pointer notSelectable" decr="limit-ft">-</span>
+								<input type="number" id="limit-ft" class="fs-5 fw-light w100" value="5" min="1" max="100">
+								<span class="pointer notSelectable" incr="limit-ft">+</span>
+							</div>
 						</div>
 						<div class="GameConfig-Time row justify-content-center" style="display: none;">
-								<div class="text-center p-4 fs-3 fw-semibold">Timer (min) :</div>
-								<input type="number" id="limit-to" class="form-control fs-4 text-center fw-light" value="3" min="1" max="60">
+							<div class="text-center p-4 fs-3 fw-semibold">Timer (min):</div>
+							<div class="kbd-span">
+								<span class="pointer notSelectable" decr="limit-to-sec-dec">-</span>
+								<input type="number" id="limit-to-min-dec" class="fs-5 fw-light w09" value="0" min="0" max="9">
+								<input type="number" id="limit-to-min-uni" class="fs-5 fw-light w09" value="3" min="0" max="9">
+								<span class="default-cursor notSelectable">:</span>
+								<input type="number" id="limit-to-sec-dec" class="fs-5 fw-light w09" value="0" min="0" max="9">
+								<input type="number" id="limit-to-sec-uni" class="fs-5 fw-light w09" value="0" min="0" max="9">
+								<span class="pointer notSelectable" incr="limit-to-sec-dec">+</span>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-5 my-5">
+					<div class="col-md-6 my-5">
 						<div class="row d-flex justify-content-center">
 							<div class="col-md-6 my-2 GameConfig-Img d-flex justify-content-center">
 								<input type="radio" class="btn-check GameConfig-ThemeInput" name="ThemeRadio" id="ThemeRadio1" autocomplete="off" checked>
-								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio1"><img src="/static/img/Theme.png"></label>
+								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio1"><img src="https://raw.githubusercontent.com/42data/r/main/ft_transcendence/theme0.png"></label>
 							</div>
 							<div class="col-md-6 my-2 GameConfig-Img d-flex justify-content-center">
 								<input type="radio" class="btn-check GameConfig-ThemeInput" name="ThemeRadio" id="ThemeRadio2" autocomplete="off">
-								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio2"><img src="/static/img/Theme.png"></label>
+								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio2"><img src="https://raw.githubusercontent.com/42data/r/main/ft_transcendence/theme0.png"></label>
 							</div>
 							<div class="col-md-6 my-2 GameConfig-Img d-flex justify-content-center">
 								<input type="radio" class="btn-check GameConfig-ThemeInput" name="ThemeRadio" id="ThemeRadio3" autocomplete="off">
-								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio3"><img src="/static/img/Theme.png"></label>
+								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio3"><img src="https://raw.githubusercontent.com/42data/r/main/ft_transcendence/theme0.png"></label>
 							</div>
 							<div class="col-md-6 my-2 GameConfig-Img d-flex justify-content-center">
 								<input type="radio" class="btn-check GameConfig-ThemeInput" name="ThemeRadio" id="ThemeRadio4" autocomplete="off">
-								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio4"><img src="/static/img/Theme.png"></label>
+								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio4"><img src="https://raw.githubusercontent.com/42data/r/main/ft_transcendence/theme0.png"></label>
 							</div>
 						</div>
 					</div>
 					<div class="col-md-3 my-3 d-flex flex-column justify-content-between">
 						<div class="GameConfig-Speed row py-2 d-flex justify-content-center">
-							<div class="text-center p-4 fs-3 fw-semibold">Ball Speed :</div>
-							<div class="container-blur d-flex justify-content-around py-2">
+							<div class="text-center p-4 fs-3 fw-semibold">Ball Speed:</div>
+							<div class="ball-speed-container">
 								<div class="moving-point" id="speed-ball"></div>
 								<input type="radio" class="btn-check GameConfig-SpeedInput" name="SpeedRadio" id="SpeedRadio-btn1" autocomplete="off">
 								<label class="btn GameConfig-SpeedLabel" for="SpeedRadio-btn1">Slow</label>
 
 								<input type="radio" class="btn-check GameConfig-SpeedInput" name="SpeedRadio" id="SpeedRadio-btn2" checked autocomplete="off">
-								<label class="btn GameConfig-SpeedLabel mx-3" for="SpeedRadio-btn2">Normal</label>
+								<label class="btn GameConfig-SpeedLabel" for="SpeedRadio-btn2">Normal</label>
 
 								<input type="radio" class="btn-check GameConfig-SpeedInput" name="SpeedRadio" id="SpeedRadio-btn3" autocomplete="off">
 								<label class="btn GameConfig-SpeedLabel" for="SpeedRadio-btn3">Fast</label>
@@ -100,7 +116,10 @@ async function GameConfig(context, id = null) {
 		let modeTO = document.getElementById("ModeRadio-btn3");
 		let playerCount = document.getElementById("player-count");
 		let limitFT = document.getElementById("limit-ft");
-		let limitTO = document.getElementById("limit-to");
+		let limitTOMinDec = document.getElementById("limit-to-min-dec");
+		let limitTOMinUni = document.getElementById("limit-to-min-uni");
+		let limitTOSecDec = document.getElementById("limit-to-sec-dec");
+		let limitTOSecUni = document.getElementById("limit-to-sec-uni");
 		let theme1 = document.getElementById("ThemeRadio1");
 		let theme2 = document.getElementById("ThemeRadio2");
 		let theme3 = document.getElementById("ThemeRadio3");
@@ -111,17 +130,56 @@ async function GameConfig(context, id = null) {
 		let speed3 = document.getElementById("SpeedRadio-btn3");
 		let startBtn = document.getElementById("start-btn");
 
+		document.querySelectorAll("[decr]").forEach(e => e.onclick = () => {
+			let input = document.getElementById(e.getAttribute("decr"));
+			input.value = parseInt(input.value) - 1;
+			normalizeTime(limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni);
+			normalizeOther(playerCount);
+			normalizeOther(limitFT);
+		});
+		document.querySelectorAll("[incr]").forEach(e => e.onclick = () => {
+			let input = document.getElementById(e.getAttribute("incr"));
+			input.value = parseInt(input.value) + 1;
+			normalizeTime(limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni);
+			normalizeOther(playerCount);
+			normalizeOther(limitFT);
+		});
+		document.querySelectorAll("input[type=number]").forEach(e =>
+			e.addEventListener("wheel", event => {
+				event.preventDefault();
+				let input = event.target;
+				input.value = parseInt(input.value) + (event.deltaY < 0 ? 1 : -1);
+				normalizeTime(limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni);
+				normalizeOther(playerCount);
+				normalizeOther(limitFT);
+			})
+		);
+		document.querySelectorAll("input[type=number]").forEach(e =>
+			e.addEventListener("focus", (e) => e.target.select()));
+
+		limitTOMinDec.addEventListener("input", (e) =>
+			inputTime(e.target, limitTOMinUni, limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni));
+		limitTOMinUni.addEventListener("input", (e) =>
+			inputTime(e.target, limitTOSecDec, limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni));
+		limitTOSecDec.addEventListener("input", (e) =>
+			inputTime(e.target, limitTOSecUni, limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni));
+		limitTOSecUni.addEventListener("input", (e) =>
+			inputTime(e.target, null, limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni));
+
+		playerCount.addEventListener("change", () => changeOther(playerCount));
+		limitFT.addEventListener("change", () => changeOther(limitFT));
+
 		modeFT.addEventListener("change", () => {
-			limitFT.parentElement.style.display = "flex";
-			limitTO.parentElement.style.display = "none";
+			limitFT.parentElement.parentElement.style.display = "flex";
+			limitTOSecUni.parentElement.parentElement.style.display = "none";
 		});
 		modeBR.addEventListener("change", () => {
-			limitFT.parentElement.style.display = "none";
-			limitTO.parentElement.style.display = "none";
+			limitFT.parentElement.parentElement.style.display = "none";
+			limitTOSecUni.parentElement.parentElement.style.display = "none";
 		});
 		modeTO.addEventListener("change", () => {
-			limitFT.parentElement.style.display = "none";
-			limitTO.parentElement.style.display = "flex";
+			limitFT.parentElement.parentElement.style.display = "none";
+			limitTOSecUni.parentElement.parentElement.style.display = "flex";
 		});
 		function updateSpeed(speed) {
 			let interval = setInterval(() => {
@@ -158,15 +216,13 @@ async function GameConfig(context, id = null) {
 		startBtn.addEventListener("click", () => {
 			let playerCountVal = parseInt(playerCount.value);
 			let limitFTVal = parseInt(limitFT.value);
-			let limitTOVal = parseInt(limitTO.value);
+			let limitTOVal = normalizeTime(limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni);
 			if (modeFT.checked + modeBR.checked + modeTO.checked !== 1)
 				return err("Please select a game mode."); // TODO: translate
 			if (isNaN(playerCountVal) || playerCountVal < 2 || playerCountVal > 30)
-				return err("Please select a number of players between 2 and 50."); // TODO: translate
-			if (modeFT.checked && (isNaN(limitFTVal) || limitFTVal < 1 || limitFTVal > 50))
-				return err("Please select a number of points between 1 and 30."); // TODO: translate
-			if (modeTO.checked && (isNaN(limitTOVal) || limitTOVal < 1 || limitTOVal > 60))
-				return err("Please select a timer between 1 and 60 minutes."); // TODO: translate
+				return err("Please select a number of players between 2 and 30."); // TODO: translate
+			if (modeFT.checked && (isNaN(limitFTVal) || limitFTVal < 1 || limitFTVal > 100))
+				return err("Please select a number of points between 1 and 100."); // TODO: translate
 			if (theme1.checked + theme2.checked + theme3.checked + theme4.checked !== 1)
 				return err("Please select a theme."); // TODO: translate
 			if (speed1.checked + speed2.checked + speed3.checked !== 1)
@@ -193,6 +249,81 @@ async function GameConfig(context, id = null) {
 		});
 	}, 250);
 	return div.outerHTML;
+}
+
+function normalizeTime(minDec, minUni, secDec, secUni, minTime = 60, maxTime = 3600) {
+	let minDecVal = parseInt(minDec.value);
+	let minUniVal = parseInt(minUni.value);
+	let secDecVal = parseInt(secDec.value);
+	let secUniVal = parseInt(secUni.value);
+
+	if (isNaN(minDecVal))
+		minDecVal = 0;
+	if (isNaN(minUniVal))
+		minUniVal = 0;
+	if (isNaN(secDecVal))
+		secDecVal = 0;
+	if (isNaN(secUniVal))
+		secUniVal = 0;
+
+	let time = secUniVal + secDecVal * 10 + minUniVal * 60 + minDecVal * 600;
+	console.log(time, minDecVal, minUniVal, secDecVal, secUniVal);
+	if (time < minTime)
+		time = minTime;
+	if (time > maxTime)
+		time = maxTime;
+
+	let timeOld = time;
+
+	minDec.value = Math.floor(time / 600);
+	time -= minDec.value * 600;
+	minUni.value = Math.floor(time / 60);
+	time -= minUni.value * 60;
+	secDec.value = Math.floor(time / 10);
+	time -= secDec.value * 10;
+	secUni.value = time;
+
+	return timeOld;
+}
+
+function inputTime(current, next, minDec, minUni, secDec, secUni) {
+	if (current.value.length == 0)
+		return;
+	let val = parseInt(current.value);
+	if (isNaN(val)) {
+		current.value = "";
+		return;
+	}
+	normalizeTime(minDec, minUni, secDec, secUni);
+	if (next)
+		next.focus();
+	else
+		current.blur();
+}
+
+function changeOther(current) {
+	if (current.value.length == 0)
+		return;
+	let val = parseInt(current.value);
+	if (isNaN(val)) {
+		current.value = "";
+		return;
+	}
+	normalizeOther(current);
+	current.blur();
+}
+
+function normalizeOther(current) {
+	let val = parseInt(current.value);
+	let min = parseInt(current.min);
+	let max = parseInt(current.max);
+	if (isNaN(val))
+		val = min;
+	if (val < min)
+		val = min;
+	if (val > max)
+		val = max;
+	current.value = val;
 }
 
 

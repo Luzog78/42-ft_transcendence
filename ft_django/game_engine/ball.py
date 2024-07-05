@@ -18,11 +18,11 @@ from .player import Player
 
 class Ball:
 	def __init__(self, lobby, radius, id):
-		self.lobby: 	Lobby	= lobby
-		self.radius: 	int		= radius
+		self.lobby:		Lobby	= lobby
+		self.radius:	int		= radius
 
-		self.terminal_velocity: float = 8
-		self.current_vel_length: float = 0
+		self.terminal_velocity:		float = 8
+		self.current_vel_length:	float = 0
 
 		self.pos: Vector = Vector(0, 0)
 		self.vel: Vector = Vector(0, 0)
@@ -58,11 +58,11 @@ class Ball:
 
 	async def updateBall(self):
 		await self.lobby.sendData("modify", {f"scene.balls[{self.id}].sphere.position.x": self.pos.x,
-									   		f"scene.balls[{self.id}].sphere.position.z": self.pos.y})
+											f"scene.balls[{self.id}].sphere.position.z": self.pos.y})
 		await self.lobby.sendData("modify", {f"scene.balls[{self.id}].vel.x": self.vel.x,
-									   		f"scene.balls[{self.id}].vel.z": self.vel.y})
+											f"scene.balls[{self.id}].vel.z": self.vel.y})
 		await self.lobby.sendData("modify", {f"scene.balls[{self.id}].acc.x": self.acc.x,
-									   		f"scene.balls[{self.id}].acc.z": self.acc.y})
+											f"scene.balls[{self.id}].acc.z": self.acc.y})
 
 	def resolutionCollision(self, collision_normal:Vector, minDistance:float):
 		penetration_depth = self.radius - minDistance

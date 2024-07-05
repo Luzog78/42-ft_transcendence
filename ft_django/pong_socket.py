@@ -8,7 +8,7 @@ game_server = GameServer()
 class PongSocket(AsyncWebsocketConsumer):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		
+
 		self.registered = False
 		self.username = None
 

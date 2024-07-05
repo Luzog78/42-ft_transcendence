@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/04 05:14:00 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/04 09:33:02 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ async function Tournament(context) {
 							}
 					}
 					let isEliminated = winnerIdx != null && winnerIdx != k;
-					
+
 					if (i == 0)
 						y += 10;
 					else

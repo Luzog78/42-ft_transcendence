@@ -16,6 +16,8 @@ import { initPlayerText } from "./map.js";
 import { Particle } from "./Particle.js";
 import { destroyObject } from './main.js';
 import { global_context } from '../script.js';
+import { refresh } from '../script.js'; // used for eval !
+import { setWaitingTotalPlayerCount, incrementWaitingPlayerCount } from '../pages/Pong.js'; // used for eval !
 
 class Server
 {

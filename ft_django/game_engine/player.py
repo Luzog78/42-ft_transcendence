@@ -17,17 +17,17 @@ from .vector import Vector
 
 class Player:
 	def __init__(self, lobby: 'Lobby', client: 'Player', client_id: int):
-		self.lobby: 	Lobby 	= lobby
-		self.client: 	Player 	= client
+		self.lobby:		Lobby	= lobby
+		self.client:	Player	= client
 
 		self.client_id: int	= client_id
 
-		self.angle:		float 	= 0
-		self.pos:		Vector 	= Vector(0, 0)
-		self.init_pos:	Vector 	= Vector(0, 0)
+		self.angle:		float	= 0
+		self.pos:		Vector	= Vector(0, 0)
+		self.init_pos:	Vector	= Vector(0, 0)
 		self.speed:		float	= 1.2
 
-		self.kills:				int 	= 0 #done
+		self.kills:				int		= 0 #done
 		self.deaths:			int		= 0 #done
 		self.best_streak:		int		= 0
 		self.rebounces:			int		= 0 #done
@@ -48,7 +48,7 @@ class Player:
 		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
 										"scene.server.client_id": self.client_id})
 		await self.sendData("call", {"command": "scene.initConnection",
-							   		"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'"]}) #todo theme
+									"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'"]}) #todo theme
 		await self.updateSelfToother()
 
 	def addSelfWall(self):
@@ -75,12 +75,15 @@ class Player:
 
 	async def updateSelfToother(self):
 		await self.sendToOther("call", {"command": "scene.server.newPlayer",
-								  		"args": [f"'player{self.client_id}'", f"'{self.client.username}'"]})
+										"args": [f"'player{self.client_id}'", f"'{self.client.username}'"]})
+		await self.sendData("call", {"command": 'incrementWaitingPlayerCount', "args": []})
+		await self.sendToOther("call", {"command": 'incrementWaitingPlayerCount', "args": []})
 
 		for i in range(self.client_id + 1):
 			player = self.lobby.clients[i]
 			await self.sendData("call", {"command": "scene.server.newPlayer",
 									"args": [f"'player{i}'", f"'{player.client.username}'"]})
+			await self.sendData("call", {"command": 'incrementWaitingPlayerCount', "args": []})
 
 	async def move(self, x: float, y: float):
 		player_vertex = self.lobby.walls["player" + str(self.client_id)]
@@ -103,7 +106,7 @@ class Player:
 
 		playerBoxJS = "scene.get('player" + str(self.client_id) + "').player"
 		await self.sendToOther("modify", {f"{playerBoxJS}.position.x": self.pos.x,
-		  							f"{playerBoxJS}.position.z": self.pos.y})
+									f"{playerBoxJS}.position.z": self.pos.y})
 
 	async def update(self):
 		if (len(self.lobby.walls) == 0):
