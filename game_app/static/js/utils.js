@@ -17,7 +17,7 @@ function postRaw(context, url, body, jsonify = true) {
 	let promise = fetch(url, {
 		method: "POST",
 		headers: {
-			"Authorization": "Bearer " + context.user.token,
+			"Authorization": "Bearer " + (context && context.user ? context.user.token : null),
 		},
 		body: body,
 	});
@@ -31,7 +31,7 @@ function postJson(context, url, data, jsonify = true, catches = true) {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json; charset=utf-8",
-			"Authorization": "Bearer " + context.user.token,
+			"Authorization": "Bearer " + (context && context.user ? context.user.token : null),
 		},
 		body: JSON.stringify(data),
 	});
@@ -49,7 +49,7 @@ function getJson(context, url, catches = true) {
 	let promise = fetch(url, {
 		method: "GET",
 		headers: {
-			"Authorization": "Bearer " + context.user.token,
+			"Authorization": "Bearer " + (context && 	context.user ? context.user.token : null),
 		},
 	}).then(res => res.json());
 	if (catches)
@@ -435,6 +435,16 @@ function setupCopyKBDSpan(text, copySpan, spans = [],
 }
 
 
+function isElementVisible(elem, partially = false) {
+	const { top, left, bottom, right } = elem.getBoundingClientRect();
+	const { innerHeight, innerWidth } = window;
+	if (partially)
+		return ((top > 0 && top < innerHeight) || (bottom > 0 && bottom < innerHeight))
+			&& ((left > 0 && left < innerWidth) || (right > 0 && right < innerWidth));
+	return top >= 0 && left >= 0 && bottom <= innerHeight && right <= innerWidth;
+}
+
+
 export {
 	getJson,
 	postRaw,
@@ -455,4 +465,5 @@ export {
 	toLocalDateStringFormat,
 	getGameMode,
 	setupCopyKBDSpan,
+	isElementVisible,
 };

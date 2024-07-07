@@ -6,14 +6,13 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/05 13:21:55 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/05 16:11:27 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { NavBar } from "../components/NavBar.js";
-import { Persistents, pushPersistents } from "../components/Persistents.js";
+import { pushPersistents } from "../components/Persistents.js";
 import { getLang, persistError, redirect, refresh } from "../script.js";
-import { getJson, postJson, setupCopyKBDSpan } from "../utils.js";
+import { getJson, setupCopyKBDSpan } from "../utils.js";
 
 
 var DIV_H = 125;
@@ -21,24 +20,20 @@ var DIV_W = 80;
 
 async function Tournament(context, tid, data = null) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar("Tournament", context);
-	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
-		<div id="tournament-content" class="block-blur">
-			<div class="block-blur-pad"></div>
-			<div class="container-fluid">
-				<div id="title">
-					<div class="kbd-span" id="title">
-						<h1 class="pointer notSelectable" id="game-uid">...</h1>
-						<span class="pointer notSelectable" id="game-icon">⌛</span>
-					</div>
-				</div>
-				<div class="container-fluid" id="tournament-container">
-				</div>
+		<div id="title">
+			<div class="kbd-span" id="title">
+				<h1 class="pointer notSelectable" id="game-uid">...</h1>
+				<span class="pointer notSelectable" id="game-icon">⌛</span>
 			</div>
-			<div class="block-blur-pad"></div>
 		</div>
+
+		<div class="container-fluid" id="tournament-container">
+		</div>
+
+		<a href="/tournament" data-link><button id="go-to-new" class="btn btn-outline-secondary"><span>⤆<span></button></a>
 	`;
+
 	setTimeout(async () => {
 		let container = document.getElementById("tournament-container");
 		let title = document.getElementById("title");
@@ -50,8 +45,8 @@ async function Tournament(context, tid, data = null) {
 			return;
 		}
 
-		// if (!data)
-		// 	data = await getJson(context, `/api/tournament/${tid}`);
+		if (!data)
+			data = await getJson(context, `/api/tournament/${tid}`);
 		if (data && data.ok) {
 			titleH1.innerText = "#" + data.tid;
 			setupCopyKBDSpan(data.tid, titleIcon, [ titleH1 ]);
@@ -63,7 +58,7 @@ async function Tournament(context, tid, data = null) {
 				<h1 class="notSelectable">${getLang(context, "pages.tournament.noTournament")}</h1>
 				<hr style="margin-top: 30px; margin-bottom: 15px">
 				<p>${getLang(context, "pages.tournament.noTournamentDesc")}</p>
-				<a class="no-style btn btn-outline-warning" href="/create" data-link>${getLang(context, "pages.tournament.create")}</a>
+				<a class="no-style btn btn-outline-warning" href="/tournament" data-link>${getLang(context, "pages.tournament.create")}</a>
 			`;
 			if (data) {
 				persistError(context, getLang(context, data.error));
@@ -158,7 +153,7 @@ async function Tournament(context, tid, data = null) {
 		let width = (pools.length - 1) * DIV_W * 4 + DIV_W;
 		container.style.width = width + "px";
 		container.style.margin = "auto";
-	}, 250);
+	}, 200);
 	return div.innerHTML;
 }
 

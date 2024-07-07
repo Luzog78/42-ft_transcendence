@@ -186,6 +186,8 @@
 	z-index: 6;
 }
 
+/* ************************************************************************** */
+
 #tournament-content #no-tournament hr {
 	margin-top: 30px;
 	margin-bottom: 50px;
@@ -209,6 +211,110 @@
 	background-color: transparent;
 	color: var(--c-fg);
 }
+
+/* ************************************************************************** */
+
+#tournament-content #back-from-tourn,
+#tournament-content #back-from-new,
+#tournament-content #go-to-new {
+	position: absolute;
+	bottom: 0;
+	right: 10px;
+	width: 42px;
+	height: 42px;
+	padding: 0;
+	font-size: 25px;
+	line-height: 25px;
+}
+
+#tournament-content #back-from-tourn > *,
+#tournament-content #back-from-new > *,
+#tournament-content #go-to-new > *,
+#tournament-content #scroll-up > * {
+	position: relative;
+	top: -2px;
+	color: #6c757D;
+	transition: .5s;
+}
+
+#tournament-content #back-from-tourn:hover,
+#tournament-content #back-from-new:hover,
+#tournament-content #go-to-new:hover,
+#tournament-content #scroll-up:hover {
+	background-color: #6c757D22;
+}
+
+#tournament-content #back-from-tourn:hover > *,
+#tournament-content #back-from-new:hover > *,
+#tournament-content #go-to-new:hover > *,
+#tournament-content #scroll-up:hover > *{
+	color: #ccc;
+}
+
+/* ************************************************************************** */
+
+#tournament-content .table {
+	margin-top: 50px;
+	margin-left: 7.5%;
+	margin-right: 7.5%;
+	width: 85%;
+}
+
+#tournament-content .table > thead > * > * {
+	font-weight: 600;
+}
+
+#tournament-content .table th {
+	border-top: none;
+}
+
+#tournament-content .table > :not(caption) > * > * {
+	background-color: transparent;
+	color: var(--c-fg);
+}
+
+#tournament-content .table-striped > tbody > tr:nth-of-type(2n+1) > * {
+	background-color: #00000030;
+}
+
+#tournament-content .table > tbody > tr:hover > * {
+	background-color: #00000050;
+}
+
+#tournament-content .table .finished {
+	color: #7d6c72;
+	font-weight: 600;
+}
+
+#tournament-content .table .pending {
+	color: #10afd3;
+	font-weight: 600;
+}
+
+#tournament-content .table .ongoing {
+	color: #21d310;
+	font-weight: 600;
+}
+
+#tournament-content #scroll-up {
+	width: 60%;
+	margin-left: 20%;
+	margin-right: 20%;
+	margin-top: 100px;
+	margin-bottom: 100px;
+	color: #aaa;
+	font-size: 20px;
+}
+
+#tournament-content #load-label {
+	margin-bottom: 50px;
+	text-align: center;
+	color: #aaa;
+	text-shadow: 0 0 8px #aaaa;
+	font-size: 20px;
+}
+
+/* ************************************************************************** */
 
 @keyframes tournament-appear {
 	0% {

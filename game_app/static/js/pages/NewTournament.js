@@ -6,45 +6,36 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/05 13:23:41 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/05 14:28:00 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { NavBar } from "../components/NavBar.js";
-import { Persistents, pushPersistents } from "../components/Persistents.js";
-import { getLang, persistError, redirect, refresh } from "../script.js";
+import { pushPersistents } from "../components/Persistents.js";
+import { getLang, persistError, redirect } from "../script.js";
 import { postJson } from "../utils.js";
 
 
 async function NewTournament(context) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar("Tournament", context);
-	div.innerHTML += Persistents(context);
-	div.innerHTML += /*html*/`
-		<div id="tournament-content" class="block-blur">
-			<div class="block-blur-pad"></div>
-			<div class="container-fluid">
+	div.innerHTML = /*html*/`
+		<div id="no-tournament">
 
-				<div id="no-tournament">
+			<h1>${getLang(context, "pages.tournament.noTournament")}</h1>
 
-					<h1>${getLang(context, "pages.tournament.noTournament")}</h1>
+			<hr>
 
-					<hr>
+			<p>${getLang(context, "pages.tournament.noTournamentDesc")}</p>
 
-					<p>${getLang(context, "pages.tournament.noTournamentDesc")}</p>
-
-					<div class="kbd-span">
-						<span class="pointer notSelectable" decr="player-count">-</span>
-						<input type="number" id="player-count" class="fs-5 fw-light w100" value="5" min="2" max="1000">
-						<span class="pointer notSelectable" incr="player-count">+</span>
-					</div>
-
-					<button id="create-tournament" class="btn btn-primary">${getLang(context, "pages.tournament.create")}</button>
-
-				</div>
-
+			<div class="kbd-span">
+				<span class="pointer notSelectable" decr="player-count">-</span>
+				<input type="number" id="player-count" class="fs-5 fw-light w100" value="5" min="2" max="1000">
+				<span class="pointer notSelectable" incr="player-count">+</span>
 			</div>
-			<div class="block-blur-pad"></div>
+
+			<button id="create-tournament" class="btn btn-outline-success">${getLang(context, "pages.tournament.create")}</button>
+
+			<a href="/tournament" data-link><button id="back-from-new" class="btn btn-outline-secondary"><span>⤆<span></button></a>
+
 		</div>
 	`;
 
@@ -87,7 +78,7 @@ async function NewTournament(context) {
 					pushPersistents(context);
 				}
 			});
-		}
+		};
 	}, 200);
 	return div.innerHTML;
 }

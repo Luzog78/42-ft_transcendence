@@ -28,8 +28,7 @@ import { ChatConnexion } from "./ChatConnexion.js";
 
 import { getJson } from "./utils.js";
 import { destroyScene } from "./pong_game/main.js";
-import { Tournament } from "./pages/Tournament.js";
-import { NewTournament } from "./pages/NewTournament.js";
+import { TournamentManager } from "./pages/TournamentManager.js";
 
 
 const SUPPORTED_LANGS = ["en", "fr"];
@@ -139,12 +138,16 @@ const router = [
 		component: GameConfig,
 	},
 	{
+		path: "/tournament",
+		component: TournamentManager,
+	},
+	{
 		path: "/tournament/<alphanum>",
-		component: Tournament,
+		component: TournamentManager,
 	},
 	{
 		path: "/create",
-		component: NewTournament,
+		component: TournamentManager,
 	},
 ];
 
@@ -329,13 +332,21 @@ window.addEventListener("load", async () => {
 			+ window.location.search + window.location.hash);
 
 	document.body.addEventListener("click", (e) => {
-		if (e.target.matches("[data-link]")) {
-			e.preventDefault();
-			let target = e.target;
-			if (target.href === undefined)
-				target = target.parentElement;
-			window.history.pushState(null, null, target.href);
-			loadPage(new URL(target.href).pathname);
+		let elem = e.target;
+		while (elem) {
+			if (elem.matches("[data-link]")) {
+				e.preventDefault();
+				let href = elem.href;
+				if (href === undefined)
+					href = window.location.origin + elem.getAttribute("href");
+				console.log(`[🔗] Clicked on link: ${href}`);
+				if (href === undefined)
+					elem = elem.parentElement;
+				window.history.pushState(null, null, href);
+				loadPage(new URL(href).pathname);
+				return;
+			}
+			elem = elem.parentElement;
 		}
 	});
 

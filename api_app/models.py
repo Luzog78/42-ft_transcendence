@@ -330,7 +330,7 @@ class Status(models.TextChoices):
 
 	@staticmethod
 	def get_names():
-		return (Status.PENDING[1], Status.ONGOING[1], Status.FINISHED[1])
+		return Status.PENDING[1], Status.ONGOING[1], Status.FINISHED[1]
 
 	@staticmethod
 	def parse(status):
@@ -471,7 +471,7 @@ class Tournament(models.Model):
 		player_count: int
 
 	Auto fields:
-		id: int
+		created_at: datetime
 		pools: list[int]  ->> In the manager
 
 	Additionnal fields:
@@ -481,11 +481,24 @@ class Tournament(models.Model):
 	'''
 
 	tid				= models.CharField(primary_key=True, max_length=5, blank=False, null=False)
+	created_at		= models.DateTimeField(auto_now=True, blank=False)
 	player_count	= models.IntegerField()
 	players			= ArrayField(models.CharField(max_length=24), default=list)
 	pools			= ArrayField(models.IntegerField(), default=list)
 	current_pool	= models.IntegerField(default=0)
 	status			= models.CharField(max_length=1, choices=Status.choices, default=Status.PENDING)
+
+	@staticmethod
+	def new_uid() -> str:
+		charset1 = 'abcdefghijklmnopqrstuvwxyz'
+		charset2 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+		max_tries = len(set(charset1)) ** 2 * len(set(charset2)) ** 3
+		while max_tries:
+			uid = ''.join(random.choices(charset1, k=2) + random.choices(charset2, k=3))
+			if not Tournament.objects.filter(tid=uid).exists():
+				return uid
+			max_tries -= 1
+		return None # type: ignore
 
 	def __str__(self):
 		return self.tid
@@ -499,6 +512,7 @@ class Tournament(models.Model):
 					pools.append(p.json(json_matches))
 		return {
 			'tid': self.tid,
+			'createdAt': self.created_at,
 			'playerCount': self.player_count,
 			'players': self.players,
 			'pools': pools,

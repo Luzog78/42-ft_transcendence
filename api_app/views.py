@@ -575,7 +575,7 @@ def view_tournament_get(request: HttpRequest):
 	return JsonResponse({
 		'ok': True,
 		'length': len(tournaments),
-		'tournaments': [t.tid for t in tournaments],
+		'tournaments': [[t.tid, t.created_at] for t in tournaments],
 	})
 
 
@@ -594,7 +594,7 @@ def view_tournament_new(request: HttpRequest):
 	if not valid:
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
 
-	tournament = Tournament.objects.create(tid=Game.new_uid(), player_count=data['players']).init()
+	tournament = Tournament.objects.create(tid=Tournament.new_uid(), player_count=data['players']).init()
 	return JsonResponse({'ok': True, 'success': 'successes.tournamentCreated', **tournament.json()})
 
 
@@ -626,10 +626,11 @@ def view_tournament_lst(request: HttpRequest):
 		if not t:
 			not_found.append(tid)
 			continue
-		found.append(t[0].json(False))
+		found.append(t[0].json(data['details']))
 
 	return JsonResponse({
 		'ok': True,
+		'details': data['details'],
 		'foundLength': len(found),
 		'notFoundLength': len(not_found),
 		'found': found,
@@ -701,31 +702,8 @@ def view_tournament_quit(request: HttpRequest, tid: str, username: str):
 def view_test(request: HttpRequest, whatever: int):
 	if whatever == 0:
 
-		# if not tournament_manager.active_tournaments:
-		# 	t = tournament_manager.Tournament(Game.new_uid(), 10)
-		# 	t.register()
-
-		# t = tournament_manager.active_tournaments[0]
-
-		# users = User.objects.all()
-
-		# i = 0
-		# for u in users:
-		# 	if i >= 10:
-		# 		break
-		# 	t.add_player(u)
-		# 	i += 1
-
-
-		# a = User.objects.get(username='aaaa')
-		# t.pools[0].matches[0].winner = a
-		# t.pools[0].matches[0].status = tournament_manager.Status.FINISHED
-		# t.pools[1].matches[0].add_player(a)
-		# a = User.objects.get(username='6666')
-		# t.pools[0].matches[1].winner = a
-		# t.pools[0].matches[1].status = tournament_manager.Status.FINISHED
-		# t.pools[1].matches[0].add_player(a)
-		# t.current_pool += 1
+		for _ in range(50):
+			Tournament.objects.create(tid=Tournament.new_uid(), player_count=random.randint(2, 30)).init()
 
 		return JsonResponse({'ok': True, 'success': 'Whatever...'})
 
