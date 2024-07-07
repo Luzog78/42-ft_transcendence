@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 14:30:41 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/07 11:42:35 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/07 12:03:29 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,18 @@ async function TournamentList(context) {
 
 				let sliced = tids.slice(0, 50);
 				tids = tids.slice(50);
-				await appendTournaments(context, sliced, tbody);
+				let result = await appendTournaments(context, sliced, tbody);
+				if (!result) {
+					let refreshButton = document.createElement("div");
+					refreshButton.innerHTML = /*html*/`
+						<button class="btn btn-primary" href="${window.location.pathname}" data-link>Refresh</button>
+					`;
+					refreshButton.style.width = "100%";
+					refreshButton.style.marginTop = "100px";
+					refreshButton.style.textAlign = "center";
+					table.parentElement.appendChild(refreshButton);
+					return;
+				}
 
 				setTimeout(() => {
 					if (table.parentElement.scrollTop + table.parentElement.clientHeight < table.parentElement.scrollHeight) {
@@ -113,13 +124,20 @@ async function TournamentList(context) {
 										scrollable = false;
 										loadLabel.innerText = "⌛";
 										sliced = tids.slice(0, 50);
+										let result = await appendTournaments(context, sliced, tbody);
+										scrollable = true;
+										if (!result) {
+											table.parentElement.scrollTop -= 10;
+											setTimeout(() => {
+												loadLabel.innerText = "[❌] Try again..."; // TODO: Translate
+											}, 50, st);
+											return;
+										}
 										tids = tids.slice(50);
-										await appendTournaments(context, sliced, tbody);
 										if (tids.length == 0)
 											loadLabel.remove();
 										else
 											loadLabel.innerText = "";
-										scrollable = true;
 									}
 								}
 							} else {
@@ -146,7 +164,7 @@ async function appendTournaments(context, tids, tbody) {
 	if (!data.ok) {
 		persistError(context, getLang(context, data.error));
 		pushPersistents(context);
-		return;
+		return false;
 	}
 
 	for (var i = 0; i < data.foundLength; i++) {
@@ -177,6 +195,8 @@ async function appendTournaments(context, tids, tbody) {
 		td.onmouseout = () => td.innerText = td.getAttribute("ago");
 		td.innerText = td.getAttribute("ago");
 	});
+
+	return true;
 }
 
 

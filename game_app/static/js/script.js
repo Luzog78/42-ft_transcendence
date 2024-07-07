@@ -20,7 +20,6 @@ import { Profile } from "./pages/Profile.js";
 import { Play } from "./pages/Play.js";
 import { PlayId } from "./pages/PlayId.js";
 import { Pong } from "./pages/Pong.js";
-import { PongResult } from "./pages/PongResult.js";
 import { GameConfig} from "./pages/GameConfig.js";
 import { Settings } from "./pages/Settings.js";
 
@@ -54,6 +53,8 @@ var global_context = {
 	next: null,
 	ChatConnexion: new ChatConnexion(),
 };
+
+window.context = global_context;
 
 /// test + exemple but still test only
 // global_context.ChatConnexion.onOpen(() => {
