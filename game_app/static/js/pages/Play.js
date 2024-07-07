@@ -18,7 +18,7 @@ import { checkUID, clearFeedbacks, getJson } from "../utils.js";
 
 async function Play(context) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar(getLang(context, "pages.play.title"), context);
+	div.innerHTML = await NavBar(getLang(context, "pages.play.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<div class="container container-blur form-ssm" style="padding: 50px; margin-top: 100px;">

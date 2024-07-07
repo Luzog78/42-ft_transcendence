@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/06/26 06:46:14 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/07 16:27:48 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ async function setUserAttributes(context, data) {
 }
 
 
-function Settings(context) {
+async function Settings(context) {
 	let persistentBackup = persistCopy(context);
 	let div = document.createElement("div");
-	div.innerHTML = NavBar(getLang(context, "pages.profile.title"), context);
+	div.innerHTML = await NavBar(getLang(context, "pages.profile.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<p><br><br></p>
@@ -62,7 +62,7 @@ function Settings(context) {
 				<div class="right">
 
 					<a id="back" href="/profile" class="a-no-style" data-link>
-						<img src="/static/img/back.svg" alt="back" data-link>
+						<img src="/static/img/back.svg" alt="back">
 					</a>
 
 					<h1>${getLang(context, "pages.settings.title")}</h1>

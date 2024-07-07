@@ -18,7 +18,7 @@ import { Persistents, pushPersistents } from "../components/Persistents.js";
 
 async function Home(context) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar(getLang(context, "pages.home.title"), context);
+	div.innerHTML = await NavBar(getLang(context, "pages.home.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<p><br><br></p>

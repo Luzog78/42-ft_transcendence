@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/07 11:42:35 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/07 15:28:55 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ import { TournamentList } from "./TournamentList.js";
 
 async function TournamentManager(context, ...args) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar("Tournament", context);
+	div.innerHTML = await NavBar("Tournament", context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<div id="tournament-content" class="block-blur">

@@ -17,7 +17,7 @@ import { getLang } from "../script.js";
 
 async function Err404(context) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar(getLang(context, "pages.404.title"), context);
+	div.innerHTML = await NavBar(getLang(context, "pages.404.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<div style="position: fixed; top: 50%; transform: translateY(-50%); width: 100%; margin: auto">

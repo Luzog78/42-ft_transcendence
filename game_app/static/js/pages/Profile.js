@@ -19,7 +19,7 @@ import { HowLongAgo, getJson, postJson, toLocalDateStringFormat } from "../utils
 async function Profile(context, username) {
 	let persistentBackup = persistCopy(context);
 	let div = document.createElement("div");
-	div.innerHTML = NavBar(getLang(context, "pages.profile.title"), context);
+	div.innerHTML = await NavBar(getLang(context, "pages.profile.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<p><br><br></p>
@@ -28,7 +28,7 @@ async function Profile(context, username) {
 			<div class="container-fluid">
 
 				<a id="settings" href="/settings" class="a-no-style" data-link>
-					<img src="/static/img/settings.svg" alt="back" data-link>
+					<img src="/static/img/settings.svg" alt="back">
 				</a>
 
 				<div class="profile">

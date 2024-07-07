@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/02 17:55:28 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/07 16:33:47 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import * as THREE from 'three';
 
 import { Scene } from "./Scene.js";
+import { tryTo } from '../utils.js';
 
 
 let scene = undefined;
@@ -62,8 +63,8 @@ function destroyScene()
 		return;
 
 
-	window.removeEventListener("keyup", scene.get("player" + scene.server.client_id).keyup_event_func);
-	window.removeEventListener("keydown", scene.get("player" + scene.server.client_id).keydown_event_func);
+	tryTo(() => window.removeEventListener("keyup", scene.get("player" + scene.server.client_id).keyup_event_func));
+	tryTo(() => window.removeEventListener("keydown", scene.get("player" + scene.server.client_id).keydown_event_func));
 
 	scene.renderer.clear();
 	const canvas = scene.renderer.domElement;

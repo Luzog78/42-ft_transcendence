@@ -140,6 +140,13 @@ def view_login(request: HttpRequest):
 
 
 @csrf_exempt
+def view_is_logged(request: HttpRequest):
+	if not (response := auth.is_authenticated(request)):
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+	return JsonResponse({'ok': True, 'username': response.user})
+
+
+@csrf_exempt
 def view_user(request: HttpRequest, username: str | None = None):
 	user = None
 	show_email = False
@@ -589,7 +596,7 @@ def view_tournament_new(request: HttpRequest):
 
 	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
 
-	valid = 'players' in data and isinstance(data['players'], int) and 2 <= data['players'] <= 30
+	valid = 'players' in data and isinstance(data['players'], int) and 2 <= data['players'] <= 1000
 
 	if not valid:
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
@@ -667,6 +674,10 @@ def view_tournament_join(request: HttpRequest, tid: str, username: str):
 	if tournament.status != Status.PENDING:
 		return JsonResponse({'ok': False, 'error': 'errors.tournamentAlreadyStarted'})
 
+	if username in tournament.players:
+		return JsonResponse({'ok': False, 'error': 'errors.alreadyJoined'})
+
+	tournament.add_player(user.username)
 	return JsonResponse({'ok': True, 'success': 'successes.tournamentJoined'})
 
 
@@ -691,8 +702,10 @@ def view_tournament_quit(request: HttpRequest, tid: str, username: str):
 	if tournament.status != Status.PENDING:
 		return JsonResponse({'ok': False, 'error': 'errors.tournamentAlreadyStarted'})
 
-	tournament.quit(user.username)
+	if username not in tournament.players:
+		return JsonResponse({'ok': False, 'error': 'errors.notJoined'})
 
+	tournament.quit(user.username)
 	return JsonResponse({'ok': True, 'success': 'successes.tournamentQuit'})
 
 

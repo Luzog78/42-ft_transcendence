@@ -10,12 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { getLang, redirect } from "../script.js";
+import { getLang, onLogin, persistError, redirect } from "../script.js";
+import { getJson } from "../utils.js";
 
 
 var stunned = false;
 
-function NavBar(title, context, fetchProfile = true) {
+async function NavBar(title, context, fetchProfile = true) {
+	let data = await getJson(context, "/api/logged");
+	if (data.ok) {
+		if (!context.user.isAuthenticated)
+			await onLogin(context, data);
+	} else {
+		if (context.user.isAuthenticated) {
+			context.user.isAuthenticated = false;
+			context.user.token = null;
+			persistError(context, getLang(context, "error.sessionExpired"));
+		}
+	}
+
 	let div = document.createElement("div");
 	div.innerHTML = /*html*/`
 		<nav id="#navbar" class="navbar">
@@ -52,7 +65,7 @@ function NavBar(title, context, fetchProfile = true) {
 
 	if (context.user.isAuthenticated) {
 		right.innerHTML = /*html*/`
-			<a type="button" class="" href="/profile" id="" data-link><img class="profile-picture notSelectable" src="${context.user.picture ? context.user.picture : '/static/img/user.svg'}" alt="${getLang(context, "navbar.profilePictureAlt")}" data-link></a>
+			<a type="button" class="" href="/profile" id="" data-link><img class="profile-picture notSelectable" src="${context.user.picture ? context.user.picture : '/static/img/user.svg'}" alt="${getLang(context, "navbar.profilePictureAlt")}"></a>
 			<div type="button" id="logout-btn-zone">${getLang(context, "navbar.logout")}</div>
 			<a type="button" class="a-no-style profile-name" href="/profile" data-link>${getLang(context, "loading")}</a>
 			<a type="button" class="btn btn-outline-danger nav-links" href="/logout?next=${next}" id="logout-btn" data-link>${getLang(context, "navbar.logout")}</a>
@@ -177,10 +190,10 @@ function closeMenu(menu, container, gotoPlay, gotoTour, gotoChat) {
 	}, 1000);
 }
 
-function overrideNavBar(title, context) {
+async function overrideNavBar(title, context) {
 	let container = document.getElementById("#navbar");
 	if (container)
-		container.outerHTML = NavBar(title, context, false);
+		container.outerHTML = await NavBar(title, context, false);
 }
 
 

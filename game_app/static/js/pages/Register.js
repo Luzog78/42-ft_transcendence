@@ -18,7 +18,7 @@ import { getLang, persistError, persistSuccess, popNext, redirect } from "../scr
 
 async function Register(context) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar(getLang(context, "pages.register.title"), context);
+	div.innerHTML = await NavBar(getLang(context, "pages.register.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<p><br><br></p>

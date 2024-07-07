@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 
 from .views import view_err404, view_test, \
-					view_root, view_login, view_register, \
+					view_root, view_login, view_register, view_is_logged, \
 					view_user, view_user_set, view_user_setpic, view_user_del, \
 					view_games, view_game_list, view_game_user, view_game_uid, \
 					view_game_new, view_game_rand, \
@@ -18,6 +18,7 @@ def r(v, p): urlpatterns.insert(-1, path(p, v, name='api-' + v.__name__))
 r(view_root,		'')
 r(view_login,		'login')
 r(view_register,	'register')
+r(view_is_logged,	'logged')
 r(view_user,		'user')
 r(view_user,		'user/<str:username>')
 r(view_user_set,	'user/<str:username>/set')

@@ -445,6 +445,25 @@ function isElementVisible(elem, partially = false) {
 }
 
 
+function tryTo(func, catches = null) {
+	try {
+		return [true, func()];
+	} catch (e) {
+		console.log("[❌] Error on tryTo: ", e);
+		return [false, catches ? catches(e) : null];
+	}
+}
+
+
+function randomUUIDv4() {
+	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+		let r = Math.random() * 16 | 0;
+		let v = c === "x" ? r : (r & 0x3 | 0x8);
+		return v.toString(16);
+	});
+}
+
+
 export {
 	getJson,
 	postRaw,
@@ -466,4 +485,6 @@ export {
 	getGameMode,
 	setupCopyKBDSpan,
 	isElementVisible,
+	tryTo,
+	randomUUIDv4,
 };

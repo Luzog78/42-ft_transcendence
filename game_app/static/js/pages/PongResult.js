@@ -21,7 +21,7 @@ async function PongResult(context, id, data=null) {
 	if (data === null)
 		return await PlayId(context, id);
 	let div = document.createElement("div");
-	div.innerHTML = NavBar(getLang(context, "pages.playResult.title"), context);
+	div.innerHTML = await NavBar(getLang(context, "pages.playResult.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<div id="PongResult-content">

@@ -18,7 +18,7 @@ import { getGameMode, setupCopyKBDSpan } from "../utils.js";
 
 async function Pong(context, uid, data) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar("Profile", context);
+	div.innerHTML = await NavBar("Profile", context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<style type="text/css">

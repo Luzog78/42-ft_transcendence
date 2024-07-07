@@ -45,7 +45,7 @@ function createA2fInput(context) {
 
 async function Login(context) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar(getLang(context, "pages.login.title"), context);
+	div.innerHTML = await NavBar(getLang(context, "pages.login.title"), context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<p><br><br></p>

@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/05 04:46:15 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/07 15:28:22 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ import { postJson } from "../utils.js";
 
 async function GameConfig(context, id = null) {
 	let div = document.createElement("div");
-	div.innerHTML = NavBar("Game Settings", context);
+	div.innerHTML = await NavBar("Game Settings", context);
 	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<div id="GameConfig-content">

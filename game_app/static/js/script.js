@@ -282,12 +282,12 @@ const getLang = (context, key) => {
 	return found;
 }
 
-const onLogin = async (context, loadedData=null, reloadNav=false) => {
+const onLogin = async (context, loadedData = null, reloadNav = false) => {
 	var data;
 	if (loadedData)
 		data = loadedData;
 	else
-		data = getJson(context, "/api/user")
+		data = await getJson(context, "/api/user");
 
 	context.ChatConnexion.onOpen(() => {
 		if (context.user.token) {
@@ -301,8 +301,6 @@ const onLogin = async (context, loadedData=null, reloadNav=false) => {
 		}
 	})
 
-	if (!loadedData)
-		data = await data
 	if (data.ok) {
 		context.user.username = data.username;
 		context.user.createdAt = data.createdAt;
@@ -314,17 +312,17 @@ const onLogin = async (context, loadedData=null, reloadNav=false) => {
 		context.user.a2f = data.a2f;
 		context.user.isAdmin = data.isAdmin;
 		context.user.lastLogin = data.lastLogin;
+		await loadLang(context, data.lang);
 		if (!context.user.isAuthenticated) {
 			context.user.isAuthenticated = true;
 			if (reloadNav)
-				overrideNavBar(title, context);
+				await overrideNavBar(title, context);
 		}
-		await loadLang(context, data.lang);
-	}
-	else
+	} else {
 		await loadLang(context, DEFAULT_LANG);
-
-
+		if (reloadNav)
+			await overrideNavBar(title, context);
+	}
 }
 
 window.addEventListener("load", async () => {
@@ -338,11 +336,12 @@ window.addEventListener("load", async () => {
 			if (elem.matches("[data-link]")) {
 				e.preventDefault();
 				let href = elem.href;
-				if (href === undefined)
-					href = window.location.origin + elem.getAttribute("href");
+				if (href === undefined && elem.getAttribute("href") === null) {
+					console.log(`[❌] Failed to get href from element:`, elem);
+					return;
+				}
+				href = window.location.origin + elem.getAttribute("href");
 				console.log(`[🔗] Clicked on link: ${href}`);
-				if (href === undefined)
-					elem = elem.parentElement;
 				window.history.pushState(null, null, href);
 				loadPage(new URL(href).pathname);
 				return;
