@@ -93,15 +93,15 @@ class GameMode(models.TextChoices):
 
 	@staticmethod
 	def get_items():
-		return GameMode.TIME_OUT, GameMode.FIRST_TO, GameMode.BATTLE_ROYALE
+		return [('TO', 'Time Out'), ('FT', 'First To'), ('BR', 'Battle Royale')]
 
 	@staticmethod
 	def get_mods():
-		return GameMode.TIME_OUT[0], GameMode.FIRST_TO[0], GameMode.BATTLE_ROYALE[0]
+		return ['TO', 'FT', 'BR']
 
 	@staticmethod
 	def get_names():
-		return GameMode.TIME_OUT[1], GameMode.FIRST_TO[1], GameMode.BATTLE_ROYALE[1]
+		return ['Time Out', 'First To', 'Battle Royale']
 
 	@staticmethod
 	def parse(mode):
@@ -322,15 +322,15 @@ class Status(models.TextChoices):
 
 	@staticmethod
 	def get_items():
-		return Status.PENDING, Status.ONGOING, Status.FINISHED
+		return [('P', 'Pending'), ('O', 'Ongoing'), ('F', 'Finished')]
 
 	@staticmethod
 	def get_mods():
-		return Status.PENDING[0], Status.ONGOING[0], Status.FINISHED[0]
+		return ['P', 'O', 'F']
 
 	@staticmethod
 	def get_names():
-		return Status.PENDING[1], Status.ONGOING[1], Status.FINISHED[1]
+		return ['Pending', 'Ongoing', 'Finished']
 
 	@staticmethod
 	def parse(status):

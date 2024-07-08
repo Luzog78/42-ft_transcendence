@@ -11,10 +11,21 @@ services:
     networks:
     - transcendence_network
     restart: on-failure
-    expose:
-    - 5432
+
+  django:
+    container_name: django
+    env_file:
+    - .env
+    build:
+      context: ./django
+      dockerfile: Dockerfile
+    depends_on:
+    - postgresql
+    networks:
+    - transcendence_network
+    restart: on-failure
     ports:
-    - 5432:5432
+    - 8000:8000
 
 # volumes:
 #     db-data:

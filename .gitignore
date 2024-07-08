@@ -9,6 +9,7 @@
 ## But not these files... ##
 ############################
 
+!*.sh
 !*.py
 !*.html
 !*.css
