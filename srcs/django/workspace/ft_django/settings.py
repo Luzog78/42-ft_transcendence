@@ -25,6 +25,7 @@ INSTALLED_APPS = [
 	'channels',
 	'game_app',
 	'api_app',
+	'django_extensions',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
@@ -79,20 +80,26 @@ AUTHENTICATION_BACKENDS = [ 'api_app.backends.CustomBackend' ]
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-	'default': {
-	# 	'ENGINE': 'django.db.backends.sqlite3',
-	# 	'NAME': BASE_DIR / 'db.sqlite3',
-	# },
-	# 'pong': {
-		'ENGINE': 'django.db.backends.postgresql',
-		'NAME': os.environ.get('DB_NAME', 'pong'),
-		'USER': os.environ.get('DB_USER', 'pong'),
-		'PASSWORD': os.environ.get('DB_PASSWD', ''),
-		'HOST': os.environ.get('DB_HOST', 'localhost'),
-		'PORT': os.environ.get('DB_PORT', '5432')
+DATABASES = { 'default': { 'ENGINE': '', 'NAME': '' } }
+
+if os.environ.get('DB_HOST', None) is not None:
+	DATABASES = {
+		'default': {
+			'ENGINE': 'django.db.backends.postgresql',
+			'NAME': os.environ.get('DB_NAME', 'pong'),
+			'USER': os.environ.get('DB_USER', 'pong'),
+			'PASSWORD': os.environ.get('DB_PASSWD', ''),
+			'HOST': os.environ.get('DB_HOST', 'localhost'),
+			'PORT': os.environ.get('DB_PORT', '5432')
+		}
 	}
-}
+else:
+	DATABASES = {
+		'default': {
+			'ENGINE': 'django.db.backends.sqlite3',
+			'NAME': BASE_DIR / 'db.sqlite3',
+		}
+	}
 
 
 # Password validation
@@ -135,3 +142,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

@@ -27,6 +27,21 @@ services:
     ports:
     - 8000:8000
 
+  nginx:
+    container_name: nginx
+    env_file:
+    - .env
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    depends_on:
+    - django
+    networks:
+    - transcendence_network
+    restart: on-failure
+    ports:
+    - 443:443
+
 # volumes:
 #     db-data:
 #         driver: local
