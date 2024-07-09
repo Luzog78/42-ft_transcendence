@@ -124,19 +124,21 @@ function initNPlayerMap(scene, number)
 	}
 }
 
-function initCamera(scene, player_num)
+function initCamera(scene, player_num, following_player = null)
 {
+	if (following_player == null)
+	{
+		following_player = scene.server.client_id;
+		if (scene.server.client_id >= player_num)
+			following_player = 0;
+	}
 	if (player_num == 2)
 	{
 		scene.camera.setPosition(1.5, 4, 0);
 		return ;
 	}
 	
-	let camera_pos;
-	if (scene.server.client_id >= player_num)
-		camera_pos = new THREE.Vector3(0, 5, 0);
-	else
-		camera_pos = scene.get("player" + scene.server.client_id).player.position.clone();
+	let camera_pos = scene.get("player" + following_player).player.position.clone();
 	camera_pos = new THREE.Vector3(camera_pos.x, 4, camera_pos.z);
 
 	const look_at_point = new THREE.Vector3(0, 0, 0);
@@ -311,4 +313,4 @@ function initText(scene, player_num)
 	const dynamic_score_2 = new DynamicText(scene, "0", score_2_pos, rotation_score, 0.5, 0xffffff, "player1textscore");
 }
 
-export { initMap, initPlayerText };
+export { initMap, initPlayerText, initCamera };

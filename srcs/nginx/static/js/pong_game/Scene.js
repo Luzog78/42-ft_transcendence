@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/09 16:25:43 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/09 18:31:45 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ import { initMap } from "./map.js";
 import { Camera } from "./Camera.js";
 import { Ball } from "./Ball.js";
 import { remWaiting } from '../pages/Pong.js';
+import { Spectator } from "./Spectator.js";
 import { destroyScene } from "./main.js"
 import { refresh } from '../script.js';
 
@@ -123,6 +124,10 @@ class Scene
 		console.log("Player num: " + player_num + " Game mode: " + game_mode);
 		
 		initMap(this, player_num);
+
+		const spectator = new Spectator(this);
+		window.addEventListener("keydown", spectator.keydown_event_func);
+		window.addEventListener("keyup", spectator.keyup_event_func);
 	}
 
 	update()

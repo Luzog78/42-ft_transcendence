@@ -6,7 +6,7 @@
 #    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 15:11:13 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/09 16:10:14 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/09 18:32:30 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ class Spectator:
 		self.client:	PongSocket	= client
 		self.client_id:	int			= client_id
 		
+		self.keyboard: dict = {}
+
 	async def initSpectator(self):
 		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
 										"scene.server.client_id": self.client_id})
@@ -30,6 +32,26 @@ class Spectator:
 			await self.sendData("call", {"command": "scene.server.newPlayer",
 									"args": [f"'player{i}'", f"'{player.client.username}'"]})
 	
+	def isUp(self):
+		keys = ["w", "ArrowLeft"]
+		for key in keys:
+			if key in self.keyboard and self.keyboard[key] == True:
+				return True
+		return False
+
+	def isDown(self):
+		keys = ["s", "ArrowRight"]
+		for key in keys:
+			if key in self.keyboard and self.keyboard[key] == True:
+				return True
+		return False
+
+	async def update(self):
+		if (self.isUp()):
+			print("up")
+		if (self.isDown()):
+			print("down")
+
 	async def sendData(self, *args):
 		await self.client.sendData(*args)
 	

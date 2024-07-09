@@ -187,6 +187,10 @@ class Lobby:
 
 		time.sleep(3)
 
+		spectator = Spectator(self, player.client, player_id)
+		self.game_server.clients.append(spectator)
+		await self.addSpectator(spectator)
+
 		self.clients_per_lobby -= 1
 		self.time = 0
 		self.walls = self.init_map(self.clients_per_lobby)
@@ -215,10 +219,12 @@ class Lobby:
 				await ball.update()
 			for c in self.clients:
 				await c.update()
+			for s in self.spectators:
+				await s.update()
 
 	async def receive(self, data: dict):
 		client_id = data["client_id"]
-		if ("client_id" not in data or client_id >= len(self.clients)):
+		if ("client_id" not in data):
 			return
 
 		if ("ready" in data):
@@ -232,7 +238,10 @@ class Lobby:
 					await c.sendData("game_status", "START")
 
 		if ("player_keyboard" in data):
-			self.clients[client_id].keyboard = data["player_keyboard"]
+			if (client_id < len(self.clients)):
+				self.clients[client_id].keyboard = data["player_keyboard"]
+			else:
+				self.spectators[client_id].keyboard = data["player_keyboard"]
 
 	async def addClient(self, player: Player):
 		self.clients.append(player)

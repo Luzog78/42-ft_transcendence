@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/09 16:18:00 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/09 17:48:55 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ function destroyScene()
 	if (scene === undefined)
 		return;
 
-
+	
 	tryTo(() => window.removeEventListener("keyup", scene.get("player" + scene.server.client_id).keyup_event_func));
 	tryTo(() => window.removeEventListener("keydown", scene.get("player" + scene.server.client_id).keydown_event_func));
 
@@ -92,7 +92,6 @@ function animate(timestamp)
 		scene.update();
 		previous_timestamp = timestamp;
 	}
-	// requestAnimationFrame( animate );
 }
 
 

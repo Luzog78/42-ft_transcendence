@@ -85,14 +85,9 @@ class Server
 		}
 
 		setTimeout(() => {
-			if (player_id == "player" + this.client_id)
+			if (player_id == "player" + this.client_id && this.scene.game_mode == "BR")
 			{
-				destroyObject();
-				if (this.scene.game_mode == "BR")
-				{
-					destroyScene();
-					
-				} // spectator
+				destroyScene();
 
 			}
 		}, 3000);
