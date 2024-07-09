@@ -48,12 +48,11 @@ class Player:
 		self.deaths += 1
 		self.duration = datetime.datetime.timestamp(datetime.datetime.now()) - self.start_time
 
-	async def initConnection(self):
+	async def initPlayer(self):
 		self.addSelfWall()
-
 		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
 										"scene.server.client_id": self.client_id})
-		await self.sendData("call", {"command": "scene.initConnection",
+		await self.sendData("call", {"command": "scene.initPlayer",
 									"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'"]}) #todo theme
 		await self.updateSelfToother()
 

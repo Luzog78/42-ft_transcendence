@@ -21,6 +21,7 @@ from api_app.models import Tournament
 from .ball import Ball
 from .vector import Vector
 from .player import Player
+from .spectator import Spectator
 
 class Lobby:
 	def __init__(self, game_server, uid: str, game_mode: str, player_num: int, theme: int, ball_speed: float, limit):
@@ -37,6 +38,7 @@ class Lobby:
 		self.clients:		list[Player]	= []
 		self.dead_clients:	list[Player]	= []
 		self.client_ready:	list[bool]		= []
+		self.spectators:	list[Spectator]	= []
 
 		self.balls: list[Ball] = [Ball(self, 0.15, 0)]
 
@@ -195,7 +197,7 @@ class Lobby:
 		for c in self.clients:
 			if (c.client_id > player_id):
 				c.client_id -= 1
-			await c.initConnection()
+			await c.initPlayer()
 
 
 	async def update(self):
@@ -236,9 +238,13 @@ class Lobby:
 		self.clients.append(player)
 		await self.sendData("call", {"command": 'setWaitingTotalPlayerCount',
 									"args": [ f'{self.clients_per_lobby}' ]})
-		await player.initConnection()
+		await player.initPlayer()
 
-		print("len lobby.clients:", len(self.clients), "in lobby id: ", self.lobby_id)
+	async def addSpectator(self, spectator: Spectator):
+		self.spectators.append(spectator)
+		await spectator.initSpectator()
+
+
 
 	def removeClient(self, client: Player):
 		self.clients.remove(client)
@@ -249,6 +255,8 @@ class Lobby:
 	async def sendData(self, *args):
 		for c in self.clients:
 			await c.sendData(*args)
+		for s in self.spectators:
+			await s.sendData(*args)
 
 	async def sendToOther(self, client, *args):
 		for c in self.clients:

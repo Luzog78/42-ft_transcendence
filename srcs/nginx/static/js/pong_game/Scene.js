@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/09 14:43:32 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/09 16:25:43 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ import { Camera } from "./Camera.js";
 import { Ball } from "./Ball.js";
 import { remWaiting } from '../pages/Pong.js';
 import { destroyScene } from "./main.js"
+import { refresh } from '../script.js';
 
 class Scene
 {
@@ -76,8 +77,6 @@ class Scene
 	{
 		if (status == "START")
 		{
-			remWaiting();
-
 			if (this.player_num == 2 || this.game_mode == "BR")
 				return ;
 			const timer_text = this.get("timertext");
@@ -103,7 +102,7 @@ class Scene
 		}
 	}
 
-	initConnection(player_num, game_mode)
+	initPlayer(player_num, game_mode)
 	{
 		this.player_num = player_num;
 		this.game_mode = game_mode;
@@ -116,6 +115,14 @@ class Scene
 		window.addEventListener("keyup", my_player.keyup_event_func);
 
 		this.server.sendData("ready", []);
+	}
+	initSpectator(player_num, game_mode)
+	{
+		this.player_num = player_num;
+		this.game_mode = game_mode;
+		console.log("Player num: " + player_num + " Game mode: " + game_mode);
+		
+		initMap(this, player_num);
 	}
 
 	update()

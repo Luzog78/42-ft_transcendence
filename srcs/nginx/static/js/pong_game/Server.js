@@ -14,10 +14,10 @@ import * as THREE from 'three';
 
 import { initPlayerText } from "./map.js";
 import { Particle } from "./Particle.js";
-import { destroyObject } from './main.js';
+import { destroyObject, destroyScene } from './main.js';
 import { global_context } from '../script.js';
-import { refresh } from '../script.js'; // used for eval !
 import { setWaitingTotalPlayerCount, incrementWaitingPlayerCount } from '../pages/Pong.js'; // used for eval !
+import { remWaiting } from '../pages/Pong.js';
 
 class Server
 {
@@ -39,6 +39,8 @@ class Server
 		let player = this.scene.get(player_id);
 		if (player == null)
 			return;
+		if (Number(player_id.replace("player", "")) >= this.scene.player_num - 1)
+			remWaiting();
 
 		player.player.visible = true;
 		initPlayerText(this.scene, player, player_name);
@@ -87,7 +89,10 @@ class Server
 			{
 				destroyObject();
 				if (this.scene.game_mode == "BR")
-				{} // spectator
+				{
+					destroyScene();
+					
+				} // spectator
 
 			}
 		}, 3000);

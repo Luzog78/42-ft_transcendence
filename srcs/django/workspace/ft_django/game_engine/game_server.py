@@ -12,6 +12,7 @@
 
 from .lobby import Lobby
 from .player import Player
+from .spectator import Spectator
 
 
 class GameServer:
@@ -42,9 +43,13 @@ class GameServer:
 
 
 		print("new client in lobby id: ", lobby.lobby_id)
-		if (len(lobby.clients) == lobby.clients_per_lobby):
-			pass #spectator
+		if (len(lobby.clients) >= lobby.clients_per_lobby): #spectator
+			print("new spec")
+			spectator = Spectator(lobby, client, len(lobby.clients))
+			self.clients.append(spectator)
+			await lobby.addSpectator(spectator)
 		else:
+			print("new player")
 			player = Player(lobby, client, len(lobby.clients))
 			self.clients.append(player)
 			await lobby.addClient(player)

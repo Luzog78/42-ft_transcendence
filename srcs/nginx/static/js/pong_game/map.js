@@ -33,7 +33,8 @@ function initMap(scene, player_num)
 	else
 		initNPlayerMap(scene, player_num);
 
-	initText(scene, player_num);
+	if (scene.server.client_id < player_num)
+		initText(scene, player_num);
 	initCamera(scene, player_num);
 }
 
@@ -130,8 +131,12 @@ function initCamera(scene, player_num)
 		scene.camera.setPosition(1.5, 4, 0);
 		return ;
 	}
-
-	let camera_pos = scene.get("player" + scene.server.client_id).player.position.clone();
+	
+	let camera_pos;
+	if (scene.server.client_id >= player_num)
+		camera_pos = new THREE.Vector3(0, 5, 0);
+	else
+		camera_pos = scene.get("player" + scene.server.client_id).player.position.clone();
 	camera_pos = new THREE.Vector3(camera_pos.x, 4, camera_pos.z);
 
 	const look_at_point = new THREE.Vector3(0, 0, 0);
