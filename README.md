@@ -307,11 +307,18 @@ Finally, for the matchmaking part, we decided to make a simple matchmaking syste
 The matchmaking system follows the following math :
 
 $${\large \text{PlayerWins} \ = P_w }$$
+
 $${\large \text{PlayerLosses} \ = P_l }$$
+
 $${\large \text{PlayerWinrate} \ = P_r = \frac{P_w}{P_w + P_l} }$$
 
+<br>
+
 $${\large \text{GamePlayerCount} \ = G_{pc} }$$
+
 $${\large \text{GameAverageRatio} \ = G_r = \frac{\sum_{i = 1}^{G_{pc}} r\left(G_i\right)}{G_{pc}} }$$
+
+<br>
 
 $${\large \text{Matchmaking} \ : \ \text{Smallest} \ G \ni \left| P_r - G_r \right|, \forall G \in \ \text{AvailableGames} }$$
 
