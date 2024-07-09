@@ -1,14 +1,13 @@
-import os
 from re import T
 import time
 import json
 import random
+import asyncio
 from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament
 from . import auth, checker
-from ft_django import settings
 from ft_django import pong_socket
 
 
@@ -481,6 +480,8 @@ def view_game_new(request):
 def view_game_rand(request: HttpRequest):
 	if not (response := auth.is_authenticated(request)):
 		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+	user = User.objects.get(username=response.user)
+	
 	games = Game.objects.filter(started_at=None)
 	waiting = []
 	i = 0
@@ -488,7 +489,14 @@ def view_game_rand(request: HttpRequest):
 		while True:
 			json = games[i].json()
 			if json['waiting']:
-				waiting.append(json)
+				average_level = 0
+				for player in json['players']:
+					average_level += User.objects.get(username=player).ratio
+				if len(json['players']):
+					average_level /= len(json['players'])
+				else:
+					average_level = 0.5
+				waiting.append((json, average_level))
 			i += 1
 	except IndexError:
 		pass
@@ -497,11 +505,16 @@ def view_game_rand(request: HttpRequest):
 			'ok': True,
 			'found': False,
 		})
-	game = random.choice(waiting)
+
+	user_ratio = user.ratio
+	game = waiting[0]
+	for json, ratio in waiting[1:]:
+		if abs(user_ratio - ratio) < abs(user_ratio - game[1]):
+			game = (json, ratio)
 	return JsonResponse({
 		'ok': True,
 		'found': True,
-		**game,
+		**game[0],
 	})
 
 
@@ -714,6 +727,21 @@ def view_ressource(request: HttpRequest, name: str):
 	if 'raw' in request.GET and request.GET['raw'].lower() not in ['false', 'f', 'no', 'n', '0']:
 		return HttpResponse(r.data, content_type=f'{r.type}; charset=utf8')
 	return JsonResponse({'ok': True, **r.json()})
+
+
+@csrf_exempt
+def view_pong(request: HttpRequest):
+	if not (response := auth.is_authenticated(request)):
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+
+	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+
+	asyncio.run(pong_socket.game_server.receive(data))
+
+	return JsonResponse({'ok': True, 'pong': 'pong'})
 
 
 @csrf_exempt
