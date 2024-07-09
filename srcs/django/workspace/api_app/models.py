@@ -50,7 +50,7 @@ class User(AbstractBaseUser):
 	Auto fields:
 		create_at: datetime
 		last_login: datetime
-	
+
 	Additionnal fields:
 		lang: str
 		picture: str
