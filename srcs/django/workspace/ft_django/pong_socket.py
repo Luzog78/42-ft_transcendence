@@ -13,6 +13,7 @@ class PongSocket(AsyncWebsocketConsumer):
 		self.username = None
 
 	async def connect(self):
+		print("cc")
 		self.room_name = 'pong'
 		self.room_group_name = 'pong_group'
 

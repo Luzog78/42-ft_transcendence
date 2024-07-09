@@ -29,7 +29,7 @@ class Server
 		this.lobby_id = 0;
 		this.client_id = 0;
 
-		this.socket = new WebSocket('ws://' + window.location.host + '/ws/pong');
+		this.socket = new WebSocket('wss://' + window.location.host + '/ws/pong');
 		this.socket.addEventListener('message', (event) => this.onMessage(this.scene, event));
 		this.socket.addEventListener('open', (event) => this.onOpen(this.scene, event));
 	}
