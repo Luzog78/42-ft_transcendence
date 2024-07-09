@@ -25,11 +25,11 @@ WORKDIR /ft_transcendence
 RUN mkdir -p /ft_transcendence/certs
 RUN openssl req -x509 -nodes -out /ft_transcendence/certs/localhost.crt \
 		-keyout /ft_transcendence/certs/localhost.key \
+		-days 365000 \
 		-subj "/C=FR/ST=CM/L=Angouleme/O=42/OU=42/CN=ysabik.42.fr/UID=ysabik"
 
 COPY workspace/ft_django/ /ft_transcendence/ft_django/
 COPY workspace/api_app/ /ft_transcendence/api_app/
-COPY workspace/game_app/ /ft_transcendence/game_app/
 COPY workspace/manage.py /ft_transcendence/manage.py
 
 COPY start.sh ./start.sh

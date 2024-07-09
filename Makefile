@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/11 22:55:37 by ysabik            #+#    #+#              #
-#    Updated: 2024/07/08 18:05:33 by ysabik           ###   ########.fr        #
+#    Updated: 2024/07/09 10:40:04 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,8 @@ help:
 	@echo "$(RED)$$> $(MAGENTA)make $(YELLOW)dj        $(RESET):  Open a $(BOLD)bash console$(RESET) in the $(BOLD)django container$(RESET) $(DIM)$(ITALIC)[Blocking]$(RESET)"
 	@echo "$(RED)$$> $(MAGENTA)make $(YELLOW)sql       $(RESET):  Open a $(BOLD)psql console$(RESET) in the $(BOLD)postgresql container$(RESET) $(DIM)$(ITALIC)[Blocking]$(RESET)"
 	@echo "$(RED)$$> $(MAGENTA)make $(YELLOW)postgresql$(RESET):  Open a $(BOLD)bash console$(RESET) in the $(BOLD)postgresql container$(RESET) $(DIM)$(ITALIC)[Blocking]$(RESET)"
-	@echo 
+	@echo "$(RED)$$> $(MAGENTA)make $(YELLOW)nginx     $(RESET):  Open a $(BOLD)bash console$(RESET) in the $(BOLD)nginx container$(RESET) $(DIM)$(ITALIC)[Blocking]$(RESET)"
+	@echo
 	@echo "$(RED)$$> $(MAGENTA)make $(YELLOW)run       $(RESET):  $(MAGENTA)Make$(RESET) $(YELLOW)kill$(RESET), Then run django server (with migrations)$(RESET)"
 	@echo "$(RED)$$> $(MAGENTA)make $(YELLOW)kill      $(RESET):  Kill every python processes in the django container$(RESET)"
 	@echo
@@ -135,6 +136,11 @@ postgresql:
 	@docker exec -it postgresql bash
 
 
+nginx:
+	@echo "$(RED)$$> $(MAGENTA)docker exec -it nginx bash$(RESET)"
+	@docker exec -it nginx bash
+
+
 # **************************************************************************** #
 
 
@@ -197,4 +203,4 @@ endef
 # **************************************************************************** #
 
 
-.PHONY: help all up stop ls ps images volume network logs dj sql postgresql run kill re clean
+.PHONY: help all up stop ls ps images volume network logs dj sql postgresql nginx run kill re clean

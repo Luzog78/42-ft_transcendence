@@ -23,7 +23,6 @@ ALLOWED_HOSTS = [ '*' ]
 INSTALLED_APPS = [
 	'daphne',
 	'channels',
-	'game_app',
 	'api_app',
 	'django_extensions',
 	'django.contrib.auth',

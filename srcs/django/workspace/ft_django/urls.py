@@ -27,5 +27,4 @@ ws_urlpatterns = [
 urlpatterns = [
 	path('api/', include('api_app.urls')),
 	path('api', include('api_app.urls')),
-	path('', include('game_app.urls')),
 ]

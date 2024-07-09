@@ -7,7 +7,8 @@ from .views import view_err404, view_test, \
 					view_game_new, view_game_rand, \
 					view_stats_id, view_stats_user, view_stats_game, \
 					view_tournament_get, view_tournament_new, view_tournament_lst,\
-					view_tournament_tid, view_tournament_join, view_tournament_quit
+					view_tournament_tid, view_tournament_join, view_tournament_quit, \
+					view_ressource
 
 
 urlpatterns = [ re_path('.*', view_err404) ]
@@ -39,4 +40,5 @@ r(view_tournament_lst,	'tournament/list')
 r(view_tournament_tid,	'tournament/<str:tid>')
 r(view_tournament_join,	'tournament/<str:tid>/join/<str:username>')
 r(view_tournament_quit,	'tournament/<str:tid>/quit/<str:username>')
-r(view_test,		'<int:whatever>')
+r(view_ressource,		'ressource/<str:name>')
+r(view_test,			'<int:whatever>')

@@ -608,3 +608,37 @@ class Tournament(models.Model):
 		else:
 			self.status = Status.FINISHED
 			self.save()
+
+
+class Ressources(models.Model):
+	'''
+	Required fields:
+		name: str
+		type: str
+		size: int
+		data: bytes
+
+	Auto fields:
+		created_at: datetime
+
+	Additionnal fields:
+		info: str
+	'''
+
+	name		= models.CharField(primary_key=True, max_length=511)
+	created_at	= models.DateTimeField(auto_now=True)
+	type		= models.CharField(max_length=255)
+	size		= models.IntegerField()
+	info		= models.CharField(max_length=1023, null=True, default=None)
+	data		= models.BinaryField()
+
+	def __str__(self):
+		return self.name
+
+	def json(self):
+		return {
+			'name': self.name,
+			'createdAt': self.created_at,
+			'type': self.type,
+			'size': self.size,
+		}

@@ -3,10 +3,10 @@ from re import T
 import time
 import json
 import random
-from django.http import JsonResponse, HttpRequest
+from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import GameMode, User, Game, Stats, Status, Tournament
+from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament
 from . import auth, checker
 from ft_django import settings
 from ft_django import pong_socket
@@ -302,29 +302,23 @@ def view_user_setpic(request: HttpRequest, username: str):
 		case 'image/x-icon': extension = 'ico'
 		case _: return JsonResponse({'ok': False, 'error': 'errors.invalidPictureType'})
 
-	basedir = f'{settings.BASE_DIR}/game_app'
-	static = '/static/img/pic'
-
-	realdir = f'{basedir}{static}'
-	name = f'{static}/{username}-{time.time()}.{extension}'
-	filename = f'{basedir}{name}'
-
 	try:
-		for dir_path, dir_names, file_names in os.walk(realdir):
-			if str(dir_path) == str(realdir):
-				for file_name in file_names:
-					if file_name.startswith(f'{username}-'):
-						os.remove(f'{dir_path}/{file_name}')
+		name = f'{username}-{time.time()}.{extension}'
 
-		with open(filename, 'wb') as f:
-			f.write(request.FILES['picture'].read())
+		r = Ressources.objects.filter(info=username)
+		for res in r:
+			res.delete()
+		Ressources.objects.create(name=name, info=username,
+			type=file.content_type, size=file.size, data=file.read())
+
+		name = f'/api/ressource/{name}?raw=true'
 
 		user.picture = name
 		user.save()
+
+		return JsonResponse({'ok': True, 'success': 'successes.pictureSet', 'picture': name})
 	except Exception as e:
 		return JsonResponse({'ok': False, 'error': f'Error: {e}'})
-
-	return JsonResponse({'ok': True, 'success': 'successes.pictureSet', 'picture': name})
 
 
 @csrf_exempt
@@ -709,6 +703,17 @@ def view_tournament_quit(request: HttpRequest, tid: str, username: str):
 	return JsonResponse({'ok': True, 'success': 'successes.tournamentQuit'})
 
 
+
+@csrf_exempt
+def view_ressource(request: HttpRequest, name: str):
+	r = Ressources.objects.filter(name=name)
+	if not r:
+		return JsonResponse({'ok': False, 'error': 'errors.ressourceNotFound'})
+	r = r[0]
+
+	if 'raw' in request.GET and request.GET['raw'].lower() not in ['false', 'f', 'no', 'n', '0']:
+		return HttpResponse(r.data, content_type=f'{r.type}; charset=utf8')
+	return JsonResponse({'ok': True, **r.json()})
 
 
 @csrf_exempt
