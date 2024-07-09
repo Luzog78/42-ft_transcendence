@@ -2,12 +2,12 @@ from re import T
 import time
 import json
 import random
+import asyncio
 from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament
 from . import auth, checker
-from ft_django import settings
 from ft_django import pong_socket
 
 
@@ -738,6 +738,8 @@ def view_pong(request: HttpRequest):
 		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
 
 	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+
+	asyncio.run(pong_socket.game_server.receive(data))
 
 	return JsonResponse({'ok': True, 'pong': 'pong'})
 

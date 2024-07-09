@@ -23,7 +23,7 @@ class GameServer:
 		self.dt: float = 1 / self.tps
 
 	async def receive(self, data):
-		lobby = self.lobbies[data["lobby_id"]]
+		lobby: Lobby = self.lobbies[data["lobby_id"]]
 		await lobby.receive(data)
 
 	def createLobby(self, uid: str, game_mode: str, player_num: int, theme: int, ball_speed: float, limit):
