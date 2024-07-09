@@ -1,4 +1,3 @@
-import os
 from re import T
 import time
 import json
@@ -481,6 +480,8 @@ def view_game_new(request):
 def view_game_rand(request: HttpRequest):
 	if not (response := auth.is_authenticated(request)):
 		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+	assert response.user
+
 	games = Game.objects.filter(started_at=None)
 	waiting = []
 	i = 0
@@ -488,7 +489,14 @@ def view_game_rand(request: HttpRequest):
 		while True:
 			json = games[i].json()
 			if json['waiting']:
-				waiting.append(json)
+				average_level = 0
+				for player in json['players']:
+					average_level += User.objects.get(username=player).ratio
+				if len(json['players']):
+					average_level /= len(json['players'])
+				else:
+					average_level = 0.5
+				waiting.append((json, average_level))
 			i += 1
 	except IndexError:
 		pass
@@ -497,11 +505,16 @@ def view_game_rand(request: HttpRequest):
 			'ok': True,
 			'found': False,
 		})
-	game = random.choice(waiting)
+
+	user_ratio = response.user.ratio
+	game = waiting[0]
+	for json, ratio in waiting[1:]:
+		if abs(user_ratio - ratio) < abs(user_ratio - game[1]):
+			game = (json, ratio)
 	return JsonResponse({
 		'ok': True,
 		'found': True,
-		**game,
+		**game[0],
 	})
 
 

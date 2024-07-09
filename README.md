@@ -300,9 +300,22 @@ So instead of making a whole new game physics engine, we decided to make, no one
 
 For the user history part, everything is stored in the database. The user can see his stats, his match history, and more in his profile page (route `/profile/<id>`). <br>
 
-Finally, for the matchmaking part, we decided to make a simple matchmaking system. The player can choose the game mode he wants to play, and the system will find a game with the same game mode and the same number of players. <br>
+Finally, for the matchmaking part, we decided to make a simple matchmaking system. The player can choose to join a random existing game. <br>
 ◦ If multiple games are found, the player will join the game where the users have the closest *winrate* to his, ensuring a fair and balanced match. <br>
 ◦ If no game is found, the player will create a new game and wait for other players to join.
+
+The matchmaking system follows the following math :
+
+$${\big \text{PlayerWins} \ = P_w }$$
+$${\big \text{PlayerLosses} \ = P_l }$$
+$${\big \text{PlayerWinrate} \ = P_r = \frac{P_w}{P_w + P_l} }$$
+
+$${\big \text{GamePlayerCount} \ = G_{pc} }$$
+$${\big \text{GameAverageRatio} \ = G_r = \frac{\sum_{i = 1}^{G_{pc}} r\left(G_i\right)}{G_{pc}} }$$
+
+$${\big \text{Matchmaking} \ : \ \text{Smallest} \ G \ni \left| P_r - G_r \right|, \forall G \in \ \text{AvailableGames} }$$
+
+<br>
 
 To put it in a nutshell, we follow these goals :
 - [x] Develop a new, engaging game to diversify the platform’s offerings and entertain users.

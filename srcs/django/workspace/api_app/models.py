@@ -38,14 +38,36 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
+	'''
+	Required fields:
+		username: str
+		created_at: datetime
+		email: str
+		password: str
+		first_name: str
+		last_name: str
+
+	Auto fields:
+		create_at: datetime
+		last_login: datetime
+	
+	Additionnal fields:
+		lang: str
+		picture: str
+		ratio: float
+		a2f_token: str
+		is_admin: bool
+	'''
+
 	username	= models.CharField(primary_key=True, max_length=24)
 	created_at	= models.DateTimeField(auto_now=True, blank=False)
 	email		= models.CharField(max_length=255, unique=True)
 	password	= models.CharField(max_length=255)
 	first_name	= models.CharField(max_length=24)
 	last_name	= models.CharField(max_length=24)
-	lang		= models.CharField(max_length=2, default='en')
 	picture		= models.CharField(max_length=1024, null=True, default=None)
+	lang		= models.CharField(max_length=2, default='en')
+	ratio		= models.FloatField(default=0.5)
 	a2f_token	= models.CharField(max_length=32, null=True, default=None)
 	is_admin	= models.BooleanField(default=False)
 
@@ -80,6 +102,7 @@ class User(AbstractBaseUser):
 			'lastName': self.last_name,
 			'picture': self.picture,
 			'lang': self.lang,
+			'ratio': self.ratio,
 			'a2f': self.a2f_token is not None,
 			'isAdmin': self.is_admin,
 			'lastLogin': self.last_login,
