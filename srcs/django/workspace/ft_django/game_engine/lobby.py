@@ -164,8 +164,6 @@ class Lobby:
 			ball.last_player.kills += 1
 
 		self.balls = [Ball(self, 0.15, 0)]
-		self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
-		#maybe wait for ready here
 
 		player_id = int(dead_player.replace("player", ""))
 		player = self.clients[player_id]
@@ -176,10 +174,13 @@ class Lobby:
 
 		if (self.game_mode == "BR" and self.clients_per_lobby == 2):
 			winner = self.clients[player_id - 1]
-			winner.duration = datetime.timestamp(datetime.now()) - ball.last_player.start_time + 2 # TODO: Issue when ball.lst_player is None
+			winner.duration = datetime.timestamp(datetime.now()) - winner.start_time + 2
 			self.onEnd()
+			
 			time.sleep(3)
-			await self.sendData("call", {"command": 'refresh', "args": []})
+			await self.sendData("game_status", "END")
+			
+			self.game_server.kill(self)
 			return
 
 		time.sleep(3)
@@ -195,7 +196,6 @@ class Lobby:
 			if (c.client_id > player_id):
 				c.client_id -= 1
 			await c.initConnection()
-			await self.balls[0].updateBall()
 
 
 	async def update(self):
@@ -221,8 +221,8 @@ class Lobby:
 
 		if ("ready" in data):
 			self.client_ready[client_id] = True
-			# if (all(self.client_ready)):
-			if (len(self.clients) == self.clients_per_lobby):
+			if (all(self.client_ready)):
+			# if (len(self.clients) == self.clients_per_lobby):
 				self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
 
 				for c in self.clients:
@@ -254,3 +254,5 @@ class Lobby:
 		for c in self.clients:
 			if (c != client):
 				await c.sendData(*args)
+		for s in self.spectators:
+			await s.sendData(*args)

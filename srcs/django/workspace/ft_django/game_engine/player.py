@@ -22,7 +22,8 @@ class Player:
 		from ft_django.pong_socket import PongSocket
 		assert isinstance(lobby, Lobby)
 		assert isinstance(client, PongSocket)
-		self.lobby:		Lobby					= lobby
+
+		self.lobby:		Lobby		= lobby
 		self.client:	PongSocket	= client
 
 		self.client_id: int	= client_id

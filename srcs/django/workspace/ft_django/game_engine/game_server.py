@@ -40,6 +40,7 @@ class GameServer:
 		if (not lobby):
 			return False
 
+
 		print("new client in lobby id: ", lobby.lobby_id)
 		if (len(lobby.clients) == lobby.clients_per_lobby):
 			pass #spectator
@@ -56,3 +57,7 @@ class GameServer:
 				self.clients.remove(player)
 				return True
 		return False
+	
+	def kill(self, lobby):
+		pass
+		

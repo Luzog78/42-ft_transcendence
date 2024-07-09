@@ -44,6 +44,7 @@ class Server
 		initPlayerText(this.scene, player, player_name);
 	}
 
+
 	playerDead(player_id)
 	{
 		let player = this.scene.get(player_id);

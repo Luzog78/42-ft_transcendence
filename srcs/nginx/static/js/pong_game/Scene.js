@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/05 03:20:15 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/09 14:43:32 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ import { initMap } from "./map.js";
 import { Camera } from "./Camera.js";
 import { Ball } from "./Ball.js";
 import { remWaiting } from '../pages/Pong.js';
+import { destroyScene } from "./main.js"
 
 class Scene
 {
@@ -94,6 +95,11 @@ class Scene
 					clearInterval(interval_id);
 				timer_text.updateText(minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'));
 			}, 1000);
+		}
+		else if (status == "END")
+		{
+			destroyScene();
+			refresh();
 		}
 	}
 

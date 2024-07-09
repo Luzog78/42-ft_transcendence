@@ -133,7 +133,11 @@ class Ball:
 					await self.lobby.playerDied(self, player_name)
 					break
 				if ("player" in wall_name):
-					player = self.lobby.clients[int(wall_name.replace("player", ""))]
+					player_id = int(wall_name.replace("player", ""))
+					if (player_id >= len(self.lobby.clients)):
+						return
+
+					player = self.lobby.clients[player_id]
 					player.rebounces += 1
 					player.ultimate_speed = self.vel.length()
 					self.last_player = player
