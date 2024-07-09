@@ -96,8 +96,8 @@
 
 |              | Major Module amt. | Minor Module amt. |       Total Score        |
 | :----------: | :---------------: | :---------------: | :----------------------: |
-| **Selected** |         12        |         6         | **15.0** <sub>/9.5</sub> |
-| **Working**  |         7         |         3         |  **8.5** <sub>/9.5</sub> |
+| **Selected** |         12        |         5         | **14.5** <sub>/9.5</sub> |
+| **Working**  |         6         |         4         |  **8.0** <sub>/9.5</sub> |
 
 <br>
 
@@ -125,16 +125,15 @@
 |   ✅   | `major` | Gameplay and user experience | [Remote players](#major-remote-players) |
 |   ✅   | `major` | Gameplay and user experience | [Multiplayers (more than 2 in the same game)](#major-multiplayers-more-than-2-in-the-same-game) |
 |   ✅   | `major` | Gameplay and user experience | [Add Another Game with User History and Matchmaking](#major-add-another-game-with-user-history-and-matchmaking) |
-|   ❌   | `minor` | Gameplay and user experience | [Game Customization Options](#minor-game-customization-options) |
+|   ✅   | `minor` | Gameplay and user experience | [Game Customization Options](#minor-game-customization-options) |
 |   ❌   | `major` | Gameplay and user experience | [Live chat](#major-live-chat) |
-|   ❌   | `major` | AI-Algo                      | [Introduce an AI Opponent](#major-introduce-an-ai-opponent) |
-|   ❌   | `minor` | AI-Algo                      | [User and Game Stats Dashboards](#minor-user-and-game-stats-dashboards) |
-|   ✅   | `major` | Cybersecurity                | [Implement Two-Factor Authentication (2FA) and JWT](#major-implement-two-factor-authentication-2fa-and-jwt) |
-|   ❌   | `major` | Devops                       | [Designing the Backend as Microservices](#major-designing-the-backend-as-microservices) |
+|   ❌   | `major` | AI-Algo                      | [Introduce an AI Opponent](#major-introduce-an-ai-opponent) |(#minor-user-and-game-stats-dashboards) |
+|   ❌   | `major` | Cybersecurity                | [Implement Two-Factor Authentication (2FA) and JWT](#major-implement-two-factor-authentication-2fa-and-jwt) |
+|   ✅   | `major` | Devops                       | [Designing the Backend as Microservices](#major-designing-the-backend-as-microservices) |
 |   ✅   | `major` | Graphics                     | [Use of advanced 3D techniques](#major-use-of-advanced-3d-techniques) |
 |   ❌   | `minor` | Accessibility                | [Expanding Browser Compatibility](#minor-expanding-browser-compatibility) |
 |   ✅   | `minor` | Accessibility                | [Multiple language supports](#minor-multiple-language-supports) |
-|   ✅   | `major` | Server-Side Pong             | [Replacing Basic Pong with Server-Side Pong and Implementing an API](#major-replacing-basic-pong-with-server-side-pong-and-implementing-an-api) |
+|   ❌   | `major` | Server-Side Pong             | [Replacing Basic Pong with Server-Side Pong and Implementing an API](#major-replacing-basic-pong-with-server-side-pong-and-implementing-an-api) |
 
 > [!NOTE]
 > If the link does not work, the development of the module is not yet started.
@@ -200,11 +199,9 @@
 
 > **Lang :** `Python` (version `>=3.10.1`)
 
-> **Main application :** [./ft_django](#main-file-tree)
+> **Main application :** [./src/django/workspace/ft_django](#main-file-tree)
 
-> **Applications :**
->  - [./api_app](#main-file-tree) : API, Authentication, Databases
->  - [./game_app](#main-file-tree) : Website part
+> **Additional Application :** [./src/django/workspace/ft_django](#main-file-tree) : *API, Authentication, Databases*
 
 **Short explanation :** The backend is developed using Django, a high-level Python web framework that encourages rapid and clean development. But beacause of the subject restrictions, we are using Django as a lite backend. The main purpose of it is to send a basic html base to the users and to provide an API to make the communication between the frontend and the database.
 
@@ -219,7 +216,7 @@
 
 > **Lang :** `CSS3`, `JavaScript`
 
-> **Implemented in :** [./game_app/templates/index.html](#main-file-tree)
+> **Implemented in :** [./src/nginx/templates/index.html](#main-file-tree)
 
 **Short explanation :** The frontend design is developed using Bootstrap, a free and open-source CSS/JS framework directed at responsive front-end web development. It contains some pretty design templates for typography, forms, buttons, navigation, and other interface components.
 We thank a lot the Bootstrap team for their amazing work. (They are the real MVP for letting us use a such great tool: we don't have to spend hours on the design part !)
@@ -235,7 +232,7 @@ We thank a lot the Bootstrap team for their amazing work. (They are the real MVP
 
 > **Lang :** `Bash`, `Python` (and no `SQL` !)
 
-> **Implemented in :** [./srcs/postgresql](#main-file-tree) and [./api_app/models.py](#main-file-tree)
+> **Implemented in :** [./srcs/postgresql](#main-file-tree) and [./src/django/workspace/api_app/models.py](#main-file-tree)
 
 **Short explanation :** A database is sooooo useful. We all know that. Then wich one to choose ? The most used ? MySQL ? Nooo.... too easy. The subject is asking for a challenge. So we decided to use PostgreSQL. It is an object-relational database system that uses and extends the SQL language combined with many features that safely store and scale the most complicated data workloads.
 To use it, so simple: use Python. A table is basically a class, a row is an instance of the class, and a column is an attribute of the class. And that's it ! Django will do the rest. You can now store and retrieve data from the database. It's like magic.
@@ -358,15 +355,6 @@ TODO
 <br><br>
 
 
-### [Minor] User and Game Stats Dashboards
-
-<br>
-
-TODO
-
-<br><br>
-
-
 ### [Major] Implement Two-Factor Authentication (2FA) and JWT
 
 <br>
@@ -380,7 +368,21 @@ TODO
 
 <br>
 
-TODO
+> **Microservices set up with :** `Docker` (`docker-compose`) (version `latest`)
+
+> **OS used for the containers :** `Debian` (version `bookworm (12.5)`)
+
+> **Implemented in :** [./srcs](#main-file-tree)
+
+> **Compose file :** [./srcs/docker-compose.yml](#main-file-tree)
+
+**Short explanation :** The backend is designed as microservices. Each service is a container. We separated the project into 3 main parts, our services :
+
+- **PostgreSQL** : *The database service.* (mounted on [./srcs/postgresql](#main-file-tree))
+
+- **Django** : *The main backend service.* (mounted on [./srcs/django](#main-file-tree))
+
+- **Nginx** : *The frontend service.* (mounted on [./srcs/nginx](#main-file-tree))
 
 <br><br>
 
@@ -393,7 +395,7 @@ TODO
 
 > **Lang :** `JavaScript`
 
-> **Implemented in :** [./game_app/static/js/pong_game](#main-file-tree)
+> **Implemented in :** [./src/nginx/static/js/pong_game](#main-file-tree)
 
 <br><br>
 
@@ -411,7 +413,15 @@ TODO
 
 <br>
 
-TODO
+Thanks to the 42 student community, we managed to make our website available in multiple languages. We are proud to present you the following languages :
+
+- **English** (`en`) : *The default language.* ([./src/nginx/static/lang/en.json](#main-file-tree))
+
+- **French** (`fr`) : *The language of love.* ([./src/nginx/static/lang/fr.json](#main-file-tree))
+
+- **Spanish** (`es`) : *The language of the sun.* ([./src/nginx/static/lang/es.json](#main-file-tree))
+
+- **Brainfuck** (`>+`) : *The language of the gods.* ([./src/nginx/static/lang/>+.json](#main-file-tree))
 
 <br><br>
 
@@ -431,31 +441,37 @@ TODO
 
 ```tree
 .
-├── api_app                 # API, Authentication, Databases
-│   ├── auth.py
-│   ├── jwt.py
-│   ├── models.py
-│   ├── urls.py
-│   ├── views.py
-│   └── ...
-├── ft_django               # Core of the django app
-│   ├── game_engine
-│   │   └── ...
-│   ├── tournament
-│   │   └── ...
-│   ├── pong_socket.py
-│   ├── chat_socket.py
-│   ├── settings.py
-│   └── ...
-├── game_app                # Website part
+srcs/
+├── postgresql
+│   ├── ...
+│   └── Dockerfile
+├── django                   # [[ BACKEND ]]
+│   ├── workspace
+│   │   ├── api_app          # API, Authentication, Databases
+│   │   │   ├── auth.py
+│   │   │   ├── jwt.py
+│   │   │   ├── models.py    # DB configuration
+│   │   │   ├── urls.py
+│   │   │   ├── views.py
+│   │   │   └── ...
+│   │   ├── ft_django        # Core of the django project
+│   │   │   ├── game_engine
+│   │   │   │   └── ...
+│   │   │   ├── chat_socket.py
+│   │   │   ├── pong_socket.py
+│   │   │   ├── settings.py
+│   │   │   ├── urls.py
+│   │   │   └── ...
+│   │   └── manage.py
+│   ├── ...
+│   └── Dockerfile
+├── nginx                    # [[ FRONTEND ]]
 │   ├── static
 │   │   ├── css
 │   │   │   └── ...
 │   │   ├── img
-│   │   │   ├── pic         # Users' avatars
-│   │   │   │   └── ...
 │   │   │   └── ...
-│   │   ├── js              # Website content
+│   │   ├── js               # Website content (SPA)
 │   │   │   ├── components
 │   │   │   │   └── ...
 │   │   │   ├── pages
@@ -463,18 +479,13 @@ TODO
 │   │   │   ├── pong_game
 │   │   │   │   └── ...
 │   │   │   └── ...
-│   │   └── lang            # Languages (.json files)
+│   │   └── lang             # Languages (.json files)
 │   │       └── ...
 │   ├── templates
 │   │   └── index.html
-│   ├── urls.py
-│   └── views.py
-├── srcs                    # Docker containers
-│   ├── docker-compose.yml
-│   └── postgresql
-│       ├── Dockerfile
-│       └── ...
-├── manage.py
+│   ├── ...
+│   └── Dockerfile
+├── docker-compose.yml
 ├── Makefile
 └── README.md
 ```
