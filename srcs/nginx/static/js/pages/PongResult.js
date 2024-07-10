@@ -200,6 +200,10 @@ async function PongResult(context, id, data=null) {
 					div.innerText = getLang(context, "pages.playResult.noPlayers");
 					pongResultPlayers.appendChild(div);
 				} else
+					if (game.mode === "BR")
+						data.stats = data.stats.sort((a, b) => a.duration - b.duration);
+					else
+						data.stats = data.stats.sort((a, b) => a.score - b.score);
 					for (let player of data.stats) {
 						if (!player)
 							continue;

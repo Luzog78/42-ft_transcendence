@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Spectator.js                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 18:14:37 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/09 18:42:49 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/10 09:40:55 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { initCamera } from "./map.js";
+
 
 class Spectator
 {
@@ -64,15 +65,16 @@ class Spectator
 	
 		if (this.isDown() || this.isUp())
 			initCamera(this.scene, this.scene.player_num, this.following_player)
-		// await this.scene.server.sendData("player_keyboard", this.keyboard);
+		// await this.scene.server.sendData("player_keyboard", this.keyboard); // TODO
 	}
 	async keyup_event(e)
 	{
 		if (this.keyboard[e.key] == false)
 			return;
 		this.keyboard[e.key] = false;
-		// await this.scene.server.sendData("player_keyboard", this.keyboard);
+		// await this.scene.server.sendData("player_keyboard", this.keyboard); // TODO
 	}
 }
+
 
 export { Spectator };

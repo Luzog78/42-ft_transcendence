@@ -43,7 +43,7 @@ class GameServer:
 
 
 		print("new client in lobby id: ", lobby.lobby_id)
-		if (len(lobby.clients) >= lobby.clients_per_lobby): #spectator
+		if (len(lobby.clients) >= lobby.clients_per_lobby): # spectator
 			print("new spec")
 			spectator = Spectator(lobby, client, len(lobby.clients))
 			self.clients.append(spectator)

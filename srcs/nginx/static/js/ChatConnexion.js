@@ -39,7 +39,7 @@ class ChatConnexion
 			else
 			{
 				console.log("TODO new notification: " + data.type + " - " + data.message, e);
-				// todo
+				 // TODO
 			}
 		};
 		this.socket.onclose = function(e) {

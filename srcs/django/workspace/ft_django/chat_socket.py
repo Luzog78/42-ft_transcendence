@@ -1,4 +1,5 @@
 import json
+from typing import Any
 
 from ft_django.game_engine.game_server import GameServer
 from channels.generic.websocket import AsyncWebsocketConsumer
@@ -55,9 +56,9 @@ class ChatSocket(AsyncWebsocketConsumer):
 		elif data['type'] == 'send_message':
 			await self.send_message(data, frontendId)
 		elif data['type'] == 'send_game_message':
-			pass # todo find game, add message in db and find if targets have socket open with find_user_socket
+			pass # TODO: find game, add message in db and find if targets have socket open with find_user_socket
 
-	async def reply(self, data: any, status: bool, frontendId: any):
+	async def reply(self, data: Any, status: bool, frontendId: Any):
 		json_data = {}
 		json_data['frontendId'] = frontendId
 		json_data['type'] = 'response'
@@ -69,7 +70,7 @@ class ChatSocket(AsyncWebsocketConsumer):
 		await self.sendJson(json_data)
 
 	async def sendData(self, *args):
-		await self.sendJson(data)
+		await self.sendJson(data)  # TODO: wtf ? data is not defined
 
 	async def sendJson(self, json_data):
 		print("sending", json_data)

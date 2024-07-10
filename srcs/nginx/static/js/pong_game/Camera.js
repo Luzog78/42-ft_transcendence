@@ -17,6 +17,7 @@ CameraControls.install( { THREE: THREE } );
 
 import { ScreenShake } from "./ScreenShake.js";
 
+
 class Camera
 {
 	constructor(scene, renderer)
@@ -53,4 +54,5 @@ class Camera
 	}
 }
 
-export { Camera }
+
+export { Camera };

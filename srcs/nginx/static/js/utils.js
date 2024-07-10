@@ -228,24 +228,6 @@ function checkA2F(context, a2fId, acceptEmpty = false) {
 	return true;
 }
 
-// function howLongAgo(date) {
-// 	let now = new Date();
-// 	let diff = now - date;
-// 	if (diff < 60000)
-// 		return "just now";
-// 	if (diff < 3600000)
-// 		return Math.floor(diff / 60000) + " minutes ago";
-// 	if (diff < 86400000)
-// 		return Math.floor(diff / 3600000) + " hours ago";
-// 	if (diff < 604800000)
-// 		return Math.floor(diff / 86400000) + " days ago";
-// 	if (diff < 2592000000)
-// 		return Math.floor(diff / 604800000) + " weeks ago";
-// 	if (diff < 31536000000)
-// 		return Math.floor(diff / 2592000000) + " months ago";
-// 	return Math.floor(diff / 31536000000) + " years ago";
-// }
-
 class HowLongAgo {
 	constructor(date) {
 		this.date = date;

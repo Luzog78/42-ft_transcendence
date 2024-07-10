@@ -562,6 +562,8 @@ class Tournament(models.Model):
 		Decomposes it into its prime factors.
 		Sorts the factors in descending order.
 		"""
+		if n < 2:
+			return []
 		factors = []
 		divisor = 2
 		while n > 1:
@@ -570,6 +572,22 @@ class Tournament(models.Model):
 				n //= divisor
 			divisor += 1
 		return factors[::-1]
+
+	@staticmethod
+	def is_legit(player_count: int, max_players: int = 30, min_players: int = 2) -> tuple[bool, int] :
+		"""
+		Checks if the player count is legit for a tournament.
+		Returns a tuple of (is_legit, wrong_count).
+
+		Ex.: if player_count == 62: "Cannot create game with 31 players."
+		"""
+		pools = Tournament.decompose(player_count)
+		if len(pools) == 0:
+			return False, player_count
+		for p in pools:
+			if p > max_players or p < min_players:
+				return False, p
+		return True, 0
 
 	@staticmethod
 	def calc_pools(player_count: int) -> list[tuple[int, int]]:

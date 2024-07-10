@@ -455,10 +455,10 @@ def view_game_new(request):
 
 	limit = None
 	if valid and data['mode'] == "TO":
-		valid = 'limitTO' in data and isinstance(data['limitTO'], int) and 2 <= data['limitTO'] <= 60
+		valid = 'limitTO' in data and isinstance(data['limitTO'], int) and 60 <= data['limitTO'] <= 3600
 		limit = data['limitTO']
 	if valid and data['mode'] == "FT":
-		valid = 'limitFT' in data and isinstance(data['limitFT'], int) and 2 <= data['limitFT'] <= 50
+		valid = 'limitFT' in data and isinstance(data['limitFT'], int) and 1 <= data['limitFT'] <= 100
 		limit = data['limitFT']
 
 	if not valid:
@@ -611,7 +611,11 @@ def view_tournament_new(request: HttpRequest):
 
 	valid = 'players' in data and isinstance(data['players'], int) and 2 <= data['players'] <= 1000
 
-	if not valid:
+	if valid:
+		valid, i = Tournament.is_legit(data['players'])
+		if not valid:
+			return JsonResponse({'ok': False, 'error': 'errors.cannotCreateGameOf', 'info': i})
+	else:
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
 
 	tournament = Tournament.objects.create(tid=Tournament.new_uid(), player_count=data['players']).init()

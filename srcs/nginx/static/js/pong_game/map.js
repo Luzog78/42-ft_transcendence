@@ -248,7 +248,7 @@ function initPlayerText(scene, player, name)
 	if (scene.player_num == 2)
 	{
 		direction_scale = 0;
-		visual_angle = (scene.server.client_id) * Math.PI; //turn the text to the player
+		visual_angle = (scene.server.client_id) * Math.PI; // turn the text to the player
 		y_offset = 0.5;
 	}
 
@@ -312,5 +312,6 @@ function initText(scene, player_num)
 	const dynamic_score_1 = new DynamicText(scene, "0", score_1_pos, rotation_score, 0.5, 0xffffff, "player0textscore");
 	const dynamic_score_2 = new DynamicText(scene, "0", score_2_pos, rotation_score, 0.5, 0xffffff, "player1textscore");
 }
+
 
 export { initMap, initPlayerText, initCamera };

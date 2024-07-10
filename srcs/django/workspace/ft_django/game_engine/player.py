@@ -35,7 +35,7 @@ class Player:
 
 		self.kills:				int		= 0 #done
 		self.deaths:			int		= 0 #done
-		self.best_streak:		int		= 0
+		self.best_streak:		int		= 0 # TODO: streak
 		self.rebounces:			int		= 0 #done
 		self.ultimate_speed:	float	= 0 #done
 		self.duration:			float	= -1 #done
@@ -81,7 +81,6 @@ class Player:
 	async def updateSelfToother(self):
 		await self.sendToOther("call", {"command": "scene.server.newPlayer",
 										"args": [f"'player{self.client_id}'", f"'{self.client.username}'"]})
-		await self.sendData("call", {"command": 'incrementWaitingPlayerCount', "args": []})
 		await self.sendToOther("call", {"command": 'incrementWaitingPlayerCount', "args": []})
 
 		for i in range(self.client_id + 1):
