@@ -287,6 +287,7 @@
 /* ************************************************************************** */
 
 #tournament-content .table {
+	position: relative;
 	margin-top: 50px;
 	margin-left: 7.5%;
 	margin-right: 7.5%;
@@ -312,6 +313,14 @@
 
 #tournament-content .table > tbody > tr:hover > * {
 	background-color: #00000050;
+}
+
+#tournament-content #no-tournament-found {
+	position: absolute;
+	display: block;
+	margin-top: 20vh;
+	text-align: center;
+	width: 100%;
 }
 
 #tournament-content #scroll-up {

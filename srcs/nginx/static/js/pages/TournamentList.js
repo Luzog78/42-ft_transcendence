@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 14:30:41 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/07 12:03:29 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/10 10:16:09 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,14 @@ async function TournamentList(context) {
 				let tbody = table.querySelector("tbody");
 				if (!tbody)
 					return;
+
+				if (data.tournaments.length == 0) {
+					let tr = document.createElement("tr");
+					tr.innerHTML = /*html*/`
+						<td colspan="4" id="no-tournament-found">${getLang(context, "pages.tournament.noTournamentFound")}</td>
+					`;
+					tbody.appendChild(tr);
+				}
 
 				let tids = data.tournaments
 					.map(tid => [tid[0], new Date(tid[1])])

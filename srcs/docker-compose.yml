@@ -6,8 +6,6 @@ services:
     build:
       context: ./postgresql
       dockerfile: Dockerfile
-    # volumes:
-    #     - db-data:/var/lib/postgresql/15/main
     networks:
     - transcendence_network
     restart: on-failure
@@ -24,8 +22,6 @@ services:
     networks:
     - transcendence_network
     restart: on-failure
-    ports:
-    - 8000:8000
 
   nginx:
     container_name: nginx
@@ -41,14 +37,6 @@ services:
     restart: on-failure
     ports:
     - 4444:4444
-
-# volumes:
-#     db-data:
-#         driver: local
-#         driver_opts:
-#             type: none
-#             device: ~/sgoinfre/data-pong/postgresql
-#             o: bind
 
 networks:
   transcendence_network:
