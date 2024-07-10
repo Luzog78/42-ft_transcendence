@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    spectator.py                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 15:11:13 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/10 09:36:17 by ysabik           ###   ########.fr        #
+#    Updated: 2024/07/10 17:14:06 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,9 @@ class Spectator:
 		from .lobby import Lobby
 		from ft_django.pong_socket import PongSocket
 		
-		self.lobby:		Lobby 		= lobby
-		self.client:	PongSocket	= client
-		self.client_id:	int			= client_id
+		self.lobby:		Lobby 		=	lobby
+		self.client:	PongSocket	=	client
+		self.client_id:	int			=	client_id
 		
 		self.keyboard: dict = {}
 
@@ -48,10 +48,9 @@ class Spectator:
 
 	async def update(self):
 		if (self.isUp()):
-			print("up")
+			pass
 		if (self.isDown()):
-			print("down")
-
+			pass
 	async def sendData(self, *args):
 		await self.client.sendData(*args)
 	

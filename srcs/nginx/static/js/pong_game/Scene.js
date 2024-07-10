@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/10 09:40:08 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/10 18:26:03 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ class Scene
 	{
 		this.player_num = player_num;
 		this.game_mode = game_mode;
+		console.log("I'm player", this.server.client_id)
 		console.log("Player num: " + player_num + " Game mode: " + game_mode);
 
 		initMap(this, player_num);
@@ -122,6 +123,7 @@ class Scene
 	{
 		this.player_num = player_num;
 		this.game_mode = game_mode;
+		console.log("I'm spectator");
 		console.log("Player num: " + player_num + " Game mode: " + game_mode);
 		
 		initMap(this, player_num);

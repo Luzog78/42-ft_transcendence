@@ -171,6 +171,7 @@ class Lobby:
 		player = self.clients[player_id]
 		player.die()
 
+		print("player dead: ", dead_player, player_id)
 		await self.sendData("call", {"command": 'scene.server.playerDead',
 									"args": ["'" + dead_player + "'"]})
 
@@ -187,7 +188,7 @@ class Lobby:
 
 		time.sleep(3)
 
-		spectator = Spectator(self, player.client, player_id)
+		spectator = Spectator(self, player.client, len(self.spectators) + player_id)
 		self.game_server.clients.append(spectator)
 		await self.addSpectator(spectator)
 
@@ -200,6 +201,7 @@ class Lobby:
 
 		for c in self.clients:
 			if (c.client_id > player_id):
+				print(c.client_id, "become", c.client_id - 1)
 				c.client_id -= 1
 			await c.initPlayer()
 
@@ -229,11 +231,13 @@ class Lobby:
 
 		if ("ready" in data):
 			self.client_ready[client_id] = True
-			if (all(self.client_ready)):
-			# if (len(self.clients) == self.clients_per_lobby):
+			# if (all(self.client_ready)):
+			if (len(self.clients) == self.clients_per_lobby):
+				time.sleep(3)
 				self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
 
-				for c in self.clients:
+				clients = self.clients + self.spectators
+				for c in clients:
 					await self.balls[0].updateBall()
 					await c.sendData("game_status", "START")
 
@@ -256,7 +260,8 @@ class Lobby:
 
 
 	def removeClient(self, client: Player):
-		self.clients.remove(client)
+		if (client in self.clients):
+			self.clients.remove(client)
 
 		if (len(self.clients) == 0):
 			self.game_server.lobbies.remove(self)

@@ -132,6 +132,7 @@ class Ball:
 					player_name = wall_name.replace("score", "player")
 					await self.lobby.playerDied(self, player_name)
 					break
+
 				if ("player" in wall_name):
 					player_id = int(wall_name.replace("player", ""))
 					if (player_id >= len(self.lobby.clients)):

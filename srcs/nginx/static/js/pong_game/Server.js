@@ -50,8 +50,9 @@ class Server
 
 	playerDead(player_id)
 	{
-		let player = this.scene.get(player_id);
-		let position = player.init_position.clone();
+		const my_id = "player" + this.client_id;
+		const player = this.scene.get(player_id);
+		const position = player.init_position.clone();
 
 		player.player.material.emissiveIntensity = 0;
 
@@ -86,11 +87,8 @@ class Server
 		}
 
 		setTimeout(() => {
-			if (player_id == "player" + this.client_id && this.scene.game_mode == "BR")
-			{
+			if (player_id == my_id && this.scene.game_mode == "BR")
 				destroyScene();
-
-			}
 		}, 3000);
 	}
 
