@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/10 18:26:03 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/10 18:50:20 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class Scene
 		this.camera = new Camera(this, this.renderer);
 
 		this.server = null;
+		this.spectator = null;
 
 		this.interval_timer_id = 0
 		this.segment_size = 4;
@@ -128,9 +129,9 @@ class Scene
 		
 		initMap(this, player_num);
 
-		const spectator = new Spectator(this);
-		window.addEventListener("keydown", spectator.keydown_event_func);
-		window.addEventListener("keyup", spectator.keyup_event_func);
+		this.spectator = new Spectator(this);
+		window.addEventListener("keydown", this.spectator.keydown_event_func);
+		window.addEventListener("keyup", this.spectator.keyup_event_func);
 	}
 
 	update()

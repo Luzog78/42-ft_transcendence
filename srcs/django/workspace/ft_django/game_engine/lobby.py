@@ -188,9 +188,9 @@ class Lobby:
 
 		time.sleep(3)
 
-		spectator = Spectator(self, player.client, len(self.spectators) + player_id)
-		self.game_server.clients.append(spectator)
-		await self.addSpectator(spectator)
+		# spectator = Spectator(self, player.client, len(self.spectators) + player_id)
+		# self.game_server.clients.append(spectator)
+		# await self.addSpectator(spectator)
 
 		self.clients_per_lobby -= 1
 		self.time = 0

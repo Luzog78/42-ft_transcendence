@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/09 17:48:55 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/10 18:48:37 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ let scene = undefined;
 
 async function initScene(uid)
 {
+	console.log("initScene");
 	if (scene !== undefined)
 		return;
+	console.log("initScene");
 
 	scene = new Scene();
 	await scene.init(uid);
@@ -60,10 +62,12 @@ function destroyScene()
 {
 	if (scene === undefined)
 		return;
-
 	
 	tryTo(() => window.removeEventListener("keyup", scene.get("player" + scene.server.client_id).keyup_event_func));
 	tryTo(() => window.removeEventListener("keydown", scene.get("player" + scene.server.client_id).keydown_event_func));
+
+	tryTo(() => window.removeEventListener("keyup", scene.spectator.keyup_event_func));
+	tryTo(() => window.removeEventListener("keydown", scene.spectator.keydown_event_func));
 
 	scene.renderer.clear();
 	const canvas = scene.renderer.domElement;
@@ -75,8 +79,11 @@ function destroyScene()
 	let server = scene.server;
 	server.send("disconnect");
 	setTimeout(() => server.disconnect(), 250);
-
+	
+	scene.renderer.setAnimationLoop( null );
+	
 	scene = undefined;
+	console.log("SCENE DESTROYED");
 }
 
 let frame_rate_ms = 1000 / 120;
