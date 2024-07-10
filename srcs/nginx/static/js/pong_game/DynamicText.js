@@ -40,4 +40,5 @@ class DynamicText
 	}
 }
 
-export { DynamicText }
+
+export { DynamicText };

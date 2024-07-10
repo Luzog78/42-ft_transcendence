@@ -35,7 +35,7 @@ class Player:
 
 		self.kills:				int		= 0 #done
 		self.deaths:			int		= 0 #done
-		self.best_streak:		int		= 0
+		self.best_streak:		int		= 0 # TODO: streak
 		self.rebounces:			int		= 0 #done
 		self.ultimate_speed:	float	= 0 #done
 		self.duration:			float	= -1 #done

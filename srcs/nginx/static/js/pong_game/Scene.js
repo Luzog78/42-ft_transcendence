@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/09 18:31:45 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/10 09:40:08 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ import { remWaiting } from '../pages/Pong.js';
 import { Spectator } from "./Spectator.js";
 import { destroyScene } from "./main.js"
 import { refresh } from '../script.js';
+
 
 class Scene
 {
@@ -111,7 +112,7 @@ class Scene
 
 		initMap(this, player_num);
 
-		let my_player = this.get("player" + this.server.client_id); // to change
+		let my_player = this.get("player" + this.server.client_id); // TODO: to change
 		window.addEventListener("keydown", my_player.keydown_event_func);
 		window.addEventListener("keyup", my_player.keyup_event_func);
 
