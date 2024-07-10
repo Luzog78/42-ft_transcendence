@@ -81,7 +81,6 @@ class Player:
 	async def updateSelfToother(self):
 		await self.sendToOther("call", {"command": "scene.server.newPlayer",
 										"args": [f"'player{self.client_id}'", f"'{self.client.username}'"]})
-		await self.sendData("call", {"command": 'incrementWaitingPlayerCount', "args": []})
 		await self.sendToOther("call", {"command": 'incrementWaitingPlayerCount', "args": []})
 
 		for i in range(self.client_id + 1):
