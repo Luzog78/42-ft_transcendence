@@ -90,7 +90,9 @@
 				"delete": "Delete account",
 				"deleteConfirm": "You sure you want to delete your account ?",
 				"deleteLastChance": "This action is irreversible !",
-				"deleteFinal": "DELETE !"
+				"deleteFinal": "DELETE !",
+				"copy": "Copy",
+				"tokenCopied": "Token successfully copied to clipboard !"
 			},
 			"placeholders": {
 				"firstName": "Doc",
@@ -98,8 +100,7 @@
 				"email": "doc@42.fr",
 				"oldPassword": "Enter current password",
 				"password": "Enter a strong one...",
-				"confirmPassword": "Confirmation",
-				"token": "eyI0MiI6IllvdSBmb3VuZCBtZSA6cCAoQGx1em9nNzgpIiwiYWxnIjoiSFMyNTYifQ"
+				"confirmPassword": "Confirmation"
 			}
 		},
 		"play": {

@@ -196,7 +196,7 @@ def view_user_set(request: HttpRequest, username: str):
 		if key not in ['firstName', 'lastName', 'email', 'oldPassword', 'password', 'lang', 'a2f']:
 			return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
 
-	success, error = [], []
+	success, error, complement = [], [], {}
 
 	try:
 		if 'firstName' in data:
@@ -243,26 +243,32 @@ def view_user_set(request: HttpRequest, username: str):
 				success.append('successes.langSet')
 
 		if 'a2f' in data:
-			a2f = data['a2f']
-			if not (a2f is None or checker.a2f_code(a2f)):
-				error.append('errors.a2fBadLength')
+			if data['a2f']:
+				token_arr = [random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ234567') for i in range(32)]
+				token = ''.join(token_arr)
+				user.a2f_token = token
+				success.append('successes.a2fEnabled')
+				complement["a2f_token"] = token
 			else:
-				user.a2f_token = a2f
-				if a2f is None:
-					success.append('successes.a2fDisabled')
-				else:
-					success.append('successes.a2fEnabled')
+				user.a2f_token = None
+				success.append('successes.a2fDisabled')
 
 		user.save()
 	except Exception as e:
-		return JsonResponse({'ok': False, 'error': f'Error: {e}', 'success': success, 'error': error})
+		res = {'ok': False, 'error': f'Error: {e}', 'success': success, 'error': error}
+		if len(complement) != 0:
+			res["complement"] = complement
+		return JsonResponse(res)
 
-	return JsonResponse({
+	res = {
 		'ok': True,
 		'successes': success,
 		'errors': error,
 		**user.json(show_email=True),
-	})
+	}
+	if len(complement) != 0:
+		res["complement"] = complement
+	return JsonResponse(res)
 
 
 @csrf_exempt

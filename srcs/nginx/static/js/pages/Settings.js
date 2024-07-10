@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Settings.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/07 16:27:48 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/10 14:30:14 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { SUPPORTED_LANGS, getLang, loadLang, persist, persistCopy, persistError, persistSuccess, redirect, refresh } from "../script.js";
-import { checkA2F, checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, clearFeedbacks, postJson, postRaw } from "../utils.js";
+import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, clearFeedbacks, postJson, postRaw } from "../utils.js";
 
 
 async function setUserAttributes(context, data) {
@@ -180,23 +180,23 @@ async function Settings(context) {
 						<div class="sep"></div>
 						<div class="sep"></div>
 
-						<form action="GET" class="form-ssm" id="2fa-form">
+						<div class="form-ssm" id="a2f-key">
 							<div class="row col-12">
-								<label for="editToken" class="form-label">
+								<label for="tokenValue" class="form-label">
 									${getLang(context, "pages.settings.labels.token")}
 								</label>
 							</div>
 							<div class="row col-12">
 								<div class="col-8" style="padding-right: 0;">
-									<input type="text" class="form-control" id="editToken" name="editToken" placeholder="${getLang(context, "pages.settings.placeholders.token")}" required>
+									<input disabled type="text" class="form-control" id="tokenValue">
 								</div>
 								<div class="col-4" style="padding-left: 6px;">
-									<button class="btn btn-secondary" type="submit" disabled>
-										${getLang(context, "pages.settings.labels.update")}
+									<button class="btn btn-secondary" id="copyA2fToken">
+										${getLang(context, "pages.settings.labels.copy")}
 									</button>
 								</div>
 							</div>
-						</form>
+						</div>
 						<hr>
 					</div>
 
@@ -292,9 +292,6 @@ async function Settings(context) {
 
 		let editDisabled = document.getElementById("editDisabled");
 		let editEnabled = document.getElementById("editEnabled");
-
-		let a2fForm = document.getElementById("2fa-form");
-		let editToken = document.getElementById("editToken");
 
 		let btnDelete = document.getElementById("btn-delete");
 		let btnDeleteText = document.getElementById("btn-delete-text");
@@ -396,7 +393,12 @@ async function Settings(context) {
 				editDisabled.classList.add("btn-outline-danger");
 
 				editDisabled.addEventListener("click", () =>
-					setUserAttributes(context, { a2f: null }).then(data => refresh()));
+					setUserAttributes(context, { a2f: false }).then(data => {
+						if (data.successes.includes('successes.a2fDisabled'))
+							context.user.a2f = false
+						refresh()
+					})
+				);
 			} else {
 				editDisabled.classList.remove("btn-outline-danger");
 				editDisabled.classList.add("btn-danger");
@@ -404,33 +406,32 @@ async function Settings(context) {
 				editEnabled.classList.add("btn-outline-success");
 
 				editEnabled.addEventListener("click", () => {
-					persistSuccess(context, getLang(context, "pages.settings.useToken"));
-					pushPersistents(context);
+					setUserAttributes(context, {
+						a2f: true
+					}).then(data => {
+						console.log(data)
+						if (data.successes.includes('successes.a2fEnabled'))
+							context.user.a2f = true
+						if (data.complement && data.complement.a2f_token)
+						{
+							pushPersistents(context);
+							editEnabled.classList.remove("btn-outline-success");
+							editEnabled.classList.add("btn-success");
+							editDisabled.classList.remove("btn-danger");
+							editDisabled.classList.add("btn-outline-danger");
+							document.getElementById("tokenValue").value = data.complement.a2f_token
+							document.getElementById("copyA2fToken").onclick = () => {
+								navigator.clipboard.writeText(document.getElementById("tokenValue").value);
+								persistSuccess(context, getLang(context, "pages.settings.labels.tokenCopied"));
+								pushPersistents(context);
+							}
+							document.getElementById("a2f-key").style.display = "block"
+						}
+						else
+							refresh() // maybe show useless error bad version
+					});
 				});
 			}
-		}
-
-		if (a2fForm && editToken) {
-			editToken.addEventListener("input", () => {
-				if (!checkA2F(context, "#editToken"))
-					return;
-				let button = a2fForm.querySelector("button[type=submit]");
-				if (editToken.value !== "") {
-					button.removeAttribute("disabled");
-					button.classList.remove("btn-secondary");
-					button.classList.add("btn-success");
-				} else {
-					button.setAttribute("disabled", "");
-					button.classList.remove("btn-success");
-					button.classList.add("btn-secondary");
-				}
-			});
-			a2fForm.addEventListener("submit", (e) => {
-				e.preventDefault();
-				setUserAttributes(context, {
-					a2f: editToken.value
-				}).then(data => refresh());
-			});
 		}
 
 		if (btnDelete && btnDeleteText) {

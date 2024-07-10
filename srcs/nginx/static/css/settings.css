@@ -125,3 +125,16 @@
 #settings-content button[type="submit"] {
 	transition: .25s;
 }
+
+#settings-content #a2f-key {
+	display: none;
+}
+
+#settings-content #tokenValue {
+	background: transparent;
+	color: transparent;
+}
+
+#settings-content #tokenValue:hover {
+	color: inherit;
+}
