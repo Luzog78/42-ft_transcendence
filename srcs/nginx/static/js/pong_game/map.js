@@ -137,7 +137,7 @@ function initCamera(scene, player_num, following_player = null)
 		scene.camera.setPosition(1.5, 4, 0);
 		return ;
 	}
-	
+
 	let camera_pos = scene.get("player" + following_player).player.position.clone();
 	camera_pos = new THREE.Vector3(camera_pos.x, 4, camera_pos.z);
 

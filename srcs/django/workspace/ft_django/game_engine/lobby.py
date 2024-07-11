@@ -181,10 +181,10 @@ class Lobby:
 			winner = self.clients[player_id - 1]
 			winner.duration = datetime.timestamp(datetime.now()) - winner.start_time + 2
 			self.onEnd()
-			
+
 			time.sleep(3)
 			await self.sendData("game_status", "END")
-			
+
 			self.game_server.kill(self)
 			return
 

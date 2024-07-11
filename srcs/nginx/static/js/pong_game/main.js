@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/11 14:51:52 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/11 23:09:43 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ function destroyScene()
 {
 	if (scene === undefined)
 		return;
-	
+
 	tryTo(() => window.removeEventListener("keyup", scene.get("player" + scene.server.client_id).keyup_event_func));
 	tryTo(() => window.removeEventListener("keydown", scene.get("player" + scene.server.client_id).keydown_event_func));
 
@@ -79,9 +79,9 @@ function destroyScene()
 	let server = scene.server;
 	server.send("disconnect");
 	server.disconnect()
-	
+
 	scene.renderer.setAnimationLoop( null );
-	
+
 	scene = undefined;
 	console.log("SCENE DESTROYED");
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Oauth.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 09:50:44 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/11 18:28:12 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/11 23:09:43 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ async function Oauth(context) {
 			redirect("/login");
 			return;
 		}
-		
+
 		postJson(context, `api/oauth_callback`, {
 			code: code,
 			redirect_uri: window.location.href.split('?')[0] // bruh rip my cpu

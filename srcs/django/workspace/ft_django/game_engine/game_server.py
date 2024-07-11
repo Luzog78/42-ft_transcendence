@@ -71,7 +71,7 @@ class GameServer:
 				self.clients.remove(player)
 				return True
 		return False
-	
+
 	def kill(self, lobby):
 		pass
-		
+

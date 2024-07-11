@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Spectator.js                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 18:14:37 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/10 18:48:45 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/11 23:09:43 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ class Spectator
 			this.following_player = this.scene.player_num - 1;
 		else if (this.following_player >= this.scene.player_num)
 			this.following_player = 0;
-	
+
 		if (this.isDown() || this.isUp())
 			initCamera(this.scene, this.scene.player_num, this.following_player)
 		// await this.scene.server.sendData("player_keyboard", this.keyboard); // TODO

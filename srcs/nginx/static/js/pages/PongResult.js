@@ -201,7 +201,7 @@ async function PongResult(context, id, data=null) {
 					pongResultPlayers.appendChild(div);
 				} else
 					if (game.mode === "BR")
-						data.stats = data.stats.sort((a, b) => a.duration - b.duration);
+						data.stats = data.stats.sort((a, b) => b.duration - a.duration);
 					else
 						data.stats = data.stats.sort((a, b) => a.score - b.score);
 					for (let player of data.stats) {

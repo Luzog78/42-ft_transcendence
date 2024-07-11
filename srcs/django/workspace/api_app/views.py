@@ -227,7 +227,7 @@ def view_auth_callback(request: HttpRequest):
 							password=None,
 							login_42=profile['login'],
 							picture=profile['image']['link'])
-				
+
 				if result:
 					result = auth.login(request, username=profile['login'], oauth=True)
 				if not result or not result.token:
@@ -604,7 +604,7 @@ def view_game_rand(request: HttpRequest):
 	if not (response := auth.is_authenticated(request)):
 		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
 	user = User.objects.get(username=response.user)
-	
+
 	games = Game.objects.filter(started_at=None)
 	waiting = []
 	i = 0
@@ -860,7 +860,7 @@ def view_ressource(request: HttpRequest, name: str):
 def view_pong(request: HttpRequest):
 	if not (response := auth.is_authenticated(request)):
 		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
-	
+
 	socket = None
 	for s in pong_socket.game_server.clients:
 		if s.client.username == response.user:
@@ -876,7 +876,7 @@ def view_pong(request: HttpRequest):
 			socket = pong_socket.PongSocket(online=False)
 
 		asyncio.run(pong_socket.game_server.receive(data, socket))
-	
+
 	else:
 		if not socket:
 			return JsonResponse({'ok': False, 'error': 'errors.notJoined'})

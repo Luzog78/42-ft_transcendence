@@ -57,7 +57,7 @@ class Response:
 
 
 def register(request: HttpRequest, username: str, first_name: str,
-		last_name: str, email: str, password: str, **extra_fields) -> Response:
+		last_name: str, email: str, password: str | None, **extra_fields) -> Response:
 	try:
 		user = User.objects.create_user( # type: ignore
 			username=username,
