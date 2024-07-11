@@ -35,12 +35,12 @@ function postJson(context, url, data, jsonify = true, catches = true) {
 		},
 		body: JSON.stringify(data),
 	});
-	if (jsonify)
-		promise = promise.then(res => res.json());
 	if (catches)
 		promise = promise
 			.catch(e => console.log("[❌] Error on POST.\n\n",
-				"URL: ", url, "\n\nData: ", data, "\n\nError: ", e))
+				"URL: ", url, "\n\nData: ", data, "\n\nError: ", e));
+	if (jsonify)
+		promise = promise.then(res => res.json())
 			.then(data => data ? data : {});
 	return promise;
 }

@@ -6,9 +6,13 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 game_server = GameServer()
 
 class PongSocket(AsyncWebsocketConsumer):
-	def __init__(self, *args, **kwargs):
-		super().__init__(*args, **kwargs)
+	def __init__(self, *args, online=True, **kwargs):
+		if online:
+			super().__init__(*args, **kwargs)
 
+		self.buffer: list[dict] = []
+
+		self.connected = online
 		self.registered = False
 		self.username = None
 
@@ -24,15 +28,7 @@ class PongSocket(AsyncWebsocketConsumer):
 
 	async def receive(self, text_data):
 		data = json.loads(text_data)
-
-		if not self.registered:
-			if "uid" in data and isinstance(data["uid"], str) \
-				and "username" in data and isinstance(data["username"], str):
-				self.username = data["username"]
-				await game_server.addClient(self, data["uid"])
-				self.registered = True
-		else:
-			await game_server.receive(data)
+		await game_server.receive(data, self)
 
 	async def sendData(self, *args):
 		data = {}
@@ -44,4 +40,7 @@ class PongSocket(AsyncWebsocketConsumer):
 		await self.sendJson(data)
 
 	async def sendJson(self, json_data):
-		await self.send(text_data=json.dumps(json_data))
+		if self.connected:
+			await self.send(text_data=json.dumps(json_data))
+		else:
+			self.buffer.append(json_data)

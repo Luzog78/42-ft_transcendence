@@ -64,15 +64,10 @@ async function Play(context) {
 				if (data.ok) {
 					if (data.uid)
 						redirect(`/play/${data.uid}`);
-					else
-						getJson(context, "/api/game/new").then(data => {
-							if (data.ok)
-								redirect(`/play/${data.uid}`);
-							else {
-								persistError(context, getLang(context, data.error));
-								pushPersistents(context);
-							}
-						});
+					else {
+						persistError(context, getLang(context, "error.noGameFound")); // TODO: translate
+						redirect("/new");
+					}
 				} else {
 					persistError(context, getLang(context, data.error));
 					pushPersistents(context);

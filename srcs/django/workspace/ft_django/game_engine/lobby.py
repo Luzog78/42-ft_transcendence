@@ -57,7 +57,6 @@ class Lobby:
 		self.update_thread	= threading.Thread(target=asyncio.run, args=(self.update(),))
 		self.update_thread.start()
 
-
 	def init_map(self, num_players: int) -> dict[str, list[Vector]]:
 		self.client_ready = [False] * num_players
 

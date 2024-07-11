@@ -860,13 +860,28 @@ def view_ressource(request: HttpRequest, name: str):
 def view_pong(request: HttpRequest):
 	if not (response := auth.is_authenticated(request)):
 		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+	
+	socket = None
+	for s in pong_socket.game_server.clients:
+		if s.client.username == response.user:
+			socket = s.client
+			break
 
-	if request.method != 'POST':
-		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+	if request.method == 'POST':
+		data = json.loads(request.body.decode(request.encoding or 'utf-8'))
 
-	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+		print(json.dumps(data))
 
-	asyncio.run(pong_socket.game_server.receive(data))
+		if not socket:
+			socket = pong_socket.PongSocket(online=False)
+
+		asyncio.run(pong_socket.game_server.receive(data, socket))
+	
+	else:
+		if not socket:
+			return JsonResponse({'ok': False, 'error': 'errors.notJoined'})
+
+		return JsonResponse({'ok': True, "buffer": socket.buffer})
 
 	return JsonResponse({'ok': True, 'pong': 'pong'})
 

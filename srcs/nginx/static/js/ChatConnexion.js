@@ -22,7 +22,9 @@ class ChatConnexion
 		this.authenticated = false;
 		this.actualFrontendId = 0;
 		this.waitingResponses = []; // list of [frontendId, promiseRes, promiseRej]
-		this.socket = new WebSocket('ws://' + window.location.host + '/ws/chat');
+		this.url = 'wss://' + window.location.host + '/ws/chat';
+		console.log("[ChatSocket] Connecting to " + this.url);
+		this.socket = new WebSocket(this.url);
 
 		this.socket.onopen = function(e) {
 			console.log("Chat socket opened");

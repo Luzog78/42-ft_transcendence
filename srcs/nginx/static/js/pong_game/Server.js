@@ -19,6 +19,7 @@ import { global_context } from '../script.js';
 import { remWaiting } from '../pages/Pong.js';
 import { setWaitingTotalPlayerCount, incrementWaitingPlayerCount } from '../pages/Pong.js'; // used for eval !
 import { refresh } from "../script.js";
+import { postJson } from '../utils.js';
 
 
 class Server
