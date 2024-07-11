@@ -140,3 +140,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 42 credentials
+OAUTH_42 = {
+	'client_id': os.environ.get('42_CLIENT_ID'),
+	'client_secret': os.environ.get('42_CLIENT_SECRET'),
+}

@@ -8,6 +8,7 @@ RUN apt install -y python3-daphne
 RUN apt install -y python3-django-channels
 RUN apt install -y python3-psycopg2
 RUN apt install -y python3-pyotp
+RUN apt install -y python3-requests
 RUN apt install -y postgresql-client
 RUN apt install -y htop
 RUN apt install -y psmisc

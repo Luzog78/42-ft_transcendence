@@ -6,11 +6,14 @@ from .models import User
 
 
 class CustomBackend(ModelBackend):
-	def authenticate(self, request, username=None, password=None):
+	def authenticate(self, request, username=None, password=None, oauth=False):
 		try:
-			user = User.objects.get(username=username)
-			if check_password(password, user.password):
-				return user
+			if oauth:
+				return User.objects.get(login_42=username)
+			else:
+				user = User.objects.get(username=username)
+				if check_password(password, user.password):
+					return user
 		except User.DoesNotExist:
 			return None
 		except ValidationError:

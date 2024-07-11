@@ -72,16 +72,20 @@ def register(request: HttpRequest, username: str, first_name: str,
 		return Response(str(e))
 
 
-def login(request: HttpRequest, username: str, password: str, a2f_code: str | None = None) -> Response:
-	user: User = authenticate(request, username=username, password=password) # type: ignore
+def login(request: HttpRequest, username: str, password: str | None = None, a2f_code: str | None = None, oauth: bool = False) -> Response:
+	if oauth:
+		user: User = authenticate(request, username=username, oauth = True)
+	else:
+		user: User = authenticate(request, username=username, password=password) # type: ignore
 	if user is None:
 		return Response('errors.invalidCredentials')
 
-	if user.a2f_token is not None:
-		if a2f_code is None:
-			return Response('errors.missingA2F')
-		if not pyotp.TOTP(user.a2f_token).verify(a2f_code):
-			return Response('errors.invalidCredentials')
+	if not oauth:
+		if user.a2f_token is not None:
+			if a2f_code is None:
+				return Response('errors.missingA2F')
+			if not pyotp.TOTP(user.a2f_token).verify(a2f_code):
+				return Response('errors.invalidCredentials')
 
 	jwt_token = jwt.generate_token(user.username)
 	return Response(token=jwt_token, user=user, username=user.username)

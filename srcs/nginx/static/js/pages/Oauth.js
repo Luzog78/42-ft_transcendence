@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Oauth.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 09:50:44 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/11 11:29:27 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/11 18:28:12 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { getLang, persistError, redirect } from "../script.js";
+import { getLang, persistError, persistSuccess, redirect, onLogin } from "../script.js";
+import { postJson } from "../utils.js";
 
 async function Oauth(context) {
 	setTimeout(() => {
@@ -22,12 +23,25 @@ async function Oauth(context) {
 		}
 		
 		postJson(context, `api/oauth_callback`, {
-			code: code
-		}).then((data) => {
+			code: code,
+			redirect_uri: window.location.href.split('?')[0] // bruh rip my cpu
+		}).then(async (data) => {
 			if (!data.ok) {
+				console.log("nope", data);
 				persistError(context, getLang(context, data.error));
 				redirect("/login");
 				return;
+			} else {
+				try {
+					localStorage.setItem("ft_token", data.token);
+				} catch (e) {
+					console.log("[❌] Token could not be saved in localStorage.");
+				}
+				context.user.isAuthenticated = true;
+				context.user.token = data.token;
+				await onLogin(context, data, true);
+				persistSuccess(context, getLang(context, data.success));
+				redirect("/");
 			}
 		});
 	}, 200);

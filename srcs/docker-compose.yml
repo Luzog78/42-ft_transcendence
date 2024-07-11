@@ -9,6 +9,8 @@ services:
     networks:
     - transcendence_network
     restart: on-failure
+    ports:
+    - 5432:5432
 
   django:
     container_name: django

@@ -1,14 +1,15 @@
-from re import T
+from re import T, search
 import time
 import json
 import random
 import asyncio
 from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
+import requests
 
 from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament
 from . import auth, checker
-from ft_django import pong_socket
+from ft_django import pong_socket, settings
 
 
 endpoints: list[str] = []
@@ -169,13 +170,88 @@ def view_login(request: HttpRequest):
 
 @csrf_exempt
 def view_auth_callback(request: HttpRequest):
+	def ApiError(requestResponse):
+		if res.status_code == 401:
+			error = json.loads(res.text)
+			if error['error'] == 'invalid_grant':
+				return JsonResponse({'ok': False, 'error': 'errors.oauthGrantExpired'}) # todo add to langs le token client n'est plus bon
+			elif error['error'] == 'invalid_client':
+				return JsonResponse({'ok': False, 'error': 'errors.oauthInvalidServerAccess'}) # todo add to langs le token server n'est plus bon
+			else:
+				return JsonResponse({'ok': False, 'error': 'errors.oauthUnexpectedApiError'}) # todo add to langs erreur non gérée de l'api
+		else:
+			return JsonResponse({'ok': False, 'error': 'errors.oauthApiUnreachable'}) # todo add to langs impossible d'accéder a l'api (toute autre erreur)
+
 	if request.method != 'POST':
 		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
 
 	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
-	if 'code' not in data:
+	if 'code' not in data or 'redirect_uri' not in data:
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
-	return JsonResponse({'ok': False, 'error': 'todo'})
+	data = {
+		'grant_type': 'authorization_code',
+		'code': data['code'],
+		'redirect_uri': data['redirect_uri'],
+		'client_id': settings.OAUTH_42['client_id'],
+		'client_secret': settings.OAUTH_42['client_secret']
+	}
+	res = requests.post("https://api.intra.42.fr/oauth/token", data=data)
+	if res.ok:
+		access = json.loads(res.text)
+		headers = {
+			'Authorization': 'Bearer ' + access['access_token']
+		}
+		res = requests.get("https://api.intra.42.fr/v2/me", headers=headers)
+		if res.ok:
+			profile = json.loads(res.text)
+			user = User.objects.filter(login_42=profile['login'])
+			if not user:
+				username = profile['login']
+				existingUsername = User.objects.filter(username__startswith=username)
+				if existingUsername:
+					while existingUsername.filter(username=username):
+						numberMatch = search("[0-9]+$", username)
+						if numberMatch:
+							pos = numberMatch.span()[0]
+							login = username[:pos]
+							number = int(username[pos:]) + 1
+							username = login + str(number)
+						else:
+							username += '2'
+
+				result = auth.register(request,
+							username=profile['login'],
+							first_name=profile['first_name'],
+							last_name=profile['last_name'],
+							email=profile['email'],
+							password=None,
+							login_42=profile['login'],
+							picture=profile['image']['link'])
+				
+				if result:
+					result = auth.login(request, username=profile['login'], oauth=True)
+				if not result or not result.token:
+					return JsonResponse({'ok': False, 'error': f'{result}'})
+				return JsonResponse({
+					'ok': True,
+					'success': 'successes.registered',
+					'token': result.token, 
+					**User.objects.get(username=result.username).json(show_email=True)
+				})
+			else:
+				response = auth.login(request, username=profile['login'], oauth=True)
+				if not response or not response.token:
+					return JsonResponse({'ok': False, 'error': f'{response}'})
+				return JsonResponse({
+					'ok': True,
+					'success': 'successes.loggedIn',
+					'token': response.token,
+					**User.objects.get(username=response.username).json(show_email=True),
+				})
+		else:
+			return ApiError(res)
+	else:
+		return ApiError(res)
 
 
 

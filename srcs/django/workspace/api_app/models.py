@@ -62,7 +62,7 @@ class User(AbstractBaseUser):
 	username	= models.CharField(primary_key=True, max_length=24)
 	created_at	= models.DateTimeField(auto_now=True, blank=False)
 	email		= models.CharField(max_length=255, unique=True)
-	password	= models.CharField(max_length=255)
+	password	= models.CharField(max_length=255, null=True)
 	first_name	= models.CharField(max_length=24)
 	last_name	= models.CharField(max_length=24)
 	picture		= models.CharField(max_length=1024, null=True, default=None)
@@ -70,6 +70,7 @@ class User(AbstractBaseUser):
 	ratio		= models.FloatField(default=0.5)
 	a2f_token	= models.CharField(max_length=32, null=True, default=None)
 	is_admin	= models.BooleanField(default=False)
+	login_42	= models.CharField(max_length=24, null=True, default=None)
 
 	objects = UserManager()
 

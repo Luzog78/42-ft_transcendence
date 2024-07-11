@@ -21,7 +21,7 @@ def r(v, p):
 r(view_root,		'')
 r(view_login,		'login')
 r(view_register,	'register')
-r(view_auth_callback,	'auth/callback')
+r(view_auth_callback,	'oauth_callback')
 r(view_is_logged,	'logged')
 r(view_user,		'user')
 r(view_user,		'user/<str:username>')
