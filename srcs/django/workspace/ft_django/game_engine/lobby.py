@@ -119,6 +119,7 @@ class Lobby:
 		player_list = self.clients + self.dead_clients
 
 		for player in player_list:
+			print("save stats of", player.client.username)
 			user = User.objects.get(username=player.client.username)
 			assert user is not None
 
@@ -165,6 +166,8 @@ class Lobby:
 		if (ball.last_player):
 			ball.last_player.kills += 1
 
+		for ball in self.balls:
+			del ball
 		self.balls = [Ball(self, 0.15, 0)]
 
 		player_id = int(dead_player.replace("player", ""))
@@ -188,10 +191,6 @@ class Lobby:
 
 		time.sleep(3)
 
-		# spectator = Spectator(self, player.client, len(self.spectators) + player_id)
-		# self.game_server.clients.append(spectator)
-		# await self.addSpectator(spectator)
-
 		self.clients_per_lobby -= 1
 		self.time = 0
 		self.walls = self.init_map(self.clients_per_lobby)
@@ -201,9 +200,10 @@ class Lobby:
 
 		for c in self.clients:
 			if (c.client_id > player_id):
-				print(c.client_id, "become", c.client_id - 1)
 				c.client_id -= 1
 			await c.initPlayer()
+		for s in self.spectators:
+			await s.initSpectator()
 
 
 	async def update(self):
@@ -233,13 +233,17 @@ class Lobby:
 			self.client_ready[client_id] = True
 			# if (all(self.client_ready)):
 			if (len(self.clients) == self.clients_per_lobby):
-				time.sleep(3)
-				self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
+				async def countdown(lobby: Lobby):
+					time.sleep(3)
+					lobby.balls[0].vel = Ball.getBallSpeed(lobby.clients_per_lobby)
+					clients = lobby.clients + lobby.spectators
+					for c in clients:
+						await lobby.balls[0].updateBall()
+						await c.sendData("game_status", "START")
 
-				clients = self.clients + self.spectators
-				for c in clients:
-					await self.balls[0].updateBall()
-					await c.sendData("game_status", "START")
+				count_thread = threading.Thread(target=asyncio.run, args=(countdown(self),))
+				count_thread.start()
+
 
 		if ("player_keyboard" in data):
 			if (client_id < len(self.clients)):
