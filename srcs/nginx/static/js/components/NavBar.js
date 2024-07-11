@@ -25,7 +25,7 @@ async function NavBar(title, context, fetchProfile = true) {
 		if (context.user.isAuthenticated) {
 			context.user.isAuthenticated = false;
 			context.user.token = null;
-			persistError(context, getLang(context, "error.sessionExpired"));
+			persistError(context, getLang(context, "errors.sessionExpired"));
 		}
 	}
 

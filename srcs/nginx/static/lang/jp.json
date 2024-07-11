@@ -1,0 +1,217 @@
+{
+	"locale": "ja",
+	"lang": "日本語",
+	"iconAlt": "日本の国旗",
+	"iconURL": "https://upload.wikimedia.org/wikipedia/en/9/9e/Flag_of_Japan.svg",
+	"title": "PING! PONG!",
+	"loading": "読み込み中...",
+	"navbar": {
+		"login": "ログイン",
+		"logout": "ログアウト",
+		"profilePictureAlt": "プロフィール写真",
+		"register": "登録",
+		"iconAlt": "ロゴ"
+	},
+	"pages": {
+		"404": {
+			"h0": "ページが見つかりません...",
+			"p0": "お探しのページは存在しません。",
+			"p1": "戻りましょう",
+			"p3": "。",
+			"title": "エラー 404",
+			"p2": "ホーム"
+		},
+		"home": {
+			"h0": "エラーが発生しました...",
+			"h1": "PONGへようこそ",
+			"h2": "！",
+			"p0": "一緒に遊びましょう！",
+			"title": "PONG!"
+		},
+		"login": {
+			"labels": {
+				"a2f": "2FA",
+				"login": "ログイン",
+				"password": "パスワード",
+				"register": "登録",
+				"username": "ユーザー名"
+			},
+			"placeholders": {
+				"login": {
+					"a2f": "2FA"
+				},
+				"password": "強力なパスワードを入力してください...",
+				"username": "ft_transcender"
+			},
+			"title": "ログイン",
+			"dontHaveAccount": "アカウントをお持ちではありませんか？"
+		},
+		"logout": {
+			"title": "ログアウト"
+		},
+		"play": {
+			"create": "新規",
+			"join": "参加",
+			"placeholder": "既存のゲームに参加...",
+			"play": "プレイ",
+			"title": "プレイ"
+		},
+		"playResult": {
+			"bestStreak": "最高連勝記録",
+			"bestTime": "持続時間",
+			"by": "による",
+			"noPlayers": "プレイヤーなし",
+			"profilePictureAlt": "プロフィール写真",
+			"rebounds": "リバウンド",
+			"title": "結果",
+			"ultimateSpeed": "最高速度"
+		},
+		"profile": {
+			"date": "日付",
+			"gameLink": "ゲームリンク",
+			"next": "次へ",
+			"previous": "前へ",
+			"ratio": "比率",
+			"result": "結果",
+			"title": "プロフィール"
+		},
+		"register": {
+			"labels": {
+				"email": "メール",
+				"firstName": "名",
+				"lastName": "姓",
+				"login": "ログイン",
+				"password": "パスワード",
+				"register": "登録",
+				"username": "ユーザー名"
+			},
+			"placeholders": {
+				"confirmPassword": "確認",
+				"email": "doc@42.fr",
+				"firstName": "ドク",
+				"lastName": "... 誰も知らない...",
+				"password": "強力なパスワードを入力してください...",
+				"username": "doc123"
+			},
+			"title": "登録",
+			"haveAccount": "すでにアカウントをお持ちですか？"
+		},
+		"settings": {
+			"labels": {
+				"confirmPassword": "確認",
+				"copy": "コピー",
+				"delete": "アカウントを削除",
+				"deleteConfirm": "本当にアカウントを削除しますか？",
+				"deleteFinal": "削除！",
+				"deleteLastChance": "この操作は取り消せません！",
+				"disabled": "無効",
+				"email": "メール",
+				"enabled": "有効",
+				"firstName": "名",
+				"lastName": "姓",
+				"oldPassword": "古いパスワード",
+				"password": "新しいパスワード",
+				"token": "2FAキー",
+				"update": "更新",
+				"lang": "言語"
+			},
+			"placeholders": {
+				"confirmPassword": "確認",
+				"email": "doc@42.fr",
+				"firstName": "ドク",
+				"lastName": "... 誰も知らない...",
+				"oldPassword": "現在のパスワードを入力してください",
+				"password": "強力なパスワードを入力してください...",
+				"token": "eyI0MiI6IllvdSBmb3VuZCBtZSA6cCAoQGx1em9nNzgpIiwiYWxnIjoiSFMyNTYifQ"
+			},
+			"profilePictureAlt": "プロフィール写真",
+			"title": "設定",
+			"titles": {
+				"a2f": "二要素認証 (2FA)",
+				"personal": "個人情報",
+				"security": "セキュリティ"
+			},
+			"tokenCopied": "トークンがクリップボードに正常にコピーされました！",
+			"useToken": "2FAを有効にするには、トークンを使用してください！"
+		},
+		"tournament": {
+			"create": "作成",
+			"finished": "完了",
+			"join": "参加",
+			"noTournament": "トーナメントを作成",
+			"noTournamentDesc": "友達と一緒に遊ぶためにトーナメントを作成しましょう！<br>参加したいプレイヤーの人数を選択し、IDを友達と共有しましょう！",
+			"noTournamentFound": "トーナメントが見つかりません。",
+			"ongoing": "進行中...",
+			"pending": "保留中...",
+			"quit": "終了"
+		},
+		"playId": {
+			"title": "プレイ",
+			"waiting": "対戦相手を待っています..."
+		}
+	},
+	"errors": {
+		"404": "404 見つかりません",
+		"a2fBadLength": "2FAコードは6桁の数字でなければなりません！",
+		"alreadyJoined": "すでにトーナメントに参加しています！",
+		"cannotCreateGameOf": "{} 人のゲームを作成できません！",
+		"couldNotLogout": "ログアウトできませんでした！",
+		"emailAlreadyUsed": "このメールはすでに使用されています！",
+		"sessionExpired": "セッションが期限切れです！",
+		"firstNameTooLong": "名前は最大24文字でなければなりません！",
+		"firstNameTooShort": "名前は少なくとも1文字でなければなりません！",
+		"gameNotFound": "ゲームが見つかりません！",
+		"invalidCredentials": "資格情報が無効です！",
+		"invalidEmail": "無効なメールアドレスです！",
+		"invalidFirstName": "無効な名前です！",
+		"invalidLang": "無効な言語です！",
+		"invalidLastName": "無効な姓です！",
+		"invalidMethod": "無効な方法",
+		"invalidPassword": "無効なパスワードです！",
+		"invalidPictureType": "無効な画像ファイルタイプです！",
+		"invalidRequest": "無効なリクエストです",
+		"invalidToken": "無効なトークンです！",
+		"invalidUID": "無効なUIDです！",
+		"invalidUsername": "無効なユーザー名です！",
+		"lastNameTooLong": "姓は最大24文字でなければなりません！",
+		"lastNameTooShort": "姓は少なくとも1文字でなければなりません！",
+		"MessageTooLong": "メッセージが長すぎます！",
+		"missingA2F": "2FAコードがありません！",
+		"missingAuthorization": "認証が欠けています",
+		"missingRequestInformations": "リクエスト情報が欠けています！",
+		"mustBeLoggedIn": "このページにアクセスするにはログインする必要があります！",
+		"notAuthenticated": "認証されていません！",
+		"notJoined": "トーナメントに参加していません！",
+		"notLoggedIn": "ログインしていません！",
+		"passwordMismatch": "パスワードが一致しません！",
+		"passwordTooShort": "パスワードは少なくとも4文字でなければなりません！",
+		"pictureTooBig": "画像ファイルが大きすぎます！",
+		"ressourceNotFound": "リソースが見つかりません！",
+		"statsNotFound": "統計が見つかりません！",
+		"tournamentAlreadyStarted": "トーナメントはすでに開始されています！",
+		"tournamentNotFound": "トーナメントが見つかりません！",
+		"usernameAlreadyUsed": "このユーザー名はすでに使用されています！",
+		"usernameIllegal": "ユーザー名には文字、数字、アンダースコアのみを含める必要があります！",
+		"usernameTooLong": "ユーザー名は最大24文字でなければなりません！",
+		"usernameTooShort": "ユーザー名は少なくとも3文字でなければなりません！",
+		"userNotFound": "ユーザーが見つかりません！",
+		"UserNotFound": "ユーザーが見つかりません！"
+	},
+	"successes": {
+		"a2fDisabled": "二要素認証が正常に無効化されました！",
+		"a2fEnabled": "二要素認証が正常に有効化されました！",
+		"emailSet": "メールが正常に設定されました！",
+		"firstNameSet": "名前が正常に設定されました！",
+		"gameCreated": "ゲームが正常に作成されました！",
+		"langSet": "言語が正常に設定されました！",
+		"lastNameSet": "姓が正常に設定されました！",
+		"loggedIn": "正常にログインしました！",
+		"loggedOut": "正常にログアウトしました！",
+		"passwordSet": "パスワードが正常に設定されました！",
+		"pictureSet": "プロフィール写真が正常に設定されました！",
+		"registered": "正常に登録されました！",
+		"tournamentCreated": "トーナメントが正常に作成されました！",
+		"tournamentJoined": "トーナメントに正常に参加しました！",
+		"tournamentQuit": "トーナメントを正常に終了しました！"
+	}
+}

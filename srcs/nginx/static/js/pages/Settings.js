@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Settings.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/10 14:30:14 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/11 05:41:22 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,19 +259,24 @@ async function Settings(context) {
 		}
 
 		if (lang) {
-			lang.parentElement.addEventListener("click", () => {
-				let i = 1;
-				for (let l of SUPPORTED_LANGS) {
-					if (context.lang.locale === l)
-						break;
-					i++;
-				}
-				if (i >= SUPPORTED_LANGS.length)
-					i = 0;
-				setUserAttributes(context, { lang: SUPPORTED_LANGS[i] })
+			lang.parentElement.parentElement.oncontextmenu = (e) => e.preventDefault();
+			lang.parentElement.parentElement.addEventListener("mousedown", (e) => {
+				e.preventDefault();
+				if (e.button == 0) {
+					context.langIndex++;
+					if (context.langIndex >= SUPPORTED_LANGS.length)
+						context.langIndex = 0;
+				} else if (e.button == 2) {
+					context.langIndex--;
+					if (context.langIndex < 0)
+						context.langIndex = SUPPORTED_LANGS.length - 1;
+				} else
+					return;
+				setUserAttributes(context, { lang: SUPPORTED_LANGS[context.langIndex] })
 					.then(data => {
 						if (data.ok)
-							loadLang(context, SUPPORTED_LANGS[i]).then(() => refresh());
+							loadLang(context, SUPPORTED_LANGS[context.langIndex])
+								.then(() => refresh());
 						else
 							refresh();
 					});

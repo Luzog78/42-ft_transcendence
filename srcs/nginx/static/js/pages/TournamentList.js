@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 14:30:41 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/10 10:16:09 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/11 03:39:41 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,7 @@ async function TournamentList(context) {
 
 				let sliced = tids.slice(0, 50);
 				tids = tids.slice(50);
-				let result = await appendTournaments(context, sliced, tbody);
-				if (!result) {
-					let refreshButton = document.createElement("div");
-					refreshButton.innerHTML = /*html*/`
-						<button class="btn btn-primary" href="${window.location.pathname}" data-link>Refresh</button>
-					`;
-					refreshButton.style.width = "100%";
-					refreshButton.style.marginTop = "100px";
-					refreshButton.style.textAlign = "center";
-					table.parentElement.appendChild(refreshButton);
-					return;
-				}
+				await appendTournaments(context, sliced, tbody);
 
 				setTimeout(() => {
 					if (table.parentElement.scrollTop + table.parentElement.clientHeight < table.parentElement.scrollHeight) {

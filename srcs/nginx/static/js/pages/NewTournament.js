@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/05 14:28:00 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/11 03:52:15 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ async function NewTournament(context) {
 				if (data.ok)
 					redirect(`/tournament/${data.tid}`, true, data);
 				else {
-					persistError(context, getLang(context, data.error));
+					persistError(context, getLang(context, data.error, data.args));
 					pushPersistents(context);
 				}
 			});

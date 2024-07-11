@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 
-from .views import view_err404, view_test, \
+from .views import endpoints, view_err404, view_test, \
 					view_root, view_login, view_register, view_is_logged, \
 					view_user, view_user_set, view_user_setpic, view_user_del, \
 					view_games, view_game_list, view_game_user, view_game_uid, \
@@ -13,7 +13,9 @@ from .views import view_err404, view_test, \
 
 urlpatterns = [ re_path('.*', view_err404) ]
 
-def r(v, p): urlpatterns.insert(-1, path(p, v, name='api-' + v.__name__))
+def r(v, p):
+	urlpatterns.insert(-1, path(p, v, name='api-' + v.__name__))
+	endpoints.append('/' + p)
 
 
 r(view_root,		'')

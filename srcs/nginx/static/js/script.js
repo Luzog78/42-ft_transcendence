@@ -30,10 +30,11 @@ import { destroyScene } from "./pong_game/main.js";
 import { TournamentManager } from "./pages/TournamentManager.js";
 
 
-const SUPPORTED_LANGS = ["en", "fr"];
-const DEFAULT_LANG = SUPPORTED_LANGS[0];
+const SUPPORTED_LANGS = [ "en", "fr", "es", "de", "cn", "jp", "ru", "ka", "eg" ];
 
 var global_context = {
+	SUPPORTED_LANGS: SUPPORTED_LANGS,
+	langIndex: 0,
 	lang: {},
 	user: {
 		isAuthenticated: false,
@@ -264,11 +265,18 @@ const loadLang = async (context, lang) => {
 	context.lang = await getJson(context, `/static/lang/${lang}.json`);
 	if (!context.lang || !context.lang.locale)
 		console.error(`[❌] Failed to fetch language file: ${lang}.json`);
-	else
+	else {
 		console.log(`[✅] Loaded language file: ${lang}.json`, context.lang);
+		context.langIndex = 0;
+		for (let i = 0; i < context.SUPPORTED_LANGS.length; i++)
+			if (context.SUPPORTED_LANGS[i] === lang) {
+				context.langIndex = i;
+				break;
+			}
+	}
 }
 
-const getLang = (context, key) => {
+const getLang = (context, key, argsList = undefined) => {
 	const notFound = `{'${key}' not found}`;
 	let pathes = `${key}`.split(".");
 	let found = context.lang;
@@ -279,6 +287,14 @@ const getLang = (context, key) => {
 	}
 	if (typeof found !== "string")
 		return notFound;
+	let finalString = "";
+	if (argsList)
+		for (let i = 0; i < found.length; i++) {
+			if (found[i] === "{" && i + 1 < found.length && found[i + 1] === "}")
+				finalString += `${argsList.shift()}`;
+			else
+				finalString += found[i];
+		}
 	return found;
 }
 
@@ -319,7 +335,7 @@ const onLogin = async (context, loadedData = null, reloadNav = false) => {
 				await overrideNavBar(title, context);
 		}
 	} else {
-		await loadLang(context, DEFAULT_LANG);
+		await loadLang(context, SUPPORTED_LANGS[context.langIndex]);
 		if (reloadNav)
 			await overrideNavBar(title, context);
 	}
@@ -359,7 +375,7 @@ window.addEventListener("load", async () => {
 	if (global_context.user.token)
 		await onLogin(global_context);
 	else
-		await loadLang(global_context, DEFAULT_LANG);
+		await loadLang(global_context, SUPPORTED_LANGS[global_context.langIndex]);
 
 	loadPage(window.location.pathname);
 });
@@ -378,7 +394,6 @@ export {
 	getLang,
 	onLogin,
 	SUPPORTED_LANGS,
-	DEFAULT_LANG,
 	global_context,
 };
 

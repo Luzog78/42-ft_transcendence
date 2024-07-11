@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/11 22:55:37 by ysabik            #+#    #+#              #
-#    Updated: 2024/07/09 13:58:22 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/11 05:41:05 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,7 @@ help:
 	@echo
 	@echo "$(RED)$$> $(MAGENTA)make $(RED)re        $(RESET):  $(MAGENTA)Make$(RESET) $(YELLOW)clean$(RESET), $(YELLOW)all$(RESET)"
 	@echo "$(RED)$$> $(MAGENTA)make $(RED)clean     $(RESET):  Stop & Remove all containers, images, volumes & networks$(RESET)"
+	@echo "$(RED)$$> $(MAGENTA)make $(RED)fclean    $(RESET):  $(MAGENTA)Make$(RESET) $(YELLOW)clean$(RESET), Then clear the docker cache$(RESET)"
 	@echo
 
 
@@ -183,6 +184,14 @@ clean:
 	@echo "$(GREEN)[[ Docker PURGED ! ]]$(RESET)"
 
 
+fclean:
+	@$(MAKE) --no-print-directory clean
+	@echo
+	$(call exec, docker system prune -af, $$(echo y))
+
+	@echo "$(GREEN)[[ Docker FORCE PURGED ! ]]$(RESET)"
+
+
 # **************************************************************************** #
 
 
@@ -203,4 +212,4 @@ endef
 # **************************************************************************** #
 
 
-.PHONY: help all up stop ls ps images volume network logs dj sql postgresql nginx run kill re clean
+.PHONY: help all up stop ls ps images volume network logs dj sql postgresql nginx run kill re clean fclean

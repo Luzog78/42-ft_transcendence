@@ -26,7 +26,6 @@ async function Logout(context) {
 		firstName: null,
 		lastName: null,
 		picture: null,
-		lang: null,
 		a2f: null,
 		isAdmin: null,
 		lastLogin: null,
