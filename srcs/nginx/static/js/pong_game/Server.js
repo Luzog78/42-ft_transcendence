@@ -18,6 +18,7 @@ import { destroyObject, destroyScene, initScene } from './main.js';
 import { global_context } from '../script.js';
 import { remWaiting } from '../pages/Pong.js';
 import { setWaitingTotalPlayerCount, incrementWaitingPlayerCount } from '../pages/Pong.js'; // used for eval !
+import { refresh } from "../script.js";
 
 
 class Server
@@ -89,11 +90,8 @@ class Server
 		setTimeout(() => {
 			if (player_id == my_id && this.scene.game_mode == "BR")
 			{
-				const uid = this.uid;
 				destroyScene();
-				setTimeout(async () => {
-					await initScene(uid);
-				}, 1000);
+				refresh();
 			}
 		}, 3000);
 	}

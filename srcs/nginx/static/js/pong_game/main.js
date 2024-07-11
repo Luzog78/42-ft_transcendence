@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/10 18:48:37 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/11 14:51:52 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ function destroyScene()
 
 	let server = scene.server;
 	server.send("disconnect");
-	setTimeout(() => server.disconnect(), 250);
+	server.disconnect()
 	
 	scene.renderer.setAnimationLoop( null );
 	
