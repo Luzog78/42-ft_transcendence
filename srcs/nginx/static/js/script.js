@@ -15,6 +15,7 @@ import { Home } from "./pages/Home.js";
 import { Login } from "./pages/Login.js";
 import { Logout } from "./pages/Logout.js";
 import { Register } from "./pages/Register.js";
+import { Oauth } from "./pages/Oauth.js";
 import { Err404 } from "./pages/Err404.js";
 import { Profile } from "./pages/Profile.js";
 import { Play } from "./pages/Play.js";
@@ -110,6 +111,10 @@ const router = [
 	{
 		path: "/register",
 		component: Register,
+	},
+	{
+		path: "/oauth_callback",
+		component: Oauth,
 	},
 	{
 		path: "/settings",

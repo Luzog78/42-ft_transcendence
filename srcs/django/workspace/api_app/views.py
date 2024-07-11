@@ -167,6 +167,17 @@ def view_login(request: HttpRequest):
 		**User.objects.get(username=response.username).json(show_email=True),
 	})
 
+@csrf_exempt
+def view_auth_callback(request: HttpRequest):
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+
+	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+	if 'code' not in data:
+		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+	return JsonResponse({'ok': False, 'error': 'todo'})
+
+
 
 @csrf_exempt
 def view_is_logged(request: HttpRequest):

@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 
-from .views import endpoints, view_err404, view_test, \
-					view_root, view_login, view_register, view_is_logged, \
+from .views import endpoints, view_err404, view_test, view_root, \
+					view_login, view_register, view_auth_callback, view_is_logged, \
 					view_user, view_user_set, view_user_setpic, view_user_del, \
 					view_games, view_game_list, view_game_user, view_game_uid, \
 					view_game_new, view_game_rand, \
@@ -21,6 +21,7 @@ def r(v, p):
 r(view_root,		'')
 r(view_login,		'login')
 r(view_register,	'register')
+r(view_auth_callback,	'auth/callback')
 r(view_is_logged,	'logged')
 r(view_user,		'user')
 r(view_user,		'user/<str:username>')
