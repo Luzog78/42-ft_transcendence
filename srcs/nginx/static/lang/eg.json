@@ -1,0 +1,217 @@
+{
+	"locale": "ar",
+	"lang": "العربية",
+	"iconAlt": "علم مصر",
+	"iconURL": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Egypt.svg",
+	"title": "بينج! بونج!",
+	"loading": "جار التحميل...",
+	"navbar": {
+		"login": "تسجيل الدخول",
+		"logout": "تسجيل الخروج",
+		"profilePictureAlt": "صورة الملف الشخصي",
+		"register": "التسجيل",
+		"iconAlt": "الشعار"
+	},
+	"pages": {
+		"404": {
+			"h0": "الصفحة غير موجودة...",
+			"p0": "الصفحة التي تبحث عنها غير موجودة.",
+			"p1": "دعنا نعود إلى",
+			"p3": ".",
+			"title": "خطأ 404",
+			"p2": "الصفحة الرئيسية"
+		},
+		"home": {
+			"h0": "حدث خطأ...",
+			"h1": "مرحبًا بكم في بينج",
+			"h2": "!",
+			"p0": "تعال والعب معنا!",
+			"title": "بينج!"
+		},
+		"login": {
+			"labels": {
+				"a2f": "المصادقة الثنائية",
+				"login": "تسجيل الدخول",
+				"password": "كلمة المرور",
+				"register": "التسجيل",
+				"username": "اسم المستخدم"
+			},
+			"placeholders": {
+				"login": {
+					"a2f": "المصادقة الثنائية"
+				},
+				"password": "أدخل كلمة مرور قوية...",
+				"username": "ft_transcender"
+			},
+			"title": "تسجيل الدخول",
+			"dontHaveAccount": "ليس لديك حساب؟"
+		},
+		"logout": {
+			"title": "تسجيل الخروج"
+		},
+		"play": {
+			"create": "جديد",
+			"join": "انضمام",
+			"placeholder": "انضم إلى لعبة موجودة...",
+			"play": "اللعب",
+			"title": "اللعب"
+		},
+		"playResult": {
+			"bestStreak": "أفضل سلسلة",
+			"bestTime": "المدة",
+			"by": "بواسطة",
+			"noPlayers": "لا يوجد لاعبين",
+			"profilePictureAlt": "صورة الملف الشخصي",
+			"rebounds": "الارتدادات",
+			"title": "النتيجة",
+			"ultimateSpeed": "أقصى سرعة"
+		},
+		"profile": {
+			"date": "التاريخ",
+			"gameLink": "رابط اللعبة",
+			"next": "التالي",
+			"previous": "السابق",
+			"ratio": "النسبة",
+			"result": "النتيجة",
+			"title": "الملف الشخصي"
+		},
+		"register": {
+			"labels": {
+				"email": "البريد الإلكتروني",
+				"firstName": "الاسم الأول",
+				"lastName": "اسم العائلة",
+				"login": "تسجيل الدخول",
+				"password": "كلمة المرور",
+				"register": "التسجيل",
+				"username": "اسم المستخدم"
+			},
+			"placeholders": {
+				"confirmPassword": "تأكيد",
+				"email": "doc@42.fr",
+				"firstName": "دوك",
+				"lastName": "... لا أحد يعرف...",
+				"password": "أدخل كلمة مرور قوية...",
+				"username": "doc123"
+			},
+			"title": "التسجيل",
+			"haveAccount": "هل لديك حساب؟"
+		},
+		"settings": {
+			"labels": {
+				"confirmPassword": "تأكيد",
+				"copy": "نسخ",
+				"delete": "حذف الحساب",
+				"deleteConfirm": "هل أنت متأكد أنك تريد حذف حسابك؟",
+				"deleteFinal": "حذف!",
+				"deleteLastChance": "هذا الإجراء غير قابل للتراجع!",
+				"disabled": "معطل",
+				"email": "البريد الإلكتروني",
+				"enabled": "ممكّن",
+				"firstName": "الاسم الأول",
+				"lastName": "اسم العائلة",
+				"oldPassword": "كلمة المرور القديمة",
+				"password": "كلمة مرور جديدة",
+				"token": "مفتاح المصادقة الثنائية",
+				"update": "تحديث",
+				"lang": "اللغة"
+			},
+			"placeholders": {
+				"confirmPassword": "تأكيد",
+				"email": "doc@42.fr",
+				"firstName": "دوك",
+				"lastName": "... لا أحد يعرف...",
+				"oldPassword": "أدخل كلمة المرور الحالية",
+				"password": "أدخل كلمة مرور قوية...",
+				"token": "eyI0MiI6IllvdSBmb3VuZCBtZSA6cCAoQGx1em9nNzgpIiwiYWxnIjoiSFMyNTYifQ"
+			},
+			"profilePictureAlt": "صورة الملف الشخصي",
+			"title": "الإعدادات",
+			"titles": {
+				"a2f": "المصادقة الثنائية (2FA)",
+				"personal": "المعلومات الشخصية",
+				"security": "الأمان"
+			},
+			"tokenCopied": "تم نسخ الرمز بنجاح إلى الحافظة!",
+			"useToken": "يرجى استخدام رمزك لتفعيل المصادقة الثنائية!"
+		},
+		"tournament": {
+			"create": "إنشاء",
+			"finished": "منتهي",
+			"join": "انضمام",
+			"noTournament": "إنشاء بطولة",
+			"noTournamentDesc": "قم بإنشاء بطولة للعب مع أصدقائك!<br>اختر عدد اللاعبين الذين تريد اللعب معهم وشارك معرف البطولة مع أصدقائك!",
+			"noTournamentFound": "لم يتم العثور على بطولة.",
+			"ongoing": "جاري...",
+			"pending": "قيد الانتظار...",
+			"quit": "الخروج"
+		},
+		"playId": {
+			"title": "اللعب",
+			"waiting": "في انتظار المنافسين..."
+		}
+	},
+	"errors": {
+		"404": "404 لم يتم العثور على الصفحة",
+		"a2fBadLength": "يجب أن يتكون رمز المصادقة الثنائية من 6 أرقام!",
+		"alreadyJoined": "تم الانضمام بالفعل إلى البطولة!",
+		"cannotCreateGameOf": "لا يمكن إنشاء لعبة لعدد {} من اللاعبين!",
+		"couldNotLogout": "تعذر تسجيل الخروج!",
+		"emailAlreadyUsed": "هذا البريد الإلكتروني مستخدم بالفعل!",
+		"sessionExpired": "انتهت الجلسة!",
+		"firstNameTooLong": "يجب أن يكون الاسم الأول بحد أقصى 24 حرفًا!",
+		"firstNameTooShort": "يجب أن يتكون الاسم الأول من حرف واحد على الأقل!",
+		"gameNotFound": "لم يتم العثور على اللعبة!",
+		"invalidCredentials": "بيانات اعتماد غير صالحة!",
+		"invalidEmail": "بريد إلكتروني غير صالح!",
+		"invalidFirstName": "اسم أول غير صالح!",
+		"invalidLang": "لغة غير صالحة!",
+		"invalidLastName": "اسم عائلة غير صالح!",
+		"invalidMethod": "طريقة غير صالحة",
+		"invalidPassword": "كلمة مرور غير صالحة!",
+		"invalidPictureType": "نوع ملف الصورة غير صالح!",
+		"invalidRequest": "طلب غير صالح",
+		"invalidToken": "رمز غير صالح!",
+		"invalidUID": "معرف المستخدم غير صالح!",
+		"invalidUsername": "اسم مستخدم غير صالح!",
+		"lastNameTooLong": "يجب أن يكون اسم العائلة بحد أقصى 24 حرفًا!",
+		"lastNameTooShort": "يجب أن يتكون اسم العائلة من حرف واحد على الأقل!",
+		"MessageTooLong": "الرسالة طويلة جدًا!",
+		"missingA2F": "رمز المصادقة الثنائية مفقود!",
+		"missingAuthorization": "تفويض مفقود",
+		"missingRequestInformations": "معلومات الطلب مفقودة!",
+		"mustBeLoggedIn": "يجب أن تكون مسجلاً للدخول للوصول إلى هذه الصفحة!",
+		"notAuthenticated": "غير مصدق عليه!",
+		"notJoined": "لم يتم الانضمام إلى البطولة!",
+		"notLoggedIn": "أنت لم تقم بتسجيل الدخول!",
+		"passwordMismatch": "كلمات المرور غير متطابقة!",
+		"passwordTooShort": "يجب أن تتكون كلمة المرور من 4 أحرف على الأقل!",
+		"pictureTooBig": "ملف الصورة كبير جدًا!",
+		"ressourceNotFound": "لم يتم العثور على المورد!",
+		"statsNotFound": "لم يتم العثور على الإحصائيات!",
+		"tournamentAlreadyStarted": "البطولة بدأت بالفعل!",
+		"tournamentNotFound": "لم يتم العثور على البطولة!",
+		"usernameAlreadyUsed": "اسم المستخدم هذا مستخدم بالفعل!",
+		"usernameIllegal": "يجب أن يحتوي اسم المستخدم على أحرف وأرقام وأشرطة تحتية فقط!",
+		"usernameTooLong": "يجب أن يكون اسم المستخدم بحد أقصى 24 حرفًا!",
+		"usernameTooShort": "يجب أن يتكون اسم المستخدم من 3 أحرف على الأقل!",
+		"userNotFound": "لم يتم العثور على المستخدم!",
+		"UserNotFound": "لم يتم العثور على المستخدم!"
+	},
+	"successes": {
+		"a2fDisabled": "تم تعطيل المصادقة الثنائية بنجاح!",
+		"a2fEnabled": "تم تمكين المصادقة الثنائية بنجاح!",
+		"emailSet": "تم تعيين البريد الإلكتروني بنجاح!",
+		"firstNameSet": "تم تعيين الاسم الأول بنجاح!",
+		"gameCreated": "تم إنشاء اللعبة بنجاح!",
+		"langSet": "تم تعيين اللغة بنجاح!",
+		"lastNameSet": "تم تعيين اسم العائلة بنجاح!",
+		"loggedIn": "تم تسجيل الدخول بنجاح!",
+		"loggedOut": "تم تسجيل الخروج بنجاح!",
+		"passwordSet": "تم تعيين كلمة المرور بنجاح!",
+		"pictureSet": "تم تعيين صورة الملف الشخصي بنجاح!",
+		"registered": "تم التسجيل بنجاح!",
+		"tournamentCreated": "تم إنشاء البطولة بنجاح!",
+		"tournamentJoined": "تم الانضمام إلى البطولة بنجاح!",
+		"tournamentQuit": "تم إنهاء البطولة بنجاح!"
+	}
+}

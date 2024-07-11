@@ -1,0 +1,217 @@
+{
+	"locale": "ru",
+	"lang": "Русский",
+	"iconAlt": "Флаг России",
+	"iconURL": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Russia.svg",
+	"title": "ПИНГ! ПОНГ!",
+	"loading": "Загрузка...",
+	"navbar": {
+		"login": "Войти",
+		"logout": "Выйти",
+		"profilePictureAlt": "Фото профиля",
+		"register": "Регистрация",
+		"iconAlt": "Логотип"
+	},
+	"pages": {
+		"404": {
+			"h0": "Страница не найдена...",
+			"p0": "Страница, которую вы ищете, не существует.",
+			"p1": "Давайте вернемся",
+			"p3": ".",
+			"title": "Ошибка 404",
+			"p2": "на главную"
+		},
+		"home": {
+			"h0": "Произошла ошибка...",
+			"h1": "Добро пожаловать в ПОНГ",
+			"h2": "!",
+			"p0": "Приходите и играйте с нами!",
+			"title": "ПОНГ!"
+		},
+		"login": {
+			"labels": {
+				"a2f": "2FA",
+				"login": "Войти",
+				"password": "Пароль",
+				"register": "Регистрация",
+				"username": "Имя пользователя"
+			},
+			"placeholders": {
+				"login": {
+					"a2f": "2FA"
+				},
+				"password": "Введите надежный пароль...",
+				"username": "ft_transcender"
+			},
+			"title": "Войти",
+			"dontHaveAccount": "Нет аккаунта?"
+		},
+		"logout": {
+			"title": "Выйти"
+		},
+		"play": {
+			"create": "НОВАЯ",
+			"join": "ПРИСОЕДИНИТЬСЯ",
+			"placeholder": "Присоединиться к существующей игре...",
+			"play": "ИГРАТЬ",
+			"title": "Играть"
+		},
+		"playResult": {
+			"bestStreak": "Лучшая серия",
+			"bestTime": "Продолжительность",
+			"by": "по",
+			"noPlayers": "Нет игроков",
+			"profilePictureAlt": "Фото профиля",
+			"rebounds": "Отскоки",
+			"title": "Результат",
+			"ultimateSpeed": "Максимальная скорость"
+		},
+		"profile": {
+			"date": "Дата",
+			"gameLink": "Ссылка на игру",
+			"next": "Далее",
+			"previous": "Назад",
+			"ratio": "Соотношение",
+			"result": "Результат",
+			"title": "Профиль"
+		},
+		"register": {
+			"labels": {
+				"email": "Электронная почта",
+				"firstName": "Имя",
+				"lastName": "Фамилия",
+				"login": "Войти",
+				"password": "Пароль",
+				"register": "Регистрация",
+				"username": "Имя пользователя"
+			},
+			"placeholders": {
+				"confirmPassword": "Подтверждение",
+				"email": "doc@42.fr",
+				"firstName": "Док",
+				"lastName": "... никто не знает...",
+				"password": "Введите надежный пароль...",
+				"username": "doc123"
+			},
+			"title": "Регистрация",
+			"haveAccount": "Уже есть аккаунт?"
+		},
+		"settings": {
+			"labels": {
+				"confirmPassword": "Подтверждение",
+				"copy": "Копировать",
+				"delete": "Удалить аккаунт",
+				"deleteConfirm": "Вы уверены, что хотите удалить свой аккаунт?",
+				"deleteFinal": "УДАЛИТЬ!",
+				"deleteLastChance": "Это действие необратимо!",
+				"disabled": "ОТКЛЮЧЕНО",
+				"email": "Электронная почта",
+				"enabled": "ВКЛЮЧЕНО",
+				"firstName": "Имя",
+				"lastName": "Фамилия",
+				"oldPassword": "Старый пароль",
+				"password": "Новый пароль",
+				"token": "Ключ 2FA",
+				"update": "Обновить",
+				"lang": "Язык"
+			},
+			"placeholders": {
+				"confirmPassword": "Подтверждение",
+				"email": "doc@42.fr",
+				"firstName": "Док",
+				"lastName": "... никто не знает...",
+				"oldPassword": "Введите текущий пароль",
+				"password": "Введите надежный пароль...",
+				"token": "eyI0MiI6IllvdSBmb3VuZCBtZSA6cCAoQGx1em9nNzgpIiwiYWxnIjoiSFMyNTYifQ"
+			},
+			"profilePictureAlt": "Фото профиля",
+			"title": "Настройки",
+			"titles": {
+				"a2f": "Двухфакторная аутентификация (2FA)",
+				"personal": "Личная информация",
+				"security": "Безопасность"
+			},
+			"tokenCopied": "Токен успешно скопирован в буфер обмена!",
+			"useToken": "Пожалуйста, используйте свой токен для активации 2FA!"
+		},
+		"tournament": {
+			"create": "СОЗДАТЬ",
+			"finished": "ЗАВЕРШЕНО",
+			"join": "ПРИСОЕДИНИТЬСЯ",
+			"noTournament": "Создать турнир",
+			"noTournamentDesc": "Создайте турнир, чтобы играть с друзьями!<br>Выберите количество игроков, с которыми вы хотите играть, и поделитесь ID с друзьями!",
+			"noTournamentFound": "Турнир не найден.",
+			"ongoing": "В ПРОЦЕССЕ...",
+			"pending": "ОЖИДАНИЕ...",
+			"quit": "ВЫЙТИ"
+		},
+		"playId": {
+			"title": "Играть",
+			"waiting": "Ожидание противников..."
+		}
+	},
+	"errors": {
+		"404": "404 Не найдено",
+		"a2fBadLength": "Код 2FA должен быть длиной 6 цифр!",
+		"alreadyJoined": "Турнир уже присоединен!",
+		"cannotCreateGameOf": "Невозможно создать игру для {} игроков!",
+		"couldNotLogout": "Не удалось выйти!",
+		"emailAlreadyUsed": "Этот адрес электронной почты уже используется!",
+		"sessionExpired": "Сессия истекла!",
+		"firstNameTooLong": "Имя должно быть не более 24 символов!",
+		"firstNameTooShort": "Имя должно быть не менее 1 символа!",
+		"gameNotFound": "Игра не найдена!",
+		"invalidCredentials": "Недействительные учетные данные!",
+		"invalidEmail": "Недействительный адрес электронной почты!",
+		"invalidFirstName": "Недействительное имя!",
+		"invalidLang": "Недействительный язык!",
+		"invalidLastName": "Недействительная фамилия!",
+		"invalidMethod": "Недействительный метод",
+		"invalidPassword": "Недействительный пароль!",
+		"invalidPictureType": "Недействительный тип файла изображения!",
+		"invalidRequest": "Недействительный запрос",
+		"invalidToken": "Недействительный токен!",
+		"invalidUID": "Недействительный UID!",
+		"invalidUsername": "Недействительное имя пользователя!",
+		"lastNameTooLong": "Фамилия должна быть не более 24 символов!",
+		"lastNameTooShort": "Фамилия должна быть не менее 1 символа!",
+		"MessageTooLong": "Сообщение слишком длинное!",
+		"missingA2F": "Отсутствует код 2FA!",
+		"missingAuthorization": "Отсутствует авторизация",
+		"missingRequestInformations": "Отсутствует информация о запросе!",
+		"mustBeLoggedIn": "Вы должны войти, чтобы получить доступ к этой странице!",
+		"notAuthenticated": "Не аутентифицировано!",
+		"notJoined": "Турнир не присоединен!",
+		"notLoggedIn": "Вы не вошли в систему!",
+		"passwordMismatch": "Пароли не совпадают!",
+		"passwordTooShort": "Пароль должен быть не менее 4 символов!",
+		"pictureTooBig": "Файл изображения слишком большой!",
+		"ressourceNotFound": "Ресурс не найден!",
+		"statsNotFound": "Статистика не найдена!",
+		"tournamentAlreadyStarted": "Турнир уже начался!",
+		"tournamentNotFound": "Турнир не найден!",
+		"usernameAlreadyUsed": "Это имя пользователя уже используется!",
+		"usernameIllegal": "Имя пользователя должно содержать только буквы, цифры и подчеркивания!",
+		"usernameTooLong": "Имя пользователя должно быть не более 24 символов!",
+		"usernameTooShort": "Имя пользователя должно быть не менее 3 символов!",
+		"userNotFound": "Пользователь не найден!",
+		"UserNotFound": "Пользователь не найден!"
+	},
+	"successes": {
+		"a2fDisabled": "Двухфакторная аутентификация успешно отключена!",
+		"a2fEnabled": "Двухфакторная аутентификация успешно включена!",
+		"emailSet": "Электронная почта успешно установлена!",
+		"firstNameSet": "Имя успешно установлено!",
+		"gameCreated": "Игра успешно создана!",
+		"langSet": "Язык успешно установлен!",
+		"lastNameSet": "Фамилия успешно установлена!",
+		"loggedIn": "Вы успешно вошли!",
+		"loggedOut": "Вы успешно вышли!",
+		"passwordSet": "Пароль успешно установлен!",
+		"pictureSet": "Фото профиля успешно установлено!",
+		"registered": "Вы успешно зарегистрировались!",
+		"tournamentCreated": "Турнир успешно создан!",
+		"tournamentJoined": "Турнир успешно присоединен!",
+		"tournamentQuit": "Турнир успешно завершен!"
+	}
+}

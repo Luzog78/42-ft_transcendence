@@ -1,0 +1,92 @@
+/* ******************************************************************** */
+/* ------------------------------ PlayId ------------------------------ */
+/* ******************************************************************** */
+
+
+#playid-content {
+	overflow: visible;
+	position: fixed;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+
+#playid-content .content {
+	height: fit-content !important;
+	width: fit-content !important;
+	padding: 40px;
+}
+
+#playid-content .GameMode {
+	background: linear-gradient(
+			to right,
+			#24bceb 20%,
+			#9a66e0 30%,
+			#3133ec 70%,
+			#c02ae7 80%
+	);
+	font-weight: bold;
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-size: 500% auto;
+	animation: PongResult-Shine 4s infinite alternate;
+}
+
+#playid-content .moving-point {
+	position: absolute;
+	height: 8px;
+	width: 8px;
+	display: flex;
+	background-color: white;
+	animation: playid-move-point 5s 0s infinite linear;
+	border-radius: 500px;
+	border: 1px solid #fff;
+	box-shadow: 0 0 10px 0 #ffffff80;
+}
+
+#playid-content .search-text {
+	display: flex;
+	justify-content: center;
+}
+
+#playid-content .search-text span {
+	position: relative;
+	animation: playid-jump-letter 3s infinite;
+}
+
+@keyframes playid-jump-letter {
+	0% {
+		bottom: 0px;
+	}
+	5% {
+		bottom: 3px;
+	}
+	10% {
+		bottom: 0px;
+	}
+}
+
+@keyframes playid-move-point {
+	0% {
+		top: calc(0% - 4px);
+		left: calc(0% - 4px);
+	}
+	30% {
+		top: calc(0% - 4px);
+		left: calc(100% - 4px);
+	}
+	50% {
+		top: calc(100% - 4px);
+		left: calc(100% - 4px);
+	}
+	80% {
+		top: calc(100% - 4px);
+		left: calc(0% - 4px);
+	}
+	100% {
+		top: calc(0% - 4px);
+		left: calc(0% - 4px);
+	}
+}

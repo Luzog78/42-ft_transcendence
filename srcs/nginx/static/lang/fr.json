@@ -1,0 +1,216 @@
+{
+	"locale": "fr",
+	"lang": "Français",
+	"iconAlt": "Drapeau de la France",
+	"iconURL": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg",
+	"title": "PING! PONG !",
+	"loading": "Chargement...",
+	"navbar": {
+		"iconAlt": "Logo",
+		"login": "Connexion",
+		"logout": "Déconnexion",
+		"register": "S'inscrire",
+		"profilePictureAlt": "Photo de profil"
+	},
+	"pages": {
+		"404": {
+			"title": "Erreur 404",
+			"h0": "Page non trouvée...",
+			"p0": "Il semblerait que la page que vous cherchez n'existe pas.",
+			"p1": "Revenir à la",
+			"p2": "page d'accueil",
+			"p3": "."
+		},
+		"home": {
+			"title": "PONG !",
+			"h0": "Une erreur s'est produite...",
+			"h1": "Bienvenue sur PONG",
+			"h2": "!",
+			"p0": "Venez et jouez avec nous !"
+		},
+		"login": {
+			"labels": {
+				"a2f": "A2F",
+				"login": "Connexion",
+				"password": "Mot de passe",
+				"register": "S'inscrire",
+				"username": "Nom d'utilisateur"
+			},
+			"placeholders": {
+				"login": {
+					"a2f": "A2F"
+				},
+				"password": "Entrez un mot de passe fort...",
+				"username": "ft_transcender"
+			},
+			"title": "Connexion",
+			"dontHaveAccount": "Pas de compte ?"
+		},
+		"logout": {
+			"title": "Déconnexion"
+		},
+		"play": {
+			"create": "NOUVEAU",
+			"join": "REJOINDRE",
+			"placeholder": "Rejoindre une partie existante...",
+			"play": "JOUER",
+			"title": "Jouer"
+		},
+		"playResult": {
+			"bestStreak": "Meilleure série",
+			"bestTime": "Durée",
+			"by": "par",
+			"noPlayers": "Aucun joueur",
+			"profilePictureAlt": "Photo de profil",
+			"rebounds": "Rebonds",
+			"title": "Résultat",
+			"ultimateSpeed": "Vitesse ultime"
+		},
+		"profile": {
+			"date": "Date",
+			"gameLink": "Lien du jeu",
+			"next": "Suivant",
+			"previous": "Précédent",
+			"ratio": "Ratio",
+			"result": "Résultat",
+			"title": "Profil"
+		},
+		"register": {
+			"labels": {
+				"email": "Email",
+				"firstName": "Prénom",
+				"lastName": "Nom",
+				"login": "Connexion",
+				"password": "Mot de passe",
+				"register": "S'inscrire",
+				"username": "Nom d'utilisateur"
+			},
+			"placeholders": {
+				"confirmPassword": "Confirmation",
+				"email": "doc@42.fr",
+				"firstName": "Doc",
+				"lastName": "... personne ne sait...",
+				"password": "Entrez un mot de passe fort...",
+				"username": "doc123"
+			},
+			"title": "S'inscrire",
+			"haveAccount": "Déjà un compte ?"
+		},
+		"settings": {
+			"labels": {
+				"confirmPassword": "Confirmation",
+				"copy": "Copier",
+				"delete": "Supprimer le compte",
+				"deleteConfirm": "Êtes-vous sûr de vouloir supprimer votre compte ?",
+				"deleteFinal": "SUPPRIMER !",
+				"deleteLastChance": "Cette action est irréversible !",
+				"disabled": "DÉSACTIVÉ",
+				"email": "Email",
+				"enabled": "ACTIVÉ",
+				"firstName": "Prénom",
+				"lastName": "Nom",
+				"oldPassword": "Ancien mot de passe",
+				"password": "Nouveau mot de passe",
+				"token": "Clé 2FA",
+				"update": "Mettre à jour",
+				"lang": "Langue"
+			},
+			"placeholders": {
+				"confirmPassword": "Confirmation",
+				"email": "doc@42.fr",
+				"firstName": "Doc",
+				"lastName": "... personne ne sait...",
+				"oldPassword": "Entrez le mot de passe actuel",
+				"password": "Entrez un mot de passe fort...",
+				"token": "eyI0MiI6IllvdSBmb3VuZCBtZSA6cCAoQGx1em9nNzgpIiwiYWxnIjoiSFMyNTYifQ"
+			},
+			"profilePictureAlt": "Photo de profil",
+			"title": "Paramètres",
+			"titles": {
+				"a2f": "Authentification à deux facteurs (2FA)",
+				"personal": "Informations personnelles",
+				"security": "Sécurité"
+			},
+			"tokenCopied": "Jeton copié avec succès dans le presse-papiers !",
+			"useToken": "Veuillez utiliser votre jeton pour activer le 2FA !"
+		},
+		"tournament": {
+			"create": "CRÉER",
+			"finished": "TERMINÉ",
+			"join": "REJOINDRE",
+			"noTournament": "Créer un tournoi",
+			"noTournamentDesc": "Créez un tournoi pour jouer avec vos amis !<br>Choisissez le nombre de joueurs avec lesquels vous voulez jouer et partagez l'ID avec vos amis !",
+			"noTournamentFound": "Aucun tournoi trouvé.",
+			"ongoing": "EN COURS...",
+			"pending": "EN ATTENTE...",
+			"quit": "QUITTER"
+		},
+		"playId": {
+			"title": "Jouer",
+			"waiting": "En attente d'adversaires..."
+		}
+	},
+	"errors": {
+		"404": "404 Non Trouvé",
+		"a2fBadLength": "Le code A2F doit contenir 6 chiffres !",
+		"alreadyJoined": "Tournoi déjà rejoint !",
+		"cannotCreateGameOf": "Impossible de créer une partie de {} joueurs !",
+		"couldNotLogout": "Impossible de se déconnecter !",
+		"emailAlreadyUsed": "Cet email est déjà utilisé !",
+		"sessionExpired": "Session expirée !",
+		"firstNameTooLong": "Le prénom ne doit pas dépasser 24 caractères !",
+		"firstNameTooShort": "Le prénom doit contenir au moins 1 caractère !",
+		"gameNotFound": "Jeu non trouvé !",
+		"invalidCredentials": "Identifiants invalides !",
+		"invalidEmail": "Email invalide !",
+		"invalidFirstName": "Prénom invalide !",
+		"invalidLang": "Langue invalide !",
+		"invalidLastName": "Nom invalide !",
+		"invalidMethod": "Méthode invalide",
+		"invalidPassword": "Mot de passe invalide !",
+		"invalidPictureType": "Type de fichier image invalide !",
+		"invalidRequest": "Requête invalide",
+		"invalidToken": "Jeton invalide !",
+		"invalidUID": "UID invalide !",
+		"invalidUsername": "Nom d'utilisateur invalide !",
+		"lastNameTooLong": "Le nom de famille ne doit pas dépasser 24 caractères !",
+		"lastNameTooShort": "Le nom de famille doit contenir au moins 1 caractère !",
+		"MessageTooLong": "Message trop long !",
+		"missingA2F": "Code A2F manquant !",
+		"missingAuthorization": "Autorisation manquante",
+		"missingRequestInformations": "Informations de la requête manquantes !",
+		"mustBeLoggedIn": "Vous devez être connecté pour accéder à cette page !",
+		"notAuthenticated": "Non authentifié !",
+		"notJoined": "Tournoi non rejoint !",
+		"notLoggedIn": "Vous n'êtes pas connecté !",
+		"passwordMismatch": "Les mots de passe ne correspondent pas !",
+		"passwordTooShort": "Le mot de passe doit contenir au moins 4 caractères !",
+		"pictureTooBig": "Le fichier image est trop volumineux !",
+		"ressourceNotFound": "Ressource non trouvée !",
+		"statsNotFound": "Statistiques non trouvées !",
+		"tournamentAlreadyStarted": "Tournoi déjà commencé !",
+		"tournamentNotFound": "Tournoi non trouvé !",
+		"usernameAlreadyUsed": "Ce nom d'utilisateur est déjà utilisé !",
+		"usernameIllegal": "Le nom d'utilisateur ne doit contenir que des lettres, des chiffres et des underscores !",
+		"usernameTooLong": "Le nom d'utilisateur ne doit pas dépasser 24 caractères !",
+		"usernameTooShort": "Le nom d'utilisateur doit contenir au moins 3 caractères !",
+		"userNotFound": "Utilisateur non trouvé !"
+	},
+	"successes": {
+		"a2fDisabled": "Authentification à deux facteurs désactivée avec succès !",
+		"a2fEnabled": "Authentification à deux facteurs activée avec succès !",
+		"emailSet": "Email défini avec succès !",
+		"firstNameSet": "Prénom défini avec succès !",
+		"gameCreated": "Jeu créé avec succès !",
+		"langSet": "Langue définie avec succès !",
+		"lastNameSet": "Nom défini avec succès !",
+		"loggedIn": "Vous vous êtes connecté avec succès !",
+		"loggedOut": "Vous vous êtes déconnecté avec succès !",
+		"passwordSet": "Mot de passe défini avec succès !",
+		"pictureSet": "Photo de profil définie avec succès !",
+		"registered": "Vous vous êtes inscrit avec succès !",
+		"tournamentCreated": "Tournoi créé avec succès !",
+		"tournamentJoined": "Tournoi rejoint avec succès !",
+		"tournamentQuit": "Tournoi quitté avec succès !"
+	}
+}

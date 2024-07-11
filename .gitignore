@@ -9,13 +9,18 @@
 ## But not these files... ##
 ############################
 
+!*.sh
 !*.py
 !*.html
 !*.css
 !*.js
 !*.json
+!*.yml
+!*.sql
 !*.svg
 !*.md
+!*.env
+!*.conf
 !.gitignore
 !Makefile
 
@@ -28,6 +33,8 @@
 *subject.pdf
 .vscode
 __pycache__
+pic
+migrations
 db.sqlite3
 site
 fields.yml

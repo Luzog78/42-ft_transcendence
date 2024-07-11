@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="&#1057;&#1083;&#1086;&#1081;_1" x="0px" y="0px" viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+<linearGradient id="SVGID_1__52547" gradientUnits="userSpaceOnUse" x1="32" y1="51.7083" x2="32" y2="54.1681" spreadMethod="reflect">
+	<stop offset="0" style="stop-color:#6DC7FF"/>
+	<stop offset="1" style="stop-color:#E6ABFF"/>
+</linearGradient>
+<rect x="13" y="52" style="fill:url(#SVGID_1__52547);" width="38" height="2"/>
+<linearGradient id="SVGID_2__52547" gradientUnits="userSpaceOnUse" x1="32" y1="9.5" x2="32" y2="12.5414" spreadMethod="reflect">
+	<stop offset="0" style="stop-color:#6DC7FF"/>
+	<stop offset="1" style="stop-color:#E6ABFF"/>
+</linearGradient>
+<rect x="13" y="10" style="fill:url(#SVGID_2__52547);" width="38" height="2"/>
+<linearGradient id="SVGID_3__52547" gradientUnits="userSpaceOnUse" x1="32" y1="19.875" x2="32" y2="27.1253" spreadMethod="reflect">
+	<stop offset="0" style="stop-color:#6DC7FF"/>
+	<stop offset="1" style="stop-color:#E6ABFF"/>
+</linearGradient>
+<path style="fill:url(#SVGID_3__52547);" d="M43.54,20c-2.17,4.16-6.53,7-11.54,7s-9.37-2.84-11.54-7H43.54z"/>
+<linearGradient id="SVGID_4__52547" gradientUnits="userSpaceOnUse" x1="32" y1="5.625" x2="32" y2="58.6705" spreadMethod="reflect">
+	<stop offset="0" style="stop-color:#1A6DFF"/>
+	<stop offset="1" style="stop-color:#C822FF"/>
+</linearGradient>
+<path style="fill:url(#SVGID_4__52547);" d="M50.893,16H52c1.654,0,3-1.346,3-3V9c0-1.654-1.346-3-3-3H12c-1.654,0-3,1.346-3,3v4  c0,1.654,1.346,3,3,3h1.107c0.787,7.484,5.94,13.674,12.855,16c-6.915,2.326-12.068,8.516-12.855,16H12c-1.654,0-3,1.346-3,3v4  c0,1.654,1.346,3,3,3h40c1.654,0,3-1.346,3-3v-4c0-1.654-1.346-3-3-3h-1.107c-0.787-7.484-5.94-13.674-12.855-16  C44.952,29.674,50.105,23.484,50.893,16z M12,14c-0.552,0-1-0.448-1-1V9c0-0.552,0.448-1,1-1h40c0.552,0,1,0.448,1,1v4  c0,0.552-0.448,1-1,1h-1h-2H15h-2H12z M52,50c0.552,0,1,0.448,1,1v4c0,0.552-0.448,1-1,1H12c-0.552,0-1-0.448-1-1v-4  c0-0.552,0.448-1,1-1h1h2h34h2H52z M45.717,40H41v2h5.992c0.344,0.641,0.634,1.313,0.894,2H37v2h11.505  c0.159,0.654,0.287,1.319,0.367,2H15.128C16.084,39.894,22.76,33.534,31,33.051V37h2v-3.949C38.221,33.356,42.808,36.02,45.717,40z   M32,31c-8.696,0-15.877-6.567-16.872-15h33.743C47.877,24.433,40.696,31,32,31z"/>
+</svg>

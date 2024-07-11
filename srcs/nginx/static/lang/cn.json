@@ -1,0 +1,217 @@
+{
+	"locale": "zh",
+	"lang": "中文",
+	"iconAlt": "中国国旗",
+	"iconURL": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg",
+	"title": "PING! PONG!",
+	"loading": "加载中...",
+	"navbar": {
+		"login": "登录",
+		"logout": "登出",
+		"profilePictureAlt": "头像",
+		"register": "注册",
+		"iconAlt": "标志"
+	},
+	"pages": {
+		"404": {
+			"h0": "页面未找到...",
+			"p0": "您要查找的页面不存在。",
+			"p1": "让我们回到",
+			"p3": "。",
+			"title": "错误 404",
+			"p2": "首页"
+		},
+		"home": {
+			"h0": "发生了一个错误...",
+			"h1": "欢迎来到PONG",
+			"h2": "!",
+			"p0": "来和我们一起玩吧！",
+			"title": "PONG!"
+		},
+		"login": {
+			"labels": {
+				"a2f": "二次验证",
+				"login": "登录",
+				"password": "密码",
+				"register": "注册",
+				"username": "用户名"
+			},
+			"placeholders": {
+				"login": {
+					"a2f": "二次验证"
+				},
+				"password": "输入一个强密码...",
+				"username": "ft_transcender"
+			},
+			"title": "登录",
+			"dontHaveAccount": "没有账号？"
+		},
+		"logout": {
+			"title": "登出"
+		},
+		"play": {
+			"create": "新建",
+			"join": "加入",
+			"placeholder": "加入一个现有游戏...",
+			"play": "玩",
+			"title": "玩"
+		},
+		"playResult": {
+			"bestStreak": "最佳连胜",
+			"bestTime": "持续时间",
+			"by": "由",
+			"noPlayers": "没有玩家",
+			"profilePictureAlt": "头像",
+			"rebounds": "反弹",
+			"title": "结果",
+			"ultimateSpeed": "最高速度"
+		},
+		"profile": {
+			"date": "日期",
+			"gameLink": "游戏链接",
+			"next": "下一个",
+			"previous": "上一个",
+			"ratio": "比例",
+			"result": "结果",
+			"title": "个人资料"
+		},
+		"register": {
+			"labels": {
+				"email": "电子邮件",
+				"firstName": "名字",
+				"lastName": "姓氏",
+				"login": "登录",
+				"password": "密码",
+				"register": "注册",
+				"username": "用户名"
+			},
+			"placeholders": {
+				"confirmPassword": "确认",
+				"email": "doc@42.fr",
+				"firstName": "Doc",
+				"lastName": "... 无人知晓...",
+				"password": "输入一个强密码...",
+				"username": "doc123"
+			},
+			"title": "注册",
+			"haveAccount": "已经有账号了？"
+		},
+		"settings": {
+			"labels": {
+				"confirmPassword": "确认",
+				"copy": "复制",
+				"delete": "删除账号",
+				"deleteConfirm": "您确定要删除您的账号吗？",
+				"deleteFinal": "删除！",
+				"deleteLastChance": "此操作不可撤销！",
+				"disabled": "已禁用",
+				"email": "电子邮件",
+				"enabled": "已启用",
+				"firstName": "名字",
+				"lastName": "姓氏",
+				"oldPassword": "旧密码",
+				"password": "新密码",
+				"token": "二次验证密钥",
+				"update": "更新",
+				"lang": "语言"
+			},
+			"placeholders": {
+				"confirmPassword": "确认",
+				"email": "doc@42.fr",
+				"firstName": "Doc",
+				"lastName": "... 无人知晓...",
+				"oldPassword": "输入当前密码",
+				"password": "输入一个强密码...",
+				"token": "eyI0MiI6IllvdSBmb3VuZCBtZSA6cCAoQGx1em9nNzgpIiwiYWxnIjoiSFMyNTYifQ"
+			},
+			"profilePictureAlt": "头像",
+			"title": "设置",
+			"titles": {
+				"a2f": "二次验证 (2FA)",
+				"personal": "个人信息",
+				"security": "安全"
+			},
+			"tokenCopied": "密钥已成功复制到剪贴板！",
+			"useToken": "请使用您的密钥激活二次验证！"
+		},
+		"tournament": {
+			"create": "创建",
+			"finished": "已完成",
+			"join": "加入",
+			"noTournament": "创建一个比赛",
+			"noTournamentDesc": "创建一个比赛来和您的朋友们一起玩吧！<br>选择您想玩的玩家人数并与您的朋友分享ID！",
+			"noTournamentFound": "未找到比赛。",
+			"ongoing": "进行中...",
+			"pending": "待定...",
+			"quit": "退出"
+		},
+		"playId": {
+			"title": "玩",
+			"waiting": "等待对手..."
+		}
+	},
+	"errors": {
+		"404": "404 未找到",
+		"a2fBadLength": "二次验证代码必须为6位数字！",
+		"alreadyJoined": "比赛已加入！",
+		"cannotCreateGameOf": "无法创建 {} 人的游戏！",
+		"couldNotLogout": "无法登出！",
+		"emailAlreadyUsed": "该电子邮件已被使用！",
+		"sessionExpired": "会话已过期！",
+		"firstNameTooLong": "名字最多只能有24个字符！",
+		"firstNameTooShort": "名字至少要有1个字符！",
+		"gameNotFound": "未找到游戏！",
+		"invalidCredentials": "凭证无效！",
+		"invalidEmail": "电子邮件无效！",
+		"invalidFirstName": "名字无效！",
+		"invalidLang": "语言无效！",
+		"invalidLastName": "姓氏无效！",
+		"invalidMethod": "方法无效",
+		"invalidPassword": "密码无效！",
+		"invalidPictureType": "无效的图片文件类型！",
+		"invalidRequest": "请求无效",
+		"invalidToken": "密钥无效！",
+		"invalidUID": "UID 无效！",
+		"invalidUsername": "用户名无效！",
+		"lastNameTooLong": "姓氏最多只能有24个字符！",
+		"lastNameTooShort": "姓氏至少要有1个字符！",
+		"MessageTooLong": "消息太长！",
+		"missingA2F": "缺少二次验证代码！",
+		"missingAuthorization": "缺少授权",
+		"missingRequestInformations": "缺少请求信息！",
+		"mustBeLoggedIn": "您必须登录才能访问此页面！",
+		"notAuthenticated": "未认证！",
+		"notJoined": "比赛未加入！",
+		"notLoggedIn": "您未登录！",
+		"passwordMismatch": "密码不匹配！",
+		"passwordTooShort": "密码至少要有4个字符！",
+		"pictureTooBig": "图片文件太大！",
+		"ressourceNotFound": "未找到资源！",
+		"statsNotFound": "未找到统计信息！",
+		"tournamentAlreadyStarted": "比赛已开始！",
+		"tournamentNotFound": "未找到比赛！",
+		"usernameAlreadyUsed": "该用户名已被使用！",
+		"usernameIllegal": "用户名只能包含字母、数字和下划线！",
+		"usernameTooLong": "用户名最多只能有24个字符！",
+		"usernameTooShort": "用户名至少要有3个字符！",
+		"userNotFound": "未找到用户！",
+		"UserNotFound": "未找到用户！"
+	},
+	"successes": {
+		"a2fDisabled": "二次验证已成功禁用！",
+		"a2fEnabled": "二次验证已成功启用！",
+		"emailSet": "电子邮件已成功设置！",
+		"firstNameSet": "名字已成功设置！",
+		"gameCreated": "游戏已成功创建！",
+		"langSet": "语言已成功设置！",
+		"lastNameSet": "姓氏已成功设置！",
+		"loggedIn": "您已成功登录！",
+		"loggedOut": "您已成功登出！",
+		"passwordSet": "密码已成功设置！",
+		"pictureSet": "头像已成功设置！",
+		"registered": "您已成功注册！",
+		"tournamentCreated": "比赛已成功创建！",
+		"tournamentJoined": "比赛已成功加入！",
+		"tournamentQuit": "比赛已成功退出！"
+	}
+}

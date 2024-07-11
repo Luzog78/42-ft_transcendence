@@ -1,0 +1,217 @@
+{
+	"locale": "de",
+	"lang": "Deutsch",
+	"iconAlt": "Deutsche Flagge",
+	"iconURL": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg",
+	"title": "PING! PONG!",
+	"loading": "Wird geladen...",
+	"navbar": {
+		"login": "Anmelden",
+		"logout": "Abmelden",
+		"profilePictureAlt": "Profilbild",
+		"register": "Registrieren",
+		"iconAlt": "Logo"
+	},
+	"pages": {
+		"404": {
+			"h0": "Seite nicht gefunden...",
+			"p0": "Die Seite, die Sie suchen, existiert nicht.",
+			"p1": "Lass uns zurückgehen",
+			"p3": ".",
+			"title": "Fehler 404",
+			"p2": "zur Startseite"
+		},
+		"home": {
+			"h0": "Ein Fehler ist aufgetreten...",
+			"h1": "Willkommen bei PONG",
+			"h2": "!",
+			"p0": "Komm und spiel mit uns!",
+			"title": "PONG!"
+		},
+		"login": {
+			"labels": {
+				"a2f": "2FA",
+				"login": "Anmelden",
+				"password": "Passwort",
+				"register": "Registrieren",
+				"username": "Benutzername"
+			},
+			"placeholders": {
+				"login": {
+					"a2f": "2FA"
+				},
+				"password": "Geben Sie ein starkes Passwort ein...",
+				"username": "ft_transcender"
+			},
+			"title": "Anmelden",
+			"dontHaveAccount": "Haben Sie kein Konto?"
+		},
+		"logout": {
+			"title": "Abmelden"
+		},
+		"play": {
+			"create": "NEU",
+			"join": "BEITRETEN",
+			"placeholder": "Einem bestehenden Spiel beitreten...",
+			"play": "SPIELEN",
+			"title": "Spielen"
+		},
+		"playResult": {
+			"bestStreak": "Beste Serie",
+			"bestTime": "Dauer",
+			"by": "von",
+			"noPlayers": "Keine Spieler",
+			"profilePictureAlt": "Profilbild",
+			"rebounds": "Abpraller",
+			"title": "Ergebnis",
+			"ultimateSpeed": "Höchstgeschwindigkeit"
+		},
+		"profile": {
+			"date": "Datum",
+			"gameLink": "Spiel-Link",
+			"next": "Weiter",
+			"previous": "Zurück",
+			"ratio": "Verhältnis",
+			"result": "Ergebnis",
+			"title": "Profil"
+		},
+		"register": {
+			"labels": {
+				"email": "E-Mail",
+				"firstName": "Vorname",
+				"lastName": "Nachname",
+				"login": "Anmelden",
+				"password": "Passwort",
+				"register": "Registrieren",
+				"username": "Benutzername"
+			},
+			"placeholders": {
+				"confirmPassword": "Bestätigung",
+				"email": "doc@42.fr",
+				"firstName": "Doc",
+				"lastName": "... niemand weiß...",
+				"password": "Geben Sie ein starkes Passwort ein...",
+				"username": "doc123"
+			},
+			"title": "Registrieren",
+			"haveAccount": "Haben Sie bereits ein Konto?"
+		},
+		"settings": {
+			"labels": {
+				"confirmPassword": "Bestätigung",
+				"copy": "Kopieren",
+				"delete": "Konto löschen",
+				"deleteConfirm": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
+				"deleteFinal": "LÖSCHEN!",
+				"deleteLastChance": "Diese Aktion ist unwiderruflich!",
+				"disabled": "DEAKTIVIERT",
+				"email": "E-Mail",
+				"enabled": "AKTIVIERT",
+				"firstName": "Vorname",
+				"lastName": "Nachname",
+				"oldPassword": "Altes Passwort",
+				"password": "Neues Passwort",
+				"token": "2FA-Schlüssel",
+				"update": "Aktualisieren",
+				"lang": "Sprache"
+			},
+			"placeholders": {
+				"confirmPassword": "Bestätigung",
+				"email": "doc@42.fr",
+				"firstName": "Doc",
+				"lastName": "... niemand weiß...",
+				"oldPassword": "Geben Sie das aktuelle Passwort ein",
+				"password": "Geben Sie ein starkes Passwort ein...",
+				"token": "eyI0MiI6IllvdSBmb3VuZCBtZSA6cCAoQGx1em9nNzgpIiwiYWxnIjoiSFMyNTYifQ"
+			},
+			"profilePictureAlt": "Profilbild",
+			"title": "Einstellungen",
+			"titles": {
+				"a2f": "Zwei-Faktor-Authentifizierung (2FA)",
+				"personal": "Persönliche Informationen",
+				"security": "Sicherheit"
+			},
+			"tokenCopied": "Token erfolgreich in die Zwischenablage kopiert!",
+			"useToken": "Bitte verwenden Sie Ihr Token, um das 2FA zu aktivieren!"
+		},
+		"tournament": {
+			"create": "ERSTELLEN",
+			"finished": "BEENDET",
+			"join": "BEITRETEN",
+			"noTournament": "Erstellen Sie ein Turnier",
+			"noTournamentDesc": "Erstellen Sie ein Turnier, um mit Ihren Freunden zu spielen!<br>Wählen Sie die Anzahl der Spieler aus, mit denen Sie spielen möchten, und teilen Sie die ID mit Ihren Freunden!",
+			"noTournamentFound": "Kein Turnier gefunden.",
+			"ongoing": "LÄUFT...",
+			"pending": "AUSSTEHEND...",
+			"quit": "VERLASSEN"
+		},
+		"playId": {
+			"title": "Spielen",
+			"waiting": "Warten auf Gegner..."
+		}
+	},
+	"errors": {
+		"404": "404 Nicht gefunden",
+		"a2fBadLength": "Der A2F-Code muss 6 Ziffern lang sein!",
+		"alreadyJoined": "Turnier bereits beigetreten!",
+		"cannotCreateGameOf": "Kann kein Spiel mit {} Spielern erstellen!",
+		"couldNotLogout": "Abmeldung nicht möglich!",
+		"emailAlreadyUsed": "Diese E-Mail wird bereits verwendet!",
+		"sessionExpired": "Sitzung abgelaufen!",
+		"firstNameTooLong": "Der Vorname darf höchstens 24 Zeichen lang sein!",
+		"firstNameTooShort": "Der Vorname muss mindestens 1 Zeichen lang sein!",
+		"gameNotFound": "Spiel nicht gefunden!",
+		"invalidCredentials": "Ungültige Anmeldeinformationen!",
+		"invalidEmail": "Ungültige E-Mail!",
+		"invalidFirstName": "Ungültiger Vorname!",
+		"invalidLang": "Ungültige Sprache!",
+		"invalidLastName": "Ungültiger Nachname!",
+		"invalidMethod": "Ungültige Methode",
+		"invalidPassword": "Ungültiges Passwort!",
+		"invalidPictureType": "Ungültiger Bilddateityp!",
+		"invalidRequest": "Ungültige Anfrage",
+		"invalidToken": "Ungültiges Token!",
+		"invalidUID": "Ungültige UID!",
+		"invalidUsername": "Ungültiger Benutzername!",
+		"lastNameTooLong": "Der Nachname darf höchstens 24 Zeichen lang sein!",
+		"lastNameTooShort": "Der Nachname muss mindestens 1 Zeichen lang sein!",
+		"MessageTooLong": "Nachricht zu lang!",
+		"missingA2F": "A2F-Code fehlt!",
+		"missingAuthorization": "Fehlende Autorisierung",
+		"missingRequestInformations": "Fehlende Anfrageninformationen!",
+		"mustBeLoggedIn": "Sie müssen angemeldet sein, um auf diese Seite zuzugreifen!",
+		"notAuthenticated": "Nicht authentifiziert!",
+		"notJoined": "Turnier nicht beigetreten!",
+		"notLoggedIn": "Sie sind nicht eingeloggt!",
+		"passwordMismatch": "Passwörter stimmen nicht überein!",
+		"passwordTooShort": "Das Passwort muss mindestens 4 Zeichen lang sein!",
+		"pictureTooBig": "Bilddatei ist zu groß!",
+		"ressourceNotFound": "Ressource nicht gefunden!",
+		"statsNotFound": "Statistiken nicht gefunden!",
+		"tournamentAlreadyStarted": "Turnier bereits gestartet!",
+		"tournamentNotFound": "Turnier nicht gefunden!",
+		"usernameAlreadyUsed": "Dieser Benutzername wird bereits verwendet!",
+		"usernameIllegal": "Der Benutzername darf nur Buchstaben, Zahlen und Unterstriche enthalten!",
+		"usernameTooLong": "Der Benutzername darf höchstens 24 Zeichen lang sein!",
+		"usernameTooShort": "Der Benutzername muss mindestens 3 Zeichen lang sein!",
+		"userNotFound": "Benutzer nicht gefunden!",
+		"UserNotFound": "Benutzer nicht gefunden!"
+	},
+	"successes": {
+		"a2fDisabled": "Zwei-Faktor-Authentifizierung erfolgreich deaktiviert!",
+		"a2fEnabled": "Zwei-Faktor-Authentifizierung erfolgreich aktiviert!",
+		"emailSet": "E-Mail erfolgreich festgelegt!",
+		"firstNameSet": "Vorname erfolgreich festgelegt!",
+		"gameCreated": "Spiel erfolgreich erstellt!",
+		"langSet": "Sprache erfolgreich festgelegt!",
+		"lastNameSet": "Nachname erfolgreich festgelegt!",
+		"loggedIn": "Erfolgreich eingeloggt!",
+		"loggedOut": "Erfolgreich abgemeldet!",
+		"passwordSet": "Passwort erfolgreich festgelegt!",
+		"pictureSet": "Profilbild erfolgreich festgelegt!",
+		"registered": "Erfolgreich registriert!",
+		"tournamentCreated": "Turnier erfolgreich erstellt!",
+		"tournamentJoined": "Turnier erfolgreich beigetreten!",
+		"tournamentQuit": "Turnier erfolgreich verlassen!"
+	}
+}

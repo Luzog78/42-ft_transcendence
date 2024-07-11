@@ -1,0 +1,34 @@
+/* ************************************************************************** */
+/* --------------------------------- Forms ---------------------------------- */
+/* ************************************************************************** */
+
+
+.form-ssm {
+	width: min(512px, 100%);
+}
+
+.form-ssm .row {
+	margin-bottom: 5px;
+}
+
+.form-ssm label {
+	font-weight: bold;
+}
+
+.form-ssm *::placeholder {
+	color: #888;
+}
+
+.form-ssm input {
+	background: transparent;
+	color: var(--c-fg);
+}
+
+.form-ssm input:focus {
+	background: transparent;
+	color: var(--c-fg);
+}
+
+.form-ssm button {
+	width: 100%;
+}

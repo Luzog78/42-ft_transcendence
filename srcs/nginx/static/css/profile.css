@@ -1,0 +1,146 @@
+/* ************************************************************************** */
+/* -------------------------------- Profile --------------------------------- */
+/* ************************************************************************** */
+
+
+#profile-content #settings {
+	position: absolute;
+	top: 1.5rem;
+	right: calc(1rem + 15px);
+}
+
+#profile-content #settings img {
+	width: 50px;
+	height: 50px;
+}
+
+#profile-content .profile {
+	display: flex;
+}
+
+#profile-content #profile-picture {
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	border-radius: 1000%;
+}
+
+#profile-content #profile-name {
+	font-size: 2em;
+	font-weight: 500;
+	height: fit-content;
+	align-self: center;
+	margin-left: 10px;
+}
+
+#profile-content #profile-username {
+	font-size: 1em;
+	font-weight: 500;
+	font-style: italic;
+	color: #aaa;
+	height: fit-content;
+	align-self: center;
+	margin-left: 10px;
+}
+
+#profile-content .rating {
+	display: flex;
+	width: 80%;
+	margin: auto;
+	justify-content: space-between;
+	align-items: center;
+	text-align: center;
+	font-size: 1.1em;
+}
+
+#profile-content .rating > * {
+	flex: 1;
+}
+
+#profile-content .rating-label {
+	text-decoration: underline;
+	text-underline-offset: .1em;
+}
+
+#profile-content #rating-games-won {
+	margin-right: 20px;
+	font-weight: 800;
+	color: #0f0;
+}
+
+#profile-content #rating-games-lost {
+	margin-left: 20px;
+	font-weight: 800;
+	color: #f00;
+}
+
+#profile-content #rating-ratio {
+	font-weight: 600;
+	color: #aaa;
+}
+
+#profile-content .table {
+	margin-top: 50px;
+}
+
+#profile-content .table > thead > * > * {
+	font-weight: 600;
+}
+
+#profile-content .table > :not(caption) > * > * {
+	background-color: transparent;
+	color: var(--c-fg);
+}
+
+#profile-content .table-striped > tbody > tr:nth-of-type(2n+1) > * {
+	background-color: #00000030;
+}
+
+#profile-content .table > tbody > tr:hover > * {
+	background-color: #00000050;
+}
+
+#profile-content .table .game-won {
+	color: #0f0;
+	font-weight: 600;
+}
+
+#profile-content .table .game-lost {
+	color: #f00;
+	font-weight: 600;
+}
+
+#profile-content .nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	text-align: center;
+}
+
+#profile-content .nav > * {
+	flex: 1;
+}
+
+#profile-content .nav .nav-links {
+	max-width: 20%;
+}
+
+#profile-content .nav .nav-labels {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 15%;
+}
+
+#profile-content .nav .nav-labels > * {
+	flex: 1;
+}
+
+#profile-content .nav .nav-label {
+	color: #aaa;
+}
+
+#profile-content .nav #nav-label-current {
+	font-weight: 600;
+	color: var(--c-fg);
+}

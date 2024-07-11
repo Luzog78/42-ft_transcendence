@@ -1,0 +1,86 @@
+@import "./alerts.css";
+@import "./blur.css";
+@import "./forms.css";
+@import "./game-config.css";
+@import "./navbar.css";
+@import "./persistents.css";
+@import "./play.css";
+@import "./profile.css";
+@import "./results.css";
+@import "./root.css";
+@import "./settings.css";
+@import "./tournaments.css";
+
+
+/* ************************************************************************** */
+/* ------------------------------ Miscellanous ------------------------------ */
+/* ************************************************************************** */
+
+
+.a-no-style {
+	text-decoration: inherit;
+	color: inherit;
+	font: inherit;
+}
+
+.a-no-style:hover {
+	text-decoration: inherit;
+	color: inherit;
+}
+
+
+.notSelectable {
+	user-drag: none;
+	-webkit-user-drag: none;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
+
+.pointer {
+	cursor: pointer;
+}
+
+
+.no-cursor {
+	cursor: none;
+}
+
+
+.default-cursor {
+	cursor: default;
+}
+
+
+.kbd-span {
+	display: flex;
+	justify-content: center;
+}
+
+.kbd-span > * {
+	padding: 6px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--kbd-fg);
+	transition: .2s;
+}
+
+.kbd-span > *:hover {
+	background-color: var(--kbd-bg);
+}
+
+.kbd-span > *:first-child {
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+.kbd-span > *:last-child {
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.kbd-span > *:not(:first-child) {
+	border-left: none;
+}

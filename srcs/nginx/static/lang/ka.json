@@ -1,0 +1,217 @@
+{
+	"locale": "ka",
+	"lang": "ქართული",
+	"iconAlt": "საქართველოს დროშა",
+	"iconURL": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Flag_of_Georgia.svg",
+	"title": "პინგ! პონგ!",
+	"loading": "იტვირთება...",
+	"navbar": {
+		"login": "შესვლა",
+		"logout": "გამოსვლა",
+		"profilePictureAlt": "პროფილის სურათი",
+		"register": "რეგისტრაცია",
+		"iconAlt": "ლოგო"
+	},
+	"pages": {
+		"404": {
+			"h0": "გვერდი ვერ მოიძებნა...",
+			"p0": "თქვენ მიერ მოძიებული გვერდი არ არსებობს.",
+			"p1": "დავუბრუნდეთ",
+			"p3": ".",
+			"title": "შეცდომა 404",
+			"p2": "მთავარ გვერდს"
+		},
+		"home": {
+			"h0": "დაფიქსირდა შეცდომა...",
+			"h1": "კეთილი იყოს თქვენი მობრძანება პონგზე",
+			"h2": "!",
+			"p0": "მობრძანდით და ითამაშეთ ჩვენთან ერთად!",
+			"title": "პონგი!"
+		},
+		"login": {
+			"labels": {
+				"a2f": "2FA",
+				"login": "შესვლა",
+				"password": "პაროლი",
+				"register": "რეგისტრაცია",
+				"username": "მომხმარებლის სახელი"
+			},
+			"placeholders": {
+				"login": {
+					"a2f": "2FA"
+				},
+				"password": "შეიყვანეთ ძლიერი პაროლი...",
+				"username": "ft_transcender"
+			},
+			"title": "შესვლა",
+			"dontHaveAccount": "არ გაქვთ ანგარიში?"
+		},
+		"logout": {
+			"title": "გამოსვლა"
+		},
+		"play": {
+			"create": "ახალი",
+			"join": "შეუერთდით",
+			"placeholder": "შეუერთდით არსებულ თამაშს...",
+			"play": "ითამაშეთ",
+			"title": "ითამაშეთ"
+		},
+		"playResult": {
+			"bestStreak": "საუკეთესო სერია",
+			"bestTime": "ხანგრძლივობა",
+			"by": "ავტორი",
+			"noPlayers": "მოთამაშეები არ არიან",
+			"profilePictureAlt": "პროფილის სურათი",
+			"rebounds": "ცემა",
+			"title": "შედეგი",
+			"ultimateSpeed": "საბოლოო სიჩქარე"
+		},
+		"profile": {
+			"date": "თარიღი",
+			"gameLink": "თამაშის ბმული",
+			"next": "შემდეგი",
+			"previous": "წინა",
+			"ratio": "პროპორცია",
+			"result": "შედეგი",
+			"title": "პროფილი"
+		},
+		"register": {
+			"labels": {
+				"email": "ელ.ფოსტა",
+				"firstName": "სახელი",
+				"lastName": "გვარი",
+				"login": "შესვლა",
+				"password": "პაროლი",
+				"register": "რეგისტრაცია",
+				"username": "მომხმარებლის სახელი"
+			},
+			"placeholders": {
+				"confirmPassword": "დადასტურება",
+				"email": "doc@42.fr",
+				"firstName": "დოკ",
+				"lastName": "... არავინ იცის...",
+				"password": "შეიყვანეთ ძლიერი პაროლი...",
+				"username": "doc123"
+			},
+			"title": "რეგისტრაცია",
+			"haveAccount": "უკვე გაქვთ ანგარიში?"
+		},
+		"settings": {
+			"labels": {
+				"confirmPassword": "დადასტურება",
+				"copy": "კოპირება",
+				"delete": "ანგარიშის წაშლა",
+				"deleteConfirm": "დარწმუნებული ხართ, რომ გსურთ თქვენი ანგარიშის წაშლა?",
+				"deleteFinal": "წაშლა!",
+				"deleteLastChance": "ეს მოქმედება შეუქცევადია!",
+				"disabled": "გამორთული",
+				"email": "ელ.ფოსტა",
+				"enabled": "ჩართული",
+				"firstName": "სახელი",
+				"lastName": "გვარი",
+				"oldPassword": "ძველი პაროლი",
+				"password": "ახალი პაროლი",
+				"token": "2FA გასაღები",
+				"update": "განახლება",
+				"lang": "ენა"
+			},
+			"placeholders": {
+				"confirmPassword": "დადასტურება",
+				"email": "doc@42.fr",
+				"firstName": "დოკ",
+				"lastName": "... არავინ იცის...",
+				"oldPassword": "შეიყვანეთ მიმდინარე პაროლი",
+				"password": "შეიყვანეთ ძლიერი პაროლი...",
+				"token": "eyI0MiI6IllvdSBmb3VuZCBtZSA6cCAoQGx1em9nNzgpIiwiYWxnIjoiSFMyNTYifQ"
+			},
+			"profilePictureAlt": "პროფილის სურათი",
+			"title": "პარამეტრები",
+			"titles": {
+				"a2f": "ორფაქტორიანი ავთენტიფიკაცია (2FA)",
+				"personal": "პირადი ინფორმაცია",
+				"security": "უსაფრთხოება"
+			},
+			"tokenCopied": "ტოკენი წარმატებით დაკოპირდა კლიპბორდში!",
+			"useToken": "გთხოვთ გამოიყენოთ თქვენი გასაღები 2FA-ს ჩასართავად!"
+		},
+		"tournament": {
+			"create": "შექმნა",
+			"finished": "დასრულებული",
+			"join": "შეუერთდით",
+			"noTournament": "შექმენით ტურნირი",
+			"noTournamentDesc": "შექმენით ტურნირი თქვენი მეგობრებთან სათამაშოდ!<br>აირჩიეთ მოთამაშეთა რაოდენობა, რომელთანაც გსურთ თამაში და გაუზიარეთ ID თქვენს მეგობრებს!",
+			"noTournamentFound": "ტურნირი არ მოიძებნა.",
+			"ongoing": "მიმდინარე...",
+			"pending": "მოლოდინში...",
+			"quit": "გასვლა"
+		},
+		"playId": {
+			"title": "თამაში",
+			"waiting": "ელოდება მოწინააღმდეგეებს..."
+		}
+	},
+	"errors": {
+		"404": "404 არ მოიძებნა",
+		"a2fBadLength": "2FA კოდი უნდა შეიცავდეს 6 ციფრს!",
+		"alreadyJoined": "ტურნირი უკვე შეუერთდა!",
+		"cannotCreateGameOf": "შეუძლებელია {} მოთამაშის თამაში!",
+		"couldNotLogout": "ვერ მოახერხა გამოსვლა!",
+		"emailAlreadyUsed": "ეს ელ.ფოსტა უკვე გამოყენებულია!",
+		"sessionExpired": "სესია ამოიწურა!",
+		"firstNameTooLong": "სახელი უნდა იყოს მაქსიმუმ 24 სიმბოლო!",
+		"firstNameTooShort": "სახელი უნდა იყოს მინიმუმ 1 სიმბოლო!",
+		"gameNotFound": "თამაში ვერ მოიძებნა!",
+		"invalidCredentials": "არასწორი სერთიფიკატები!",
+		"invalidEmail": "არასწორი ელ.ფოსტა!",
+		"invalidFirstName": "არასწორი სახელი!",
+		"invalidLang": "არასწორი ენა!",
+		"invalidLastName": "არასწორი გვარი!",
+		"invalidMethod": "არასწორი მეთოდი",
+		"invalidPassword": "არასწორი პაროლი!",
+		"invalidPictureType": "არასწორი სურათის ტიპი!",
+		"invalidRequest": "არასწორი მოთხოვნა",
+		"invalidToken": "არასწორი ტოკენი!",
+		"invalidUID": "არასწორი UID!",
+		"invalidUsername": "არასწორი მომხმარებლის სახელი!",
+		"lastNameTooLong": "გვარი უნდა იყოს მაქსიმუმ 24 სიმბოლო!",
+		"lastNameTooShort": "გვარი უნდა იყოს მინიმუმ 1 სიმბოლო!",
+		"MessageTooLong": "შეტყობინება ძალიან გრძელია!",
+		"missingA2F": "აკლია 2FA კოდი!",
+		"missingAuthorization": "აკლია ავტორიზაცია",
+		"missingRequestInformations": "აკლია მოთხოვნის ინფორმაცია!",
+		"mustBeLoggedIn": "უნდა იყოთ შესული ამ გვერდზე წვდომისთვის!",
+		"notAuthenticated": "არ არის ავთენტიფიცირებული!",
+		"notJoined": "ტურნირი არ არის შეუერთებული!",
+		"notLoggedIn": "თქვენ არ ხართ შესული!",
+		"passwordMismatch": "პაროლები არ ემთხვევა!",
+		"passwordTooShort": "პაროლი უნდა იყოს მინიმუმ 4 სიმბოლო!",
+		"pictureTooBig": "სურათის ფაილი ძალიან დიდია!",
+		"ressourceNotFound": "რესურსი ვერ მოიძებნა!",
+		"statsNotFound": "სტატისტიკა ვერ მოიძებნა!",
+		"tournamentAlreadyStarted": "ტურნირი უკვე დაწყებულია!",
+		"tournamentNotFound": "ტურნირი ვერ მოიძებნა!",
+		"usernameAlreadyUsed": "ეს მომხმარებლის სახელი უკვე გამოყენებულია!",
+		"usernameIllegal": "მომხმარებლის სახელი უნდა შეიცავდეს მხოლოდ ასოებს, რიცხვებს და ხაზებს!",
+		"usernameTooLong": "მომხმარებლის სახელი უნდა იყოს მაქსიმუმ 24 სიმბოლო!",
+		"usernameTooShort": "მომხმარებლის სახელი უნდა იყოს მინიმუმ 3 სიმბოლო!",
+		"userNotFound": "მომხმარებელი ვერ მოიძებნა!",
+		"UserNotFound": "მომხმარებელი ვერ მოიძებნა!"
+	},
+	"successes": {
+		"a2fDisabled": "ორფაქტორიანი ავთენტიფიკაცია წარმატებით გამორთულია!",
+		"a2fEnabled": "ორფაქტორიანი ავთენტიფიკაცია წარმატებით ჩართულია!",
+		"emailSet": "ელ.ფოსტა წარმატებით დადგინდა!",
+		"firstNameSet": "სახელი წარმატებით დადგინდა!",
+		"gameCreated": "თამაში წარმატებით შეიქმნა!",
+		"langSet": "ენა წარმატებით დადგინდა!",
+		"lastNameSet": "გვარი წარმატებით დადგინდა!",
+		"loggedIn": "წარმატებით შესული ხართ!",
+		"loggedOut": "წარმატებით გამოსული ხართ!",
+		"passwordSet": "პაროლი წარმატებით დადგინდა!",
+		"pictureSet": "პროფილის სურათი წარმატებით დადგინდა!",
+		"registered": "წარმატებით დარეგისტრირებული ხართ!",
+		"tournamentCreated": "ტურნირი წარმატებით შეიქმნა!",
+		"tournamentJoined": "ტურნირი წარმატებით შეუერთდა!",
+		"tournamentQuit": "ტურნირი წარმატებით დასრულდა!"
+	}
+}

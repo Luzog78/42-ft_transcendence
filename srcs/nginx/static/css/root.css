@@ -1,0 +1,94 @@
+/* ************************************************************************** */
+/* --------------------------- Root: Every pages ---------------------------- */
+/* ************************************************************************** */
+
+
+:root {
+	--c-bg: #00244d;
+	--c-fg: #fff;
+
+	--kbd-bg: #3338;
+	--kbd-fg: #333;
+
+	--c-primary-rgb: 0, 123, 255;
+	--c-secondary-rgb: 108, 117, 125;
+	--c-success-rgb: 40, 167, 69;
+	--c-info-rgb: 23, 162, 184;
+	--c-warning-rgb: 255, 193, 7;
+	--c-danger-rgb: 220, 53, 69;
+
+	--c-primary: rgba(var(--c-primary-rgb), 1);			/* #007bff */
+	--c-secondary: rgba(var(--c-secondary-rgb), 1);		/* #6c757d */
+	--c-success: rgba(var(--c-success-rgb), 1);			/* #28a745 */
+	--c-info: rgba(var(--c-info-rgb), 1);				/* #17a2b8 */
+	--c-warning: rgba(var(--c-warning-rgb), 1);			/* #ffc107 */
+	--c-danger: rgba(var(--c-danger-rgb), 1);			/* #dc3545 */
+}
+
+body {
+	padding: 0px;
+	padding-top: 10px;
+	background-color: var(--c-bg);
+}
+
+* {
+	font-family: "Kodchasan", sans-serif;
+	font-weight: 300;
+	font-size: 1.02em;
+	font-style: normal;
+	color: var(--c-fg);
+}
+
+.background-image {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: -100;
+	background: url("https://cdn.prod.website-files.com/6206183801c03c3c7c7e316c/65a1654270406c29d7c7c227_1background-banner.png") no-repeat center center fixed;
+	background-size: cover;
+}
+
+input.no-arrow::-webkit-outer-spin-button,
+input.no-arrow::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type=number].no-arrow {
+	appearance: textfield;
+	-moz-appearance: textfield;
+}
+
+
+.btn-outline-primary:hover {
+	box-shadow: 0 0 20px 0 rgba(var(--c-primary-rgb), 0.5);
+	background-color: rgba(var(--c-primary-rgb), 0.75);
+}
+
+.btn-outline-secondary:hover {
+	box-shadow: 0 0 20px 0 rgba(var(--c-secondary-rgb), 0.5);
+	background-color: rgba(var(--c-secondary-rgb), 0.75);
+}
+
+.btn-outline-success:hover {
+	box-shadow: 0 0 20px 0 rgba(var(--c-success-rgb), 0.5);
+	background-color: rgba(var(--c-success-rgb), 0.75);
+}
+
+.btn-outline-info:hover {
+	box-shadow: 0 0 20px 0 rgba(var(--c-info-rgb), 0.5);
+	background-color: rgba(var(--c-info-rgb), 0.75);
+	color: #fff;
+}
+
+.btn-outline-warning:hover {
+	box-shadow: 0 0 20px 0 rgba(var(--c-warning-rgb), 0.5);
+	background-color: rgba(var(--c-warning-rgb), 0.75);
+}
+
+.btn-outline-danger:hover {
+	box-shadow: 0 0 20px 0 rgba(var(--c-danger-rgb), 0.5);
+	background-color: rgba(var(--c-danger-rgb), 0.75);
+}
