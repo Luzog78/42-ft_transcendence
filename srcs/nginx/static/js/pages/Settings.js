@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/12 11:06:19 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/12 12:35:40 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,52 +397,65 @@ async function Settings(context) {
 		}
 
 		if (editDisabled && editEnabled && !context.user.isOauth) {
-			if (context.user.a2f) {
-				editEnabled.classList.remove("btn-outline-success");
-				editEnabled.classList.add("btn-success");
-				editDisabled.classList.remove("btn-danger");
-				editDisabled.classList.add("btn-outline-danger");
+			var refreshToggleA2f;
+			
+			const editDisabledFct = () => {
+				setUserAttributes(context, { a2f: false }).then(data => {
+					if (data.successes.includes('successes.a2fDisabled'))
+						context.user.a2f = false
+					refresh()
+				})
+			}
 
-				editDisabled.addEventListener("click", () =>
-					setUserAttributes(context, { a2f: false }).then(data => {
-						if (data.successes.includes('successes.a2fDisabled'))
-							context.user.a2f = false
-						refresh()
-					})
-				);
-			} else {
-				editDisabled.classList.remove("btn-outline-danger");
-				editDisabled.classList.add("btn-danger");
-				editEnabled.classList.remove("btn-success");
-				editEnabled.classList.add("btn-outline-success");
-
-				editEnabled.addEventListener("click", () => {
-					setUserAttributes(context, {
-						a2f: true
-					}).then(data => {
-						console.log(data)
-						if (data.successes.includes('successes.a2fEnabled'))
-							context.user.a2f = true
-						if (data.complement && data.complement.a2f_token)
-						{
+			const editEnabledFct = () => {
+				setUserAttributes(context, {
+					a2f: true
+				}).then(data => {
+					console.log(data)
+					if (data.successes.includes('successes.a2fEnabled'))
+						context.user.a2f = true
+					if (data.complement && data.complement.a2f_token)
+					{
+						pushPersistents(context);
+						editEnabled.classList.remove("btn-outline-success");
+						editEnabled.classList.add("btn-success");
+						editDisabled.classList.remove("btn-danger");
+						editDisabled.classList.add("btn-outline-danger");
+						document.getElementById("tokenValue").value = data.complement.a2f_token
+						document.getElementById("copyA2fToken").onclick = () => {
+							navigator.clipboard.writeText(document.getElementById("tokenValue").value);
+							persistSuccess(context, getLang(context, "pages.settings.labels.tokenCopied"));
 							pushPersistents(context);
-							editEnabled.classList.remove("btn-outline-success");
-							editEnabled.classList.add("btn-success");
-							editDisabled.classList.remove("btn-danger");
-							editDisabled.classList.add("btn-outline-danger");
-							document.getElementById("tokenValue").value = data.complement.a2f_token
-							document.getElementById("copyA2fToken").onclick = () => {
-								navigator.clipboard.writeText(document.getElementById("tokenValue").value);
-								persistSuccess(context, getLang(context, "pages.settings.labels.tokenCopied"));
-								pushPersistents(context);
-							}
-							document.getElementById("a2f-key").style.display = "block"
 						}
-						else
-							refresh() // maybe show useless error bad version
-					});
+						document.getElementById("a2f-key").style.display = "block"
+						refreshToggleA2f()
+					}
+					else
+						refresh() // maybe show useless error bad version
 				});
 			}
+
+			refreshToggleA2f = () => {
+				if (context.user.a2f) {
+					editEnabled.classList.remove("btn-outline-success");
+					editEnabled.classList.add("btn-success");
+					editDisabled.classList.remove("btn-danger");
+					editDisabled.classList.add("btn-outline-danger");
+	
+					editEnabled.removeEventListener("click", editEnabledFct)
+					editDisabled.addEventListener("click", editDisabledFct);
+				} else {
+					editDisabled.classList.remove("btn-outline-danger");
+					editDisabled.classList.add("btn-danger");
+					editEnabled.classList.remove("btn-success");
+					editEnabled.classList.add("btn-outline-success");
+	
+					editDisabled.removeEventListener("click", editDisabledFct) // maybe useless cause editEnabledFct cause entire page refresh instead of only 2fa refresh
+					editEnabled.addEventListener("click", editEnabledFct);
+				}
+			}
+			refreshToggleA2f();
+
 		}
 
 		if (btnDelete && btnDeleteText) {
