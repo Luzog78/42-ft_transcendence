@@ -11,6 +11,4 @@ COPY tool/init_db.sh /bin/init_db.sh
 
 RUN chmod +x /usr/bin/init_db.sh
 
-ENTRYPOINT ["/usr/bin/init_db.sh"]
-
-CMD ["sleep", "inf"]
+CMD ["/usr/bin/init_db.sh"]
