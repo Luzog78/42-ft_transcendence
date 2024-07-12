@@ -10,6 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
+from api_app.models import Game, GameMode
 from .lobby import Lobby
 from .player import Player
 from .spectator import Spectator
@@ -37,13 +38,25 @@ class GameServer:
 			await lobby.receive(data)
 
 	def createLobby(self, uid: str, game_mode: str, player_num: int, theme: int, ball_speed: float, limit):
-		self.lobbies.append(Lobby(self, uid, game_mode, player_num, theme, ball_speed, limit))
+		lobby = Lobby(self, uid, game_mode, player_num, theme, ball_speed, limit)
+		self.lobbies.append(lobby)
+		return lobby
 
 	def findLobby(self, uid: str) -> Lobby | None:
 		for lobby in self.lobbies:
 			if lobby.uid == uid:
 				return lobby
-		return None
+		game = Game.objects.get(uid=uid)
+		if not game:
+			return None
+		return self.createLobby(
+			uid=uid,
+			game_mode=GameMode.BATTLE_ROYALE,
+			player_num=len(game.players),
+			theme=0,
+			ball_speed=1,
+			limit=None
+		)
 
 	async def addClient(self, client, uid: str) -> bool:
 		print("add client", uid)
@@ -52,7 +65,14 @@ class GameServer:
 			return False
 
 		print("new client in lobby id: ", lobby.lobby_id)
-		if len(lobby.clients) >= lobby.clients_per_lobby: # spectator
+
+		game = Game.objects.get(uid=uid)
+		if game.restricted:
+			goto_specs = client.username not in game.players
+		else:
+			goto_specs = len(lobby.clients) >= lobby.clients_per_lobby
+
+		if goto_specs: # spectator
 			print("new spec")
 			spectator = Spectator(lobby, client, len(lobby.spectators) + len(lobby.clients))
 			self.clients.append(spectator)

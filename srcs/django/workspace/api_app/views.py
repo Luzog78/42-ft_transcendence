@@ -678,18 +678,11 @@ def view_stats_id(request: HttpRequest, id: int):
 
 @csrf_exempt
 def view_stats_user(request: HttpRequest, username: str):
-	stats = Stats.objects.filter(username=username)
-	l = []
-	i = 0
-	try:
-		while True:
-			l.append(stats[i].json())
-			i += 1
-	except IndexError:
-		pass
+	stats = Stats.objects.filter(user__username=username)
+	l = [s.json() for s in stats]
 	return JsonResponse({
 		'ok': True,
-		'length': i,
+		'length': len(l),
 		'stats': l
 	})
 
@@ -697,18 +690,11 @@ def view_stats_user(request: HttpRequest, username: str):
 @csrf_exempt
 def view_stats_game(request: HttpRequest, uid: str):
 	stats = Stats.objects.filter(game__uid=uid)
-	l = []
-	i = 0
-	try:
-		while True:
-			l.append(stats[i].json())
-			i += 1
-	except IndexError:
-		pass
+	l = [s.json() for s in stats]
 	return JsonResponse({
 		'ok': True,
-		'length': i,
-		'stats': l
+		'length': len(l),
+		'stats': l,
 	})
 
 
