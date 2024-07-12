@@ -220,7 +220,7 @@ def view_auth_callback(request: HttpRequest):
 							username += '2'
 
 				result = auth.register(request,
-							username=profile['login'],
+							username=username,
 							first_name=profile['first_name'],
 							last_name=profile['last_name'],
 							email=profile['email'],
@@ -341,15 +341,18 @@ def view_user_set(request: HttpRequest, username: str):
 				success.append('successes.emailSet')
 
 		if 'password' in data:
-			oldPassword = data['oldPassword']
-			password = data['password']
-			if not checker.password(password):
-				error.append('errors.invalidPassword')
-			elif not user.check_password(oldPassword):
-				error.append('errors.invalidCredentials')
+			if user.login_42 is not None:
+				error.append('errors.editPasswordOauth') # todo label cannot edit password when oauth
 			else:
-				user.set_password(password)
-				success.append('successes.passwordSet')
+				oldPassword = data['oldPassword']
+				password = data['password']
+				if not checker.password(password):
+					error.append('errors.invalidPassword')
+				elif not user.check_password(oldPassword):
+					error.append('errors.invalidCredentials')
+				else:
+					user.set_password(password)
+					success.append('successes.passwordSet')
 
 		if 'lang' in data:
 			lang = data['lang']
@@ -360,15 +363,18 @@ def view_user_set(request: HttpRequest, username: str):
 				success.append('successes.langSet')
 
 		if 'a2f' in data:
-			if data['a2f']:
-				token_arr = [random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ234567') for i in range(32)]
-				token = ''.join(token_arr)
-				user.a2f_token = token
-				success.append('successes.a2fEnabled')
-				complement["a2f_token"] = token
+			if user.login_42 is not None:
+				error.append('errors.toggleA2FOauth') # todo label cannot toggle a2f when oauth
 			else:
-				user.a2f_token = None
-				success.append('successes.a2fDisabled')
+				if data['a2f']:
+					token_arr = [random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ234567') for i in range(32)]
+					token = ''.join(token_arr)
+					user.a2f_token = token
+					success.append('successes.a2fEnabled')
+					complement["a2f_token"] = token
+				else:
+					user.a2f_token = None
+					success.append('successes.a2fDisabled')
 
 		user.save()
 	except Exception as e:

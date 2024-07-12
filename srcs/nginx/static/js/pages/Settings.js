@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Settings.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/11 05:41:22 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/12 11:06:19 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ async function Settings(context) {
 						<hr>
 					</div>
 
-					<div class="settings">
+					<div class="settings" id="settings-security">
 						<h4 class="title">${getLang(context, "pages.settings.titles.security")}</h4>
 						<form action="GET" class="form-ssm" id="security-form">
 							<div class="row col-12">
@@ -165,7 +165,7 @@ async function Settings(context) {
 						<hr>
 					</div>
 
-					<div class="settings">
+					<div class="settings" id="settings-a2f">
 						<h4 class="title">${getLang(context, "pages.settings.titles.a2f")}</h4>
 						<div class="btn-group row col-12" role="group">
 							<button type="button" class="btn btn-outline-danger col-6" id="editDisabled">
@@ -221,7 +221,13 @@ async function Settings(context) {
 			redirect("/login?next=" + window.location.pathname);
 			return;
 		}
-
+		
+		let securityPage = document.getElementById("settings-security");
+		let a2fPage = document.getElementById("settings-a2f");
+		
+		securityPage.style.display = context.user.isOauth ? "none" : "block";
+		a2fPage.style.display = context.user.isOauth ? "none" : "block";
+		
 		let profilePicture = document.getElementById("profile-picture");
 		let editProfilePicture = document.getElementById("editProfilePicture");
 		let profileName = document.getElementById("profile-name");
@@ -359,7 +365,7 @@ async function Settings(context) {
 			});
 		}
 
-		if (securityForm && editNewPassOld && editNewPass && editNewPassConfirm) {
+		if (securityForm && editNewPassOld && editNewPass && editNewPassConfirm && !context.user.isOauth) {
 			function checkActivation() {
 				clearFeedbacks(securityForm);
 				if (!checkPassword(context, "#editNewPassOld")
@@ -390,7 +396,7 @@ async function Settings(context) {
 			});
 		}
 
-		if (editDisabled && editEnabled) {
+		if (editDisabled && editEnabled && !context.user.isOauth) {
 			if (context.user.a2f) {
 				editEnabled.classList.remove("btn-outline-success");
 				editEnabled.classList.add("btn-success");

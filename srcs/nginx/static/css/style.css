@@ -84,3 +84,12 @@
 .kbd-span > *:not(:first-child) {
 	border-left: none;
 }
+
+.btn-oauth {
+	color: #fff;
+	border-color: #0d6efd;
+}
+
+.btn-oauth:hover {
+	border-color: #0a58ca;
+}

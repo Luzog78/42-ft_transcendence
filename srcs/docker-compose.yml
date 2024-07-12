@@ -10,7 +10,7 @@ services:
     - transcendence_network
     restart: on-failure
     ports:
-    - 5432:5432
+    - 5432:5432 # todo dont forget remove
 
   django:
     container_name: django

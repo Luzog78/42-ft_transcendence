@@ -76,6 +76,14 @@ async function Register(context) {
 						<button class="btn btn-primary" type="submit">${getLang(context, "pages.register.labels.register")}</button>
 					</div>
 				</div>
+				
+				<div class="sep"></div>
+
+				<div class="row col-12">
+					<div class="col-12">
+						<button class="btn btn-oauth" id="signup-oauth"> ${getLang(context, "pages.register.labels.register42")} </button> <!-- todo label sign up with 42 -->
+					</div>
+				</div>
 			</form>
 		</div>
 	`;
@@ -87,6 +95,7 @@ async function Register(context) {
 		let inputEmail = document.querySelector("#email");
 		let inputPassword = document.querySelector("#new-password");
 		let inputConfirmation = document.querySelector("#confirmation");
+		let signup_oauth = document.getElementById("signup-oauth");
 
 		if (inputUsername !== null)
 			inputUsername.oninput = () => checkUsername(context, "#username");
@@ -140,6 +149,12 @@ async function Register(context) {
 						pushPersistents(context);
 					}
 				});
+			};
+		
+		if (signup_oauth)
+			signup_oauth.onclick = (event) => {
+				event.preventDefault();
+				window.location.href = "https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-f16f4749137ef0ec16a0cd6a506f6fdfe39461aa8584e0495163ce52515b814b&redirect_uri=https%3A%2F%2F127.0.0.1%3A4444%2Foauth_callback&response_type=code";
 			};
 	}, 200);
 	return div.innerHTML;

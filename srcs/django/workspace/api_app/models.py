@@ -107,6 +107,7 @@ class User(AbstractBaseUser):
 			'a2f': self.a2f_token is not None,
 			'isAdmin': self.is_admin,
 			'lastLogin': self.last_login,
+			'isOauth': self.login_42 is not None,
 		}
 
 

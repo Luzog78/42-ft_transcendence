@@ -50,6 +50,7 @@ var global_context = {
 		a2f: null,
 		isAdmin: null,
 		lastLogin: null,
+		isOauth: null
 	},
 	persistent: [],
 	next: null,
@@ -333,6 +334,7 @@ const onLogin = async (context, loadedData = null, reloadNav = false) => {
 		context.user.a2f = data.a2f;
 		context.user.isAdmin = data.isAdmin;
 		context.user.lastLogin = data.lastLogin;
+		context.user.isOauth = data.isOauth;
 		await loadLang(context, data.lang);
 		if (!context.user.isAuthenticated) {
 			context.user.isAuthenticated = true;
