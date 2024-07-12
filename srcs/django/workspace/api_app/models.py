@@ -4,12 +4,26 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
 
+class Usernames(models.Model):
+	'''
+	Required fields:
+		username: str
+	'''
+
+	username	= models.CharField(primary_key=True, max_length=24)
+
+	def __str__(self):
+		return self.username
+
+
 class UserManager(BaseUserManager):
 	def create_user(self, username, email, password, first_name, last_name, **extra_fields):
 		if not username:
 			raise ValueError('Users must have a username')
 		if not email:
 			raise ValueError('Users must have an email address')
+
+		Usernames.objects.create(username=username).save()
 
 		user = self.model(
 			username=username,
@@ -18,12 +32,18 @@ class UserManager(BaseUserManager):
 			last_name=last_name,
 			**extra_fields
 		)
-
 		user.set_password(password)
 		user.save(using=self._db)
 		return user
 
 	def create_superuser(self, username, email, password, first_name, last_name, **extra_fields):
+		if not username:
+			raise ValueError('Users must have a username')
+		if not email:
+			raise ValueError('Users must have an email address')
+
+		Usernames.objects.create(username=username).save()
+
 		user = self.create_user(
 			username=username,
 			email=email,
@@ -52,6 +72,7 @@ class User(AbstractBaseUser):
 		last_login: datetime
 
 	Additionnal fields:
+		active: bool
 		lang: str
 		picture: str
 		ratio: float
@@ -60,6 +81,7 @@ class User(AbstractBaseUser):
 	'''
 
 	username	= models.CharField(primary_key=True, max_length=24)
+	active		= models.BooleanField(default=True)
 	created_at	= models.DateTimeField(auto_now=True, blank=False)
 	email		= models.CharField(max_length=255, unique=True)
 	password	= models.CharField(max_length=255, null=True)

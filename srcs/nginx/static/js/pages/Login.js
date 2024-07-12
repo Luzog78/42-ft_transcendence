@@ -80,7 +80,7 @@ async function Login(context) {
 						<button class="btn btn-primary" type="submit">${getLang(context, "pages.login.labels.login")}</button>
 					</div>
 				</div>
-				
+
 				<div class="sep"></div>
 
 				<div class="row col-12">

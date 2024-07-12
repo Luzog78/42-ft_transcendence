@@ -76,7 +76,7 @@ async function Register(context) {
 						<button class="btn btn-primary" type="submit">${getLang(context, "pages.register.labels.register")}</button>
 					</div>
 				</div>
-				
+
 				<div class="sep"></div>
 
 				<div class="row col-12">
@@ -150,7 +150,7 @@ async function Register(context) {
 					}
 				});
 			};
-		
+
 		if (signup_oauth)
 			signup_oauth.onclick = (event) => {
 				event.preventDefault();

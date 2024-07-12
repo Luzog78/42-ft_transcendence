@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Settings.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/12 12:35:40 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/12 13:40:16 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,13 +221,13 @@ async function Settings(context) {
 			redirect("/login?next=" + window.location.pathname);
 			return;
 		}
-		
+
 		let securityPage = document.getElementById("settings-security");
 		let a2fPage = document.getElementById("settings-a2f");
-		
+
 		securityPage.style.display = context.user.isOauth ? "none" : "block";
 		a2fPage.style.display = context.user.isOauth ? "none" : "block";
-		
+
 		let profilePicture = document.getElementById("profile-picture");
 		let editProfilePicture = document.getElementById("editProfilePicture");
 		let profileName = document.getElementById("profile-name");
@@ -398,7 +398,7 @@ async function Settings(context) {
 
 		if (editDisabled && editEnabled && !context.user.isOauth) {
 			var refreshToggleA2f;
-			
+
 			const editDisabledFct = () => {
 				setUserAttributes(context, { a2f: false }).then(data => {
 					if (data.successes.includes('successes.a2fDisabled'))
@@ -441,7 +441,7 @@ async function Settings(context) {
 					editEnabled.classList.add("btn-success");
 					editDisabled.classList.remove("btn-danger");
 					editDisabled.classList.add("btn-outline-danger");
-	
+
 					editEnabled.removeEventListener("click", editEnabledFct)
 					editDisabled.addEventListener("click", editDisabledFct);
 				} else {
@@ -449,7 +449,7 @@ async function Settings(context) {
 					editDisabled.classList.add("btn-danger");
 					editEnabled.classList.remove("btn-success");
 					editEnabled.classList.add("btn-outline-success");
-	
+
 					editDisabled.removeEventListener("click", editDisabledFct) // maybe useless cause editEnabledFct cause entire page refresh instead of only 2fa refresh
 					editEnabled.addEventListener("click", editEnabledFct);
 				}
