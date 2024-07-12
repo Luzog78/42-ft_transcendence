@@ -14,6 +14,7 @@ import { getJson } from "../utils.js";
 import { getLang, persistError, persistSuccess } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
+import { Chat } from "../components/Chat.js"
 
 
 async function Home(context) {
@@ -25,6 +26,7 @@ async function Home(context) {
 		<div class="container" id="home-content">${getLang(context, "loading")}</div>
 		<button type="button" class="btn btn-primary" id="1234">Click</button>
 	`;
+	div.appendChild(Chat(context));
 	getJson(context, "/api/user").then(data => {
 		let content = document.getElementById("home-content");
 		if (content === null)

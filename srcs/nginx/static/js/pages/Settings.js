@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/12 12:35:40 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/12 12:47:15 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -453,7 +453,7 @@ async function Settings(context) {
 					editDisabled.removeEventListener("click", editDisabledFct) // maybe useless cause editEnabledFct cause entire page refresh instead of only 2fa refresh
 					editEnabled.addEventListener("click", editEnabledFct);
 				}
-			}
+			} 
 			refreshToggleA2f();
 
 		}

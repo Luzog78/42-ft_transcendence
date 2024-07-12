@@ -1,0 +1,78 @@
+/* variables */
+
+#chat {
+	--chat-border: 0.5vw 0.5vw 0 0;
+	--chat-header-height: 2.3vw;
+	--chat-navbar-width: 5vw;
+	--chat-navbar-row: 2vw;
+}
+
+/* styles */
+
+#chat {
+	width: 14vw;
+	height: 17vw;
+	position: absolute;
+	bottom: 0;
+	right: 2vw;
+
+	background-color: transparent;
+	border-radius: var(--chat-border);
+}
+
+#chat .chat-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+/* header */
+
+#chat .chat-header {
+	background-color: #0d6efd;
+	height: var(--chat-header-height);
+	width: 100%;
+	border-radius: var(--chat-border);
+}
+
+#chat .chat-header span {
+	padding-left: 1vw;
+	line-height: var(--chat-header-height);
+}
+
+/* navbar */
+
+#chat .chat-navbar {
+	height: calc(100% - var(--chat-header-height));
+	width: var(--chat-navbar-width);
+	float: left;
+
+	background-color: green;
+}
+
+#chat #chat-searchBox {
+	background-color: whitesmoke;
+	width: 100%;
+	height: var(--chat-navbar-row);
+	color: black;
+
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	border-bottom: 1px solid;
+}
+
+#chat #chat-searchBox:focus {
+	outline: none;
+}
+
+/* discussion */
+
+#chat .discussion {
+	height: calc(100% - var(--chat-header-height));
+	width: calc(100% - var(--chat-navbar-width));
+	float: right;
+
+	background-color: white;
+}
+
