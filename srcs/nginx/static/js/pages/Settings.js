@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Settings.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/12 16:41:42 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/13 01:41:18 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ async function setUserAttributes(context, data) {
 		.then(data => {
 			if (data.successes)
 				for (let key in data.successes)
-					persistSuccess(context, getLang(context, data.successes[key]));
+					setTimeout(() => {
+						persistSuccess(context, getLang(context, data.successes[key]));
+						pushPersistents(context);
+					}, 100);
 			if (data.errors)
 				for (let key in data.errors)
 					persistError(context, getLang(context, data.errors[key]));
