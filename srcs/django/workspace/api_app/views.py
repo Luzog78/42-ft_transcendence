@@ -7,7 +7,7 @@ from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 import requests
 
-from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament
+from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament, Usernames
 from . import auth, checker
 from ft_django import pong_socket, settings
 
@@ -127,7 +127,7 @@ def view_register(request: HttpRequest):
 	if not checker.email(email):
 		return JsonResponse({'ok': False, 'error': 'errors.invalidEmail'})
 
-	if len(User.objects.filter(username=username)) > 0:
+	if len(Usernames.objects.filter(username=username)) > 0:
 		return JsonResponse({'ok': False, 'error': 'errors.usernameAlreadyUsed'})
 	if len(User.objects.filter(email=email)) > 0:
 		return JsonResponse({'ok': False, 'error': 'errors.emailAlreadyUsed'})
@@ -235,7 +235,7 @@ def view_auth_callback(request: HttpRequest):
 				return JsonResponse({
 					'ok': True,
 					'success': 'successes.registered',
-					'token': result.token, 
+					'token': result.token,
 					**User.objects.get(username=result.username).json(show_email=True)
 				})
 			else:
@@ -678,18 +678,11 @@ def view_stats_id(request: HttpRequest, id: int):
 
 @csrf_exempt
 def view_stats_user(request: HttpRequest, username: str):
-	stats = Stats.objects.filter(username=username)
-	l = []
-	i = 0
-	try:
-		while True:
-			l.append(stats[i].json())
-			i += 1
-	except IndexError:
-		pass
+	stats = Stats.objects.filter(user__username=username)
+	l = [s.json() for s in stats]
 	return JsonResponse({
 		'ok': True,
-		'length': i,
+		'length': len(l),
 		'stats': l
 	})
 
@@ -697,18 +690,11 @@ def view_stats_user(request: HttpRequest, username: str):
 @csrf_exempt
 def view_stats_game(request: HttpRequest, uid: str):
 	stats = Stats.objects.filter(game__uid=uid)
-	l = []
-	i = 0
-	try:
-		while True:
-			l.append(stats[i].json())
-			i += 1
-	except IndexError:
-		pass
+	l = [s.json() for s in stats]
 	return JsonResponse({
 		'ok': True,
-		'length': i,
-		'stats': l
+		'length': len(l),
+		'stats': l,
 	})
 
 

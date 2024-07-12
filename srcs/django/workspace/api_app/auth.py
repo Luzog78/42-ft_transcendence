@@ -74,7 +74,7 @@ def register(request: HttpRequest, username: str, first_name: str,
 
 def login(request: HttpRequest, username: str, password: str | None = None, a2f_code: str | None = None, oauth: bool = False) -> Response:
 	if oauth:
-		user: User = authenticate(request, username=username, oauth = True)
+		user: User = authenticate(request, username=username, oauth=True)
 	else:
 		user: User = authenticate(request, username=username, password=password) # type: ignore
 	if user is None:

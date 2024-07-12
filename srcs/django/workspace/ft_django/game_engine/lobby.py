@@ -237,12 +237,13 @@ class Lobby:
 					lobby.balls[0].vel = Ball.getBallSpeed(lobby.clients_per_lobby)
 					clients = lobby.clients + lobby.spectators
 					for c in clients:
+						if isinstance(c, Player):
+							c.start_time = datetime.timestamp(datetime.now())
 						await lobby.balls[0].updateBall()
 						await c.sendData("game_status", "START")
 
 				count_thread = threading.Thread(target=asyncio.run, args=(countdown(self),))
 				count_thread.start()
-
 
 		if ("player_keyboard" in data):
 			if (client_id < len(self.clients)):
@@ -259,8 +260,6 @@ class Lobby:
 	async def addSpectator(self, spectator: Spectator):
 		self.spectators.append(spectator)
 		await spectator.initSpectator()
-
-
 
 	def removeClient(self, client: Player):
 		if (client in self.clients):
