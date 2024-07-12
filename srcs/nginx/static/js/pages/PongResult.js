@@ -21,8 +21,7 @@ async function PongResult(context, id, data=null) {
 	if (data === null)
 		return await PlayId(context, id);
 	let div = document.createElement("div");
-	div.innerHTML = await NavBar(getLang(context, "pages.playResult.title"), context);
-	div.innerHTML += Persistents(context);
+
 	div.innerHTML += /*html*/`
 		<div id="PongResult-content">
 			<div class="PongResult-container container-blur" style="padding: 20px; margin-top: 50px;">
@@ -102,22 +101,25 @@ async function PongResult(context, id, data=null) {
 			</div>
 		</div>
 	`;
-	setTimeout(() => {
-		let bestPicture = document.querySelector("#best-picture");
-		let bestUsername = document.querySelector("#best-username");
-		let bestScore = document.querySelector("#best-score");
-		let bestStreak = document.querySelector("#best-streak");
-		let bestStreakBy = document.querySelector("#best-streak-by");
-		let rebounds = document.querySelector("#rebounds");
-		let reboundsBy = document.querySelector("#rebounds-by");
-		let ultimateSpeed = document.querySelector("#ultimate-speed");
-		let ultimateSpeedBy = document.querySelector("#ultimate-speed-by");
-		let bestTime = document.querySelector("#best-time");
-		let bestTimeBy = document.querySelector("#best-time-by");
-		let gameMode = document.querySelector("#game-mode");
-		let gameUid = document.querySelector("#game-uid");
-		let gameIcon = document.querySelector("#game-icon");
-		let pongResultPlayers = document.querySelector(".PongResult-players");
+
+	div.insertBefore(Persistents(context), div.firstChild);
+	div.insertBefore(await NavBar(getLang(context, "pages.playResult.title"), context), div.firstChild);
+
+		let bestPicture = div.querySelector("#best-picture");
+		let bestUsername = div.querySelector("#best-username");
+		let bestScore = div.querySelector("#best-score");
+		let bestStreak = div.querySelector("#best-streak");
+		let bestStreakBy = div.querySelector("#best-streak-by");
+		let rebounds = div.querySelector("#rebounds");
+		let reboundsBy = div.querySelector("#rebounds-by");
+		let ultimateSpeed = div.querySelector("#ultimate-speed");
+		let ultimateSpeedBy = div.querySelector("#ultimate-speed-by");
+		let bestTime = div.querySelector("#best-time");
+		let bestTimeBy = div.querySelector("#best-time-by");
+		let gameMode = div.querySelector("#game-mode");
+		let gameUid = div.querySelector("#game-uid");
+		let gameIcon = div.querySelector("#game-icon");
+		let pongResultPlayers = div.querySelector(".PongResult-players");
 
 		if (data.mode)
 			gameMode.innerText = getGameMode(data.mode);
@@ -231,8 +233,7 @@ async function PongResult(context, id, data=null) {
 					}
 			});
 		}
-	}, 200);
-	return div.outerHTML;
+	return div;
 }
 
 

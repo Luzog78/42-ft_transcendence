@@ -19,9 +19,8 @@ import { HowLongAgo, getJson, postJson, toLocalDateStringFormat } from "../utils
 async function Profile(context, username) {
 	let persistentBackup = persistCopy(context);
 	let div = document.createElement("div");
-	div.innerHTML = await NavBar(getLang(context, "pages.profile.title"), context);
-	div.innerHTML += Persistents(context);
-	div.innerHTML += /*html*/`
+
+	div.innerHTML = /*html*/`
 		<p><br><br></p>
 		<div id="profile-content" class="block-blur">
 			<div class="block-blur-pad"></div>
@@ -77,7 +76,10 @@ async function Profile(context, username) {
 			<div class="block-blur-pad"></div>
 		</div>
 	`;
-	setTimeout(() => {
+
+	div.insertBefore(Persistents(context), div.firstChild);
+	div.insertBefore(await NavBar(getLang(context, "pages.profile.title"), context), div.firstChild);
+
 		if (!context.user.isAuthenticated || !context.user.username) {
 			persist(context, persistentBackup);
 			persistError(context, getLang(context, "errors.mustBeLoggedIn"));
@@ -142,8 +144,7 @@ async function Profile(context, username) {
 			uidsDates.sort((a, b) => b[1] - a[1]);
 			tablePage(context, uidsDates, page, totalPage);
 		});
-	}, 200);
-	return div.innerHTML;
+	return div;
 }
 
 function tablePage(context, uidsDates, page, totalPage) {

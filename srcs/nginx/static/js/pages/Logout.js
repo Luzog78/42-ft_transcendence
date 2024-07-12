@@ -42,9 +42,9 @@ async function Logout(context) {
 		console.log("[❌] Could not remove token from localStorage");
 		persistError(context, getLang(context, "errors.couldNotLogout"));
 	}
-	div.innerHTML = await NavBar(getLang(context, "pages.logout.title"), context);
-	div.innerHTML += Persistents(context);
-	return div.innerHTML;
+	div.appendChild(await NavBar(getLang(context, "pages.logout.title"), context));
+	div.appendChild(Persistents(context));
+	return div;
 }
 
 

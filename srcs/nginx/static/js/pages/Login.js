@@ -45,8 +45,7 @@ function createA2fInput(context) {
 
 async function Login(context) {
 	let div = document.createElement("div");
-	div.innerHTML = await NavBar(getLang(context, "pages.login.title"), context);
-	div.innerHTML += Persistents(context);
+
 	div.innerHTML += /*html*/`
 		<p><br><br></p>
 		<div class="container container-blur form-ssm">
@@ -91,12 +90,16 @@ async function Login(context) {
 			</form>
 		</div>
 	`;
+
+	div.insertBefore(await NavBar(getLang(context, "pages.login.title"), context), div.firstChild);
+	div.insertBefore(Persistents(context), div.firstChild);
+
 	const foo = () => {
-		let form = document.querySelector("#login-form");
-		let inputUsername = document.querySelector("#username");
-		let inputPassword = document.querySelector("#password");
-		let inputA2f = document.querySelector("#a2f_code");
-		let signin_oauth = document.getElementById("signin-oauth");
+		let form = div.querySelector("#login-form");
+		let inputUsername = div.querySelector("#username");
+		let inputPassword = div.querySelector("#password");
+		let inputA2f = div.querySelector("#a2f_code");
+		let signin_oauth = div.querySelector("#signin-oauth");
 
 		if (inputUsername !== null)
 			inputUsername.oninput = () => checkUsername(context, "#username");
@@ -152,24 +155,23 @@ async function Login(context) {
 				window.location.href = "https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-f16f4749137ef0ec16a0cd6a506f6fdfe39461aa8584e0495163ce52515b814b&redirect_uri=https%3A%2F%2F127.0.0.1%3A4444%2Foauth_callback&response_type=code";
 			};
 	};
-	if (context.user.token && !context.user.isAuthenticated)
-		setTimeout(() => {
-			if (context.user.isAuthenticated) {
-				let next;
-				while (context.next && (next = popNext(context)) == window.location.pathname);
-				if (context.next)
-						redirect(next);
-				if (window.history.length > 1)
-					window.history.back();
-				else
-					redirect("/");
-				return;
-			}
-			foo();
-		}, 500);
+	if (context.user.token && !context.user.isAuthenticated) {
+		if (context.user.isAuthenticated) {
+			let next;
+			while (context.next && (next = popNext(context)) == window.location.pathname);
+			if (context.next)
+					redirect(next);
+			if (window.history.length > 1)
+				window.history.back();
+			else
+				redirect("/");
+			return;
+		}
+		foo();
+	}
 	else
-		setTimeout(foo, 200);
-	return div.innerHTML;
+		foo();
+	return div;
 }
 
 

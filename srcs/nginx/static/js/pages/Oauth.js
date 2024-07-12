@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Oauth.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 09:50:44 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/11 23:09:43 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/12 17:04:01 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ async function Oauth(context) {
 		});
 	}, 200);
 
-	return "";
+	return document.createElement("div");
 }
 
 export {

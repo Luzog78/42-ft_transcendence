@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GameConfig.js                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/11 20:00:55 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/12 16:56:10 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ import { postJson } from "../utils.js";
 
 async function GameConfig(context, id = null) {
 	let div = document.createElement("div");
-	div.innerHTML = await NavBar("Game Settings", context);
-	div.innerHTML += Persistents(context);
+
 	div.innerHTML += /*html*/`
 		<div id="GameConfig-content">
 		<div class="GameConfig-container container-blur">
@@ -110,41 +109,43 @@ async function GameConfig(context, id = null) {
 			</div>
 		</div>
 	`;
-	setTimeout(() => {
-		let modeFT = document.getElementById("ModeRadio-btn1");
-		let modeBR = document.getElementById("ModeRadio-btn2");
-		let modeTO = document.getElementById("ModeRadio-btn3");
-		let playerCount = document.getElementById("player-count");
-		let limitFT = document.getElementById("limit-ft");
-		let limitTOMinDec = document.getElementById("limit-to-min-dec");
-		let limitTOMinUni = document.getElementById("limit-to-min-uni");
-		let limitTOSecDec = document.getElementById("limit-to-sec-dec");
-		let limitTOSecUni = document.getElementById("limit-to-sec-uni");
-		let theme1 = document.getElementById("ThemeRadio1");
-		let theme2 = document.getElementById("ThemeRadio2");
-		let theme3 = document.getElementById("ThemeRadio3");
-		let theme4 = document.getElementById("ThemeRadio4");
-		let speedBall = document.getElementById("speed-ball");
-		let speed1 = document.getElementById("SpeedRadio-btn1");
-		let speed2 = document.getElementById("SpeedRadio-btn2");
-		let speed3 = document.getElementById("SpeedRadio-btn3");
-		let startBtn = document.getElementById("start-btn");
+	div.insertBefore(await NavBar("Game Settings", context), div.firstChild);
+	div.insertBefore(Persistents(context), div.firstChild);
 
-		document.querySelectorAll("[decr]").forEach(e => e.onclick = () => {
-			let input = document.getElementById(e.getAttribute("decr"));
+		let modeFT = div.querySelector("#ModeRadio-btn1");
+		let modeBR = div.querySelector("#ModeRadio-btn2");
+		let modeTO = div.querySelector("#ModeRadio-btn3");
+		let playerCount = div.querySelector("#player-count");
+		let limitFT = div.querySelector("#limit-ft");
+		let limitTOMinDec = div.querySelector("#limit-to-min-dec");
+		let limitTOMinUni = div.querySelector("#limit-to-min-uni");
+		let limitTOSecDec = div.querySelector("#limit-to-sec-dec");
+		let limitTOSecUni = div.querySelector("#limit-to-sec-uni");
+		let theme1 = div.querySelector("#ThemeRadio1");
+		let theme2 = div.querySelector("#ThemeRadio2");
+		let theme3 = div.querySelector("#ThemeRadio3");
+		let theme4 = div.querySelector("#ThemeRadio4");
+		let speedBall = div.querySelector("#speed-ball");
+		let speed1 = div.querySelector("#SpeedRadio-btn1");
+		let speed2 = div.querySelector("#SpeedRadio-btn2");
+		let speed3 = div.querySelector("#SpeedRadio-btn3");
+		let startBtn = div.querySelector("#start-btn");
+
+		div.querySelectorAll("[decr]").forEach(e => e.onclick = () => {
+			let input = div.querySelector(`#${e.getAttribute("decr")}`);
 			input.value = parseInt(input.value) - 1;
 			normalizeTime(limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni);
 			normalizeOther(playerCount);
 			normalizeOther(limitFT);
 		});
-		document.querySelectorAll("[incr]").forEach(e => e.onclick = () => {
-			let input = document.getElementById(e.getAttribute("incr"));
+		div.querySelectorAll("[incr]").forEach(e => e.onclick = () => {
+			let input = div.querySelector("#" + e.getAttribute("incr"));
 			input.value = parseInt(input.value) + 1;
 			normalizeTime(limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni);
 			normalizeOther(playerCount);
 			normalizeOther(limitFT);
 		});
-		document.querySelectorAll("input[type=number]").forEach(e => {
+		div.querySelectorAll("input[type=number]").forEach(e => {
 			e.addEventListener("focus", (e) => e.target.select());
 			e.addEventListener("wheel", event => {
 				event.preventDefault();
@@ -246,7 +247,6 @@ async function GameConfig(context, id = null) {
 				}
 			});
 		});
-	}, 250);
 	return div.outerHTML;
 }
 

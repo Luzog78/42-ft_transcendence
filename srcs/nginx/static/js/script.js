@@ -167,7 +167,10 @@ const loadComponent = async (component, ...args) => {
 	let inner = await component(global_context, ...args);
 	if (inner === null || inner === undefined)
 		return;
-	content.innerHTML = inner;
+	while (content.firstChild) {
+		content.removeChild(content.lastChild);
+	}
+	content.appendChild(inner);
 }
 
 const loadPage = (path, ...additionnalArgs) => {

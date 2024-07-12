@@ -19,16 +19,16 @@ import { Chat } from "../components/Chat.js"
 
 async function Home(context) {
 	let div = document.createElement("div");
-	div.innerHTML = await NavBar(getLang(context, "pages.home.title"), context);
-	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
-		<p><br><br></p>
-		<div class="container" id="home-content">${getLang(context, "loading")}</div>
-		<button type="button" class="btn btn-primary" id="1234">Click</button>
+	<p><br><br></p>
+	<div class="container" id="home-content">${getLang(context, "loading")}</div>
+	<button type="button" class="btn btn-primary" id="abcd">Click</button>
 	`;
+	div.insertBefore(await NavBar(getLang(context, "pages.home.title"), context), div.firstChild);
+	div.insertBefore(Persistents(context), div.firstChild);
 	div.appendChild(Chat(context));
 	getJson(context, "/api/user").then(data => {
-		let content = document.getElementById("home-content");
+		let content = div.querySelector("#home-content");
 		if (content === null)
 			return;
 		if (data.ok) {
@@ -50,13 +50,13 @@ async function Home(context) {
 			content.querySelector(".home-error").innerText = getLang(context, data.error);
 		}
 
-		document.getElementById("1234").onclick = () => {
+		div.querySelector("#abcd").onclick = () => {
 			persistSuccess(context, "This is a success !");
 			persistError(context, "This is an error...");
 			pushPersistents(context);
 		};
 	});
-	return div.innerHTML;
+	return div;
 }
 
 

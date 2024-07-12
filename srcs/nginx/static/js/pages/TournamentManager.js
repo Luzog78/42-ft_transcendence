@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TournamentManager.js                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/07 15:28:55 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/12 16:38:52 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ import { TournamentList } from "./TournamentList.js";
 
 async function TournamentManager(context, ...args) {
 	let div = document.createElement("div");
-	div.innerHTML = await NavBar("Tournament", context);
-	div.innerHTML += Persistents(context);
-	div.innerHTML += /*html*/`
+	div.innerHTML = /*html*/`
 		<div id="tournament-content" class="block-blur">
 			<div class="block-blur-pad"></div>
 			<div class="container-fluid">
@@ -31,23 +29,24 @@ async function TournamentManager(context, ...args) {
 			<div class="block-blur-pad"></div>
 		</div>
 	`;
+	div.appendChild(Persistents(context), div.firstChild);
+	div.appendChild(await NavBar("Tournament", context), div.firstChild);
 
-	setTimeout(async () => {
-		let mainContainer = document.querySelector("#tournament-content .container-fluid");
+	let mainContainer = div.querySelector("#tournament-content .container-fluid");
 
-		if (!mainContainer) {
-			setTimeout(() => refresh(), 1000);
-			return;
-		}
+	if (!mainContainer) {
+		setTimeout(() => refresh(), 1000);
+		return;
+	}
 
-		if (window.location.pathname === "/create")
-			mainContainer.innerHTML = await NewTournament(context, ...args);
-		else if (args.length == 0)
-			mainContainer.innerHTML = await TournamentList(context, ...args);
-		else
-			mainContainer.innerHTML = await Tournament(context, ...args);
-	}, 200);
-	return div.innerHTML;
+	if (window.location.pathname === "/create")
+		mainContainer.innerHTML = await NewTournament(context, ...args);
+	else if (args.length == 0)
+		mainContainer.innerHTML = await TournamentList(context, ...args);
+	else
+		mainContainer.innerHTML = await Tournament(context, ...args);
+
+	return div;
 }
 
 

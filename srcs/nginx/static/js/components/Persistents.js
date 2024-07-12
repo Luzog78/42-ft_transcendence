@@ -18,7 +18,7 @@ function Persistents(context) {
 		<div class="container-fluid" id="persistent-container"></div>
 	`;
 	pushPersistents(context, div);
-	return div.innerHTML;
+	return div;
 }
 
 function overridePersistents(context) {

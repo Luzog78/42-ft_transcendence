@@ -17,8 +17,7 @@ import { getLang } from "../script.js";
 
 async function Err404(context) {
 	let div = document.createElement("div");
-	div.innerHTML = await NavBar(getLang(context, "pages.404.title"), context);
-	div.innerHTML += Persistents(context);
+
 	div.innerHTML += /*html*/`
 		<div style="position: fixed; top: 50%; transform: translateY(-50%); width: 100%; margin: auto">
 			<div class="container-blur text-center">
@@ -32,7 +31,10 @@ async function Err404(context) {
 			</div>
 		</div>
 	`;
-	return div.innerHTML;
+	div.insertBefore(await NavBar(getLang(context, "pages.404.title"), context), div.firstChild);
+	div.insertBefore(Persistents(context), div.firstChild);
+
+	return div;
 }
 
 

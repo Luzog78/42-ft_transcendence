@@ -18,9 +18,8 @@ import { getGameMode, setupCopyKBDSpan } from "../utils.js";
 
 async function Pong(context, uid, data) {
 	let div = document.createElement("div");
-	div.innerHTML = await NavBar("Profile", context);
-	div.innerHTML += Persistents(context);
-	div.innerHTML += /*html*/`
+
+	div.innerHTML = /*html*/`
 		<style type="text/css">
 			canvas {
 				position: fixed;
@@ -55,27 +54,28 @@ async function Pong(context, uid, data) {
 			</div>
 		`;
 	}
-	setTimeout(async () => {
-		let gameUid = document.getElementById("game-uid");
-		let gameIcon = document.getElementById("game-icon");
-		let search = document.querySelector(".search-text");
+	div.appendChild(await NavBar("Profile", context), div.firstChild);
+	div.appendChild(Persistents(context), div.firstChild);
 
-		if (gameUid && gameIcon)
-			setupCopyKBDSpan(uid, gameIcon, [ gameUid ]);
+	let gameUid = div.querySelector("#game-uid");
+	let gameIcon = div.querySelector("#game-icon");
+	let search = div.querySelector(".search-text");
 
-		if (search) {
-			search.innerHTML = "";
-			let searchText = "Searching...";
-			for (let i = 0; i < searchText.length; i++) {
-				let span = document.createElement("span");
-				span.innerText = searchText[i];
-				span.style.animationDelay = `${i * 0.1 + 1}s`;
-				search.appendChild(span);
-			}
+	if (gameUid && gameIcon)
+		setupCopyKBDSpan(uid, gameIcon, [ gameUid ]);
+
+	if (search) {
+		search.innerHTML = "";
+		let searchText = "Searching...";
+		for (let i = 0; i < searchText.length; i++) {
+			let span = document.createElement("span");
+			span.innerText = searchText[i];
+			span.style.animationDelay = `${i * 0.1 + 1}s`;
+			search.appendChild(span);
 		}
-		await initScene(uid);
-	}, 200);
-	return div.innerHTML;
+	}
+	await initScene(uid);
+	return div;
 }
 
 function setWaitingTotalPlayerCount(amount) {

@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/12 15:56:25 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/12 16:22:41 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ function Chat(context) {
 		</div>
 	`
 
-	console.log("loaded chatbox")
 	var searchBox = document.getElementById("chat-searchBox");
 	console.log(searchBox);
 	if (searchBox) {

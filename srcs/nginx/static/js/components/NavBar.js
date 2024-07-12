@@ -72,22 +72,19 @@ async function NavBar(title, context, fetchProfile = true) {
 		`;
 		right.classList.add("profile");
 		right.querySelector(".profile-name").innerText = context.user.username;
-		setTimeout(() => {
-			document.querySelectorAll("#navbar-right div").forEach(e => e.onclick = () => redirect("/profile"));
-			document.querySelectorAll("#navbar-right img").forEach(e => e.onclick = () => redirect("/profile"));
-		}, 200);
+		div.querySelectorAll("#navbar-right div").forEach(e => e.onclick = () => redirect("/profile"));
+		div.querySelectorAll("#navbar-right img").forEach(e => e.onclick = () => redirect("/profile"));
 	} else {
 		right.innerHTML = /*html*/`
 			<a type="button" class="btn btn-outline-secondary" href="/login?next=${next}" data-link>${getLang(context, "navbar.login")}</a>
 			<a type="button" class="btn btn-outline-primary" href="/register?next=${next}" data-link>${getLang(context, "navbar.register")}</a>
 		`;
 	}
-	setTimeout(() => {
-		let menu = document.getElementById("menu-trigger");
-		let menuContainer = document.getElementById("menu-container");
-		let gotoPlay = document.getElementById("goto-play");
-		let gotoTour = document.getElementById("goto-tour");
-		let gotoChat = document.getElementById("goto-chat");
+		let menu = div.querySelector("#menu-trigger");
+		let menuContainer = div.querySelector("#menu-container");
+		let gotoPlay = div.querySelector("#goto-play");
+		let gotoTour = div.querySelector("#goto-tour");
+		let gotoChat = div.querySelector("#goto-chat");
 
 		if (!menu || !menuContainer || !gotoPlay || !gotoTour || !gotoChat)
 			return;
@@ -118,8 +115,7 @@ async function NavBar(title, context, fetchProfile = true) {
 			closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
 			setTimeout(() => redirect("/chat"), 900);
 		};
-	}, 200);
-	return div.innerHTML;
+	return div;
 }
 
 function openMenu(menu, container, gotoPlay, gotoTour, gotoChat) {

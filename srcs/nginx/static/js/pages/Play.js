@@ -18,8 +18,6 @@ import { checkUID, clearFeedbacks, getJson } from "../utils.js";
 
 async function Play(context) {
 	let div = document.createElement("div");
-	div.innerHTML = await NavBar(getLang(context, "pages.play.title"), context);
-	div.innerHTML += Persistents(context);
 	div.innerHTML += /*html*/`
 		<div class="container container-blur form-ssm" style="padding: 50px; margin-top: 100px;">
 			<form class="row g-3" id="play-form" style="margin-top: 0; margin-bottom: 0;">
@@ -48,35 +46,37 @@ async function Play(context) {
 			</form>
 		</div>
 	`;
-	setTimeout(() => {
-		let form = document.querySelector("#play-form");
-		if (form === null)
+	
+	div.insertBefore(await NavBar(getLang(context, "pages.play.title"), context), div.firstChild);
+	div.insertBefore(Persistents(context), div.firstChild);
+	
+	let form = div.querySelector("#play-form");
+	if (form === null)
+		return;
+	form.onsubmit = (event) => event.preventDefault();
+	div.querySelector("#join-button").onclick = () => {
+		clearFeedbacks(form);
+		if (!checkUID(context, "#uid"))
 			return;
-		form.onsubmit = (event) => event.preventDefault();
-		document.querySelector("#join-button").onclick = () => {
-			clearFeedbacks(form);
-			if (!checkUID(context, "#uid"))
-				return;
-			redirect(`/play/${document.querySelector("#uid").value}`);
-		};
-		document.querySelector("#play-button").onclick = () => {
-			getJson(context, "/api/game/rand").then(data => {
-				if (data.ok) {
-					if (data.uid)
-						redirect(`/play/${data.uid}`);
-					else {
-						persistError(context, getLang(context, "error.noGameFound")); // TODO: translate
-						redirect("/new");
-					}
-				} else {
-					persistError(context, getLang(context, data.error));
-					pushPersistents(context);
+		redirect(`/play/${div.querySelector("#uid").value}`);
+	};
+	div.querySelector("#play-button").onclick = () => {
+		getJson(context, "/api/game/rand").then(data => {
+			if (data.ok) {
+				if (data.uid)
+					redirect(`/play/${data.uid}`);
+				else {
+					persistError(context, getLang(context, "error.noGameFound")); // TODO: translate
+					redirect("/new");
 				}
-			});
-		};
-		document.querySelector("#create-button").onclick = () => redirect("/new");
-	}, 200);
-	return div.innerHTML;
+			} else {
+				persistError(context, getLang(context, data.error));
+				pushPersistents(context);
+			}
+		});
+	};
+	div.querySelector("#create-button").onclick = () => redirect("/new");
+	return div;
 }
 
 
