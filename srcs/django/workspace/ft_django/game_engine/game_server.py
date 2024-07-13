@@ -21,7 +21,7 @@ class GameServer:
 		self.lobbies: list[Lobby] = []
 		self.clients: list[Player] = []
 
-		self.tps: int = 20
+		self.tps: int = 40
 		self.dt: float = 1 / self.tps
 
 	async def receive(self, data, socket):
