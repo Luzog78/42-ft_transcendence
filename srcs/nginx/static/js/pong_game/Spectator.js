@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Spectator.js                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 18:14:37 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/11 23:09:43 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/13 19:03:51 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ class Spectator
 		this.scene = scene;
 
 		this.keyboard = {};
-		this.following_player = 0
+		this.following_player = 0;
 
-		this.keydown_event_func = this.keydown_event.bind(this)
-		this.keyup_event_func = this.keyup_event.bind(this)
+		this.keydown_event_func = this.keydown_event.bind(this);
+		this.keyup_event_func = this.keyup_event.bind(this);
 	}
 
 	isUp()

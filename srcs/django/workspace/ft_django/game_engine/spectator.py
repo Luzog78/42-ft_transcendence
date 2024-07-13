@@ -3,12 +3,14 @@
 #                                                         :::      ::::::::    #
 #    spectator.py                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 15:11:13 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/11 23:09:43 by ysabik           ###   ########.fr        #
+#    Updated: 2024/07/13 19:16:17 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+import datetime
 
 class Spectator:
 	def __init__(self, lobby, client, client_id: int) -> None:
@@ -22,10 +24,15 @@ class Spectator:
 		self.keyboard: dict = {}
 
 	async def initSpectator(self):
+		start_time = self.lobby.start_time
+		if (start_time == 0):
+			start_time = datetime.datetime.timestamp(datetime.datetime.now())
+
 		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
 										"scene.server.client_id": self.client_id})
 		await self.sendData("call", {"command": "scene.initSpectator",
-									"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'"]}) # TODO: theme
+									"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'",
+				  							self.lobby.limit - (datetime.datetime.timestamp(datetime.datetime.now()) - start_time)]}) # TODO: theme
 
 		for i in range(self.lobby.clients_per_lobby):
 			player = self.lobby.clients[i]

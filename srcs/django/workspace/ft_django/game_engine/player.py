@@ -49,11 +49,16 @@ class Player:
 		self.duration = datetime.datetime.timestamp(datetime.datetime.now()) - self.start_time
 
 	async def initPlayer(self):
+		start_time = self.lobby.start_time
+		if (start_time == 0):
+			start_time = datetime.datetime.timestamp(datetime.datetime.now())
+
 		self.addSelfWall()
 		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
 										"scene.server.client_id": self.client_id})
 		await self.sendData("call", {"command": "scene.initPlayer",
-									"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'"]}) #todo theme
+									"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'",
+				  							self.lobby.limit - (datetime.datetime.timestamp(datetime.datetime.now()) - start_time)]}) #todo theme
 		await self.updateSelfToother()
 
 	def addSelfWall(self):
