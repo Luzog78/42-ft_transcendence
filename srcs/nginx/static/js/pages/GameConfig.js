@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/12 16:56:10 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/13 12:45:37 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ async function GameConfig(context, id = null) {
 				}
 			});
 		});
-	return div.outerHTML;
+	return div;
 }
 
 function normalizeTime(minDec, minUni, secDec, secUni, minTime = 60, maxTime = 3600) {

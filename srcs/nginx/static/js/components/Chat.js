@@ -6,15 +6,30 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/12 16:22:41 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/13 12:14:30 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+// main code
 
 var enabled = true; // todo set to false by default
 var searchInput = "";
 
-function refreshFriendList(context) {
-	
+function refreshFriendList(context, chatBox = null) {
+	if (!chatBox)
+		chatBox = document.getElementById("chat");
+	if (!chatBox)
+		return;
+
+	var addFriendButton = chatBox.querySelector("#addFriendButton");
+	if (searchInput == "" || false) // todo check if already in friend list
+		addFriendButton.style.display = "none";
+	else
+	{
+		
+		addFriendButton.style.display = "block";
+	}
 }
 
 function Chat(context) {
@@ -33,30 +48,32 @@ function Chat(context) {
 			<div class="discussion">
 			</div>
 		</div>
-	`
-
-	var searchBox = document.getElementById("chat-searchBox");
-	console.log(searchBox);
-	if (searchBox) {
-		searchBox.value = searchInput;
-		searchBox.oninput = (event) => {
-			searchInput = event.value;
-			console.log("new search value: ", searchInput);
-			refreshFriendList();
-		}
+	`;
+	var navBar = div.querySelector(".chat-navbar");
+	var addFriendButton = templates["friendBox"].cloneNode(true);
+	addFriendButton.id = "addFriendButton";
+	addFriendButton.querySelector("span").innerText = "Add Friend";
+	navBar.appendChild(addFriendButton);
+	
+	var searchBox = div.querySelector("#chat-searchBox");
+	searchBox.value = searchInput;
+	searchBox.oninput = (event) => {
+		searchInput = event.target.value;
+		refreshFriendList(div);
 	}
-	refreshFriendList();
+	refreshFriendList(div);
 	
 	if (!context.user.isAuthenticated)
-		ToggleChat(false);
+		ToggleChat(false, div);
 	return div;
 }
 
-function ToggleChat(toggle) {
+function ToggleChat(toggle, chat = null) {
 	if (enabled == toggle)
 		return ;
 	enabled = toggle;
-	let chat = document.getElementById("chat");
+	if (chat == null)
+		chat = document.getElementById("chat");
 	if (chat)
 		chat.style.display = toggle ? "block" : "none";
 }
@@ -64,4 +81,26 @@ function ToggleChat(toggle) {
 export {
 	Chat,
 	ToggleChat,
+}
+
+
+
+
+// templates
+
+const templates = {
+	"friendBox": document.createElement("div"),
+}
+
+templates["friendBox"].classList.add("friendBox");
+templates["friendBox"].innerHTML = `
+	<img class="notSelectable" data-default="/static/img/user.svg" src="/static/img/user.svg" alt="Menu" id="menu-trigger">
+	<span></span>
+`;
+templates["friendBox"].firstChild.onerror = (event) => {
+	if (event.target != null) {
+		var img = event.target;
+		if (img.src != img.dataset.default)
+			img.src = img.dataset.default;
+	}
 }
