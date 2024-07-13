@@ -30,7 +30,7 @@ async function Logout(context) {
 		isAdmin: null,
 		lastLogin: null,
 	};
-	context.ChatConnexion.authenticated = false;
+	context.chat.ChatConnexion.authenticated = false;
 	try {
 		localStorage.removeItem("ft_token");
 		persistSuccess(context, getLang(context, "successes.loggedOut"));

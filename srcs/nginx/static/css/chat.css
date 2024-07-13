@@ -5,7 +5,7 @@
 	--chat-header-height: 2.3vw;
 	--chat-navbar-width: 5vw;
 	--chat-navbar-row: 2vw;
-	--chat-friendBox-height: 1vw;
+	--chat-friendBox-height: 1.5vw;
 	--chat-friendicon-size: calc(var(--chat-friendBox-height) - 0.1vw);
 }
 
@@ -49,7 +49,7 @@
 	width: var(--chat-navbar-width);
 	float: left;
 
-	background-color: green;
+	background-color: white;
 }
 
 #chat #chat-searchBox {
@@ -72,7 +72,14 @@
 	width: 100%;
 	height: var(--chat-friendBox-height);
 	padding: 0.1vw;
+	background-color: rgb(230, 230, 230);
+	transition: background-color 0.2s;
 }
+
+#chat .friendBox:hover {
+	background-color: rgb(200, 200, 200);
+}
+
 
 #chat .friendBox img {
 	display: block;
@@ -84,12 +91,30 @@
 
 #chat .friendBox span {
 	display: block;
-	width: 100%;
+	/* width: 100%; */
 	height: 100%;
 	overflow: hidden;
+	float: none;
+	
 	white-space: nowrap;
-	float: left;
-	font-size: 15px;
+	font-size: 0.7rem;
+	line-height: var(--chat-friendBox-height);
+	color: black;
+}
+
+#chat .friendBox#addFriendButton {
+	border-bottom: 1px solid;
+	border-color: black;
+}
+
+#chat #chat-friendList {
+	width: 100%;
+	height: calc(100% - var(--chat-navbar-row) - var(--chat-friendBox-height));
+	overflow-y: auto;
+}
+
+#chat .friendBox#addFriendButton[style*='display: none'] ~ #chat-friendList {
+	height: calc(100% - var(--chat-navbar-row));
 }
 
 

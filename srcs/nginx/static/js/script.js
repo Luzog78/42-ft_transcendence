@@ -29,6 +29,7 @@ import { ChatConnexion } from "./ChatConnexion.js";
 import { getJson } from "./utils.js";
 import { destroyScene } from "./pong_game/main.js";
 import { TournamentManager } from "./pages/TournamentManager.js";
+import { RefreshFriendList } from "./components/Chat.js";
 
 
 const SUPPORTED_LANGS = [ "en", "fr", "es", "de", "cn", "jp", "ru", "ka", "eg" ];
@@ -54,24 +55,28 @@ var global_context = {
 	},
 	persistent: [],
 	next: null,
-	ChatConnexion: new ChatConnexion(),
+	chat: {
+		ChatConnexion: null,
+		FriendList: null,
+	},
 };
+global_context.chat.ChatConnexion = new ChatConnexion(global_context);
 
 window.context = global_context;
 
 /// test + exemple but still test only
-// global_context.ChatConnexion.onOpen(() => {
+// global_context.chat.ChatConnexion.onOpen(() => {
 // 	if (localStorage.getItem("ft_token")) {
-// 		global_context.ChatConnexion.authenticate(localStorage.getItem("ft_token"))
+// 		global_context.chat.ChatConnexion.authenticate(localStorage.getItem("ft_token"))
 // 			.then(() => {
-// 				global_context.ChatConnexion.sendMessage("abcd", "yo")
+// 				global_context.chat.ChatConnexion.sendMessage("abcd", "yo")
 // 					.then(messageData => {
 // 						console.log(`Message successfully sent, id: ${messageData["messageId"]}`)
 // 					})
 // 					.catch((err) => {
 // 						console.log("failed to send message : ", err)
 // 					})
-// 				global_context.ChatConnexion.getAllMessages()
+// 				global_context.chat.ChatConnexion.getAllMessages()
 // 					.then(messages => {
 // 						console.log("messages table: ", messages)
 // 					})
@@ -314,14 +319,27 @@ const onLogin = async (context, loadedData = null, reloadNav = false) => {
 	else
 		data = await getJson(context, "/api/user");
 
-	context.ChatConnexion.onOpen(() => {
+	context.chat.ChatConnexion.onOpen(() => {
 		if (context.user.token) {
-			context.ChatConnexion.authenticate(context.user.token)
+			context.chat.ChatConnexion.authenticate(context.user.token)
 				.then(() => {
 					console.log("Successfully authenticated in chat")
+					context.chat.ChatConnexion.triggerCallback({type: "get_friend_list"})
+						.then(data => {
+							context.chat.FriendList = data.map(e => {
+								return {
+									friend: context.user.username == e.author ? e.target : e.author,
+									pending: e.pending,
+								};
+							})
+							RefreshFriendList(context);
+						})
+						.catch(err => {
+							console.log("Failed to get friend list : " + err);
+						})
 				})
 				.catch(err => {
-					console.log("Failed to authenticate : " + err.error);
+					console.log("Failed to authenticate : " + err);
 				})
 		}
 	})

@@ -707,3 +707,19 @@ class Ressources(models.Model):
 			'type': self.type,
 			'size': self.size,
 		}
+
+class FriendList(models.Model):
+	'''
+	todo docstring
+	'''
+
+	author		= models.ForeignKey(User, related_name='+', on_delete=models.CASCADE, null=False)
+	target		= models.ForeignKey(User, related_name='+', on_delete=models.CASCADE, null=False)
+	pending		= models.BooleanField(null=False, default=True)
+
+	def json(self):
+		return {
+			'author': self.author,
+			'target': self.target,
+			'pending': self.pending,
+		}

@@ -10,13 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+import { RefreshFriendList } from "./components/Chat.js"
+
 class ChatConnexion
 {
 	//* intern *\\
 
-	constructor()
+	constructor(context)
 	{
 		const _this = this;
+		this.context = context;
 		this.onOpenCb = null;
 		this.connected = false;
 		this.authenticated = false;
@@ -38,11 +41,12 @@ class ChatConnexion
 				_this._on_response(data);
 			else if (data.type == "new_private_message")
 				_this._on_private_message(data);
+			else if (data.type == "new_friend_request")
+				_this._on_new_friend(data, true);
+			else if (data.type == "new_friend")
+				_this._on_new_friend(data, false);
 			else
-			{
 				console.log("TODO new notification: " + data.type + " - " + data.message, e);
-				 // TODO
-			}
 		};
 		this.socket.onclose = function(e) {
 			console.log("Chat socket closed, code: " + e.code + ", reason: " + e.reason + "."); // have to be reconnected
@@ -71,6 +75,21 @@ class ChatConnexion
 	_on_private_message(data)
 	{
 		console.log("TODO new message from : "  + data.from + " - " + data.content);
+	}
+
+	_on_new_friend(data, pending = false)
+	{
+		if (this.context.chat.FriendList)
+		{
+			var friend = this.context.chat.FriendList.find(e => e.username == data.friend);
+			if (!friend) {
+				friend = {username: data.friend, pending: pending};
+				this.context.chat.FriendList.push(friend);
+			}
+			else
+				friend.pending = pending;
+		}
+		RefreshFriendList(this.context);
 	}
 
 

@@ -6,9 +6,12 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/13 12:14:30 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/13 19:10:23 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+import { persistSuccess, persistError, getLang } from "../script.js";
+import { pushPersistents } from "./Persistents.js";
 
 
 // main code
@@ -16,20 +19,23 @@
 var enabled = true; // todo set to false by default
 var searchInput = "";
 
-function refreshFriendList(context, chatBox = null) {
+function RefreshFriendList(context, chatBox = null) {
 	if (!chatBox)
 		chatBox = document.getElementById("chat");
 	if (!chatBox)
 		return;
 
 	var addFriendButton = chatBox.querySelector("#addFriendButton");
-	if (searchInput == "" || false) // todo check if already in friend list
+	if (searchInput == "" || searchInput == context.user.username || (context.chat.FriendList != null && context.chat.FriendList.find(f => (f.username == searchInput))))
 		addFriendButton.style.display = "none";
 	else
-	{
-		
 		addFriendButton.style.display = "block";
-	}
+
+	// if (context.chat.FriendList != null) {
+	// 	context.chat.FriendList.forEach(element => {
+			
+	// 	});
+	// }
 }
 
 function Chat(context) {
@@ -44,6 +50,7 @@ function Chat(context) {
 			<div class="chat-navbar">
 				<input type="text" id="chat-searchBox">
 				</input>
+				<div id="chat-friendList"></div>
 			</div>
 			<div class="discussion">
 			</div>
@@ -53,15 +60,35 @@ function Chat(context) {
 	var addFriendButton = templates["friendBox"].cloneNode(true);
 	addFriendButton.id = "addFriendButton";
 	addFriendButton.querySelector("span").innerText = "Add Friend";
-	navBar.appendChild(addFriendButton);
+	addFriendButton.onclick = () => {
+		if (context.chat.ChatConnexion.authenticated)
+		{
+			context.chat.ChatConnexion.triggerCallback({type: 'add_friend', target: searchInput})
+			.then(success => {
+				persistSuccess(context, getLang(context, success));
+				pushPersistents(context);
+			})
+			.catch(error => {
+				persistError(context, getLang(context, error));
+				pushPersistents(context);
+			})
+			RefreshFriendList(context, div);
+		}
+		else
+		{
+			persistError(context, getLang(context, "errors.ChatNotConnected")); // todo lang
+			pushPersistents(context);
+		}
+	}
+	navBar.insertBefore(addFriendButton, div.querySelector("#chat-friendList"));
 	
 	var searchBox = div.querySelector("#chat-searchBox");
 	searchBox.value = searchInput;
 	searchBox.oninput = (event) => {
 		searchInput = event.target.value;
-		refreshFriendList(div);
+		RefreshFriendList(context, div);
 	}
-	refreshFriendList(div);
+	RefreshFriendList(context, div);
 	
 	if (!context.user.isAuthenticated)
 		ToggleChat(false, div);
@@ -81,6 +108,7 @@ function ToggleChat(toggle, chat = null) {
 export {
 	Chat,
 	ToggleChat,
+	RefreshFriendList,
 }
 
 
