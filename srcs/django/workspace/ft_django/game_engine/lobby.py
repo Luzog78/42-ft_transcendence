@@ -161,23 +161,8 @@ class Lobby:
 
 		Tournament.on_game_end(self.uid)
 
-	async def playerDied(self, ball: Ball, dead_player: str):
-		if (ball.last_player):
-			ball.last_player.kills += 1
-
-		for ball in self.balls:
-			del ball
-		self.balls = [Ball(self, 0.15, 0)]
-
-		player_id = int(dead_player.replace("player", ""))
-		player = self.clients[player_id]
-		player.die()
-
-		print("player dead: ", dead_player, player_id)
-		await self.sendData("call", {"command": 'scene.server.playerDead',
-									"args": ["'" + dead_player + "'"]})
-
-		if (self.game_mode == "BR" and self.clients_per_lobby == 2):
+	async def BRDied(self, player_id: int, player: Player):
+		if (self.clients_per_lobby == 2):
 			winner = self.clients[player_id - 1]
 			winner.duration = datetime.timestamp(datetime.now()) - winner.start_time + 2
 			self.onEnd()
@@ -203,6 +188,40 @@ class Lobby:
 			await c.initPlayer()
 		for s in self.spectators:
 			await s.initSpectator()
+
+	async def TODied(self, killer: Player, player_id: int, player: Player):
+		time.sleep(1)
+
+		self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
+		await self.balls[0].updateBall()
+
+		if (killer):
+			score_name = f"player{killer.client_id}textscore"
+			await self.sendData("call", {"command": f'scene.get("{score_name}").updateText', "args": [str(killer.kills)]})
+
+	async def playerDied(self, ball: Ball, dead_player: str):
+		killer = ball.last_player
+		if (killer):
+			killer.kills += 1
+
+		for ball in self.balls:
+			del ball
+
+		self.balls = [Ball(self, 0.15, 0)]
+
+		player_id = int(dead_player.replace("player", ""))
+		player = self.clients[player_id]
+		player.die()
+
+		print("player dead: ", dead_player, player_id)
+		await self.sendData("call", {"command": 'scene.server.playerDead',
+									"args": ["'" + dead_player + "'"]})
+
+		if (self.game_mode == "BR"):
+			await self.BRDied(player_id, player)
+		elif (self.game_mode == "TO"):
+			await self.TODied(killer, player_id, player)
+
 
 
 	async def update(self):

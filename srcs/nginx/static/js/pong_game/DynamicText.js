@@ -29,8 +29,9 @@ class DynamicText
 
 	updateText(text)
 	{
+		console.log("UPDATE TEXT TO " + text);
 		this.scene.removeMesh(this.mesh);
-		this.text = text;
+		this.text = String(text);
 
 		this.mesh = this.scene.addText(this.text, {color: this.color}, this.size, this.name + "element");
 		this.mesh.geometry.rotateX(this.rotation.x);

@@ -49,10 +49,30 @@ class Server
 		initPlayerText(this.scene, player, player_name);
 	}
 
+	BRDied(player_id)
+	{
+		const my_id = "player" + this.client_id;
+		if (player_id == my_id)
+		{
+			setTimeout(() => {
+				destroyScene();
+				refresh();
+			}, 3000);
+		}
+	}
+	TODied(player_id)
+	{
+		const player = this.scene.get(player_id);
+		const camera_old_position = this.scene.camera.camera_old_position;
+		
+		setTimeout(() => {
+			this.scene.camera.setPosition(camera_old_position.x, camera_old_position.y, camera_old_position.z, 0, 0, 0, true);
+			player.player.material.emissiveIntensity = 3;
+		}, 1000);
+	}
 
 	playerDead(player_id)
 	{
-		const my_id = "player" + this.client_id;
 		const player = this.scene.get(player_id);
 		const position = player.init_position.clone();
 
@@ -88,13 +108,10 @@ class Server
 			this.scene.entities.push(particle);
 		}
 
-		setTimeout(() => {
-			if (player_id == my_id && this.scene.game_mode == "BR")
-			{
-				destroyScene();
-				refresh();
-			}
-		}, 3000);
+		if (this.scene.game_mode == "BR")
+			this.BRDied(player_id);
+		else if (this.scene.game_mode == "TO")
+			this.TODied(player_id);
 	}
 
 	onOpen(scene, event)

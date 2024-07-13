@@ -28,6 +28,8 @@ class Camera
 		this.camera.lookAt(0, 0, 0);
 		this.camera.castShadow = true;
 
+		this.camera_old_position = new THREE.Vector3();
+
 		this.controls = new CameraControls(this.camera, renderer.domElement);
 		this.shakeObject = ScreenShake();
 	}
@@ -38,12 +40,10 @@ class Camera
 		this.shakeObject.update(this.camera);
 	}
 
-	getPosition()
-	{
-		return this.camera.position;
-	}
 	setPosition(x, y, z, x_look=0, y_look=0, z_look=0, animation = true)
 	{
+		this.camera_old_position = this.controls.getPosition();
+		
 		this.shakeObject.reset();
 		this.controls.setLookAt(x, y, z, x_look, y_look, z_look, animation);
 	}
