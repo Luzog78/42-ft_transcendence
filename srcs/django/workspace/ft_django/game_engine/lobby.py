@@ -34,6 +34,7 @@ class Lobby:
 		self.theme:				int		= theme
 		self.ball_speed:		float	= ball_speed
 		self.limit						= limit
+		self.start_time:		float	= 0
 
 		self.clients:		list[Player]	= []
 		self.dead_clients:	list[Player]	= []
@@ -226,6 +227,13 @@ class Lobby:
 
 	async def update(self):
 		while self.running:
+			if (self.game_mode == "TO" and self.start_time != 0 and datetime.timestamp(datetime.now()) - self.start_time > self.limit):
+				self.onEnd()
+
+				await self.sendData("game_status", "END")
+				self.game_server.kill(self)
+				return
+
 			if (self.time == 0):
 				self.time = time.time()
 				continue
@@ -249,10 +257,11 @@ class Lobby:
 
 		if ("ready" in data):
 			self.client_ready[client_id] = True
-			# if (all(self.client_ready)):
 			if (len(self.clients) == self.clients_per_lobby):
 				async def countdown(lobby: Lobby):
 					time.sleep(3)
+					lobby.start_time = datetime.timestamp(datetime.now())
+
 					lobby.balls[0].vel = Ball.getBallSpeed(lobby.clients_per_lobby)
 					clients = lobby.clients + lobby.spectators
 					for c in clients:
@@ -261,8 +270,7 @@ class Lobby:
 						await lobby.balls[0].updateBall()
 						await c.sendData("game_status", "START")
 
-				count_thread = threading.Thread(target=asyncio.run, args=(countdown(self),))
-				count_thread.start()
+				threading.Thread(target=asyncio.run, args=(countdown(self),)).start()
 
 		if ("player_keyboard" in data):
 			if (client_id < len(self.clients)):
