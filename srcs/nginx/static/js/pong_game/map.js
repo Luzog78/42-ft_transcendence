@@ -18,7 +18,7 @@ import { Player } from "./Player.js";
 import { DynamicText } from "./DynamicText.js";
 import { destroyObject } from './main.js';
 
-function initMap(scene, player_num)
+function initMap(scene, player_num, time_left)
 {
 	clearInterval(scene.intervalId);
 	destroyObject(scene);
@@ -33,8 +33,8 @@ function initMap(scene, player_num)
 	else
 		initNPlayerMap(scene, player_num);
 
-	if (scene.server.client_id < player_num)
-		initText(scene, player_num);
+	if (scene.server.client_id < player_num && scene.game_mode != "BR")
+		initText(scene, player_num, time_left);
 	initCamera(scene, player_num);
 }
 
@@ -283,10 +283,8 @@ function initPlayerText(scene, player, name)
 	text.geometry.translate(text_position);
 }
 
-function initText(scene, player_num)
+function initText(scene, player_num, time_left)
 {
-	if (scene.game_mode == "BR")
-		return ;
 	if (player_num != 2)
 	{
 		const my_player = scene.get("player" + scene.server.client_id);
@@ -301,7 +299,10 @@ function initText(scene, player_num)
 		}
 
 		const text_position = new THREE.Vector3(0,0.1,0);
-		const timer_text = new DynamicText(scene, "03:00", text_position, rotation, text_size, 0xffffff, "timertext");
+		console.log(time_left)
+		const time = new Date(time_left * 1000).toISOString().substring(14, 19);
+		console.log(time);
+		new DynamicText(scene, time, text_position, rotation, text_size, 0xffffff, "timertext");
 		return ;
 	}
 
