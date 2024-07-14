@@ -94,7 +94,9 @@
 				"username": "doc123"
 			},
 			"title": "登録",
-			"haveAccount": "すでにアカウントをお持ちですか？"
+			"haveAccount": "すでにアカウントをお持ちですか？",
+			"login42": "42でログイン",
+			"register42": "42で登録"
 		},
 		"settings": {
 			"labels": {
@@ -143,11 +145,23 @@
 			"noTournamentFound": "トーナメントが見つかりません。",
 			"ongoing": "進行中...",
 			"pending": "保留中...",
-			"quit": "終了"
+			"quit": "終了",
+			"loadMore": "スクロールしてもっと読み込む...",
+			"tryAgain": "もう一度やり直してください..."
 		},
 		"playId": {
 			"title": "プレイ",
 			"waiting": "対戦相手を待っています..."
+		},
+		"gameConfig": {
+			"fast": "速い",
+			"normal": "普通",
+			"players": "プレイヤー",
+			"pointsToWin": "勝つためのポイント",
+			"slow": "遅い",
+			"ballSpeed": "ボールの速度",
+			"start": "開始",
+			"timer": "タイマー（分）"
 		}
 	},
 	"errors": {
@@ -195,7 +209,20 @@
 		"usernameTooLong": "ユーザー名は最大24文字でなければなりません！",
 		"usernameTooShort": "ユーザー名は少なくとも3文字でなければなりません！",
 		"userNotFound": "ユーザーが見つかりません！",
-		"UserNotFound": "ユーザーが見つかりません！"
+		"UserNotFound": "ユーザーが見つかりません！",
+		"chatNotConnected": "チャットが接続されていません！",
+		"editPasswordOAuth": "OAuthでパスワードを編集することはできません！",
+		"noGameFound": "ゲームが見つかりません！",
+		"oauthGrantExpired": "OAuthの許可が期限切れです！",
+		"oauthInvalidServerAccess": "OAuthサーバーアクセスが無効です！",
+		"oauthUnexpectedApiError": "予期しないOAuth APIエラー！",
+		"oauthApiUnreachable": "OAuth APIに到達できません！",
+		"selectBallSpeed": "ボールの速度を選択してください！",
+		"selectGameMode": "ゲームモードを選択してください！",
+		"selectPlayers": "{}から{}までのプレイヤー数を選択してください！",
+		"selectPoints": "{}から{}までの勝つためのポイントを選択してください！",
+		"selectTheme": "テーマを選択してください！",
+		"toggleA2FOauth": "OAuthで2FAを切り替えることはできません！"
 	},
 	"successes": {
 		"a2fDisabled": "二要素認証が正常に無効化されました！",

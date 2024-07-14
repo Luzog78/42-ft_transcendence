@@ -94,7 +94,9 @@
 				"username": "doc123"
 			},
 			"title": "Registrieren",
-			"haveAccount": "Haben Sie bereits ein Konto?"
+			"haveAccount": "Haben Sie bereits ein Konto?",
+			"login42": "Mit 42 anmelden",
+			"register42": "Mit 42 registrieren"
 		},
 		"settings": {
 			"labels": {
@@ -143,11 +145,23 @@
 			"noTournamentFound": "Kein Turnier gefunden.",
 			"ongoing": "LÄUFT...",
 			"pending": "AUSSTEHEND...",
-			"quit": "VERLASSEN"
+			"quit": "VERLASSEN",
+			"loadMore": "Scrollen Sie nach unten, um mehr zu laden...",
+			"tryAgain": "Versuchen Sie es noch einmal..."
 		},
 		"playId": {
 			"title": "Spielen",
 			"waiting": "Warten auf Gegner..."
+		},
+		"gameConfig": {
+			"fast": "Schnell",
+			"normal": "Normal",
+			"players": "Spieler",
+			"pointsToWin": "Punkte zum Gewinnen",
+			"slow": "Langsam",
+			"ballSpeed": "Ballgeschwindigkeit",
+			"start": "Starten",
+			"timer": "Timer (min)"
 		}
 	},
 	"errors": {
@@ -195,7 +209,20 @@
 		"usernameTooLong": "Der Benutzername darf höchstens 24 Zeichen lang sein!",
 		"usernameTooShort": "Der Benutzername muss mindestens 3 Zeichen lang sein!",
 		"userNotFound": "Benutzer nicht gefunden!",
-		"UserNotFound": "Benutzer nicht gefunden!"
+		"UserNotFound": "Benutzer nicht gefunden!",
+		"chatNotConnected": "Chat nicht verbunden!",
+		"editPasswordOAuth": "Sie können Ihr Passwort nicht mit OAuth bearbeiten!",
+		"noGameFound": "Kein Spiel gefunden!",
+		"oauthGrantExpired": "OAuth-Genehmigung abgelaufen!",
+		"oauthInvalidServerAccess": "Ungültiger OAuth-Serverzugriff!",
+		"oauthUnexpectedApiError": "Unerwarteter OAuth-API-Fehler!",
+		"oauthApiUnreachable": "OAuth-API nicht erreichbar!",
+		"selectBallSpeed": "Bitte wählen Sie eine Ballgeschwindigkeit!",
+		"selectGameMode": "Bitte wählen Sie einen Spielmodus!",
+		"selectPlayers": "Bitte wählen Sie eine Anzahl von Spielern zwischen {} und {}!",
+		"selectPoints": "Bitte wählen Sie eine Anzahl von Punkten zum Gewinnen zwischen {} und {}!",
+		"selectTheme": "Bitte wählen Sie ein Thema!",
+		"toggleA2FOauth": "Sie können 2FA nicht mit OAuth umschalten!"
 	},
 	"successes": {
 		"a2fDisabled": "Zwei-Faktor-Authentifizierung erfolgreich deaktiviert!",

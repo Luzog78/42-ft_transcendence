@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/14 18:52:33 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/14 21:57:39 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ function Chat(context) {
 		}
 		else
 		{
-			persistError(context, getLang(context, "errors.ChatNotConnected")); // todo lang
+			persistError(context, getLang(context, "errors.chatNotConnected"));
 			pushPersistents(context);
 		}
 	}

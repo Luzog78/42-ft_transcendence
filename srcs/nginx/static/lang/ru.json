@@ -94,7 +94,9 @@
 				"username": "doc123"
 			},
 			"title": "Регистрация",
-			"haveAccount": "Уже есть аккаунт?"
+			"haveAccount": "Уже есть аккаунт?",
+			"login42": "Войти с 42",
+			"register42": "Зарегистрироваться с 42"
 		},
 		"settings": {
 			"labels": {
@@ -143,11 +145,23 @@
 			"noTournamentFound": "Турнир не найден.",
 			"ongoing": "В ПРОЦЕССЕ...",
 			"pending": "ОЖИДАНИЕ...",
-			"quit": "ВЫЙТИ"
+			"quit": "ВЫЙТИ",
+			"loadMore": "Прокрутите вниз, чтобы загрузить больше...",
+			"tryAgain": "Попробуйте снова..."
 		},
 		"playId": {
 			"title": "Играть",
 			"waiting": "Ожидание противников..."
+		},
+		"gameConfig": {
+			"fast": "Быстро",
+			"normal": "Нормально",
+			"players": "Игроки",
+			"pointsToWin": "Очки для победы",
+			"slow": "Медленно",
+			"ballSpeed": "Скорость мяча",
+			"start": "Начать",
+			"timer": "Таймер (мин)"
 		}
 	},
 	"errors": {
@@ -195,7 +209,20 @@
 		"usernameTooLong": "Имя пользователя должно быть не более 24 символов!",
 		"usernameTooShort": "Имя пользователя должно быть не менее 3 символов!",
 		"userNotFound": "Пользователь не найден!",
-		"UserNotFound": "Пользователь не найден!"
+		"UserNotFound": "Пользователь не найден!",
+		"chatNotConnected": "Чат не подключен!",
+		"editPasswordOAuth": "Вы не можете изменить пароль с помощью OAuth!",
+		"noGameFound": "Игра не найдена!",
+		"oauthGrantExpired": "Срок действия OAuth истек!",
+		"oauthInvalidServerAccess": "Недействительный доступ к серверу OAuth!",
+		"oauthUnexpectedApiError": "Неожиданная ошибка API OAuth!",
+		"oauthApiUnreachable": "API OAuth недоступен!",
+		"selectBallSpeed": "Пожалуйста, выберите скорость мяча!",
+		"selectGameMode": "Пожалуйста, выберите режим игры!",
+		"selectPlayers": "Пожалуйста, выберите количество игроков от {} до {}!",
+		"selectPoints": "Пожалуйста, выберите количество очков для победы от {} до {}!",
+		"selectTheme": "Пожалуйста, выберите тему!",
+		"toggleA2FOauth": "Вы не можете переключить 2FA с OAuth!"
 	},
 	"successes": {
 		"a2fDisabled": "Двухфакторная аутентификация успешно отключена!",

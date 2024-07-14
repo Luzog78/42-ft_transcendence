@@ -94,7 +94,9 @@
 				"username": "doc123"
 			},
 			"title": "注册",
-			"haveAccount": "已经有账号了？"
+			"haveAccount": "已经有账号了？",
+			"login42": "使用42登录",
+			"register42": "使用42注册"
 		},
 		"settings": {
 			"labels": {
@@ -143,11 +145,23 @@
 			"noTournamentFound": "未找到比赛。",
 			"ongoing": "进行中...",
 			"pending": "待定...",
-			"quit": "退出"
+			"quit": "退出",
+			"loadMore": "向下滚动加载更多...",
+			"tryAgain": "再试一次..."
 		},
 		"playId": {
 			"title": "玩",
 			"waiting": "等待对手..."
+		},
+		"gameConfig": {
+			"fast": "快",
+			"normal": "正常",
+			"players": "玩家",
+			"pointsToWin": "胜利分数",
+			"slow": "慢",
+			"ballSpeed": "球速",
+			"start": "开始",
+			"timer": "计时器（分钟）"
 		}
 	},
 	"errors": {
@@ -195,7 +209,20 @@
 		"usernameTooLong": "用户名最多只能有24个字符！",
 		"usernameTooShort": "用户名至少要有3个字符！",
 		"userNotFound": "未找到用户！",
-		"UserNotFound": "未找到用户！"
+		"UserNotFound": "未找到用户！",
+		"chatNotConnected": "聊天未连接！",
+		"editPasswordOAuth": "无法使用OAuth编辑密码！",
+		"noGameFound": "未找到游戏！",
+		"oauthGrantExpired": "OAuth授权已过期！",
+		"oauthInvalidServerAccess": "OAuth服务器访问无效！",
+		"oauthUnexpectedApiError": "OAuth API意外错误！",
+		"oauthApiUnreachable": "OAuth API无法访问！",
+		"selectBallSpeed": "请选择球速！",
+		"selectGameMode": "请选择游戏模式！",
+		"selectPlayers": "请选择{}到{}之间的玩家数！",
+		"selectPoints": "请选择{}到{}之间的胜利分数！",
+		"selectTheme": "请选择主题！",
+		"toggleA2FOauth": "无法使用OAuth切换2FA！"
 	},
 	"successes": {
 		"a2fDisabled": "二次验证已成功禁用！",

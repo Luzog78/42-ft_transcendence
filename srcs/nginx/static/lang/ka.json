@@ -94,7 +94,9 @@
 				"username": "doc123"
 			},
 			"title": "რეგისტრაცია",
-			"haveAccount": "უკვე გაქვთ ანგარიში?"
+			"haveAccount": "უკვე გაქვთ ანგარიში?",
+			"login42": "შესვლა 42-ით",
+			"register42": "რეგისტრაცია 42-ით"
 		},
 		"settings": {
 			"labels": {
@@ -143,11 +145,23 @@
 			"noTournamentFound": "ტურნირი არ მოიძებნა.",
 			"ongoing": "მიმდინარე...",
 			"pending": "მოლოდინში...",
-			"quit": "გასვლა"
+			"quit": "გასვლა",
+			"loadMore": "დააჭირეთ მეტი...",
+			"tryAgain": "სცადეთ ისევ..."
 		},
 		"playId": {
 			"title": "თამაში",
 			"waiting": "ელოდება მოწინააღმდეგეებს..."
+		},
+		"gameConfig": {
+			"fast": "სწრაფი",
+			"normal": "ჩვეულებრივი",
+			"players": "მოთამაშეები",
+			"pointsToWin": "ქულები გამარჯვებისთვის",
+			"slow": "ნელი",
+			"ballSpeed": "ბურთის სიჩქარე",
+			"start": "დაწყება",
+			"timer": "ტაიმერი (წთ)"
 		}
 	},
 	"errors": {
@@ -195,7 +209,20 @@
 		"usernameTooLong": "მომხმარებლის სახელი უნდა იყოს მაქსიმუმ 24 სიმბოლო!",
 		"usernameTooShort": "მომხმარებლის სახელი უნდა იყოს მინიმუმ 3 სიმბოლო!",
 		"userNotFound": "მომხმარებელი ვერ მოიძებნა!",
-		"UserNotFound": "მომხმარებელი ვერ მოიძებნა!"
+		"UserNotFound": "მომხმარებელი ვერ მოიძებნა!",
+		"chatNotConnected": "ჩეთი არ არის დაკავშირებული!",
+		"editPasswordOAuth": "თქვენ არ შეგიძლიათ შეცვალოთ თქვენი პაროლი OAuth-ით!",
+		"noGameFound": "თამაში ვერ მოიძებნა!",
+		"oauthGrantExpired": "OAuth-ის ნებართვა ამოიწურა!",
+		"oauthInvalidServerAccess": "OAuth-ის სერვერის წვდომა არასწორია!",
+		"oauthUnexpectedApiError": "OAuth-ის გაუთვალისწინებელი API შეცდომა!",
+		"oauthApiUnreachable": "OAuth-ის API მიუწვდომელია!",
+		"selectBallSpeed": "გთხოვთ, აირჩიეთ ბურთის სიჩქარე!",
+		"selectGameMode": "გთხოვთ, აირჩიეთ თამაშის რეჟიმი!",
+		"selectPlayers": "გთხოვთ, აირჩიეთ მოთამაშეების რაოდენობა {}-დან {}-მდე!",
+		"selectPoints": "გთხოვთ, აირჩიეთ ქულების რაოდენობა გამარჯვებისთვის {}-დან {}-მდე!",
+		"selectTheme": "გთხოვთ, აირჩიეთ თემა!",
+		"toggleA2FOauth": "თქვენ არ შეგიძლიათ 2FA-ს გადართვა OAuth-ით!"
 	},
 	"successes": {
 		"a2fDisabled": "ორფაქტორიანი ავთენტიფიკაცია წარმატებით გამორთულია!",

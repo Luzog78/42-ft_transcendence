@@ -94,7 +94,9 @@
 				"username": "doc123"
 			},
 			"title": "S'inscrire",
-			"haveAccount": "Déjà un compte ?"
+			"haveAccount": "Déjà un compte ?",
+			"login42": "Se connecter avec 42",
+			"register42": "S'inscrire avec 42"
 		},
 		"settings": {
 			"labels": {
@@ -143,11 +145,23 @@
 			"noTournamentFound": "Aucun tournoi trouvé.",
 			"ongoing": "EN COURS...",
 			"pending": "EN ATTENTE...",
-			"quit": "QUITTER"
+			"quit": "QUITTER",
+			"loadMore": "Faites défiler vers le bas pour en charger plus...",
+			"tryAgain": "Réessayer..."
 		},
 		"playId": {
 			"title": "Jouer",
 			"waiting": "En attente d'adversaires..."
+		},
+		"gameConfig": {
+			"fast": "Rapide",
+			"normal": "Normal",
+			"players": "Joueurs",
+			"pointsToWin": "Points pour gagner",
+			"slow": "Lent",
+			"ballSpeed": "Vitesse de la balle",
+			"start": "Commencer",
+			"timer": "Minuteur (min)"
 		}
 	},
 	"errors": {
@@ -194,7 +208,20 @@
 		"usernameIllegal": "Le nom d'utilisateur ne doit contenir que des lettres, des chiffres et des underscores !",
 		"usernameTooLong": "Le nom d'utilisateur ne doit pas dépasser 24 caractères !",
 		"usernameTooShort": "Le nom d'utilisateur doit contenir au moins 3 caractères !",
-		"userNotFound": "Utilisateur non trouvé !"
+		"userNotFound": "Utilisateur non trouvé !",
+		"chatNotConnected": "Chat non connecté !",
+		"editPasswordOAuth": "Vous ne pouvez pas modifier votre mot de passe avec OAuth !",
+		"noGameFound": "Aucun jeu trouvé !",
+		"oauthGrantExpired": "Autorisation OAuth expirée !",
+		"oauthInvalidServerAccess": "Accès au serveur OAuth invalide !",
+		"oauthUnexpectedApiError": "Erreur API OAuth inattendue !",
+		"oauthApiUnreachable": "API OAuth inaccessible !",
+		"selectBallSpeed": "Veuillez sélectionner une vitesse de balle !",
+		"selectGameMode": "Veuillez sélectionner un mode de jeu !",
+		"selectPlayers": "Veuillez sélectionner un nombre de joueurs entre {} et {} !",
+		"selectPoints": "Veuillez sélectionner un nombre de points à gagner entre {} et {} !",
+		"selectTheme": "Veuillez sélectionner un thème !",
+		"toggleA2FOauth": "Vous ne pouvez pas basculer 2FA avec OAuth !"
 	},
 	"successes": {
 		"a2fDisabled": "Authentification à deux facteurs désactivée avec succès !",

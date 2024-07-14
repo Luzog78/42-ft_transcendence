@@ -94,7 +94,9 @@
 				"username": "doc123"
 			},
 			"title": "Registrarse",
-			"haveAccount": "¿Ya tienes una cuenta?"
+			"haveAccount": "¿Ya tienes una cuenta?",
+			"login42": "Iniciar sesión con 42",
+			"register42": "Registrarse con 42"
 		},
 		"settings": {
 			"labels": {
@@ -143,11 +145,23 @@
 			"noTournamentFound": "No se encontró ningún torneo.",
 			"ongoing": "EN CURSO...",
 			"pending": "PENDIENTE...",
-			"quit": "ABANDONAR"
+			"quit": "ABANDONAR",
+			"loadMore": "Desplácese hacia abajo para cargar más...",
+			"tryAgain": "Inténtalo de nuevo..."
 		},
 		"playId": {
 			"title": "Jugar",
 			"waiting": "Esperando oponentes..."
+		},
+		"gameConfig": {
+			"fast": "Rápido",
+			"normal": "Normal",
+			"players": "Jugadores",
+			"pointsToWin": "Puntos para ganar",
+			"slow": "Lento",
+			"ballSpeed": "Velocidad de la pelota",
+			"start": "Comenzar",
+			"timer": "Temporizador (min)"
 		}
 	},
 	"errors": {
@@ -195,7 +209,20 @@
 		"usernameTooLong": "¡El nombre de usuario debe tener un máximo de 24 caracteres!",
 		"usernameTooShort": "¡El nombre de usuario debe tener al menos 3 caracteres!",
 		"userNotFound": "¡Usuario no encontrado!",
-		"UserNotFound": "¡Usuario no encontrado!"
+		"UserNotFound": "¡Usuario no encontrado!",
+		"chatNotConnected": "¡Chat no conectado!",
+		"editPasswordOAuth": "¡No puedes editar tu contraseña con OAuth!",
+		"noGameFound": "¡No se encontró el juego!",
+		"oauthGrantExpired": "¡La concesión de OAuth ha caducado!",
+		"oauthInvalidServerAccess": "¡Acceso al servidor OAuth inválido!",
+		"oauthUnexpectedApiError": "¡Error inesperado de la API de OAuth!",
+		"oauthApiUnreachable": "¡API de OAuth inaccesible!",
+		"selectBallSpeed": "¡Por favor, seleccione una velocidad de pelota!",
+		"selectGameMode": "¡Por favor, seleccione un modo de juego!",
+		"selectPlayers": "¡Por favor, seleccione un número de jugadores entre {} y {}!",
+		"selectPoints": "¡Por favor, seleccione un número de puntos para ganar entre {} y {}!",
+		"selectTheme": "¡Por favor, seleccione un tema!",
+		"toggleA2FOauth": "¡No puedes alternar 2FA con OAuth!"
 	},
 	"successes": {
 		"a2fDisabled": "¡Autenticación de dos factores desactivada con éxito!",

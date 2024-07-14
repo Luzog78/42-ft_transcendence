@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 14:30:41 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/11 03:39:41 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/14 21:48:01 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ async function TournamentList(context) {
 										bottom = true;
 										scrollable = false;
 										setTimeout(() => scrollable = true, 200);
-										loadLabel.innerText = "Scroll down to load more..."; // TODO: Translate
+										loadLabel.innerText = getLang(context, "pages.tournament.loadMore");
 									} else {
 										bottom = false;
 										scrollable = false;
@@ -126,7 +126,7 @@ async function TournamentList(context) {
 										if (!result) {
 											table.parentElement.scrollTop -= 10;
 											setTimeout(() => {
-												loadLabel.innerText = "[❌] Try again..."; // TODO: Translate
+												loadLabel.innerText = "[❌] " + getLang(context, "pages.tournament.tryAgain");
 											}, 50, st);
 											return;
 										}

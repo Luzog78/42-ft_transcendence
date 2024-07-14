@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/07 18:39:09 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/14 21:44:07 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ async function ifPending(context, container, data, pools, tid) {
 			quitButton.onclick = async () => {
 				let data = await getJson(context, `/api/tournament/${tid}/quit/${context.user.username}`);
 				if (data.ok) {
-					persistSuccess(context, data.success);
+					persistSuccess(context, getLang(context, data.success));
 					refresh(context);
 				} else {
 					persistError(context, getLang(context, data.error));
@@ -198,7 +198,7 @@ async function ifPending(context, container, data, pools, tid) {
 			joinButton.onclick = async () => {
 				let data = await getJson(context, `/api/tournament/${tid}/join/${context.user.username}`);
 				if (data.ok) {
-					persistSuccess(context, data.success);
+					persistSuccess(context, getLang(context, data.success));
 					refresh(context);
 				} else {
 					persistError(context, getLang(context, data.error));

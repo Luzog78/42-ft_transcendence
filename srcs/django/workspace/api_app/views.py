@@ -31,9 +31,10 @@ def view_root(request: HttpRequest):
 			'errors.a2fBadLength',
 			'errors.alreadyJoined',
 			'errors.cannotCreateGameOf',
+			'errors.chatNotConnected',
 			'errors.couldNotLogout',
+			'errors.editPasswordOAuth',
 			'errors.emailAlreadyUsed',
-			'errors.sessionExpired',
 			'errors.firstNameTooLong',
 			'errors.firstNameTooShort',
 			'errors.gameNotFound',
@@ -56,14 +57,26 @@ def view_root(request: HttpRequest):
 			'errors.missingAuthorization',
 			'errors.missingRequestInformations',
 			'errors.mustBeLoggedIn',
+			'errors.noGameFound',
 			'errors.notAuthenticated',
 			'errors.notJoined',
 			'errors.notLoggedIn',
+			'errors.oauthGrantExpired',
+			'errors.oauthInvalidServerAccess',
+			'errors.oauthUnexpectedApiError',
+			'errors.oauthApiUnreachable',
 			'errors.passwordMismatch',
 			'errors.passwordTooShort',
 			'errors.pictureTooBig',
 			'errors.ressourceNotFound',
+			'errors.selectBallSpeed',
+			'errors.selectGameMode',
+			'errors.selectPlayers',
+			'errors.selectPoints',
+			'errors.selectTheme',
+			'errors.sessionExpired',
 			'errors.statsNotFound',
+			'errors.toggleA2FOauth',
 			'errors.tournamentAlreadyStarted',
 			'errors.tournamentNotFound',
 			'errors.usernameAlreadyUsed',
@@ -174,13 +187,13 @@ def view_auth_callback(request: HttpRequest):
 		if res.status_code == 401:
 			error = json.loads(res.text)
 			if error['error'] == 'invalid_grant':
-				return JsonResponse({'ok': False, 'error': 'errors.oauthGrantExpired'}) # todo add to langs le token client n'est plus bon
+				return JsonResponse({'ok': False, 'error': 'errors.oauthGrantExpired'})
 			elif error['error'] == 'invalid_client':
-				return JsonResponse({'ok': False, 'error': 'errors.oauthInvalidServerAccess'}) # todo add to langs le token server n'est plus bon
+				return JsonResponse({'ok': False, 'error': 'errors.oauthInvalidServerAccess'})
 			else:
-				return JsonResponse({'ok': False, 'error': 'errors.oauthUnexpectedApiError'}) # todo add to langs erreur non gérée de l'api
+				return JsonResponse({'ok': False, 'error': 'errors.oauthUnexpectedApiError'})
 		else:
-			return JsonResponse({'ok': False, 'error': 'errors.oauthApiUnreachable'}) # todo add to langs impossible d'accéder a l'api (toute autre erreur)
+			return JsonResponse({'ok': False, 'error': 'errors.oauthApiUnreachable'})
 
 	if request.method != 'POST':
 		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
@@ -342,7 +355,7 @@ def view_user_set(request: HttpRequest, username: str):
 
 		if 'password' in data:
 			if user.login_42 is not None:
-				error.append('errors.editPasswordOauth') # todo label cannot edit password when oauth
+				error.append('errors.editPasswordOAuth')
 			else:
 				oldPassword = data['oldPassword']
 				password = data['password']
@@ -364,7 +377,7 @@ def view_user_set(request: HttpRequest, username: str):
 
 		if 'a2f' in data:
 			if user.login_42 is not None:
-				error.append('errors.toggleA2FOauth') # todo label cannot toggle a2f when oauth
+				error.append('errors.toggleA2FOauth')
 			else:
 				if data['a2f']:
 					token_arr = [random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ234567') for i in range(32)]
