@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/14 15:24:43 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/14 18:52:33 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,27 @@ var enabled = true; // todo set to false by default
 var searchInput = "";
 
 function openDiscussion(event) {
-	
+	var discussion = document.getElementById("chat").querySelector(".discussion");
+	var username = event.currentTarget.dataset.username;
+	if (discussion && username) {
+		discussion.dataset.username = username;
+		discussion.querySelector(".discussion-header span").innerText = username;
+
+		discussion.querySelector(".discussion-header").style.display = "block";
+		discussion.querySelector(".discussion-content").style.display = "block";
+		discussion.querySelector(".discussion-input").style.display = "block";
+	}
+}
+
+function closeDiscussion() {
+	var discussion = document.getElementById("chat").querySelector(".discussion");
+	discussion.dataset.username = undefined;
+	if (discussion) {
+		discussion.querySelector(".discussion-header").style.display = "none";
+		discussion.querySelector(".discussion-content").style.display = "none";
+		discussion.querySelector(".discussion-input").style.display = "none";
+	}
+
 }
 
 function RefreshFriendList(context, chatBox = null) {
@@ -65,6 +85,14 @@ function Chat(context) {
 				<div id="chat-friendList"></div>
 			</div>
 			<div class="discussion">
+				<div class="discussion-header">
+					<img class="notSelectable" src="/static/img/user.svg" alt="Menu" id="menu-trigger" onerror="profilePictureNotFound(this)">
+					<span></span>
+				</div>
+				<div class="discussion-content">
+				</div>
+				<div class="discussion-input">
+				</div>
 			</div>
 		</div>
 	`;
@@ -134,13 +162,13 @@ const templates = {
 
 templates["friendBox"].classList.add("friendBox");
 templates["friendBox"].innerHTML = `
-	<img class="notSelectable" data-default="/static/img/user.svg" src="/static/img/user.svg" alt="Menu" id="menu-trigger">
+	<img class="notSelectable" src="/static/img/user.svg" alt="Menu" id="menu-trigger" onerror="profilePictureNotFound(this)">
 	<span></span>
 `;
-templates["friendBox"].firstChild.onerror = (event) => {
-	if (event.target != null) {
-		var img = event.target;
-		if (img.src != img.dataset.default)
-			img.src = img.dataset.default;
-	}
+window.profilePictureNotFound = (img) => {
+	console.log("fixing image error")
+	if (img.dataset.default == undefined)
+		img.dataset.default = "/static/img/user.svg";
+	if (img.src != img.dataset.default)
+		img.src = img.dataset.default;
 }

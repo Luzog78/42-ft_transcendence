@@ -7,6 +7,7 @@
 	--chat-navbar-row: 2vw;
 	--chat-friendBox-height: 1.5vw;
 	--chat-friendicon-size: calc(var(--chat-friendBox-height) - 0.1vw);
+	--chat-discussion-header-height: 2vw;
 }
 
 /* styles */
@@ -124,7 +125,43 @@
 	height: calc(100% - var(--chat-header-height));
 	width: calc(100% - var(--chat-navbar-width));
 	float: right;
-
-	background-color: white;
+	display: flex;
+	flex-direction: column;
+	background-color: purple;
 }
 
+#chat .discussion-header {
+	width: 100%;
+	height: var(--chat-discussion-header-height);
+	background-color: red;
+	display: none;
+}
+
+#chat .discussion-header img {
+	padding-left: 0.1vw;
+	height: var(--chat-discussion-header-height);
+	width: var(--chat-discussion-header-height);
+	border-radius: 50%;
+	float: left;
+}
+
+#chat .discussion-header span {
+	padding-left: 0.1vw;
+	line-height: var(--chat-discussion-header-height);
+	float: left;
+}
+
+
+#chat .discussion-content {
+	width: 100%;
+	height: 100%;
+	background-color: green;
+	display: none;
+}
+
+#chat .discussion-input {
+	width: 100%;
+	height: 1.5vw; /* todo auto  */
+	background-color: blue;
+	display: none;
+}
