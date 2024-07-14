@@ -184,7 +184,7 @@ class ChatSocket(AsyncWebsocketConsumer):
 			await sync_to_async(friend_request.save)()
 			targetSockets = find_user_socket(data['target'])
 			for targetSocket in targetSockets:
-				await targetSocket.sendJson({'type': 'new_friend_request', 'from': self.user})
+				await targetSocket.sendJson({'type': 'new_friend_request', 'friend': self.user})
 			await self.reply('successes.FriendRequestSent', True, frontendId) # todo lang
 
 

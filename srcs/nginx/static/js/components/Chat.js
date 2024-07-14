@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/13 19:10:23 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/14 15:24:43 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ import { pushPersistents } from "./Persistents.js";
 
 var enabled = true; // todo set to false by default
 var searchInput = "";
+
+function openDiscussion(event) {
+	
+}
 
 function RefreshFriendList(context, chatBox = null) {
 	if (!chatBox)
@@ -31,11 +35,20 @@ function RefreshFriendList(context, chatBox = null) {
 	else
 		addFriendButton.style.display = "block";
 
-	// if (context.chat.FriendList != null) {
-	// 	context.chat.FriendList.forEach(element => {
-			
-	// 	});
-	// }
+	var friendList = chatBox.querySelector("#chat-friendList");
+	while (friendList.firstChild)
+		friendList.removeChild(friendList.firstChild);
+
+	if (context.chat.FriendList != null) {
+		context.chat.FriendList.sort((a, b) => (a.pending == b.pending) ? a.username.localeCompare(b.username) : a.pending - b.pending);
+		context.chat.FriendList.forEach(friend => {
+			let friendButton = templates["friendBox"].cloneNode(true);
+			friendButton.dataset.username = friend.username;
+			friendButton.querySelector('span').innerText = friend.username;
+			friendButton.onclick = openDiscussion;
+			friendList.appendChild(friendButton);
+		});
+	}
 }
 
 function Chat(context) {
@@ -48,8 +61,7 @@ function Chat(context) {
 				<span>Chat</span>
 			</div>
 			<div class="chat-navbar">
-				<input type="text" id="chat-searchBox">
-				</input>
+				<input type="text" id="chat-searchBox" />
 				<div id="chat-friendList"></div>
 			</div>
 			<div class="discussion">

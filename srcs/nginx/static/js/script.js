@@ -327,10 +327,13 @@ const onLogin = async (context, loadedData = null, reloadNav = false) => {
 					context.chat.ChatConnexion.triggerCallback({type: "get_friend_list"})
 						.then(data => {
 							context.chat.FriendList = data.map(e => {
-								return {
-									friend: context.user.username == e.author ? e.target : e.author,
+								var res = {
+									username: context.user.username == e.author ? e.target : e.author,
 									pending: e.pending,
 								};
+								if (res.pending)
+									res.myRequest = context.user.username == e.author;
+								return (res);
 							})
 							RefreshFriendList(context);
 						})
