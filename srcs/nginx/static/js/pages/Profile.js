@@ -92,18 +92,18 @@ async function Profile(context, username) {
 		}
 
 		if (context.user.username !== username) {
-			let back = document.getElementById("settings");
+			let back = div.querySelector("#settings");
 			if (back)
 				back.remove();
 		}
 
-		let profileName = document.getElementById("profile-name");
-		let profileUsername = document.getElementById("profile-username");
-		let profilePicture = document.getElementById("profile-picture");
-		let ratingGamesWon = document.getElementById("rating-games-won");
-		let ratingGamesLost = document.getElementById("rating-games-lost");
-		let ratingRatio = document.getElementById("rating-ratio");
-		let navLabelTotal = document.getElementById("nav-label-total");
+		let profileName = div.querySelector("#profile-name");
+		let profileUsername = div.querySelector("#profile-username");
+		let profilePicture = div.querySelector("#profile-picture");
+		let ratingGamesWon = div.querySelector("#rating-games-won");
+		let ratingGamesLost = div.querySelector("#rating-games-lost");
+		let ratingRatio = div.querySelector("#rating-ratio");
+		let navLabelTotal = div.querySelector("#nav-label-total");
 
 		let uidsDates = [];
 		let totalPage = 0;
@@ -164,10 +164,10 @@ function tablePage(context, uidsDates, page, totalPage) {
 			return;
 		}
 
-		let gamesTable = document.getElementById("games-table").querySelector("tbody");
-		let navPrevious = document.getElementById("nav-previous");
-		let navNext = document.getElementById("nav-next");
-		let navLabelCurrent = document.getElementById("nav-label-current");
+		let gamesTable = div.querySelector("#games-table").querySelector("tbody");
+		let navPrevious = div.querySelector("#nav-previous");
+		let navNext = div.querySelector("#nav-next");
+		let navLabelCurrent = div.querySelector("#nav-label-current");
 
 		if (navLabelCurrent)
 			navLabelCurrent.innerText = page;
