@@ -117,7 +117,7 @@ class ChatSocket(AsyncWebsocketConsumer):
 		await sync_to_async(message.save, thread_sensitive=True)()
 		targetSockets = find_user_socket(data['target'])
 		for targetSocket in targetSockets:
-			await targetSocket.sendJson({'type': 'new_private_message', 'from': self.user, 'content': data['content']})
+			await targetSocket.sendJson({'type': 'new_private_message', 'from': self.user, 'content': data['content'], 'messageId': message.id})
 		await self.reply({
 				'messageId': message.id
 			}, True, frontendId)
@@ -125,17 +125,29 @@ class ChatSocket(AsyncWebsocketConsumer):
 	async def get_previous_messages(self, data, frontendId):
 		try:
 			usr = await sync_to_async(User.objects.get)(username=self.user)
-		except:
+			if 'channelType' not in data or (data['channelType'] != 0 and data['channelType'] != 1) \
+				or 'target' not in data:
+				await self.reply('errors.invalidRequest', False, frontendId)
+				return
+			if data['channelType'] == 0:
+				target = await sync_to_async(User.objects.get)(username=data['target'])
+				messages = await sync_to_async(PrivateChat.objects.filter)(Q(author=usr, target=target) | Q(author=target, target=usr))
+				messages = await sync_to_async(serializers.serialize)('json', messages)
+				messages = json.loads(messages) #sad way, todo change serializers.serialize to a real toJson fct
+				_msgs = []
+				# so fucking ugly bruh thx to serializers.serialize
+				for msg in messages:
+					msg['fields']['id'] = msg['pk']
+					_msgs.append(msg['fields'])
+				messages = _msgs
+			else:
+				await self.reply('todo.fetch.game.messages', False, frontendId)
+				return
+
+			await self.reply(messages, True, frontendId)
+		except User.DoesNotExist:
 			await self.reply('errors.UserNotFound', False, frontendId)
 			return
-		private_messages = await sync_to_async(PrivateChat.objects.filter)(Q(author=usr) | Q(target=usr))
-		private_messages = await sync_to_async(serializers.serialize)('json', private_messages)
-		private_messages = json.loads(private_messages) #sad way, todo change serializers.serialize to a real toJson fct
-		private_messages = [msg['fields'] for msg in private_messages] # so fucking ugly bruh thx to serializers.serialize
-		await self.reply({
-			'private_messages': private_messages,
-			'game_messages': [] # todo get game messages
-		}, True, frontendId)
 	
 	async def get_friend_list(self, data, frontendId):
 		try:

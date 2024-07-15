@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/14 21:57:39 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/15 16:25:14 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,128 @@ import { pushPersistents } from "./Persistents.js";
 var enabled = true; // todo set to false by default
 var searchInput = "";
 
-function openDiscussion(event) {
+// dict of "username": {
+//				full_name: "",
+//				profilePicture: "",
+//				discussion: [],
+//				unreadMessage: 0,
+//			}
+var cache = {}
+
+function sendMessage(context, target, message) {
+	if (context && message != "") {
+		context.chat.ChatConnexion.sendMessage(target, message)
+		.then(resp => {
+			console.log(resp)
+			if (!cache[target])
+				cache[target] = {};
+			if (!cache[target].discussion)
+				cache[target].discussion = [];
+			cache[target].discussion.push({author: context.user.username, content: message, id: resp.messageId});
+			
+			var chat = document.getElementById("chat");
+			if (!chat)
+				return;
+			var discussion = chat.querySelector(".discussion");
+			if (discussion.dataset.username !== target)
+				return;
+			var messageBloc = templates["message"].cloneNode(true);
+			messageBloc.innerText = message;
+			messageBloc.classList.add("right");
+			var discussion_content = discussion.querySelector(".discussion-content");
+			discussion_content.appendChild(messageBloc);
+		})
+		.catch(err => {
+			persistError(context, getLang(context, err));
+			pushPersistents(context);
+		})
+	}
+}
+
+function ReceiveMessage(context, data) {
+	var chat = document.getElementById("chat");
+	var discussion = chat && chat.querySelector(".discussion") || null
+	if (chat && chat.style.display != "none" && discussion.dataset.username == data.from)
+	{
+		if (!cache[data.from])
+			cache[data.from] = {};
+		if (!cache[data.from].discussion)
+			cache[data.from].discussion = [];
+		if (!cache[data.from].discussion.find(e => e.id == data.messageId))
+		{
+			cache[data.from].discussion.push({author: data.from, content: data.content, id: data.messageId});
+
+			var messageBloc = templates["message"].cloneNode(true);
+			messageBloc.innerText = data.content;
+			messageBloc.classList.add("left");
+			var discussion_content = discussion.querySelector(".discussion-content");
+			discussion_content.appendChild(messageBloc);
+		}
+	}
+}
+
+function openDiscussion(event, context) {
 	var discussion = document.getElementById("chat").querySelector(".discussion");
 	var username = event.currentTarget.dataset.username;
 	if (discussion && username) {
 		discussion.dataset.username = username;
 		discussion.querySelector(".discussion-header span").innerText = username;
+		
+		var discussion_content = discussion.querySelector(".discussion-content");
+		while (discussion_content.firstChild)
+			discussion_content.removeChild(discussion_content.firstChild);
+		
+		function refreshMessages() {
+			if (discussion.dataset.username === username)
+			{
+				while (discussion_content.firstChild) // twice if message sent or received during fetch
+					discussion_content.removeChild(discussion_content.firstChild);
+				cache[username].discussion.forEach(data => {
+					let msg = templates["message"].cloneNode(true);
+					msg.classList.add(data.author === username ? 'left' : 'right');
+					msg.innerText = data['content'];
+					discussion_content.appendChild(msg);
+				})
+			}
+		}
+		
+		if (!cache[username])
+			cache[username] = {};
+		if (!cache[username].discussion)
+		{
+			cache[username].discussion = [];
+			context.chat.ChatConnexion.getAllMessages(username)
+			.then(messages => {
+				console.log("receive messages data : ", messages);
+				cache[username].discussion = cache[username].discussion
+					.concat(messages)
+					.filter((value, index, arr) => {
+						return index === arr.findIndex(e => e.id === value.id);
+					})
+					.sort((a, b) => a.id - b.id);
+					refreshMessages();
+			})
+			.catch(err => {
+				persistError(context, getLang(context, err));
+				pushPersistents(context);
+			})
+		}
+		else
+			refreshMessages();
+		var input = discussion.querySelector("#discussion-input");
+		input.onkeydown = (event) => {
+			if (event.keyCode === 13 && !event.shiftKey) {
+				event.preventDefault();
+				sendMessage(context, username, input.value);
+				input.value = "";
+				input.oninput();
+			}
+		}
+
 
 		discussion.querySelector(".discussion-header").style.display = "block";
-		discussion.querySelector(".discussion-content").style.display = "block";
-		discussion.querySelector(".discussion-input").style.display = "block";
+		discussion_content.style.display = "block";
+		discussion.querySelector(".discussion-footer").style.display = "block";
 	}
 }
 
@@ -38,9 +150,8 @@ function closeDiscussion() {
 	if (discussion) {
 		discussion.querySelector(".discussion-header").style.display = "none";
 		discussion.querySelector(".discussion-content").style.display = "none";
-		discussion.querySelector(".discussion-input").style.display = "none";
+		discussion.querySelector(".discussion-footer").style.display = "none";
 	}
-
 }
 
 function RefreshFriendList(context, chatBox = null) {
@@ -65,7 +176,7 @@ function RefreshFriendList(context, chatBox = null) {
 			let friendButton = templates["friendBox"].cloneNode(true);
 			friendButton.dataset.username = friend.username;
 			friendButton.querySelector('span').innerText = friend.username;
-			friendButton.onclick = openDiscussion;
+			friendButton.onclick = (e) => openDiscussion(e, context);
 			friendList.appendChild(friendButton);
 		});
 	}
@@ -91,7 +202,8 @@ function Chat(context) {
 				</div>
 				<div class="discussion-content">
 				</div>
-				<div class="discussion-input">
+				<div class="discussion-footer">
+					<textarea id="discussion-input" rows=1></textarea>
 				</div>
 			</div>
 		</div>
@@ -128,8 +240,17 @@ function Chat(context) {
 		searchInput = event.target.value;
 		RefreshFriendList(context, div);
 	}
-	RefreshFriendList(context, div);
+
+	let textInput = div.querySelector("#discussion-input");
+	textInput.style.height = textInput.scrollHeight + "px";
+	textInput.oninput = () => {
+		textInput.style.height = 'auto';
+		textInput.style.height = textInput.scrollHeight + "px";
+	}
+
+
 	
+	RefreshFriendList(context, div);
 	if (!context.user.isAuthenticated)
 		ToggleChat(false, div);
 	return div;
@@ -149,6 +270,7 @@ export {
 	Chat,
 	ToggleChat,
 	RefreshFriendList,
+	ReceiveMessage,
 }
 
 
@@ -158,13 +280,18 @@ export {
 
 const templates = {
 	"friendBox": document.createElement("div"),
+	"message": document.createElement("p"),
 }
 
 templates["friendBox"].classList.add("friendBox");
-templates["friendBox"].innerHTML = `
+templates["friendBox"].innerHTML = /*html*/`
 	<img class="notSelectable" src="/static/img/user.svg" alt="Menu" id="menu-trigger" onerror="profilePictureNotFound(this)">
 	<span></span>
 `;
+
+templates["message"].classList.add("message");
+
+
 window.profilePictureNotFound = (img) => {
 	console.log("fixing image error")
 	if (img.dataset.default == undefined)
