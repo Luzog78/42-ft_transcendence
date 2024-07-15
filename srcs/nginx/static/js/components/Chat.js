@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/15 16:25:14 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/15 17:00:15 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ function sendMessage(context, target, message) {
 			messageBloc.classList.add("right");
 			var discussion_content = discussion.querySelector(".discussion-content");
 			discussion_content.appendChild(messageBloc);
+			discussion_content.scrollTo(0, discussion_content.scrollHeight);
 		})
 		.catch(err => {
 			persistError(context, getLang(context, err));
@@ -101,6 +102,7 @@ function openDiscussion(event, context) {
 					msg.innerText = data['content'];
 					discussion_content.appendChild(msg);
 				})
+				discussion_content.scrollTo(0, discussion_content.scrollHeight);
 			}
 		}
 		
@@ -111,7 +113,6 @@ function openDiscussion(event, context) {
 			cache[username].discussion = [];
 			context.chat.ChatConnexion.getAllMessages(username)
 			.then(messages => {
-				console.log("receive messages data : ", messages);
 				cache[username].discussion = cache[username].discussion
 					.concat(messages)
 					.filter((value, index, arr) => {
