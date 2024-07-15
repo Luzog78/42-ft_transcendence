@@ -13,6 +13,8 @@ fi
 
 EOF
 
+
+
 # while [ 1 = 1 ]; do
 # 	service postgresql start
 # 	sleep 10

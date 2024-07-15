@@ -285,7 +285,7 @@ function initPlayerText(scene, player, name)
 
 function initText(scene, player_num, time_left)
 {
-	if (player_num != 2)
+	if (player_num != 2 && scene.game_mode == "TO")
 	{
 		const my_player = scene.get("player" + scene.server.client_id);
 
@@ -299,19 +299,18 @@ function initText(scene, player_num, time_left)
 		}
 
 		const text_position = new THREE.Vector3(0,0.1,0);
-		console.log(time_left)
 		const time = new Date(time_left * 1000).toISOString().substring(14, 19);
-		console.log(time);
 		new DynamicText(scene, time, text_position, rotation, text_size, 0xffffff, "timertext");
-		return ;
 	}
+	else if (scene.player_num == 2)
+	{
+		const score_1_pos = new THREE.Vector3(-1.25,0.1,0.5);
+		const score_2_pos = new THREE.Vector3(-1.25,0.1,-0.5);
 
-	const score_1_pos = new THREE.Vector3(-1.25,0.1,0.5);
-	const score_2_pos = new THREE.Vector3(-1.25,0.1,-0.5);
-
-	const rotation_score = new THREE.Vector3(-Math.PI / 2, Math.PI / 2, 0);
-	const dynamic_score_1 = new DynamicText(scene, "0", score_1_pos, rotation_score, 0.5, 0xffffff, "player0textscore");
-	const dynamic_score_2 = new DynamicText(scene, "0", score_2_pos, rotation_score, 0.5, 0xffffff, "player1textscore");
+		const rotation_score = new THREE.Vector3(-Math.PI / 2, Math.PI / 2, 0);
+		new DynamicText(scene, "0", score_1_pos, rotation_score, 0.5, 0xffffff, "player0textscore");
+		new DynamicText(scene, "0", score_2_pos, rotation_score, 0.5, 0xffffff, "player1textscore");
+	}
 }
 
 

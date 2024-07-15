@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/14 21:24:58 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/15 17:06:14 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ class Scene
 	{
 		if (status == "START")
 		{
-			if (this.player_num == 2 || this.game_mode == "BR")
+			if (this.player_num == 2 || this.game_mode == "BR" || this.game_mode == "FT")
 				return ;
 			const timer_text = this.get("timertext");
 			this.interval_timer_id = setInterval(() => {

@@ -6,7 +6,7 @@
 #    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 15:11:13 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/13 19:16:17 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/15 15:43:57 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,12 +27,15 @@ class Spectator:
 		start_time = self.lobby.start_time
 		if (start_time == 0):
 			start_time = datetime.datetime.timestamp(datetime.datetime.now())
+		limit = self.lobby.limit
+		if (limit is None):
+			limit = 0
 
 		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
 										"scene.server.client_id": self.client_id})
 		await self.sendData("call", {"command": "scene.initSpectator",
 									"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'",
-				  							self.lobby.limit - (datetime.datetime.timestamp(datetime.datetime.now()) - start_time)]}) # TODO: theme
+				  							limit - (datetime.datetime.timestamp(datetime.datetime.now()) - start_time)]}) # TODO: theme
 
 		for i in range(self.lobby.clients_per_lobby):
 			player = self.lobby.clients[i]
@@ -58,5 +61,6 @@ class Spectator:
 			pass
 		if (self.isDown()):
 			pass
+
 	async def sendData(self, *args):
 		await self.client.sendData(*args)

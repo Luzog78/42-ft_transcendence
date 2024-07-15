@@ -37,28 +37,29 @@ class Player:
 		self.deaths:			int		= 0 #done
 		self.best_streak:		int		= 0 # TODO: streak
 		self.rebounces:			int		= 0 #done
-		self.ultimate_speed:	float	= 0 #done
 		self.duration:			float	= -1 #done
-
-		self.start_time = datetime.datetime.timestamp(datetime.datetime.now())
 
 		self.keyboard: dict = {}
 
 	def die(self):
 		self.deaths += 1
-		self.duration = datetime.datetime.timestamp(datetime.datetime.now()) - self.start_time
+		self.duration = datetime.datetime.timestamp(datetime.datetime.now()) - self.lobby.start_time
+		print(self.duration, datetime.datetime.timestamp(datetime.datetime.now()), self.lobby.start_time)
 
 	async def initPlayer(self):
 		start_time = self.lobby.start_time
 		if (start_time == 0):
 			start_time = datetime.datetime.timestamp(datetime.datetime.now())
+		limit = self.lobby.limit
+		if (limit is None):
+			limit = 0
 
 		self.addSelfWall()
 		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
 										"scene.server.client_id": self.client_id})
 		await self.sendData("call", {"command": "scene.initPlayer",
 									"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'",
-				  							self.lobby.limit - (datetime.datetime.timestamp(datetime.datetime.now()) - start_time)]}) #todo theme
+				  							limit - (datetime.datetime.timestamp(datetime.datetime.now()) - start_time)]}) #todo theme
 		await self.updateSelfToother()
 
 	def addSelfWall(self):

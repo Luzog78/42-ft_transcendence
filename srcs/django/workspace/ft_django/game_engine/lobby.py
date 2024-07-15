@@ -36,6 +36,9 @@ class Lobby:
 		self.limit						= limit
 		self.start_time:		float	= 0
 
+		self.ball_ultimate_speed: 		float = 0
+		self.initial_clients_per_lobby: int = player_num
+
 		self.clients:		list[Player]	= []
 		self.dead_clients:	list[Player]	= []
 		self.client_ready:	list[bool]		= []
@@ -130,7 +133,7 @@ class Lobby:
 				kills=player.deaths,
 				best_streak=player.best_streak,
 				rebounces=player.rebounces,
-				ultimate=player.ultimate_speed,
+				ultimate=self.ball_ultimate_speed,
 				duration=player.duration,
 				won=False,
 			)
@@ -156,7 +159,7 @@ class Lobby:
 			best_score.won = True
 			best_score.save()
 
-		game.players = [p.client.username for p in self.clients] # TODO: what to do if if p.client.username is None ?
+		game.players = [p.client.username for p in self.clients]
 
 		game.save()
 
@@ -190,7 +193,7 @@ class Lobby:
 		for s in self.spectators:
 			await s.initSpectator()
 
-	async def TODied(self, killer: Player, player_id: int, player: Player):
+	async def TOFTDied(self, killer: Player, player_id: int, player: Player):
 		time.sleep(1)
 
 		self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
@@ -200,7 +203,11 @@ class Lobby:
 			score_name = f"player{killer.client_id}textscore"
 			await self.sendData("call", {"command": f'scene.get("{score_name}").updateText', "args": [str(killer.kills)]})
 
+
 	async def playerDied(self, ball: Ball, dead_player: str):
+		if (len(self.clients) == 0):
+			return
+
 		killer = ball.last_player
 		if (killer):
 			killer.kills += 1
@@ -220,10 +227,14 @@ class Lobby:
 
 		if (self.game_mode == "BR"):
 			await self.BRDied(player_id, player)
-		elif (self.game_mode == "TO"):
-			await self.TODied(killer, player_id, player)
-
-
+		elif (self.game_mode == "TO" or self.game_mode == "FT"):
+			await self.TOFTDied(killer, player_id, player)
+		
+		if (self.game_mode == "FT" and player.kills >= self.limit):
+			self.onEnd()
+			await self.sendData("game_status", "END")
+			self.game_server.kill(self)
+			return
 
 	async def update(self):
 		while self.running:
@@ -260,7 +271,8 @@ class Lobby:
 			if (len(self.clients) == self.clients_per_lobby):
 				async def countdown(lobby: Lobby):
 					time.sleep(3)
-					lobby.start_time = datetime.timestamp(datetime.now())
+					if (lobby.clients_per_lobby == lobby.initial_clients_per_lobby):
+						lobby.start_time = datetime.timestamp(datetime.now())
 
 					lobby.balls[0].vel = Ball.getBallSpeed(lobby.clients_per_lobby)
 					clients = lobby.clients + lobby.spectators

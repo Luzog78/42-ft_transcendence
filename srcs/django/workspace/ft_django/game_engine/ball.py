@@ -140,8 +140,10 @@ class Ball:
 
 					player = self.lobby.clients[player_id]
 					player.rebounces += 1
-					player.ultimate_speed = self.vel.length()
 					self.last_player = player
+				
+				if (self.vel.length() > self.lobby.ball_ultimate_speed):
+					self.lobby.ball_ultimate_speed = self.vel.length()
 
 				await self.applyCollision(wall_name, predicted_ball_pos, closest_point, distance)
 

@@ -60,7 +60,7 @@ class Server
 			}, 3000);
 		}
 	}
-	TODied(player_id)
+	TOFTDied(player_id)
 	{
 		const player = this.scene.get(player_id);
 		const camera_old_position = this.scene.camera.camera_old_position;
@@ -110,8 +110,8 @@ class Server
 
 		if (this.scene.game_mode == "BR")
 			this.BRDied(player_id);
-		else if (this.scene.game_mode == "TO")
-			this.TODied(player_id);
+		else if (this.scene.game_mode == "TO" || this.scene.game_mode == "FT")
+			this.TOFTDied(player_id);
 	}
 
 	onOpen(scene, event)
