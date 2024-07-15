@@ -133,7 +133,7 @@
 #chat .discussion-header {
 	width: 100%;
 	height: var(--chat-discussion-header-height);
-	background-color: red;
+	background-color: rgb(220, 220, 220);
 	display: none;
 }
 
@@ -148,20 +148,71 @@
 #chat .discussion-header span {
 	padding-left: 0.1vw;
 	line-height: var(--chat-discussion-header-height);
-	float: left;
+	float: none;
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	color: black;
 }
 
 
 #chat .discussion-content {
 	width: 100%;
 	height: 100%;
-	background-color: green;
+	background-color: white;
+	display: none;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 1vw;
+}
+
+#chat .message {
+	border-radius: 10px;
+	background-color: rgb(220, 220, 220);
+	margin-bottom: 0;
+	max-width: 70%;
+	color: black;
+	overflow-wrap: break-word;
+	padding: 3px;
+}
+
+#chat .message.left {
+	float: left;
+	margin-right: 100%;
+}
+
+#chat .message.right {
+	float: right;
+	margin-left: 100%;
+}
+
+
+#chat .discussion-footer {
+	width: 100%;
+	height: auto;
+	background-color: rgb(220, 220, 220);
 	display: none;
 }
 
-#chat .discussion-input {
-	width: 100%;
-	height: 1.5vw; /* todo auto  */
-	background-color: blue;
-	display: none;
+#chat #discussion-input {
+	background-color: white;
+	float: left;
+	width: 70%;
+	max-height: 5vw;
+	min-height: 1.2vw;
+	height: auto;
+	margin: 0.3vw;
+	border-radius: 10px;
+	
+	overflow: hidden;
+	border: none;
+	resize: none;
+
+	color: black;
+	line-height: 19px;
+	font-size: 15px;
+}
+
+#chat #discussion-input:focus {
+	outline: none;
 }

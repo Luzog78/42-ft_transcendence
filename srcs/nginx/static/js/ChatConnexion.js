@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { RefreshFriendList } from "./components/Chat.js"
+import { ReceiveMessage, RefreshFriendList } from "./components/Chat.js"
 
 class ChatConnexion
 {
@@ -74,7 +74,7 @@ class ChatConnexion
 
 	_on_private_message(data)
 	{
-		console.log("TODO new message from : "  + data.from + " - " + data.content);
+		ReceiveMessage(this.context, data);
 	}
 
 	_on_new_friend(data, pending = false)
@@ -135,11 +135,11 @@ class ChatConnexion
 		});
 	}
 
-	getAllMessages()
+	getAllMessages(target, game = false)
 	{
 		if (!this.authenticated)
 			return new Promise((_, rej) => rej({error: 'errors.notAuthenticated'}));
-		return this.triggerCallback({ type: "get_previous_messages" });
+		return this.triggerCallback({ type: "get_previous_messages", channelType: game ? 1 : 0, target: target });
 	}
 
 	sendMessage(target, content)

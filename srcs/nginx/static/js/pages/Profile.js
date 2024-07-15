@@ -76,82 +76,85 @@ async function Profile(context, username) {
 			<div class="block-blur-pad"></div>
 		</div>
 	`;
-
+	div.id = "ProfilePage"
 	div.insertBefore(Persistents(context), div.firstChild);
 	div.insertBefore(await NavBar(getLang(context, "pages.profile.title"), context), div.firstChild);
 
-		if (!context.user.isAuthenticated || !context.user.username) {
-			persist(context, persistentBackup);
-			persistError(context, getLang(context, "errors.mustBeLoggedIn"));
-			redirect("/login?next=" + window.location.pathname);
-			return;
-		} else if (!username) {
-			persist(context, persistentBackup);
-			redirect("/profile/" + context.user.username, false);
-			return;
-		}
+	if (!context.user.isAuthenticated || !context.user.username) {
+		persist(context, persistentBackup);
+		persistError(context, getLang(context, "errors.mustBeLoggedIn"));
+		redirect("/login?next=" + window.location.pathname);
+		return;
+	} else if (!username) {
+		persist(context, persistentBackup);
+		redirect("/profile/" + context.user.username, false);
+		return;
+	}
 
-		if (context.user.username !== username) {
-			let back = div.querySelector("#settings");
-			if (back)
-				back.remove();
-		}
+	if (context.user.username !== username) {
+		let back = div.querySelector("#settings");
+		if (back)
+			back.remove();
+	}
 
-		let profileName = div.querySelector("#profile-name");
-		let profileUsername = div.querySelector("#profile-username");
-		let profilePicture = div.querySelector("#profile-picture");
-		let ratingGamesWon = div.querySelector("#rating-games-won");
-		let ratingGamesLost = div.querySelector("#rating-games-lost");
-		let ratingRatio = div.querySelector("#rating-ratio");
-		let navLabelTotal = div.querySelector("#nav-label-total");
+	let profileName = div.querySelector("#profile-name");
+	let profileUsername = div.querySelector("#profile-username");
+	let profilePicture = div.querySelector("#profile-picture");
+	let ratingGamesWon = div.querySelector("#rating-games-won");
+	let ratingGamesLost = div.querySelector("#rating-games-lost");
+	let ratingRatio = div.querySelector("#rating-ratio");
+	let navLabelTotal = div.querySelector("#nav-label-total");
 
-		let uidsDates = [];
-		let totalPage = 0;
-		let page = new URLSearchParams(window.location.search).get("page");
-		if (!page)
+	let uidsDates = [];
+	let totalPage = 0;
+	let page = new URLSearchParams(window.location.search).get("page");
+	if (!page)
+		page = 1;
+	else
+		try {
+			page = parseInt(page);
+		} catch (e) {
 			page = 1;
-		else
-			try {
-				page = parseInt(page);
-			} catch (e) {
-				page = 1;
-			}
+		}
 
-		if (profileName)
-			profileName.innerText = context.user.firstName + " " + context.user.lastName.toUpperCase();
-		if (profileUsername)
-			profileUsername.innerText = context.user.username;
-		if (profilePicture && context.user.picture)
-			profilePicture.src = context.user.picture;
+	if (profileName)
+		profileName.innerText = context.user.firstName + " " + context.user.lastName.toUpperCase();
+	if (profileUsername)
+		profileUsername.innerText = context.user.username;
+	if (profilePicture && context.user.picture)
+		profilePicture.src = context.user.picture;
 
-		getJson(context, "/api/game/u/" + username).then(data => {
-			if (!data.ok) {
-				persistError(context, getLang(context, data.error) + " (/api/game/u/" + username + ")");
-				pushPersistents(context);
-				return;
-			}
-			uidsDates = [...data.won, ...data.lost, ...data.other];
-			totalPage = Math.ceil(uidsDates.length / 8);
-			if (ratingGamesWon)
-				ratingGamesWon.innerText = data.wonLength;
-			if (ratingGamesLost)
-				ratingGamesLost.innerText = data.lostLength;
-			if (ratingRatio)
-				ratingRatio.innerText = data.winrate.substring(0, 5) + "%";
-			if (navLabelTotal)
-				navLabelTotal.innerText = totalPage;
-			uidsDates = uidsDates.map(item => [item[0], new Date(item[1])]);
-			uidsDates.sort((a, b) => b[1] - a[1]);
-			tablePage(context, uidsDates, page, totalPage);
-		});
+	getJson(context, "/api/game/u/" + username).then(data => {
+		if (!data.ok) {
+			persistError(context, getLang(context, data.error) + " (/api/game/u/" + username + ")");
+			pushPersistents(context);
+			return;
+		}
+		uidsDates = [...data.won, ...data.lost, ...data.other];
+		totalPage = Math.ceil(uidsDates.length / 8);
+		if (ratingGamesWon)
+			ratingGamesWon.innerText = data.wonLength;
+		if (ratingGamesLost)
+			ratingGamesLost.innerText = data.lostLength;
+		if (ratingRatio)
+			ratingRatio.innerText = data.winrate.substring(0, 5) + "%";
+		if (navLabelTotal)
+			navLabelTotal.innerText = totalPage;
+		uidsDates = uidsDates.map(item => [item[0], new Date(item[1])]);
+		uidsDates.sort((a, b) => b[1] - a[1]);
+		tablePage(context, uidsDates, page, totalPage, div);
+	});
 	return div;
 }
 
-function tablePage(context, uidsDates, page, totalPage) {
+function tablePage(context, uidsDates, page, totalPage, div = null) {
 	if (page == 1)
 		window.history.replaceState(null, null, window.location.origin + window.location.pathname + window.location.hash);
 	else
 		window.history.replaceState(null, null, window.location.origin + window.location.pathname + `?page=${page}` + window.location.hash);
+
+	if (div == null)
+		div = document.getElementById(ProfilePage);
 
 	let sliced = uidsDates.slice((page - 1) * 8, page * 8);
 	let uids = sliced.map(uidDate => uidDate[0]);
@@ -173,7 +176,8 @@ function tablePage(context, uidsDates, page, totalPage) {
 			navLabelCurrent.innerText = page;
 
 		if (gamesTable) {
-			gamesTable.innerHTML = "";
+			while (gamesTable.firstChild)
+				gamesTable.removeChild(gamesTable.firstChild);
 			for (let i = 0; i < data.games.length; i++)
 				data.games[i].date = dates[i];
 			data.games.forEach(game => {
