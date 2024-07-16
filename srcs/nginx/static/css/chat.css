@@ -104,12 +104,36 @@
 }
 
 
-#chat .friendBox img {
+#chat .friendBox .playerStatusImage {
 	display: block;
-	height: 100%;
-	width: auto;
-	border-radius: 50%;
+	height: calc(var(--chat-friendBox-height) - 0.1vw);
+	width: calc(var(--chat-friendBox-height) - 0.1vw);
 	float: left;
+	position: relative;
+}
+
+#chat .friendBox .playerStatusImage img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 50%;
+	width: 90%;
+	height: 90%;
+}
+
+#chat .friendBox .playerStatusImage .online {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	transform: translate(-20%, -20%);
+	
+	width: 30%;
+	height: 30%;
+	border-radius: 50%;
+
+	background-color: rgb(17, 202, 0);
+	display: none;
 }
 
 #chat .friendBox span {
@@ -164,7 +188,7 @@
 }
 
 #chat .discussion-header img {
-	padding-left: 0.1vw;
+	margin-left: 0.1vw;
 	height: var(--chat-discussion-header-height);
 	width: var(--chat-discussion-header-height);
 	border-radius: 50%;

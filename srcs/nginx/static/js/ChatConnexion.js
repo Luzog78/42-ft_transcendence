@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { ReceiveMessage, RefreshFriendList } from "./components/Chat.js"
+import { ReceiveMessage, RefreshFriendList, SetPlayerStatus } from "./components/Chat.js"
 
 class ChatConnexion
 {
@@ -45,6 +45,8 @@ class ChatConnexion
 				_this._on_new_friend(data, true);
 			else if (data.type == "new_friend")
 				_this._on_new_friend(data, false);
+			else if (data.type == "status_change")
+				_this._on_status_change(data);
 			else
 				console.log("TODO new notification: " + data.type + " - " + data.message, e);
 		};
@@ -90,6 +92,11 @@ class ChatConnexion
 				friend.pending = pending;
 		}
 		RefreshFriendList(this.context);
+	}
+
+	_on_status_change(data)
+	{
+		SetPlayerStatus(this.context, data.username, data.status);
 	}
 
 
