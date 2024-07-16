@@ -15,10 +15,13 @@ EOF
 
 
 
-# while [ 1 = 1 ]; do
-# 	service postgresql start
-# 	sleep 10
-# done;
+while [ 1 = 1 ]; do
+	service postgresql status | grep down
+	if [ $? = 0 ]; then
+		service postgresql start
+	fi
+	sleep 1
+done;
 
 sleep inf
 

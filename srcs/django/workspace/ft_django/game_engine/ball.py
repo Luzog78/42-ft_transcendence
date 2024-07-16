@@ -48,12 +48,12 @@ class Ball:
 		return A + AB * t
 
 	@staticmethod
-	def getBallSpeed(player_number:int) -> Vector:
+	def getBallSpeed(player_number:int, ball_modifier: float) -> Vector:
 		if (player_number == 2):
 			direction = Vector(0.5,0.5)
 		else:
 			direction = Vector(random.uniform(0,1) - 0.5, random.uniform(0,1) - 0.5)
-		direction.setLength(math.sqrt(player_number) * 0.8 * 2)
+		direction.setLength(math.sqrt(player_number) * 0.8 * (ball_modifier + 1))
 
 		return direction
 

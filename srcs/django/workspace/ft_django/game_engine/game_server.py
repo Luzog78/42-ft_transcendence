@@ -21,7 +21,7 @@ class GameServer:
 		self.lobbies: list[Lobby] = []
 		self.clients: list[Player] = []
 
-		self.tps: int = 40
+		self.tps: int = 60
 		self.dt: float = 1 / self.tps
 
 	async def receive(self, data, socket):
@@ -59,7 +59,6 @@ class GameServer:
 		)
 
 	async def addClient(self, client, uid: str) -> bool:
-		print("add client", uid)
 		lobby = self.findLobby(uid)
 		if not lobby:
 			return False

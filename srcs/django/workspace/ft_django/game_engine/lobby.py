@@ -196,7 +196,7 @@ class Lobby:
 	async def TOFTDied(self, killer: Player, player_id: int, player: Player):
 		time.sleep(1)
 
-		self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby)
+		self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby, self.ball_speed)
 		await self.balls[0].updateBall()
 
 		if (killer):
@@ -274,7 +274,7 @@ class Lobby:
 					if (lobby.clients_per_lobby == lobby.initial_clients_per_lobby):
 						lobby.start_time = datetime.timestamp(datetime.now())
 
-					lobby.balls[0].vel = Ball.getBallSpeed(lobby.clients_per_lobby)
+					lobby.balls[0].vel = Ball.getBallSpeed(lobby.clients_per_lobby, self.ball_speed)
 					clients = lobby.clients + lobby.spectators
 					for c in clients:
 						if isinstance(c, Player):
