@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/16 13:46:10 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/16 17:16:23 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ function openDiscussion(context, username, discussion = null) {
 		}
 
 
-		discussion.querySelector(".discussion-header").style.display = "block";
+		discussion.querySelector(".discussion-header").style.display = "flex";
 		discussion_content.style.display = "block";
 		discussion.querySelector(".discussion-footer").style.display = "block";
 	}
@@ -217,8 +217,6 @@ function RefreshFriendList(context, chatBox = null) {
 						discussion.querySelector(".discussion-header span").innerText = cache[username].full_name;
 						discussion.querySelector(".discussion-header img").src = cache[username].picture;
 					}
-					
-					// todo check if current discussion is this one
 				})
 			}
 		});
@@ -243,8 +241,9 @@ function Chat(context) {
 			</div>
 			<div class="discussion">
 				<div class="discussion-header">
-					<img class="notSelectable" src="/static/img/user.svg" alt="Menu" id="menu-trigger" onerror="profilePictureNotFound(this)">
+					<img class="notSelectable" src="/static/img/user.svg" onerror="profilePictureNotFound(this)">
 					<span></span>
+					<div id="chat-friendMenu"></div>
 				</div>
 				<div class="discussion-content">
 				</div>
@@ -265,6 +264,14 @@ function Chat(context) {
 			.then(success => {
 				persistSuccess(context, getLang(context, success));
 				pushPersistents(context);
+				var friend = context.chat.FriendList.find(e => e.username == searchInput);
+				if (!friend) {
+					friend = {username: searchInput, pending: true};
+					context.chat.FriendList.push(friend);
+				}
+				else
+					friend.pending = true;
+				RefreshFriendList(context, div);
 			})
 			.catch(error => {
 				persistError(context, getLang(context, error));
@@ -294,11 +301,20 @@ function Chat(context) {
 		textInput.style.height = textInput.scrollHeight + "px";
 	}
 
+	div.querySelector("#chat-friendMenu").addEventListener("click", (event) => {
+		var username = event.target.parentElement.parentElement;
+		if (username) {
+			
+		}
+	})
+
 
 	
 	RefreshFriendList(context, div);
 	if (!context.user.isAuthenticated)
 		ToggleChat(false, div);
+	else
+		ToggleChat(enabled, div);
 	if (openedDiscussion && enabled)
 		openDiscussion(context, openedDiscussion, div.querySelector(".discussion"));
 	return div;
@@ -307,12 +323,12 @@ function Chat(context) {
 function ToggleChat(toggle = undefined, chat = null) {
 	if (toggle === undefined)
 		toggle = !enabled;
-	if (enabled == toggle)
-		return ;
+	console.log("chat toggle", toggle, enabled)
 	enabled = toggle;
 	if (chat == null)
 		chat = document.getElementById("chat");
 	if (chat) {
+		chat.style.pointerEvents = toggle ? "unset" : "none";
 		if (toggle)
 			chat.querySelector('.chat-container').classList.remove("hidden");
 		else
@@ -358,7 +374,7 @@ const templates = {
 templates["friendBox"].classList.add("friendBox");
 templates["friendBox"].innerHTML = /*html*/`
 	<div class="playerStatusImage">
-		<img class="notSelectable" src="/static/img/user.svg" alt="Menu" onerror="profilePictureNotFound(this)">
+		<img class="notSelectable" src="/static/img/user.svg" onerror="profilePictureNotFound(this)">
 		<div class="online"></div>
 	</div>
 	<span></span>

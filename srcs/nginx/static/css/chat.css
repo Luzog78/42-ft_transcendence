@@ -186,24 +186,31 @@
 	height: var(--chat-discussion-header-height);
 	background-color: rgb(220, 220, 220);
 	display: none;
+	flex-direction: row;
 }
 
 #chat .discussion-header img {
-	margin-left: 0.1vw;
 	height: var(--chat-discussion-header-height);
 	width: var(--chat-discussion-header-height);
 	border-radius: 50%;
-	float: left;
+	margin-left: 0.1vw;
 }
 
 #chat .discussion-header span {
-	padding-left: 0.1vw;
 	line-height: var(--chat-discussion-header-height);
-	float: none;
 	display: block;
 	white-space: nowrap;
 	overflow: hidden;
 	color: black;
+	width: auto;
+
+	flex: 1;
+}
+
+#chat .discussion-header #chat-friendMenu {
+	height: 100%;
+	width: var(--chat-discussion-header-height);
+	background-color: rgb(120, 120, 120);
 }
 
 
