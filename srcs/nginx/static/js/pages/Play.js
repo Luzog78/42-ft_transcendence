@@ -14,6 +14,7 @@ import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persistError, redirect } from "../script.js";
 import { checkUID, clearFeedbacks, getJson } from "../utils.js";
+import { Chat } from "../components/Chat.js";
 
 
 async function Play(context) {
@@ -49,6 +50,7 @@ async function Play(context) {
 	
 	div.insertBefore(await NavBar(getLang(context, "pages.play.title"), context), div.firstChild);
 	div.insertBefore(Persistents(context), div.firstChild);
+	div.appendChild(Chat(context));
 	
 	let form = div.querySelector("#play-form");
 	if (form === null)

@@ -43,6 +43,12 @@
 	position: relative;
 	width: 100%;
 	height: 100%;
+
+	transition: all 0.9vw;
+}
+
+#chat .chat-container.hidden {
+	margin-top: 17vw;
 }
 
 /* header */

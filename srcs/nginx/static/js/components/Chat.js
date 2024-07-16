@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/15 17:00:15 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/16 11:02:54 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,10 +145,11 @@ function openDiscussion(event, context) {
 	}
 }
 
-function closeDiscussion() {
-	var discussion = document.getElementById("chat").querySelector(".discussion");
-	discussion.dataset.username = undefined;
+function closeDiscussion(discussion = null) {
+	if (!discussion)
+		discussion = document.getElementById("chat").querySelector(".discussion");
 	if (discussion) {
+		discussion.dataset.username = undefined;
 		discussion.querySelector(".discussion-header").style.display = "none";
 		discussion.querySelector(".discussion-content").style.display = "none";
 		discussion.querySelector(".discussion-footer").style.display = "none";
@@ -257,14 +258,22 @@ function Chat(context) {
 	return div;
 }
 
-function ToggleChat(toggle, chat = null) {
+function ToggleChat(toggle = undefined, chat = null) {
+	if (toggle === undefined)
+		toggle = !enabled;
 	if (enabled == toggle)
 		return ;
 	enabled = toggle;
 	if (chat == null)
 		chat = document.getElementById("chat");
-	if (chat)
-		chat.style.display = toggle ? "block" : "none";
+	if (chat) {
+		if (toggle)
+			chat.querySelector('.chat-container').classList.remove("hidden");
+		else
+			chat.querySelector('.chat-container').classList.add("hidden");
+		if (!toggle)
+			closeDiscussion(chat.querySelector(".discussion"));
+	}
 }
 
 export {

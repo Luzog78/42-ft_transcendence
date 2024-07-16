@@ -14,6 +14,7 @@ import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 import { initScene } from "../pong_game/main.js";
 import { getGameMode, setupCopyKBDSpan } from "../utils.js";
+import { Chat } from "../components/Chat.js";
 
 
 async function Pong(context, uid, data) {
@@ -56,6 +57,7 @@ async function Pong(context, uid, data) {
 	}
 	div.appendChild(await NavBar("Profile", context), div.firstChild);
 	div.appendChild(Persistents(context), div.firstChild);
+	div.appendChild(Chat(context));
 
 	let gameUid = div.querySelector("#game-uid");
 	let gameIcon = div.querySelector("#game-icon");

@@ -12,6 +12,7 @@
 
 import { getLang, onLogin, persistError, redirect } from "../script.js";
 import { getJson } from "../utils.js";
+import { ToggleChat } from "./Chat.js";
 
 
 var stunned = false;
@@ -113,7 +114,7 @@ async function NavBar(title, context, fetchProfile = true) {
 			if (stunned)
 				return;
 			closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
-			setTimeout(() => redirect("/chat"), 900);
+			ToggleChat();
 		};
 	return div;
 }

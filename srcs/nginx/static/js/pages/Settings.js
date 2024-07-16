@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Settings.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/13 01:41:18 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/16 11:06:22 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@ import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { SUPPORTED_LANGS, getLang, loadLang, persist, persistCopy, persistError, persistSuccess, redirect, refresh } from "../script.js";
 import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, clearFeedbacks, postJson, postRaw } from "../utils.js";
+import { Chat } from "../components/Chat.js";
 
 
 async function setUserAttributes(context, data) {
@@ -217,6 +218,7 @@ async function Settings(context) {
 	`;
 	div.insertBefore(Persistents(context), div.firstChild);
 	div.insertBefore(await NavBar(getLang(context, "pages.profile.title"), context), div.firstChild);
+	div.appendChild(Chat(context));
 	
 	if (!context.user.isAuthenticated || !context.user.username) {
 		persist(context, persistentBackup);
