@@ -6,11 +6,12 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/16 11:02:54 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/16 13:46:10 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { persistSuccess, persistError, getLang } from "../script.js";
+import { persistSuccess, persistError, getLang, redirect } from "../script.js";
+import { getJson } from "../utils.js";
 import { pushPersistents } from "./Persistents.js";
 
 
@@ -18,14 +19,17 @@ import { pushPersistents } from "./Persistents.js";
 
 var enabled = true; // todo set to false by default
 var searchInput = "";
+var openedDiscussion = null;
 
 // dict of "username": {
 //				full_name: "",
 //				profilePicture: "",
 //				discussion: [],
 //				unreadMessage: 0,
+//				online: none,
 //			}
 var cache = {}
+
 
 function sendMessage(context, target, message) {
 	if (context && message != "") {
@@ -80,12 +84,24 @@ function ReceiveMessage(context, data) {
 	}
 }
 
-function openDiscussion(event, context) {
-	var discussion = document.getElementById("chat").querySelector(".discussion");
-	var username = event.currentTarget.dataset.username;
+function openDiscussion(context, username, discussion = null) {
+	if (!discussion)
+		discussion = document.getElementById("chat").querySelector(".discussion");
+	openedDiscussion = username;
 	if (discussion && username) {
+		if (!cache[username])
+			cache[username] = {};
 		discussion.dataset.username = username;
-		discussion.querySelector(".discussion-header span").innerText = username;
+		
+		discussion.querySelector(".discussion-header span").innerText = cache[username].full_name || username;
+		var profilePicture = discussion.querySelector(".discussion-header img");
+		profilePicture.onclick = () => {
+			redirect(`/profile/${username}`);
+		}
+
+		if (cache[username].picture)
+			profilePicture.src = cache[username].picture;
+		
 		
 		var discussion_content = discussion.querySelector(".discussion-content");
 		while (discussion_content.firstChild)
@@ -105,9 +121,6 @@ function openDiscussion(event, context) {
 				discussion_content.scrollTo(0, discussion_content.scrollHeight);
 			}
 		}
-		
-		if (!cache[username])
-			cache[username] = {};
 		if (!cache[username].discussion)
 		{
 			cache[username].discussion = [];
@@ -146,6 +159,7 @@ function openDiscussion(event, context) {
 }
 
 function closeDiscussion(discussion = null) {
+	openedDiscussion = null;
 	if (!discussion)
 		discussion = document.getElementById("chat").querySelector(".discussion");
 	if (discussion) {
@@ -177,9 +191,36 @@ function RefreshFriendList(context, chatBox = null) {
 		context.chat.FriendList.forEach(friend => {
 			let friendButton = templates["friendBox"].cloneNode(true);
 			friendButton.dataset.username = friend.username;
-			friendButton.querySelector('span').innerText = friend.username;
-			friendButton.onclick = (e) => openDiscussion(e, context);
+			let usernameSpan = friendButton.querySelector('span');
+			usernameSpan.innerText = (cache[friend.username] && cache[friend.username].full_name) ? cache[friend.username].full_name : friend.username;
+			
+			let friendImg = friendButton.querySelector('img');
+			if (cache[friend.username] && cache[friend.username].picture)
+				friendImg.src = cache[friend.username].picture
+			friendButton.onclick = (e) => openDiscussion(context, e.currentTarget.dataset.username);
 			friendList.appendChild(friendButton);
+			let online = cache[friend.username] ? cache[friend.username].online : false;
+			friendButton.querySelector('.playerStatusImage .online').style.display = online ? "block" : "none";
+			if (!cache[friend.username] || !cache[friend.username].full_name) {
+				getJson(context, `/api/user/${friend.username}`).then(res => {
+					if (!cache[friend.username])
+						cache[friend.username] = {}
+					cache[friend.username].full_name = res.firstName + " " + res.lastName;
+					cache[friend.username].picture = res.picture;
+					usernameSpan.innerText = (cache[friend.username] && cache[friend.username].full_name) ? cache[friend.username].full_name : friend.username;
+					friendImg.src = cache[friend.username].picture;
+
+					var discussion = chatBox.querySelector(".discussion");
+					
+					if (discussion.dataset.username == friend.username)
+					{
+						discussion.querySelector(".discussion-header span").innerText = cache[username].full_name;
+						discussion.querySelector(".discussion-header img").src = cache[username].picture;
+					}
+					
+					// todo check if current discussion is this one
+				})
+			}
 		});
 	}
 }
@@ -187,7 +228,10 @@ function RefreshFriendList(context, chatBox = null) {
 function Chat(context) {
 	let div = document.createElement("div");
 	div.id = "chat"
-	div.style.display = enabled ? "block" : "none";
+	if (enabled)
+		div.classList.remove('hidden')
+	else
+		div.classList.add('hidden')
 	div.innerHTML = /* html */`
 		<div class="chat-container">
 			<div class="chat-header">
@@ -255,6 +299,8 @@ function Chat(context) {
 	RefreshFriendList(context, div);
 	if (!context.user.isAuthenticated)
 		ToggleChat(false, div);
+	if (openedDiscussion && enabled)
+		openDiscussion(context, openedDiscussion, div.querySelector(".discussion"));
 	return div;
 }
 
@@ -276,11 +322,27 @@ function ToggleChat(toggle = undefined, chat = null) {
 	}
 }
 
+function SetPlayerStatus(context, username, status) {
+	if (!cache[username])
+		cache[username] = {};
+	cache[username].online = status;
+
+	var chat = document.getElementById("chat");
+	if (chat) {
+		var friendListUser = chat.querySelector(`.friendBox[data-username="${username}"]`)
+		console.log("set status of ", username, status, friendListUser);
+		if (friendListUser)
+			friendListUser.querySelector(".playerStatusImage .online").style.display = status ? "block" : "none";
+	}
+}
+
+
 export {
 	Chat,
 	ToggleChat,
 	RefreshFriendList,
 	ReceiveMessage,
+	SetPlayerStatus,
 }
 
 
@@ -295,7 +357,10 @@ const templates = {
 
 templates["friendBox"].classList.add("friendBox");
 templates["friendBox"].innerHTML = /*html*/`
-	<img class="notSelectable" src="/static/img/user.svg" alt="Menu" id="menu-trigger" onerror="profilePictureNotFound(this)">
+	<div class="playerStatusImage">
+		<img class="notSelectable" src="/static/img/user.svg" alt="Menu" onerror="profilePictureNotFound(this)">
+		<div class="online"></div>
+	</div>
 	<span></span>
 `;
 

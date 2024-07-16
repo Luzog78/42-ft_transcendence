@@ -36,6 +36,14 @@ class ChatSocket(AsyncWebsocketConsumer):
 		if self in connected_sockets:
 			connected_sockets.remove(self)
 
+			selfSockets = find_user_socket(self.user)
+			if len(selfSockets) == 0:
+				friend_list = await sync_to_async(FriendList.objects.filter)(Q(author=self.user) | Q(target=self.user), pending=False)
+				for friend in friend_list:
+					username = str(friend.target) if str(friend.author) == self.user else str(friend.author)
+					for socket in find_user_socket(username):
+						await socket.sendJson({'type': 'status_change', 'username': self.user, 'status': False})
+
 	async def receive(self, text_data):
 		print("received", text_data)
 		try:
@@ -95,9 +103,28 @@ class ChatSocket(AsyncWebsocketConsumer):
 			if self.user is None:
 				await self.reply('errors.invalidCredentials', False, frontendId)
 			else:
-				if not self in connected_sockets:
-					connected_sockets.append(self)
-				await self.reply(None, True, frontendId)
+				try:
+					userObject = await sync_to_async(User.objects.get)(username=self.user)
+					
+					if not self in connected_sockets:
+						connected_sockets.append(self)
+					await self.reply(None, True, frontendId)
+
+					selfSockets = find_user_socket(self.user)
+					if len(selfSockets) == 1:
+						friend_list = await sync_to_async(FriendList.objects.filter)(Q(author=userObject) | Q(target=userObject), pending=False)
+						for friend in friend_list:
+							username = str(friend.target) if str(friend.author) == self.user else str(friend.author)
+							sockets = find_user_socket(username)
+							for socket in sockets:
+								await socket.sendJson({'type': 'status_change', 'username': self.user, 'status': True})
+							if len(sockets) > 0:
+								await self.sendJson({'type': 'status_change', 'username': username, 'status': True})
+
+				except User.DoesNotExist:
+					await self.reply('errors.invalidCredentials', False, frontendId)
+
+
 
 	async def send_message(self, data, frontendId):
 		if 'target' not in data or 'content' not in data \
@@ -187,6 +214,7 @@ class ChatSocket(AsyncWebsocketConsumer):
 				targetSockets = find_user_socket(self.user)
 				for targetSocket in targetSockets:
 					await targetSocket.sendJson({'type': 'new_friend', 'friend': data['target']})
+				# todo set online status also
 				await self.reply('successes.acceptedFriendRequest', False, frontendId) # todo lang
 		except User.DoesNotExist:
 			await self.reply('errors.UserNotFound', False, frontendId)
