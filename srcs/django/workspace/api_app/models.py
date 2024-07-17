@@ -719,7 +719,7 @@ class FriendList(models.Model):
 
 	def json(self):
 		return {
-			'author': self.author,
-			'target': self.target,
+			'author': self.author.username,
+			'target': self.target.username,
 			'pending': self.pending,
 		}

@@ -6,12 +6,12 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/17 14:54:40 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/17 15:55:23 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { persistSuccess, persistError, getLang, redirect } from "../script.js";
-import { getJson } from "../utils.js";
+import { getJson, postJson } from "../utils.js";
 import { pushPersistents } from "./Persistents.js";
 
 
@@ -260,20 +260,18 @@ function refreshFriendMenuButtons(context, username, ChatBox = null) {
 	}
 
 	var removeFriend = () => {
-		if (context.chat.ChatConnexion.authenticated) {
-			context.chat.ChatConnexion.triggerCallback({type: 'remove_friend', target: username})
-			.then(success => {
-				persistSuccess(context, getLang(context, success));
+		postJson(context, '/api/friends/remove', {
+			target: username
+		}).then(res => {
+			if (res.ok) {
+				persistSuccess(context, getLang(context, res.success));
 				pushPersistents(context);
-			})
-			.catch(error => {
-				persistError(context, getLang(context, error));
+
+			} else {
+				persistError(context, getLang(context, res.error));
 				pushPersistents(context);
-			})
-		} else {
-			persistError(context, getLang(context, "errors.chatNotConnected"));
-			pushPersistents(context);
-		}
+			}
+		})
 	}
 
 	if (state == 2) {
@@ -310,11 +308,11 @@ function refreshFriendMenuButtons(context, username, ChatBox = null) {
 }
 
 function sendFriendRequest(context, target, ChatBox) {
-	if (context.chat.ChatConnexion.authenticated)
-	{
-		context.chat.ChatConnexion.triggerCallback({type: 'add_friend', target: target})
-		.then(success => {
-			persistSuccess(context, getLang(context, success));
+	postJson(context, "/api/friends/add", {
+		target: target,
+	}).then(data => {
+		if (data.ok) {
+			persistSuccess(context, getLang(context, data.success));
 			pushPersistents(context);
 			var friend = context.chat.FriendList.find(e => e.username == target);
 			if (!friend) {
@@ -323,23 +321,17 @@ function sendFriendRequest(context, target, ChatBox) {
 			}
 			else
 				friend.pending = false;
-			if (success == 'successes.FriendRequestSent') {
+			if (data.success == 'successes.FriendRequestSent') {
 				friend.myRequest = true;
 				friend.pending = true;
 			}
 			RefreshFriendList(context, ChatBox);
-		})
-		.catch(error => {
-			persistError(context, getLang(context, error));
+		} else {
+			persistError(context, getLang(context, data.error));
 			pushPersistents(context);
-		})
-		RefreshFriendList(context, ChatBox);
-	}
-	else
-	{
-		persistError(context, getLang(context, "errors.chatNotConnected"));
-		pushPersistents(context);
-	}
+		}
+	})
+	RefreshFriendList(context, ChatBox);
 }
 
 function Chat(context) {

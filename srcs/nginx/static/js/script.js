@@ -324,9 +324,10 @@ const onLogin = async (context, loadedData = null, reloadNav = false) => {
 			context.chat.ChatConnexion.authenticate(context.user.token)
 				.then(() => {
 					console.log("Successfully authenticated in chat")
-					context.chat.ChatConnexion.triggerCallback({type: "get_friend_list"})
-						.then(data => {
-							context.chat.FriendList = data.map(e => {
+					getJson(context, '/api/friends/list')
+					.then(response => {
+						if (response.ok) {
+							context.chat.FriendList = response.data.map(e => {
 								var res = {
 									username: context.user.username === e.author ? e.target : e.author,
 									pending: e.pending,
@@ -337,10 +338,10 @@ const onLogin = async (context, loadedData = null, reloadNav = false) => {
 								return (res);
 							})
 							RefreshFriendList(context);
-						})
-						.catch(err => {
-							console.log("Failed to get friend list : " + err);
-						})
+						} else {
+							console.log("Failed to get friend list : " + response.error);
+						}
+					})
 				})
 				.catch(err => {
 					console.log("Failed to authenticate : " + err);
