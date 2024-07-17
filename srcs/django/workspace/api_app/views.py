@@ -6,10 +6,12 @@ import asyncio
 from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 import requests
+from django.db.models import Q
 
-from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament, Usernames
+from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament, Usernames, FriendList
 from . import auth, checker
 from ft_django import pong_socket, settings
+from ft_django.chat_socket import find_user_socket
 
 
 endpoints: list[str] = []
@@ -889,6 +891,92 @@ def view_pong(request: HttpRequest):
 		return JsonResponse({'ok': True, "buffer": socket.buffer})
 
 	return JsonResponse({'ok': True, 'pong': 'pong'})
+
+@csrf_exempt
+def view_add_friend(request: HttpRequest):
+	if not (response := auth.is_authenticated(request)):
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+	if 'target' not in data or not isinstance(data['target'], str):
+		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+	if (data['target'] == response.user):
+		return JsonResponse({'ok': False, 'error': 'errors.FriendRequestYourself'}) # todo lang
+	if not (user := User.get(response.user)) or not (target := User.get(data['target'])):
+		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
+
+	try:
+		friend_relation = FriendList.objects.get(Q(author=user, target=target) | Q(author=target, target=user))
+		if friend_relation.pending == False:
+			return JsonResponse({'ok': False, 'error': 'errors.AlreadyFriend'}) # todo lang
+		elif friend_relation.author == user:
+			return JsonResponse({'ok': False, 'error': 'errors.FriendRequestSent'}) # todo lang
+		else:
+			# accepting friend request
+			friend_relation.pending = False
+			friend_relation.save()
+			targetSockets = find_user_socket(data['target'])
+			fromSockets = find_user_socket(response.user)
+			for socket in targetSockets:
+				asyncio.run(socket.sendJson({'type': 'new_friend', 'friend': response.user, 'myRequest': True}))
+				if len(fromSockets) > 0:
+					asyncio.run(socket.sendJson({'type': 'status_change', 'username': response.user, 'status': True}))
+			for socket in fromSockets:
+				asyncio.run(socket.sendJson({'type': 'new_friend', 'friend': data['target'], 'myRequest': False}))
+				if len(targetSockets) > 0:
+					asyncio.run(socket.sendJson({'type': 'status_change', 'username': data['target'], 'status': True}))
+			return JsonResponse({'ok': True, 'success': 'successes.acceptedFriendRequest'}) # todo lang
+
+	except FriendList.DoesNotExist:
+		# send friend request
+		friend_request = FriendList(author=user, target=target)
+		friend_request.save()
+		for targetSocket in find_user_socket(data['target']):
+			asyncio.run(targetSocket.sendJson({'type': 'new_friend_request', 'friend': response.user, 'myRequest': False}))
+		return JsonResponse({'ok': True, 'success': 'successes.FriendRequestSent'}) # todo lang
+
+@csrf_exempt
+def view_remove_friend(request: HttpRequest):
+	if not (response := auth.is_authenticated(request)):
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+	if 'target' not in data or not isinstance(data['target'], str):
+		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+	if not (user := User.get(response.user)) or not (target := User.get(data['target'])):
+		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
+
+	try:
+		friend_relation = FriendList.objects.get(Q(author=user, target=target) | Q(target=user, author=target))
+		pending = friend_relation.pending
+		friend_relation.delete()
+
+		for socket in find_user_socket(data['target']):
+			asyncio.run(socket.sendJson({'type': 'remove_friend', 'friend': response.user}))
+		for socket in find_user_socket(response.user):
+			asyncio.run(socket.sendJson({'type': 'remove_friend', 'friend': data['target']}))
+		return JsonResponse({'ok': True, 'success': 'successes.cancelFriendRequest'}) # todo lang
+
+	except FriendList.DoesNotExist:
+		return JsonResponse({'ok': False, 'error': 'errors.RelationDoesNotExist'}) # todo lang
+
+@csrf_exempt
+def view_get_friends(request: HttpRequest):
+	if not (response := auth.is_authenticated(request)):
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+	if request.method != 'GET':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+	if not (user := User.get(response.user)):
+		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
+	
+	friend_list = FriendList.objects.filter(Q(author=user) | Q(target=user))
+	for friend in friend_list:
+		print(friend)
+		print(friend.json())
+	friend_list = [friend.json() for friend in friend_list]
+	return JsonResponse({'ok': True, "data": friend_list})
 
 
 @csrf_exempt

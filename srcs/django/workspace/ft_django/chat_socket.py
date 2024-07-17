@@ -67,15 +67,6 @@ class ChatSocket(AsyncWebsocketConsumer):
 			await self.send_message(data, frontendId)
 		elif data['type'] == 'send_game_message':
 			pass # TODO: find game, add message in db and find if targets have socket open with find_user_socket
-		elif data['type'] == 'get_friend_list':
-			# todo see: maybe move in api
-			await self.get_friend_list(data, frontendId)
-		elif data['type'] == 'add_friend':
-			# todo see: maybe move in api
-			await self.add_friend(data, frontendId)
-		elif data['type'] == 'remove_friend':
-			# todo see: maybe move in api
-			await self.remove_friend(data, frontendId)
 
 
 	async def reply(self, data: Any, status: bool, frontendId: Any):
@@ -175,93 +166,3 @@ class ChatSocket(AsyncWebsocketConsumer):
 		except User.DoesNotExist:
 			await self.reply('errors.UserNotFound', False, frontendId)
 			return
-	
-	async def get_friend_list(self, data, frontendId):
-		try:
-			usr = await sync_to_async(User.objects.get)(username=self.user)
-		except:
-			await self.reply('errors.UserNotFound', False, frontendId)
-			return
-		friend_list = await sync_to_async(FriendList.objects.filter)(Q(author=usr) | Q(target=usr))
-		friend_list = await sync_to_async(serializers.serialize)('json', friend_list)
-		friend_list = json.loads(friend_list) #sad way, todo change serializers.serialize to a real toJson fct
-		friend_list = [friend['fields'] for friend in friend_list] # so fucking ugly bruh thx to serializers.serialize
-		await self.reply(friend_list, True, frontendId)
-
-	async def add_friend(self, data, frontendId):
-		if 'target' not in data or not isinstance(data['target'], str):
-			await self.reply('errors.invalidRequest', False, frontendId)
-			return
-		try:
-			usr = await sync_to_async(User.objects.get)(username=self.user)
-			target = await sync_to_async(User.objects.get)(username=data['target'])
-			
-			if (usr == target):
-				await self.reply('errors.FriendRequestYourself', False, frontendId) # todo lang
-				return
-
-			friend_relation = await sync_to_async(FriendList.objects.get)(Q(author=usr, target=target) | Q(target=usr, author=target))
-			if friend_relation.pending == False:
-				await self.reply('errors.AlreadyFriend', False, frontendId) # todo lang
-			elif friend_relation.author == usr:
-				await self.reply('errors.FriendRequestSent', False, frontendId) # todo lang
-			else:
-				# accepting friend request
-				friend_relation.pending = False
-				await sync_to_async(friend_relation.save)()
-				targetSockets = find_user_socket(data['target'])
-				fromSockets = find_user_socket(self.user)
-				tasks = []
-				for socket in targetSockets:
-					tasks.append(socket.sendJson({'type': 'new_friend', 'friend': self.user, 'myRequest': True}))
-					if len(fromSockets) > 0:
-						tasks.append(socket.sendJson({'type': 'status_change', 'username': self.user, 'status': True}))
-				for socket in fromSockets:
-					tasks.append(socket.sendJson({'type': 'new_friend', 'friend': data['target'], 'myRequest': False}))
-					if len(targetSockets) > 0:
-						tasks.append(socket.sendJson({'type': 'status_change', 'username': data['target'], 'status': True}))
-				for task in tasks:
-					await task
-				await self.reply('successes.acceptedFriendRequest', True, frontendId) # todo lang
-
-		
-		except User.DoesNotExist:
-			await self.reply('errors.UserNotFound', False, frontendId)
-			return
-		except FriendList.DoesNotExist:
-			# send friend request
-			friend_request = FriendList(author=usr, target=target)
-			await sync_to_async(friend_request.save)()
-			targetSockets = find_user_socket(data['target'])
-			for targetSocket in targetSockets:
-				await targetSocket.sendJson({'type': 'new_friend_request', 'friend': self.user, 'myRequest': False})
-			await self.reply('successes.FriendRequestSent', True, frontendId) # todo lang
-
-	async def remove_friend(self, data, frontendId):
-		if 'target' not in data or not isinstance(data['target'], str):
-			await self.reply('errors.invalidRequest', False, frontendId)
-			return
-		
-		try:
-			usr = await sync_to_async(User.objects.get)(username=self.user)
-			target = await sync_to_async(User.objects.get)(username=data['target'])
-			friend_relation = await sync_to_async(FriendList.objects.get)(Q(author=usr, target=target) | Q(target=usr, author=target))
-			pending = friend_relation.pending
-			await sync_to_async(friend_relation.delete)()
-
-			tasks = []
-			for socket in find_user_socket(data['target']):
-				tasks.append(socket.sendJson({'type': 'remove_friend', 'friend': self.user}))
-			for socket in find_user_socket(self.user):
-				tasks.append(socket.sendJson({'type': 'remove_friend', 'friend': data['target']}))
-			for task in tasks:
-				await task
-			await self.reply('successes.cancelFriendRequest' if pending else 'successes.removedFriend', True, frontendId) # todo lang
-
-		except FriendList.DoesNotExist:
-			await self.reply('errors.RelationDoesNotExist', False, frontendId) # todo lang
-			return
-		except User.DoesNotExist:
-			await self.reply('errors.UserNotFound', False, frontendId)
-			return
-
