@@ -6,7 +6,7 @@
 #    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 15:11:13 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/15 15:43:57 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/17 17:15:00 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ class Spectator:
 		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
 										"scene.server.client_id": self.client_id})
 		await self.sendData("call", {"command": "scene.initSpectator",
-									"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'",
+									"args": [self.lobby.clients_per_lobby, self.lobby.theme, f"'{self.lobby.game_mode}'",
 				  							limit - (datetime.datetime.timestamp(datetime.datetime.now()) - start_time)]}) # TODO: theme
 
 		for i in range(self.lobby.clients_per_lobby):

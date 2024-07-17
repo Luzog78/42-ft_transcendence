@@ -18,35 +18,51 @@ import { Player } from "./Player.js";
 import { DynamicText } from "./DynamicText.js";
 import { destroyObject } from './main.js';
 
-function initMap(scene, player_num, time_left)
+function initMap(scene, theme, time_left)
 {
 	clearInterval(scene.intervalId);
 	destroyObject(scene);
 
-	let light = new THREE.AmbientLight( 0x555555 ); // soft white light
+	const light = new THREE.AmbientLight( 0x555555 ); // soft white light
 	scene.scene.add(light);
 
 	scene.addBall();
 
+	const player_num = scene.player_num;
+	const color_theme = getColorTheme(theme, player_num);
+
 	if (player_num == 2)
-		init2PlayerMap(scene);
+		init2PlayerMap(scene, color_theme);
 	else
-		initNPlayerMap(scene, player_num);
+		initNPlayerMap(scene, player_num, color_theme);
 
 	if (scene.server.client_id < player_num && scene.game_mode != "BR")
 		initText(scene, player_num, time_left);
 	initCamera(scene, player_num);
 }
 
-function initNPlayerMap(scene, number)
+function getColorTheme(theme, player_num)
 {
-	const map_radius = Math.sqrt(number) * 2 + 2
+	const colors = {}
+
+	if (theme == 0)
+		for (let i = 0; i < player_num; i++)
+			colors[i] = new THREE.Color().setHSL(i / player_num, 1, 0.8, THREE.SRGBColorSpace);
+	else if (theme == 1)
+		for (let i = 0; i < player_num; i++)
+			colors[i] = new THREE.Color().setHSL(0, 0, i / (player_num / 2), THREE.SRGBColorSpace);
+	return colors
+}
+
+function initNPlayerMap(scene, player_num, colors)
+{
+	const map_radius = Math.sqrt(player_num) * 2 + 2
 
 	const floor_material = new THREE.MeshPhysicalMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	floor_material.roughness = 0.65;
 	floor_material.metalness = 0.0;
 
-	const circle = new THREE.Mesh(new THREE.CircleGeometry(map_radius, number), floor_material ); // floor
+	const circle = new THREE.Mesh(new THREE.CircleGeometry(map_radius, player_num), floor_material ); // floor
 	circle.position.set(0, 0.05, 0);
 	circle.geometry.rotateX(-Math.PI / 2);
 	scene.add(circle, "circle");
@@ -55,10 +71,10 @@ function initNPlayerMap(scene, number)
 	const vertex = new THREE.Vector3();
 	const next_vertex = new THREE.Vector3();
 
-	for (let i = 0; i < number; i++)
+	for (let i = 0; i < player_num; i++)
 	{
 		vertex.fromBufferAttribute( position_attribute, i + 2);
-		next_vertex.fromBufferAttribute( position_attribute, ((i + 1) % number) + 2 );
+		next_vertex.fromBufferAttribute( position_attribute, ((i + 1) % player_num) + 2 );
 
 		if (i == 0)
 			scene.segment_size = vertex.distanceTo(next_vertex);
@@ -66,7 +82,7 @@ function initNPlayerMap(scene, number)
 		let player_name = "player" + i
 		let playerSize = vertex.distanceTo(next_vertex) * 0.3;
 		let middle_point = new THREE.Vector3().addVectors(vertex, next_vertex).multiplyScalar(0.5);
-		let color = new THREE.Color().setHSL(i / number, 1, 0.8, THREE.SRGBColorSpace);
+		let color = colors[i];
 		let angle = Math.atan2(next_vertex.z - vertex.z, next_vertex.x - vertex.x);
 
 		let player_position = new THREE.Vector3(middle_point.x, 0.15, middle_point.z - 0.075);
@@ -79,8 +95,7 @@ function initNPlayerMap(scene, number)
 		for (let line of line_points)
 			line.y += 0.05;
 		let line_colors = i == scene.server.client_id ?
-					[new THREE.Color(0xffffff), new THREE.Color(0xffffff)] :
-					[new THREE.Color().setHSL(i / number, 1, 0.8, THREE.SRGBColorSpace)]
+					[new THREE.Color(0xffffff), new THREE.Color(0xffffff)] : [color]
 
 		new Lines(scene, line_points, line_colors, 5, 5, "line" + i);
 
@@ -102,7 +117,7 @@ function initNPlayerMap(scene, number)
 
 	const geometry_wall = new THREE.CircleGeometry(map_radius + 0.8, division);
 	geometry_wall.rotateX(-Math.PI / 2);
-	geometry_wall.rotateY(((2 * Math.PI) / number) * 2);
+	geometry_wall.rotateY(((2 * Math.PI) / player_num) * 2);
 
 	for (let i = 0; i < division; i++)
 	{
@@ -112,8 +127,8 @@ function initNPlayerMap(scene, number)
 	points_wall.push(points_wall[0]);
 
 	let colors_wall = [];
-	for (let i = 0; i < number; i++)
-		colors_wall.push(new THREE.Color().setHSL(i / number, 1, 0.8, THREE.SRGBColorSpace));
+	for (let i = 0; i < player_num; i++)
+		colors_wall.push(colors[i]);
 	colors_wall.push(colors_wall[0]);
 
 	for (let i = 0; i < 8; i++)
@@ -150,7 +165,7 @@ function initCamera(scene, player_num, following_player = null)
 	scene.camera.setPosition(camera_pos.x, camera_pos.y, camera_pos.z);
 }
 
-async function init2PlayerMap(scene)
+async function init2PlayerMap(scene, color_theme)
 {
 	let spotLight = new THREE.SpotLight( 0xffffff, 20);
 	spotLight.position.set( 0, 1, 6 );

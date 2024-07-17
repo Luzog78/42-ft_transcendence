@@ -58,8 +58,8 @@ class Player:
 		await self.sendData("modify", {"scene.server.lobby_id": self.lobby.lobby_id,
 										"scene.server.client_id": self.client_id})
 		await self.sendData("call", {"command": "scene.initPlayer",
-									"args": [self.lobby.clients_per_lobby, f"'{self.lobby.game_mode}'",
-				  							limit - (datetime.datetime.timestamp(datetime.datetime.now()) - start_time)]}) #todo theme
+									"args": [self.lobby.clients_per_lobby, self.lobby.theme, f"'{self.lobby.game_mode}'",
+				  							limit - (datetime.datetime.timestamp(datetime.datetime.now()) - start_time)]})
 		await self.updateSelfToother()
 
 	def addSelfWall(self):

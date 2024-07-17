@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/15 17:06:14 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/17 17:17:03 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,14 +105,14 @@ class Scene
 		}
 	}
 
-	initPlayer(player_num, game_mode, time_left)
+	initPlayer(player_num, theme, game_mode, time_left)
 	{
 		this.player_num = player_num;
 		this.game_mode = game_mode;
 		console.log("I'm player", this.server.client_id)
 		console.log("Player num: " + player_num + " Game mode: " + game_mode);
 
-		initMap(this, player_num, time_left);
+		initMap(this, theme, time_left);
 
 		let my_player = this.get("player" + this.server.client_id); // TODO: to change
 		window.addEventListener("keydown", my_player.keydown_event_func);
@@ -121,14 +121,14 @@ class Scene
 		this.server.sendData("ready", []);
 	}
 
-	initSpectator(player_num, game_mode, time_left)
+	initSpectator(player_num, theme, game_mode, time_left)
 	{
 		this.player_num = player_num;
 		this.game_mode = game_mode;
 		console.log("I'm spectator");
 		console.log("Player num: " + player_num + " Game mode: " + game_mode);
 
-		initMap(this, player_num, time_left);
+		initMap(this, theme, time_left);
 
 		this.spectator = new Spectator(this);
 		window.addEventListener("keydown", this.spectator.keydown_event_func);
