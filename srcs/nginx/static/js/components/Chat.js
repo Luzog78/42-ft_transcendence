@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/16 17:16:23 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/17 14:54:40 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ function openDiscussion(context, username, discussion = null) {
 				input.oninput();
 			}
 		}
+		discussion.querySelector(".discussion-menu").style.display = "none";
 
 
 		discussion.querySelector(".discussion-header").style.display = "flex";
@@ -167,6 +168,7 @@ function closeDiscussion(discussion = null) {
 		discussion.querySelector(".discussion-header").style.display = "none";
 		discussion.querySelector(".discussion-content").style.display = "none";
 		discussion.querySelector(".discussion-footer").style.display = "none";
+		discussion.querySelector(".discussion-menu").style.display = "none";
 	}
 }
 
@@ -187,7 +189,7 @@ function RefreshFriendList(context, chatBox = null) {
 		friendList.removeChild(friendList.firstChild);
 
 	if (context.chat.FriendList != null) {
-		context.chat.FriendList.sort((a, b) => (a.pending == b.pending) ? a.username.localeCompare(b.username) : a.pending - b.pending);
+		context.chat.FriendList.sort((a, b) => (a.pending == b.pending) ? a.username.localeCompare(b.username) : b.pending - a.pending);
 		context.chat.FriendList.forEach(friend => {
 			let friendButton = templates["friendBox"].cloneNode(true);
 			friendButton.dataset.username = friend.username;
@@ -220,6 +222,123 @@ function RefreshFriendList(context, chatBox = null) {
 				})
 			}
 		});
+		if (openedDiscussion) {
+			if (!context.chat.FriendList.find(e => e.username === openedDiscussion))
+				closeDiscussion(chatBox.querySelector('.discussion'));
+			else
+				refreshFriendMenuButtons(context, openedDiscussion, chatBox);
+		}
+		for (var friend in cache)
+			if (!context.chat.FriendList.find(e => e.username === friend))
+				delete cache[friend];
+	}
+}
+
+function refreshFriendMenuButtons(context, username, ChatBox = null) {
+	if (!ChatBox)
+		ChatBox = document.getElementById("chat");
+	if (!ChatBox)
+		return;
+
+	var acceptBtn = ChatBox.querySelector("#AcceptFriend");
+	var denyBtn = ChatBox.querySelector("#DenyFriend");
+	var removeBtn = ChatBox.querySelector("#RemoveFriend");
+	var cancelBtn = ChatBox.querySelector("#CancelFriend");
+	var blockBtn = ChatBox.querySelector("#BlockFriend");
+	var friend = context.chat.FriendList.find(f => f.username === username);
+	
+	// 0: not friend
+	// 1: waiting friend to accept
+	// 2: pending friend request
+	// 3: friend
+	var state = 0;
+	if (friend) {
+		if (friend.pending)
+			state = 2 - friend.myRequest;
+		else
+			state = 3;
+	}
+
+	var removeFriend = () => {
+		if (context.chat.ChatConnexion.authenticated) {
+			context.chat.ChatConnexion.triggerCallback({type: 'remove_friend', target: username})
+			.then(success => {
+				persistSuccess(context, getLang(context, success));
+				pushPersistents(context);
+			})
+			.catch(error => {
+				persistError(context, getLang(context, error));
+				pushPersistents(context);
+			})
+		} else {
+			persistError(context, getLang(context, "errors.chatNotConnected"));
+			pushPersistents(context);
+		}
+	}
+
+	if (state == 2) {
+		denyBtn.style.display = "block";
+		acceptBtn.style.display = "block";
+		denyBtn.onclick = removeFriend;
+		acceptBtn.onclick = (event) => {
+			sendFriendRequest(context, username, ChatBox);
+		};
+	} else {
+		denyBtn.style.display = "none";
+		acceptBtn.style.display = "none";
+		denyBtn.onclick = undefined;
+		acceptBtn.onclick = undefined;
+	}
+
+	if (state == 1) {
+		cancelBtn.style.display = "block";
+		cancelBtn.onclick = removeFriend;
+	} else {
+		cancelBtn.style.display = "none";
+		cancelBtn.onclick = undefined;
+	}
+
+	if (state == 3) {
+		removeBtn.style.display = "block";
+		removeBtn.onclick = removeFriend;
+	} else {
+		removeBtn.style.display = "none";
+		removeBtn.onclick = undefined;
+	}
+
+	
+}
+
+function sendFriendRequest(context, target, ChatBox) {
+	if (context.chat.ChatConnexion.authenticated)
+	{
+		context.chat.ChatConnexion.triggerCallback({type: 'add_friend', target: target})
+		.then(success => {
+			persistSuccess(context, getLang(context, success));
+			pushPersistents(context);
+			var friend = context.chat.FriendList.find(e => e.username == target);
+			if (!friend) {
+				friend = {username: target, pending: false};
+				context.chat.FriendList.push(friend);
+			}
+			else
+				friend.pending = false;
+			if (success == 'successes.FriendRequestSent') {
+				friend.myRequest = true;
+				friend.pending = true;
+			}
+			RefreshFriendList(context, ChatBox);
+		})
+		.catch(error => {
+			persistError(context, getLang(context, error));
+			pushPersistents(context);
+		})
+		RefreshFriendList(context, ChatBox);
+	}
+	else
+	{
+		persistError(context, getLang(context, "errors.chatNotConnected"));
+		pushPersistents(context);
 	}
 }
 
@@ -250,6 +369,13 @@ function Chat(context) {
 				<div class="discussion-footer">
 					<textarea id="discussion-input" rows=1></textarea>
 				</div>
+				<div class="discussion-menu">
+					<button id="AcceptFriend">Accept friend request</button>
+					<button id="DenyFriend">Deny friend request</button>
+					<button id="CancelFriend">Cancel friend request</button>
+					<button id="RemoveFriend">Remove friend</button>
+					<button id="BlockFriend">Block user</button>
+				</div>
 			</div>
 		</div>
 	`;
@@ -258,32 +384,7 @@ function Chat(context) {
 	addFriendButton.id = "addFriendButton";
 	addFriendButton.querySelector("span").innerText = "Add Friend";
 	addFriendButton.onclick = () => {
-		if (context.chat.ChatConnexion.authenticated)
-		{
-			context.chat.ChatConnexion.triggerCallback({type: 'add_friend', target: searchInput})
-			.then(success => {
-				persistSuccess(context, getLang(context, success));
-				pushPersistents(context);
-				var friend = context.chat.FriendList.find(e => e.username == searchInput);
-				if (!friend) {
-					friend = {username: searchInput, pending: true};
-					context.chat.FriendList.push(friend);
-				}
-				else
-					friend.pending = true;
-				RefreshFriendList(context, div);
-			})
-			.catch(error => {
-				persistError(context, getLang(context, error));
-				pushPersistents(context);
-			})
-			RefreshFriendList(context, div);
-		}
-		else
-		{
-			persistError(context, getLang(context, "errors.chatNotConnected"));
-			pushPersistents(context);
-		}
+		sendFriendRequest(context, searchInput, div);
 	}
 	navBar.insertBefore(addFriendButton, div.querySelector("#chat-friendList"));
 	
@@ -304,7 +405,9 @@ function Chat(context) {
 	div.querySelector("#chat-friendMenu").addEventListener("click", (event) => {
 		var username = event.target.parentElement.parentElement;
 		if (username) {
-			
+			var discussionMenu = div.querySelector(".discussion-menu");
+			discussionMenu.style.display = discussionMenu.style.display == "block" ? "none" : "block";
+			refreshFriendMenuButtons(context, username.dataset.username, div);
 		}
 	})
 

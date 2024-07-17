@@ -179,6 +179,7 @@
 	display: flex;
 	flex-direction: column;
 	background-color: white;
+	position: relative;
 }
 
 #chat .discussion-header {
@@ -273,4 +274,27 @@
 
 #chat #discussion-input:focus {
 	outline: none;
+}
+
+#chat .discussion-menu {
+	display: none;
+	position: absolute;
+	right: 0;
+	top: var(--chat-discussion-header-height);
+
+	width: 100%;
+	height: auto;
+	background-color: transparent;
+
+	font-size: 14px;
+}
+
+#chat .discussion-menu button {
+	width: 100%;
+	height: 1.5vw;
+	margin: 0;
+	padding: 0;
+
+	background-color: rgb(120, 120, 120);
+	border: 0;
 }

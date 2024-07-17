@@ -328,8 +328,9 @@ const onLogin = async (context, loadedData = null, reloadNav = false) => {
 						.then(data => {
 							context.chat.FriendList = data.map(e => {
 								var res = {
-									username: context.user.username == e.author ? e.target : e.author,
+									username: context.user.username === e.author ? e.target : e.author,
 									pending: e.pending,
+									myRequest: context.user.username === e.author,
 								};
 								if (res.pending)
 									res.myRequest = context.user.username == e.author;

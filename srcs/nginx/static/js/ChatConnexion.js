@@ -47,6 +47,8 @@ class ChatConnexion
 				_this._on_new_friend(data, false);
 			else if (data.type == "status_change")
 				_this._on_status_change(data);
+			else if (data.type == "remove_friend")
+				_this._on_friend_remove(data);
 			else
 				console.log("TODO new notification: " + data.type + " - " + data.message, e);
 		};
@@ -83,14 +85,21 @@ class ChatConnexion
 	{
 		if (this.context.chat.FriendList)
 		{
-			var friend = this.context.chat.FriendList.find(e => e.username == data.friend);
+			var friend = this.context.chat.FriendList.find(e => e.username === data.friend);
 			if (!friend) {
-				friend = {username: data.friend, pending: pending};
+				friend = {username: data.friend, pending: pending, myRequest: data.myRequest};
 				this.context.chat.FriendList.push(friend);
 			}
 			else
 				friend.pending = pending;
 		}
+		RefreshFriendList(this.context);
+	}
+
+	_on_friend_remove(data)
+	{
+		if (this.context.chat.FriendList)
+			this.context.chat.FriendList = this.context.chat.FriendList.filter(e => e.username !== data.friend);
 		RefreshFriendList(this.context);
 	}
 
