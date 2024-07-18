@@ -1,14 +1,13 @@
 import json
 from typing import Any
 
-from ft_django.game_engine.game_server import GameServer
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 from django.db.models import Q
 from django.core import serializers
 
 from api_app.jwt import verify_token
-from api_app.models import User, PrivateChat, GameChat, FriendList
+from api_app.models import User, PrivateChat, FriendList
 
 connected_sockets = []
 

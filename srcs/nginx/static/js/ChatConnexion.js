@@ -49,6 +49,8 @@ class ChatConnexion
 				_this._on_status_change(data);
 			else if (data.type == "remove_friend")
 				_this._on_friend_remove(data);
+			else if (data.type == "tournamentMatchStart")
+				console.warn("todo");
 			else
 				console.log("TODO new notification: " + data.type + " - " + data.message, e);
 		};

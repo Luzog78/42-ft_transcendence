@@ -793,7 +793,6 @@ def view_tournament_tid(request: HttpRequest, tid: str):
 		return JsonResponse({'ok': True, **t[0].json()})
 	return JsonResponse({'ok': False, 'error': 'errors.tournamentNotFound'})
 
-
 @csrf_exempt
 def view_tournament_join(request: HttpRequest, tid: str, username: str):
 	if not (response := auth.is_authenticated(request)):
@@ -818,6 +817,7 @@ def view_tournament_join(request: HttpRequest, tid: str, username: str):
 	if username in tournament.players:
 		return JsonResponse({'ok': False, 'error': 'errors.alreadyJoined'})
 
+	print("call from ", response.user)
 	tournament.add_player(user.username)
 	return JsonResponse({'ok': True, 'success': 'successes.tournamentJoined'})
 

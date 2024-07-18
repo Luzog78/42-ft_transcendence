@@ -2,6 +2,7 @@ import random
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+import asyncio
 
 
 class Usernames(models.Model):
@@ -388,6 +389,7 @@ class Status(models.TextChoices):
 		return None
 
 
+# import traceback # todo remove
 class Match(models.Model):
 	'''
 	Required fields:
@@ -427,6 +429,9 @@ class Match(models.Model):
 		}
 
 	def add_player(self, player_username: str):
+		# for line in traceback.format_stack(): # todo remove
+		# 	print(line.strip())
+		# print("add player", player_username)
 		self.players.append(player_username)
 		if len(self.players) == self.player_count:
 			self.start()
@@ -434,6 +439,7 @@ class Match(models.Model):
 			self.save()
 
 	def start(self):
+		from ft_django.chat_socket import find_user_socket # circular import fix
 		self.status = Status.ONGOING
 		self.game = Game.objects.create(
 			uid=Game.new_uid(),
@@ -442,6 +448,10 @@ class Match(models.Model):
 			restricted=True,
 		)
 		self.save()
+		for player in self.players:
+			sockets = find_user_socket(player)
+			for socket in sockets:
+				asyncio.run(socket.sendJson({'type': 'tournamentMatchStart', 'gameUid': self.game.uid}))
 
 	def end(self):
 		assert self.game is not None
@@ -509,6 +519,7 @@ class Pool(models.Model):
 
 	def get_winners(self):
 		return [self.get_match(i).winner for i in range(len(self.matches))]
+
 
 
 class Tournament(models.Model):
