@@ -82,8 +82,10 @@ class ChatSocket(AsyncWebsocketConsumer):
 
 	async def sendJson(self, json_data):
 		print("sending", json_data)
-		await self.send(text_data=json.dumps(json_data))
-
+		try:
+			await self.send(text_data=json.dumps(json_data))
+		except:
+			print("socket disconnected")
 
 
 	async def authenticate(self, data, frontendId):

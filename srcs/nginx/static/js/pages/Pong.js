@@ -59,9 +59,13 @@ async function Pong(context, uid, data) {
 	div.appendChild(Persistents(context), div.firstChild);
 	div.appendChild(Chat(context));
 
+	let playid = div.querySelector("#playid-content");
 	let gameUid = div.querySelector("#game-uid");
 	let gameIcon = div.querySelector("#game-icon");
 	let search = div.querySelector(".search-text");
+
+	if (playid)
+		playid.dataset.uid = uid;
 
 	if (gameUid && gameIcon)
 		setupCopyKBDSpan(uid, gameIcon, [ gameUid ]);

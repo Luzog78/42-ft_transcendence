@@ -1,6 +1,7 @@
 /* variables */
 
 #chat {
+	--chat-height: 21vw;
 	--chat-border: 0.5vw 0.5vw 0 0;
 	--chat-header-height: 2.3vw;
 	--chat-navbar-width: 5vw;
@@ -13,8 +14,8 @@
 /* styles */
 
 #chat {
-	width: 14vw;
-	height: 17vw;
+	width: 18vw;
+	height: var(--chat-height);
 	position: absolute;
 	bottom: 0;
 	right: 2vw;
@@ -49,7 +50,7 @@
 }
 
 #chat .chat-container.hidden {
-	margin-top: 17vw;
+	margin-top: var(--chat-height);
 }
 
 /* header */
@@ -243,6 +244,25 @@
 #chat .message.right {
 	float: right;
 	margin-left: 100%;
+}
+
+#chat .message.gameInvite {
+	text-align: center;
+	width: 70%;
+}
+
+#chat .message.gameInvite .gameInvitge-title {
+	font-size: 1.4rem;
+}
+
+#chat .message.gameInvite p {
+	color: black;
+	margin-bottom: 0;
+}
+
+#chat .message.gameInvite button {
+	background-color: rgb(50, 50, 50);
+	border: none;
 }
 
 

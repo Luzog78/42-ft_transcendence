@@ -6,14 +6,13 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/18 09:49:29 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/18 10:59:18 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { persistSuccess, persistError, getLang, redirect } from "../script.js";
 import { getJson, postJson } from "../utils.js";
 import { pushPersistents } from "./Persistents.js";
-
 
 // main code
 
@@ -30,6 +29,42 @@ var openedDiscussion = null;
 //			}
 var cache = {}
 
+function buildMessage(content, side) {
+	var type = "message";
+	var jsonData;
+	if (content[0] === "`" && content[content.length - 1] === "`")
+		try {
+			jsonData = JSON.parse(content.slice(1, -1));
+			type = jsonData.type;
+		} catch (e) {
+		}
+	var messageBloc;
+
+	switch (type) {
+		case "gameInvite":
+			messageBloc = document.createElement("div");
+			messageBloc.classList.add("gameInvite");
+			messageBloc.innerHTML = /*html*/`
+				<!-- todo langs -->
+				<p class="gameInvite-title">Game Invite</p>
+				<p>Do you want to play?</p>
+				<button>Join</button>
+			`;
+			messageBloc.querySelector("button").onclick = () => {
+				redirect(`/play/${jsonData.gameId}`);
+			}
+
+			break;
+		default:
+			messageBloc = document.createElement("p");
+			messageBloc.innerText = content;
+			break;
+	}
+
+	messageBloc.classList.add("message");
+	messageBloc.classList.add(side);
+	return messageBloc;
+}
 
 function sendMessage(context, target, message) {
 	if (context && message != "") {
@@ -48,11 +83,8 @@ function sendMessage(context, target, message) {
 			var discussion = chat.querySelector(".discussion");
 			if (discussion.dataset.username !== target)
 				return;
-			var messageBloc = templates["message"].cloneNode(true);
-			messageBloc.innerText = message;
-			messageBloc.classList.add("right");
 			var discussion_content = discussion.querySelector(".discussion-content");
-			discussion_content.appendChild(messageBloc);
+			discussion_content.appendChild(buildMessage(message, "right"));
 			discussion_content.scrollTo(0, discussion_content.scrollHeight);
 		})
 		.catch(err => {
@@ -75,11 +107,8 @@ function ReceiveMessage(context, data) {
 		{
 			cache[data.from].discussion.push({author: data.from, content: data.content, id: data.messageId});
 
-			var messageBloc = templates["message"].cloneNode(true);
-			messageBloc.innerText = data.content;
-			messageBloc.classList.add("left");
 			var discussion_content = discussion.querySelector(".discussion-content");
-			discussion_content.appendChild(messageBloc);
+			discussion_content.appendChild(buildMessage(data.content, "left"));
 		}
 	}
 }
@@ -113,10 +142,7 @@ function openDiscussion(context, username, discussion = null) {
 				while (discussion_content.firstChild) // twice if message sent or received during fetch
 					discussion_content.removeChild(discussion_content.firstChild);
 				cache[username].discussion.forEach(data => {
-					let msg = templates["message"].cloneNode(true);
-					msg.classList.add(data.author === username ? 'left' : 'right');
-					msg.innerText = data['content'];
-					discussion_content.appendChild(msg);
+					discussion_content.appendChild(buildMessage(data.content, data.author === username ? 'left' : 'right'));
 				})
 				discussion_content.scrollTo(0, discussion_content.scrollHeight);
 			}
@@ -240,6 +266,7 @@ function refreshFriendMenuButtons(context, username, ChatBox = null) {
 	if (!ChatBox)
 		return;
 
+	var inviteBtn = ChatBox.querySelector("#InviteFriend");
 	var acceptBtn = ChatBox.querySelector("#AcceptFriend");
 	var denyBtn = ChatBox.querySelector("#DenyFriend");
 	var removeBtn = ChatBox.querySelector("#RemoveFriend");
@@ -301,7 +328,20 @@ function refreshFriendMenuButtons(context, username, ChatBox = null) {
 		removeBtn.onclick = removeFriend;
 	} else {
 		removeBtn.style.display = "none";
-		removeBtn.onclick = undefined;
+		inviteBtn.style.display = "none";
+	}
+
+	var playContent = document.getElementById("playid-content");
+	if (state == 3 && playContent) {
+		inviteBtn.style.display = "block";
+		inviteBtn.onclick = () => {
+			var message = '`' + JSON.stringify({type: "gameInvite", gameId: playContent.dataset.uid}) + '`';
+			sendMessage(context, username, message);
+		}
+
+	} else {
+		inviteBtn.style.display = "none";
+		inviteBtn.onclick = undefined
 	}
 
 	blockBtn.onclick = () => {
@@ -380,6 +420,8 @@ function Chat(context) {
 					<textarea id="discussion-input" rows=1></textarea>
 				</div>
 				<div class="discussion-menu">
+					<!-- todo langs -->
+					<button id="InviteFriend">Invite friend</button> 
 					<button id="AcceptFriend">Accept friend request</button>
 					<button id="DenyFriend">Deny friend request</button>
 					<button id="CancelFriend">Cancel friend request</button>
@@ -481,7 +523,6 @@ export {
 
 const templates = {
 	"friendBox": document.createElement("div"),
-	"message": document.createElement("p"),
 }
 
 templates["friendBox"].classList.add("friendBox");
@@ -492,9 +533,6 @@ templates["friendBox"].innerHTML = /*html*/`
 	</div>
 	<span></span>
 `;
-
-templates["message"].classList.add("message");
-
 
 window.profilePictureNotFound = (img) => {
 	console.log("fixing image error")
