@@ -6,12 +6,13 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/18 15:38:23 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/18 17:27:12 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { persistSuccess, persistError, getLang, redirect } from "../script.js";
 import { getJson, postJson } from "../utils.js";
+import { OnNotification } from "./NavBar.js";
 import { pushPersistents } from "./Persistents.js";
 
 // main code
@@ -28,6 +29,32 @@ var openedDiscussion = null;
 //				online: none,
 //			}
 var cache = {}
+var tournamentNotifications = {
+	unread: 0,
+	games: []
+}
+
+function GetNotificationsNumber() {
+	var res = tournamentNotifications.unread;
+	for (var username in cache)
+		res += (cache[username].unreadMessage || 0)
+	return res;
+}
+
+function refreshNotificationNumber(friendButton, username) {
+	if (!friendButton)
+		return;
+
+	let notifContainer = friendButton.querySelector(".notificationNumber");
+	if (cache[username] && (cache[username].unreadMessage || 0) !== 0) {
+		notifContainer.style.display = "block";
+		var nbNotif = cache[username].unreadMessage;
+		if (nbNotif > 9)
+			nbNotif = "9+";
+		notifContainer.innerText = nbNotif;
+	} else
+		notifContainer.style.display = "none";
+}
 
 function buildMessage(content, side) {
 	var type = "message";
@@ -100,10 +127,10 @@ function sendMessage(context, target, message) {
 function ReceiveMessage(context, data) {
 	var chat = document.getElementById("chat");
 	var discussion = chat && chat.querySelector(".discussion") || null
+	if (!cache[data.from])
+		cache[data.from] = {};
 	if (chat && chat.style.display != "none" && discussion.dataset.username == data.from)
 	{
-		if (!cache[data.from])
-			cache[data.from] = {};
 		if (!cache[data.from].discussion)
 			cache[data.from].discussion = [];
 		if (!cache[data.from].discussion.find(e => e.id == data.messageId))
@@ -114,17 +141,29 @@ function ReceiveMessage(context, data) {
 			discussion_content.appendChild(buildMessage(data.content, "left"));
 		}
 	}
+	else if (chat) {
+		if (!cache[data.from].unreadMessage)
+			cache[data.from].unreadMessage = 0;
+		cache[data.from].unreadMessage++;
+		OnNotification();
+		refreshNotificationNumber(chat.querySelector(`.friendBox[data-username="${data.from}"]`), data.from);
+	}
 }
 
-function openDiscussion(context, username, discussion = null) {
-	if (!discussion)
-		discussion = document.getElementById("chat").querySelector(".discussion");
+function openDiscussion(context, username, chat = null) {
+	if (!chat)
+		chat = document.getElementById("chat");
+	if (!chat)
+		return;
+	var discussion = chat.querySelector(".discussion");
 	openedDiscussion = username;
 	if (discussion && username) {
 		if (!cache[username])
 			cache[username] = {};
 		discussion.dataset.username = username;
-		
+		cache[username].unreadMessage = 0;
+		OnNotification();
+		refreshNotificationNumber(chat.querySelector(`.friendBox[data-username="${username}"]`), username);
 		discussion.querySelector(".discussion-header span").innerText = cache[username].full_name || username;
 		var profilePicture = discussion.querySelector(".discussion-header img");
 		profilePicture.onclick = () => {
@@ -255,6 +294,7 @@ function RefreshFriendList(context, chatBox = null) {
 					}
 				})
 			}
+			refreshNotificationNumber(friendButton, friend.username);
 		});
 		if (openedDiscussion) {
 			if (!context.chat.FriendList.find(e => e.username === openedDiscussion))
@@ -479,7 +519,7 @@ function Chat(context) {
 	else
 		ToggleChat(enabled, div);
 	if (openedDiscussion && enabled)
-		openDiscussion(context, openedDiscussion, div.querySelector(".discussion"));
+		openDiscussion(context, openedDiscussion, div);
 	return div;
 }
 
@@ -522,6 +562,7 @@ export {
 	RefreshFriendList,
 	ReceiveMessage,
 	SetPlayerStatus,
+	GetNotificationsNumber,
 }
 
 
@@ -540,6 +581,7 @@ templates["friendBox"].innerHTML = /*html*/`
 		<div class="online"></div>
 	</div>
 	<span></span>
+	<div class="notificationNumber"></div>
 `;
 
 window.profilePictureNotFound = (img) => {
