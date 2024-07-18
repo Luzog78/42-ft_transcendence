@@ -6,11 +6,12 @@
 #    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 15:11:13 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/17 17:15:00 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/18 13:28:23 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import datetime
+from .player import Player
 
 class Spectator:
 	def __init__(self, lobby, client, client_id: int) -> None:
@@ -39,8 +40,13 @@ class Spectator:
 
 		for i in range(self.lobby.clients_per_lobby):
 			player = self.lobby.clients[i]
+			username = ""
+			if (isinstance(player, Player)):
+				username = player.client.username
+			else:
+				username = f"Bot_{i}"
 			await self.sendData("call", {"command": "scene.server.newPlayer",
-									"args": [f"'player{i}'", f"'{player.client.username}'"]})
+									"args": [f"'player{i}'", f"'{username}'"]})
 
 	def isUp(self):
 		keys = ["w", "ArrowLeft"]

@@ -15,6 +15,7 @@ import random
 
 from .vector import Vector
 from .player import Player
+from .raytrace import RayTrace
 
 class Ball:
 	def __init__(self, lobby, radius, id):
@@ -25,9 +26,9 @@ class Ball:
 		self.terminal_velocity:		float = 8
 		self.current_vel_length:	float = 0
 
-		self.pos: Vector = Vector(0, 0)
-		self.vel: Vector = Vector(0, 0)
-		self.acc: Vector = Vector(0, 0)
+		self.pos: 		Vector = Vector(0, 0)
+		self.vel: 		Vector = Vector(0, 0)
+		self.acc: 		Vector = Vector(0, 0)
 
 		self.last_player: Player | None = None
 
@@ -53,6 +54,7 @@ class Ball:
 			direction = Vector(0.5,0.5)
 		else:
 			direction = Vector(random.uniform(0,1) - 0.5, random.uniform(0,1) - 0.5)
+		direction = Vector(0,5)
 		direction.setLength(math.sqrt(player_number) * 0.8 * (ball_modifier + 1))
 
 		return direction
@@ -85,6 +87,8 @@ class Ball:
 			return
 
 		player = self.lobby.clients[int(wallname.replace("player", ""))]
+		if (isinstance(player, Player) == False):
+			return
 		player_space = player.keyboard[" "] if " " in player.keyboard else False
 
 		angle = 0
@@ -108,8 +112,8 @@ class Ball:
 		self.acc.setLength(self.vel.length() * 2)
 
 
-	async def applyCollision(self, wall_name:str, predicted_ball_pos:Vector, closest_point:Vector, distance:float):
-		collision_normal = (predicted_ball_pos - closest_point).normalize()
+	async def applyCollision(self, wall_name:str, ball_pos:Vector, closest_point:Vector, distance:float):
+		collision_normal = (ball_pos - closest_point).normalize()
 
 		self.resolutionCollision(collision_normal, distance)
 		self.ballEffect(wall_name, collision_normal)
@@ -120,14 +124,22 @@ class Ball:
 
 	async def checkCollision(self):
 		walls_copy = self.lobby.walls.copy()
-		for wall_name in walls_copy:
+
+		trace = RayTrace(self.pos, self.vel.normalize())
+		intersection = trace.intersects(walls_copy)
+
+		for wall_name in intersection:
 			wall = walls_copy[wall_name]
+			intersection_point = intersection[wall_name]
 
-			predicted_ball_pos = self.pos + self.vel * self.lobby.game_server.dt
-			closest_point = Ball.closestPointOnSegment(wall[0], wall[1], predicted_ball_pos)
-			distance = closest_point.distance(predicted_ball_pos)
+			predicted_pos = self.pos + self.vel * self.lobby.game_server.dt * 3
 
-			if (distance <= self.radius):
+			max_distance = self.pos.distance(predicted_pos)
+			current_distance = predicted_pos.distance(intersection_point)
+
+
+			if (current_distance <= max_distance):
+				closest_point = Ball.closestPointOnSegment(wall[0], wall[1], predicted_pos)
 				if ("score" in wall_name):
 					player_name = wall_name.replace("score", "player")
 					await self.lobby.playerDied(self, player_name)
@@ -145,7 +157,7 @@ class Ball:
 				if (self.vel.length() > self.lobby.ball_ultimate_speed):
 					self.lobby.ball_ultimate_speed = self.vel.length()
 
-				await self.applyCollision(wall_name, predicted_ball_pos, closest_point, distance)
+				await self.applyCollision(wall_name, predicted_pos, closest_point, current_distance)
 
 	async def update(self):
 		self.pos += self.vel * self.lobby.game_server.dt
@@ -155,5 +167,5 @@ class Ball:
 
 		await self.checkCollision()
 
-		if (self.vel.length() > self.terminal_velocity):
-			self.vel.setLength(self.terminal_velocity)
+		# if (self.vel.length() > self.terminal_velocity):
+			# self.vel.setLength(self.terminal_velocity)

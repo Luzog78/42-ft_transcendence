@@ -32,6 +32,9 @@ class Vector:
 
 	def __str__(self):
 		return f"({self.x}, {self.y})"
+	
+	def __repr__(self) -> str:
+		return f"Vector({self.x}, {self.y})"
 
 	def length(self):
 		return (self.x ** 2 + self.y ** 2) ** 0.5
@@ -43,12 +46,16 @@ class Vector:
 
 	def normalize(self):
 		length = self.length()
+		if (length == 0):
+			return Vector(0, 0)
 		return Vector(self.x / length, self.y / length)
 
 	def dot(self, other):
 		return self.x * other.x + self.y * other.y
 
 	def angle(self, other):
+		if (self.length() == 0 or other.length() == 0):
+			return 0
 		return math.acos(self.dot(other) / (self.length() * other.length()))
 
 	def project(self, other):

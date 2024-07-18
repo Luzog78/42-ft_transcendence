@@ -22,6 +22,7 @@ from .ball import Ball
 from .vector import Vector
 from .player import Player
 from .spectator import Spectator
+from .bot import Bot
 
 class Lobby:
 	def __init__(self, game_server, uid: str, game_mode: str, player_num: int, theme: int, ball_speed: float, limit):
@@ -122,6 +123,8 @@ class Lobby:
 		player_list = self.clients + self.dead_clients
 
 		for player in player_list:
+			if (isinstance(player, Bot)):
+				continue
 			print("save stats of", player.client.username)
 			user = User.objects.get(username=player.client.username)
 			assert user is not None
@@ -165,7 +168,7 @@ class Lobby:
 
 		Tournament.on_game_end(self.uid)
 
-	async def BRDied(self, player_id: int, player: Player):
+	async def BRDied(self, player_id: int, player: Player | Bot):
 		if (self.clients_per_lobby == 2):
 			winner = self.clients[player_id - 1]
 			winner.duration = datetime.timestamp(datetime.now()) - winner.start_time + 2
@@ -189,7 +192,10 @@ class Lobby:
 		for c in self.clients:
 			if (c.client_id > player_id):
 				c.client_id -= 1
-			await c.initPlayer()
+			if (isinstance(c, Player)):
+				await c.initPlayer()
+			if (isinstance(c, Bot)):
+				await c.initBot()
 		for s in self.spectators:
 			await s.initSpectator()
 
@@ -236,6 +242,13 @@ class Lobby:
 			self.game_server.kill(self)
 			return
 
+	async def fillBot(self):
+		bots_num = self.clients_per_lobby - len(self.clients)
+		starting_id = len(self.clients)
+		for i in range(bots_num):
+			bot = Bot(self, i + starting_id)
+			await self.addBot(bot)
+
 	async def update(self):
 		while self.running:
 			if (self.game_mode == "TO" and self.start_time != 0 and datetime.timestamp(datetime.now()) - self.start_time > self.limit):
@@ -268,6 +281,10 @@ class Lobby:
 
 		if ("ready" in data):
 			self.client_ready[client_id] = True
+
+			# TODO: temporarly
+			await self.fillBot()
+
 			if (len(self.clients) == self.clients_per_lobby):
 				async def countdown(lobby: Lobby):
 					time.sleep(3)
@@ -275,12 +292,14 @@ class Lobby:
 						lobby.start_time = datetime.timestamp(datetime.now())
 
 					lobby.balls[0].vel = Ball.getBallSpeed(lobby.clients_per_lobby, self.ball_speed)
+					await lobby.balls[0].updateBall()
+
 					clients = lobby.clients + lobby.spectators
 					for c in clients:
-						if isinstance(c, Player):
+						if isinstance(c, Player) or isinstance(c, Bot):
 							c.start_time = datetime.timestamp(datetime.now())
-						await lobby.balls[0].updateBall()
-						await c.sendData("game_status", "START")
+						if (isinstance(c, Player) or isinstance(c, Spectator)):
+							await c.sendData("game_status", "START")
 
 				threading.Thread(target=asyncio.run, args=(countdown(self),)).start()
 
@@ -300,6 +319,10 @@ class Lobby:
 		self.spectators.append(spectator)
 		await spectator.initSpectator()
 
+	async def addBot(self, bot: Bot):
+		self.clients.append(bot)
+		await bot.initBot()
+
 	def removeClient(self, client: Player):
 		if (client in self.clients):
 			self.clients.remove(client)
@@ -309,13 +332,14 @@ class Lobby:
 
 	async def sendData(self, *args):
 		for c in self.clients:
-			await c.sendData(*args)
+			if (isinstance(c, Player)):
+				await c.sendData(*args)
 		for s in self.spectators:
 			await s.sendData(*args)
 
 	async def sendToOther(self, client, *args):
 		for c in self.clients:
-			if (c != client):
+			if (c != client and isinstance(c, Player)):
 				await c.sendData(*args)
 		for s in self.spectators:
 			await s.sendData(*args)

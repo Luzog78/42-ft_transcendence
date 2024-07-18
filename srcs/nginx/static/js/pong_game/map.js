@@ -44,13 +44,39 @@ function initMap(scene, theme, time_left)
 function getColorTheme(theme, player_num)
 {
 	const colors = {}
+	colors["mapN"] = {}
+	colors["map2"] = {}
 
 	if (theme == 0)
+	{
 		for (let i = 0; i < player_num; i++)
-			colors[i] = new THREE.Color().setHSL(i / player_num, 1, 0.8, THREE.SRGBColorSpace);
+			colors["mapN"][i] = new THREE.Color().setHSL(i / player_num, 1, 0.8, THREE.SRGBColorSpace);
+		colors["map2"][0] = new THREE.Color(0x1f56b5);
+		colors["map2"][1] = new THREE.Color(0xff4f4f);
+	}
 	else if (theme == 1)
+	{
 		for (let i = 0; i < player_num; i++)
-			colors[i] = new THREE.Color().setHSL(0, 0, i / (player_num / 2), THREE.SRGBColorSpace);
+			colors["mapN"][i] = new THREE.Color().setRGB(0.5, 0.5, 0.5, THREE.SRGBColorSpace);
+		colors["map2"][0] = new THREE.Color().setRGB(0.5, 0.5, 0.5, THREE.SRGBColorSpace);
+		colors["map2"][1] = new THREE.Color().setRGB(0.5, 0.5, 0.5, THREE.SRGBColorSpace);
+	}
+	else if (theme == 2)
+	{
+		for (let i = 0; i < player_num; i++)
+			colors["mapN"][i] = new THREE.Color().setHSL((i / player_num) + 0.3, 0.5, 0.8, THREE.SRGBColorSpace);
+		colors["map2"][0] = new THREE.Color(0x6B87B8);
+		colors["map2"][1] = new THREE.Color(0xDF7777);
+	}
+	else if (theme == 3)
+	{
+		let startColor = new THREE.Color(0xB85194); // Rouge
+		let endColor = new THREE.Color(0xFFB870); // Bleu
+		for (let i = 0; i < player_num; i++)
+			colors["mapN"][i] = startColor.clone().lerp(endColor, i / (player_num - 1));
+		colors["map2"][0] = startColor;
+		colors["map2"][1] = endColor;
+	}
 	return colors
 }
 
@@ -82,7 +108,7 @@ function initNPlayerMap(scene, player_num, colors)
 		let player_name = "player" + i
 		let playerSize = vertex.distanceTo(next_vertex) * 0.3;
 		let middle_point = new THREE.Vector3().addVectors(vertex, next_vertex).multiplyScalar(0.5);
-		let color = colors[i];
+		let color = colors["mapN"][i];
 		let angle = Math.atan2(next_vertex.z - vertex.z, next_vertex.x - vertex.x);
 
 		let player_position = new THREE.Vector3(middle_point.x, 0.15, middle_point.z - 0.075);
@@ -128,7 +154,7 @@ function initNPlayerMap(scene, player_num, colors)
 
 	let colors_wall = [];
 	for (let i = 0; i < player_num; i++)
-		colors_wall.push(colors[i]);
+		colors_wall.push(colors["mapN"][i]);
 	colors_wall.push(colors_wall[0]);
 
 	for (let i = 0; i < 8; i++)
@@ -165,7 +191,7 @@ function initCamera(scene, player_num, following_player = null)
 	scene.camera.setPosition(camera_pos.x, camera_pos.y, camera_pos.z);
 }
 
-async function init2PlayerMap(scene, color_theme)
+async function init2PlayerMap(scene, colors)
 {
 	let spotLight = new THREE.SpotLight( 0xffffff, 20);
 	spotLight.position.set( 0, 1, 6 );
@@ -177,8 +203,8 @@ async function init2PlayerMap(scene, color_theme)
 	spotLight.castShadow = true;
 	scene.add( spotLight , "spotLight");
 
-	scene.entities.push(new Player(scene, {color: 0x1f56b5, emissive:0x1f56b5, emissiveIntensity:9}, 1, 0, new THREE.Vector3(0,0.15,4.075), "player0"));
-	scene.entities.push(new Player(scene, {color: 0xff4f4f, emissive:0xff4f4f, emissiveIntensity:3}, 1, 0, new THREE.Vector3(0,0.15,-4.075), "player1"));
+	scene.entities.push(new Player(scene, {color: colors["map2"][0], emissive: colors["map2"][0], emissiveIntensity:9}, 1, 0, new THREE.Vector3(0,0.15,4.075), "player0"));
+	scene.entities.push(new Player(scene, {color: colors["map2"][1], emissive: colors["map2"][1], emissiveIntensity:3}, 1, 0, new THREE.Vector3(0,0.15,-4.075), "player1"));
 
 	if (scene.server.client_id == 0)
 		scene.get("player1").player.visible = false;
@@ -196,10 +222,10 @@ async function init2PlayerMap(scene, color_theme)
 	];
 
 	let colors_wall = [
-		new THREE.Color().setHSL(0.5, 1, 0.5, THREE.SRGBColorSpace),
-		new THREE.Color().setHSL(0.5, 1, 0.85, THREE.SRGBColorSpace),
+		colors["map2"][0],
+		colors["map2"][0],
 		new THREE.Color().setHSL(0.75, 1, 1.0, THREE.SRGBColorSpace),
-		new THREE.Color().setHSL(1.0, 1, 0.75, THREE.SRGBColorSpace),
+		colors["map2"][1]
 	]
 
 	for (let i = 0; i < 8; i++)
