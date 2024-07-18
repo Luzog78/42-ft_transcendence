@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/17 15:55:23 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/18 09:49:29 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,6 +302,24 @@ function refreshFriendMenuButtons(context, username, ChatBox = null) {
 	} else {
 		removeBtn.style.display = "none";
 		removeBtn.onclick = undefined;
+	}
+
+	blockBtn.onclick = () => {
+		postJson(context, '/api/friends/block', {
+			target: username
+		}).then(res => {
+			if (res.ok) {
+				persistSuccess(context, getLang(context, res.success));
+				pushPersistents(context);
+				delete cache[username];
+				if (context.chat.FriendList)
+					context.chat.FriendList = context.chat.FriendList.filter(e => e.username !== username);
+				RefreshFriendList(context, ChatBox);
+			} else {
+				persistError(context, getLang(context, res.error));
+				pushPersistents(context);
+			}
+		})
 	}
 
 	

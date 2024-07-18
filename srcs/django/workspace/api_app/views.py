@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 from django.db.models import Q
 
-from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament, Usernames, FriendList
+from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament, Usernames, FriendList, BlockList
 from . import auth, checker
 from ft_django import pong_socket, settings
 from ft_django.chat_socket import find_user_socket
@@ -906,6 +906,13 @@ def view_add_friend(request: HttpRequest):
 	if not (user := User.get(response.user)) or not (target := User.get(data['target'])):
 		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
 
+	block_relation = BlockList.objects.filter(Q(author=user, target=target))
+	if block_relation:
+		block_relation.delete()
+	block_relation = BlockList.objects.filter(Q(author=target, target=user))
+	if block_relation:
+		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
+
 	try:
 		friend_relation = FriendList.objects.get(Q(author=user, target=target) | Q(author=target, target=user))
 		if friend_relation.pending == False:
@@ -978,6 +985,31 @@ def view_get_friends(request: HttpRequest):
 	friend_list = [friend.json() for friend in friend_list]
 	return JsonResponse({'ok': True, "data": friend_list})
 
+@csrf_exempt
+def view_block_user(request: HttpRequest):
+	if not (response := auth.is_authenticated(request)):
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+	if 'target' not in data or not isinstance(data['target'], str):
+		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+	if not (user := User.get(response.user)) or not (target := User.get(data['target'])):
+		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
+
+	try:
+		block_relation = BlockList.objects.get(Q(author=user, target=target))
+		return JsonResponse({'ok': False, 'error': 'errors.AlreadyBlocked'}) # todo lang
+	except BlockList.DoesNotExist:
+		block_relation = BlockList(author=user, target=target)
+		block_relation.save()
+		friend_relation = FriendList.objects.filter(Q(author=user, target=target) | Q(target=user, author=target))
+		if friend_relation:
+			friend_relation.delete()
+
+		for targetSocket in find_user_socket(data['target']):
+			asyncio.run(targetSocket.sendJson({'type': 'remove_friend', 'friend': response.user}))
+		return JsonResponse({'ok': True, 'success': 'successes.blocked'})
 
 @csrf_exempt
 def view_test(request: HttpRequest, whatever: int):

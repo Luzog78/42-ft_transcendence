@@ -723,3 +723,17 @@ class FriendList(models.Model):
 			'target': self.target.username,
 			'pending': self.pending,
 		}
+
+class BlockList(models.Model):
+	'''
+	todo docstring
+	'''
+
+	author		= models.ForeignKey(User, related_name='+', on_delete=models.CASCADE, null=False)
+	target		= models.ForeignKey(User, related_name='+', on_delete=models.CASCADE, null=False)
+
+	def json(self):
+		return {
+			'author': self.author.username,
+			'target': self.target.username,
+		}

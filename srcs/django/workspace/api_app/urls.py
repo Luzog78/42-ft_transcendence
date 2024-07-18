@@ -9,7 +9,7 @@ from .views import endpoints, view_err404, view_test, view_root, \
 					view_tournament_get, view_tournament_new, view_tournament_lst,\
 					view_tournament_tid, view_tournament_join, view_tournament_quit, \
 					view_ressource, view_pong, \
-					view_add_friend, view_remove_friend, view_get_friends
+					view_add_friend, view_remove_friend, view_get_friends, view_block_user
 
 
 urlpatterns = [ re_path('.*', view_err404) ]
@@ -49,4 +49,5 @@ r(view_pong,			'pong')
 r(view_add_friend,		'friends/add')
 r(view_remove_friend,	'friends/remove')
 r(view_get_friends,		'friends/list')
+r(view_block_user,		'friends/block')
 r(view_test,			'<int:whatever>')
