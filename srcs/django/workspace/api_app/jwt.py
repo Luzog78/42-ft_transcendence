@@ -14,7 +14,7 @@ def generate_token(user):
 	}
 	jwt_payload = {
 		"user": user,
-		"exp": int(time.time()) + 60 * 60  # 1 hour
+		"exp": int(time.time()) + 60 * 60 * 24 * 30  # 30 days
 	}
 	jwt_header_json = json.dumps(jwt_header)
 	jwt_payload_json = json.dumps(jwt_payload)

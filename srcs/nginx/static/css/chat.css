@@ -99,6 +99,7 @@
 	padding: 0.1vw;
 	background-color: rgb(230, 230, 230);
 	transition: background-color 0.2s;
+	position: relative;
 }
 
 #chat .friendBox:hover {
@@ -168,6 +169,22 @@
 
 #chat .friendBox#addFriendButton[style*='display: none'] ~ #chat-friendList {
 	height: calc(100% - var(--chat-navbar-row));
+}
+
+#chat .friendBox .notificationNumber {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 5%;
+
+	width: 1rem;
+	height: 1rem;
+	font-size: 0.7rem;
+	text-align: center;
+	border-radius: 50%;
+	line-height: 1rem;
+
+	background-color: red;
 }
 
 

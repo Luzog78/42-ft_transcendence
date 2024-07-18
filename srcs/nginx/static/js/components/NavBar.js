@@ -12,7 +12,7 @@
 
 import { getLang, onLogin, persistError, redirect } from "../script.js";
 import { getJson } from "../utils.js";
-import { ToggleChat } from "./Chat.js";
+import { GetNotificationsNumber, ToggleChat } from "./Chat.js";
 
 
 var stunned = false;
@@ -32,10 +32,13 @@ async function NavBar(title, context, fetchProfile = true) {
 
 	let div = document.createElement("div");
 	div.innerHTML = /*html*/`
-		<nav id="#navbar" class="navbar">
+		<nav id="navbar" class="navbar">
 			<div class="container-fluid">
 				<div class="navbar-brand">
-					<img class="notSelectable" src="/static/img/menu.svg" alt="Menu" id="menu-trigger">
+					<div id="menu-trigger">
+						<img class="notSelectable" src="/static/img/menu.svg" alt="Menu">
+						<div class="notificationNumber"></div>
+					</div>
 					<div id="menu-container">
 						<img class="notSelectable" src="/static/img/circle1.svg" alt="">
 						<img class="notSelectable" src="/static/img/circle2.svg" alt="">
@@ -43,6 +46,7 @@ async function NavBar(title, context, fetchProfile = true) {
 						<img class="notSelectable" src="/static/img/game.svg" alt="" id="goto-play">
 						<img class="notSelectable" src="/static/img/win.svg" alt="" id="goto-tour">
 						<img class="notSelectable" src="/static/img/chat.svg" alt="" id="goto-chat">
+						<div class="notificationNumber"></div>
 					</div>
 				</div>
 				<h1>
@@ -86,55 +90,59 @@ async function NavBar(title, context, fetchProfile = true) {
 		let gotoPlay = div.querySelector("#goto-play");
 		let gotoTour = div.querySelector("#goto-tour");
 		let gotoChat = div.querySelector("#goto-chat");
+		var gotoChatNotification = div.querySelector("#menu-container .notificationNumber");
 
-		if (!menu || !menuContainer || !gotoPlay || !gotoTour || !gotoChat)
+		if (!menu || !menuContainer || !gotoPlay || !gotoTour || !gotoChat || !gotoChatNotification)
 			return;
 		menu.onclick = () => {
 			if (stunned)
 				return;
 			if (menuContainer.style.display === "none" || menuContainer.style.display === "") {
-				openMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
+				openMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat, gotoChatNotification);
 			} else {
-				closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
+				closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat, gotoChatNotification);
 			}
 		};
 		gotoPlay.onclick = () => {
 			if (stunned)
 				return;
-			closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
+			closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat, gotoChatNotification);
 			setTimeout(() => redirect("/play"), 900);
 		};
 		gotoTour.onclick = () => {
 			if (stunned)
 				return;
-			closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
+			closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat, gotoChatNotification);
 			setTimeout(() => redirect("/tournament"), 900);
 		};
 		gotoChat.onclick = () => {
 			if (stunned)
 				return;
-			closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat);
+			closeMenu(menu, menuContainer, gotoPlay, gotoTour, gotoChat, gotoChatNotification);
 			ToggleChat();
 		};
+		OnNotification(div.querySelector("#navbar"));
 	return div;
 }
 
-function openMenu(menu, container, gotoPlay, gotoTour, gotoChat) {
-	if (!menu || !container || !gotoPlay || !gotoTour || !gotoChat)
+function openMenu(menu, container, gotoPlay, gotoTour, gotoChat, gotoChatNotification) {
+	if (!menu || !container || !gotoPlay || !gotoTour || !gotoChat || !gotoChatNotification)
 		return;
 
+	var menuImg = menu.querySelector("img");
 	stunned = true;
-	menu.style.transform = "rotate(0deg)";
+	menuImg.style.transform = "rotate(0deg)";
 	container.style.display = "inline-block";
 	container.style.transform = "scale(0.001)";
 	container.style.opacity = "0";
 	gotoPlay.style.opacity = "0";
 	gotoTour.style.opacity = "0";
 	gotoChat.style.opacity = "0";
+	gotoChatNotification.style.opacity = "0";
 	setTimeout(() => {
 		container.style.opacity = "1";
 		container.style.transform = "scale(1)";
-		menu.style.transform = "rotate(-90deg)";
+		menuImg.style.transform = "rotate(-90deg)";
 	}, 50);
 	setTimeout(() => {
 		gotoPlay.style.opacity = "1";
@@ -144,6 +152,7 @@ function openMenu(menu, container, gotoPlay, gotoTour, gotoChat) {
 	}, 700);
 	setTimeout(() => {
 		gotoChat.style.opacity = "1";
+		gotoChatNotification.style.opacity = "1";
 	}, 900);
 	setTimeout(() => {
 		stunned = false;
@@ -153,24 +162,27 @@ function openMenu(menu, container, gotoPlay, gotoTour, gotoChat) {
 	document.addEventListener("keydown", (event) => {
 		if (event.key === "Escape" && !stunned && container.style.display !== "none") {
 			event.preventDefault();
-			closeMenu(menu, container, gotoPlay, gotoTour, gotoChat);
+			closeMenu(menu, container, gotoPlay, gotoTour, gotoChat, gotoChatNotification);
 		}
 	});
 }
 
-function closeMenu(menu, container, gotoPlay, gotoTour, gotoChat) {
-	if (!menu || !container || !gotoPlay || !gotoTour || !gotoChat)
+function closeMenu(menu, container, gotoPlay, gotoTour, gotoChat, gotoChatNotification) {
+	if (!menu || !container || !gotoPlay || !gotoTour || !gotoChat || !gotoChatNotification)
 		return;
 
+	var menuImg = menu.querySelector("img");
 	stunned = true;
-	menu.style.transform = "rotate(-90deg)";
+	menuImg.style.transform = "rotate(-90deg)";
 	container.style.opacity = "1";
 	gotoPlay.style.opacity = "1";
 	gotoTour.style.opacity = "1";
 	gotoChat.style.opacity = "1";
+	gotoChatNotification.style.opacity = "1";
 	setTimeout(() => {
+		gotoChatNotification.style.opacity = "0";
 		gotoChat.style.opacity = "0";
-		menu.style.transform = "rotate(0deg)";
+		menuImg.style.transform = "rotate(0deg)";
 	}, 50);
 	setTimeout(() => {
 		gotoTour.style.opacity = "0";
@@ -188,10 +200,32 @@ function closeMenu(menu, container, gotoPlay, gotoTour, gotoChat) {
 }
 
 async function overrideNavBar(title, context) {
-	let container = document.getElementById("#navbar");
+	let container = document.getElementById("navbar");
 	if (container)
 		container.outerHTML = await NavBar(title, context, false);
 }
 
+function OnNotification(navbar = null) {
+	if (!navbar)
+		navbar = document.getElementById("navbar");
+	if (!navbar)
+		return;
+	var nbNotification = GetNotificationsNumber();
+	var notifContainers = navbar.querySelectorAll(".notificationNumber")
+	if (nbNotification > 9)
+		nbNotification = "9+";
+	// else if (nbNotification !== 0)
+	// 	nbNotification.toString();
+	for (let notifContainer of notifContainers) {
+		if (nbNotification !== 0) {
+			notifContainer.style.display = "block";
+			notifContainer.innerText = nbNotification;
+		}
+		else
+			notifContainer.style.display = "none";
+	}
+	
+}
 
-export { NavBar, overrideNavBar };
+
+export { NavBar, overrideNavBar, OnNotification };

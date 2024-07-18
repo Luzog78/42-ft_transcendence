@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 from django.db.models import Q
 
-from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament, Usernames, FriendList, BlockList
+from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament, Usernames, FriendList, BlockList, PrivateChat
 from . import auth, checker
 from ft_django import pong_socket, settings
 from ft_django.chat_socket import find_user_socket
@@ -793,7 +793,6 @@ def view_tournament_tid(request: HttpRequest, tid: str):
 		return JsonResponse({'ok': True, **t[0].json()})
 	return JsonResponse({'ok': False, 'error': 'errors.tournamentNotFound'})
 
-
 @csrf_exempt
 def view_tournament_join(request: HttpRequest, tid: str, username: str):
 	if not (response := auth.is_authenticated(request)):
@@ -818,6 +817,7 @@ def view_tournament_join(request: HttpRequest, tid: str, username: str):
 	if username in tournament.players:
 		return JsonResponse({'ok': False, 'error': 'errors.alreadyJoined'})
 
+	print("call from ", response.user)
 	tournament.add_player(user.username)
 	return JsonResponse({'ok': True, 'success': 'successes.tournamentJoined'})
 
@@ -979,9 +979,6 @@ def view_get_friends(request: HttpRequest):
 		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
 	
 	friend_list = FriendList.objects.filter(Q(author=user) | Q(target=user))
-	for friend in friend_list:
-		print(friend)
-		print(friend.json())
 	friend_list = [friend.json() for friend in friend_list]
 	return JsonResponse({'ok': True, "data": friend_list})
 
@@ -1010,6 +1007,55 @@ def view_block_user(request: HttpRequest):
 		for targetSocket in find_user_socket(data['target']):
 			asyncio.run(targetSocket.sendJson({'type': 'remove_friend', 'friend': response.user}))
 		return JsonResponse({'ok': True, 'success': 'successes.blocked'})
+
+@csrf_exempt
+def view_send_message(request: HttpRequest):
+	if not (response := auth.is_authenticated(request)):
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+	if 'target' not in data or 'content' not in data \
+		or not isinstance(data['target'], str) or not isinstance(data['content'], str):
+			return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+	if len(data['content']) > 2048:
+		return JsonResponse({'ok': False, 'error': 'errors.MessageTooLong'})
+	
+	try:
+		author = User.objects.get(username=response.user)
+		target = User.objects.get(username=data['target'])
+
+		message = PrivateChat(author=author, target=target, content=data['content'])
+		message.save()
+		targetSockets = find_user_socket(data['target'])
+		for targetSocket in targetSockets:
+			asyncio.run(targetSocket.sendJson({'type': 'new_private_message', 'from': response.user, 'content': data['content'], 'messageId': message.id}))
+		return JsonResponse({'ok': True, 'messageId': message.id})
+	except User.DoesNotExist:
+		return JsonResponse({'ok': False, 'error': 'errors.UserNotFound'})
+
+@csrf_exempt
+def view_get_messages(request: HttpRequest):
+	if not (response := auth.is_authenticated(request)):
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
+	if request.method != 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+	if 'channelType' not in data or (data['channelType'] != 0 and data['channelType'] != 1) \
+		or 'target' not in data:
+			return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+
+	try:
+		usr = User.objects.get(username=response.user)
+		if data['channelType'] == 0:
+			target = User.objects.get(username=data['target'])
+			messages = PrivateChat.objects.filter(Q(author=usr, target=target) | Q(author=target, target=usr))
+			messages = [msg.json(json_users=False) for msg in messages]
+			return JsonResponse({'ok': True, 'messages': messages})
+		else:
+			return JsonResponse({'ok': False, 'error': 'errors.NotImplementedYet'}) # todo lang or game messages
+	except User.DoesNotExist:
+		return JsonResponse({'ok': False, 'error': 'errors.UserNotFound'})
 
 @csrf_exempt
 def view_test(request: HttpRequest, whatever: int):

@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/18 10:59:18 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/18 17:27:12 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { persistSuccess, persistError, getLang, redirect } from "../script.js";
 import { getJson, postJson } from "../utils.js";
+import { OnNotification } from "./NavBar.js";
 import { pushPersistents } from "./Persistents.js";
 
 // main code
 
-var enabled = true; // todo set to false by default
+var enabled = false;
 var searchInput = "";
 var openedDiscussion = null;
 
@@ -28,6 +29,32 @@ var openedDiscussion = null;
 //				online: none,
 //			}
 var cache = {}
+var tournamentNotifications = {
+	unread: 0,
+	games: []
+}
+
+function GetNotificationsNumber() {
+	var res = tournamentNotifications.unread;
+	for (var username in cache)
+		res += (cache[username].unreadMessage || 0)
+	return res;
+}
+
+function refreshNotificationNumber(friendButton, username) {
+	if (!friendButton)
+		return;
+
+	let notifContainer = friendButton.querySelector(".notificationNumber");
+	if (cache[username] && (cache[username].unreadMessage || 0) !== 0) {
+		notifContainer.style.display = "block";
+		var nbNotif = cache[username].unreadMessage;
+		if (nbNotif > 9)
+			nbNotif = "9+";
+		notifContainer.innerText = nbNotif;
+	} else
+		notifContainer.style.display = "none";
+}
 
 function buildMessage(content, side) {
 	var type = "message";
@@ -68,28 +95,31 @@ function buildMessage(content, side) {
 
 function sendMessage(context, target, message) {
 	if (context && message != "") {
-		context.chat.ChatConnexion.sendMessage(target, message)
-		.then(resp => {
-			console.log(resp)
-			if (!cache[target])
-				cache[target] = {};
-			if (!cache[target].discussion)
-				cache[target].discussion = [];
-			cache[target].discussion.push({author: context.user.username, content: message, id: resp.messageId});
-			
-			var chat = document.getElementById("chat");
-			if (!chat)
-				return;
-			var discussion = chat.querySelector(".discussion");
-			if (discussion.dataset.username !== target)
-				return;
-			var discussion_content = discussion.querySelector(".discussion-content");
-			discussion_content.appendChild(buildMessage(message, "right"));
-			discussion_content.scrollTo(0, discussion_content.scrollHeight);
+		postJson(context, '/api/message/send', {
+			target: target,
+			content: message,
 		})
-		.catch(err => {
-			persistError(context, getLang(context, err));
-			pushPersistents(context);
+		.then(resp => {
+			if (resp.ok) {
+				if (!cache[target])
+					cache[target] = {};
+				if (!cache[target].discussion)
+					cache[target].discussion = [];
+				cache[target].discussion.push({author: context.user.username, content: message, id: resp.messageId});
+				
+				var chat = document.getElementById("chat");
+				if (!chat)
+					return;
+				var discussion = chat.querySelector(".discussion");
+				if (discussion.dataset.username !== target)
+					return;
+				var discussion_content = discussion.querySelector(".discussion-content");
+				discussion_content.appendChild(buildMessage(message, "right"));
+				discussion_content.scrollTo(0, discussion_content.scrollHeight);
+			} else {
+				persistError(context, getLang(context, resp.error));
+				pushPersistents(context);
+			}
 		})
 	}
 }
@@ -97,10 +127,10 @@ function sendMessage(context, target, message) {
 function ReceiveMessage(context, data) {
 	var chat = document.getElementById("chat");
 	var discussion = chat && chat.querySelector(".discussion") || null
+	if (!cache[data.from])
+		cache[data.from] = {};
 	if (chat && chat.style.display != "none" && discussion.dataset.username == data.from)
 	{
-		if (!cache[data.from])
-			cache[data.from] = {};
 		if (!cache[data.from].discussion)
 			cache[data.from].discussion = [];
 		if (!cache[data.from].discussion.find(e => e.id == data.messageId))
@@ -111,17 +141,29 @@ function ReceiveMessage(context, data) {
 			discussion_content.appendChild(buildMessage(data.content, "left"));
 		}
 	}
+	else if (chat) {
+		if (!cache[data.from].unreadMessage)
+			cache[data.from].unreadMessage = 0;
+		cache[data.from].unreadMessage++;
+		OnNotification();
+		refreshNotificationNumber(chat.querySelector(`.friendBox[data-username="${data.from}"]`), data.from);
+	}
 }
 
-function openDiscussion(context, username, discussion = null) {
-	if (!discussion)
-		discussion = document.getElementById("chat").querySelector(".discussion");
+function openDiscussion(context, username, chat = null) {
+	if (!chat)
+		chat = document.getElementById("chat");
+	if (!chat)
+		return;
+	var discussion = chat.querySelector(".discussion");
 	openedDiscussion = username;
 	if (discussion && username) {
 		if (!cache[username])
 			cache[username] = {};
 		discussion.dataset.username = username;
-		
+		cache[username].unreadMessage = 0;
+		OnNotification();
+		refreshNotificationNumber(chat.querySelector(`.friendBox[data-username="${username}"]`), username);
 		discussion.querySelector(".discussion-header span").innerText = cache[username].full_name || username;
 		var profilePicture = discussion.querySelector(".discussion-header img");
 		profilePicture.onclick = () => {
@@ -150,19 +192,24 @@ function openDiscussion(context, username, discussion = null) {
 		if (!cache[username].discussion)
 		{
 			cache[username].discussion = [];
-			context.chat.ChatConnexion.getAllMessages(username)
-			.then(messages => {
-				cache[username].discussion = cache[username].discussion
-					.concat(messages)
-					.filter((value, index, arr) => {
-						return index === arr.findIndex(e => e.id === value.id);
-					})
-					.sort((a, b) => a.id - b.id);
-					refreshMessages();
+			postJson(context, '/api/message/get', {
+				channelType: 0,
+				target: username,
 			})
-			.catch(err => {
-				persistError(context, getLang(context, err));
-				pushPersistents(context);
+			.then(resp => {
+				console.log(resp)
+				if (resp.ok) {
+					cache[username].discussion = cache[username].discussion
+						.concat(resp.messages)
+						.filter((value, index, arr) => {
+							return index === arr.findIndex(e => e.id === value.id);
+						})
+						.sort((a, b) => a.id - b.id);
+					refreshMessages();
+				} else {
+					persistError(context, getLang(context, resp.error));
+					pushPersistents(context);
+				}
 			})
 		}
 		else
@@ -247,6 +294,7 @@ function RefreshFriendList(context, chatBox = null) {
 					}
 				})
 			}
+			refreshNotificationNumber(friendButton, friend.username);
 		});
 		if (openedDiscussion) {
 			if (!context.chat.FriendList.find(e => e.username === openedDiscussion))
@@ -471,7 +519,7 @@ function Chat(context) {
 	else
 		ToggleChat(enabled, div);
 	if (openedDiscussion && enabled)
-		openDiscussion(context, openedDiscussion, div.querySelector(".discussion"));
+		openDiscussion(context, openedDiscussion, div);
 	return div;
 }
 
@@ -514,6 +562,7 @@ export {
 	RefreshFriendList,
 	ReceiveMessage,
 	SetPlayerStatus,
+	GetNotificationsNumber,
 }
 
 
@@ -532,6 +581,7 @@ templates["friendBox"].innerHTML = /*html*/`
 		<div class="online"></div>
 	</div>
 	<span></span>
+	<div class="notificationNumber"></div>
 `;
 
 window.profilePictureNotFound = (img) => {
