@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/18 10:59:18 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/18 15:38:23 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ import { pushPersistents } from "./Persistents.js";
 
 // main code
 
-var enabled = true; // todo set to false by default
+var enabled = false;
 var searchInput = "";
 var openedDiscussion = null;
 
@@ -68,28 +68,31 @@ function buildMessage(content, side) {
 
 function sendMessage(context, target, message) {
 	if (context && message != "") {
-		context.chat.ChatConnexion.sendMessage(target, message)
-		.then(resp => {
-			console.log(resp)
-			if (!cache[target])
-				cache[target] = {};
-			if (!cache[target].discussion)
-				cache[target].discussion = [];
-			cache[target].discussion.push({author: context.user.username, content: message, id: resp.messageId});
-			
-			var chat = document.getElementById("chat");
-			if (!chat)
-				return;
-			var discussion = chat.querySelector(".discussion");
-			if (discussion.dataset.username !== target)
-				return;
-			var discussion_content = discussion.querySelector(".discussion-content");
-			discussion_content.appendChild(buildMessage(message, "right"));
-			discussion_content.scrollTo(0, discussion_content.scrollHeight);
+		postJson(context, '/api/message/send', {
+			target: target,
+			content: message,
 		})
-		.catch(err => {
-			persistError(context, getLang(context, err));
-			pushPersistents(context);
+		.then(resp => {
+			if (resp.ok) {
+				if (!cache[target])
+					cache[target] = {};
+				if (!cache[target].discussion)
+					cache[target].discussion = [];
+				cache[target].discussion.push({author: context.user.username, content: message, id: resp.messageId});
+				
+				var chat = document.getElementById("chat");
+				if (!chat)
+					return;
+				var discussion = chat.querySelector(".discussion");
+				if (discussion.dataset.username !== target)
+					return;
+				var discussion_content = discussion.querySelector(".discussion-content");
+				discussion_content.appendChild(buildMessage(message, "right"));
+				discussion_content.scrollTo(0, discussion_content.scrollHeight);
+			} else {
+				persistError(context, getLang(context, resp.error));
+				pushPersistents(context);
+			}
 		})
 	}
 }
@@ -150,19 +153,24 @@ function openDiscussion(context, username, discussion = null) {
 		if (!cache[username].discussion)
 		{
 			cache[username].discussion = [];
-			context.chat.ChatConnexion.getAllMessages(username)
-			.then(messages => {
-				cache[username].discussion = cache[username].discussion
-					.concat(messages)
-					.filter((value, index, arr) => {
-						return index === arr.findIndex(e => e.id === value.id);
-					})
-					.sort((a, b) => a.id - b.id);
-					refreshMessages();
+			postJson(context, '/api/message/get', {
+				channelType: 0,
+				target: username,
 			})
-			.catch(err => {
-				persistError(context, getLang(context, err));
-				pushPersistents(context);
+			.then(resp => {
+				console.log(resp)
+				if (resp.ok) {
+					cache[username].discussion = cache[username].discussion
+						.concat(resp.messages)
+						.filter((value, index, arr) => {
+							return index === arr.findIndex(e => e.id === value.id);
+						})
+						.sort((a, b) => a.id - b.id);
+					refreshMessages();
+				} else {
+					persistError(context, getLang(context, resp.error));
+					pushPersistents(context);
+				}
 			})
 		}
 		else

@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.core import serializers
 
 from api_app.jwt import verify_token
-from api_app.models import User, PrivateChat, FriendList
+from api_app.models import User, FriendList
 
 connected_sockets = []
 
@@ -60,12 +60,10 @@ class ChatSocket(AsyncWebsocketConsumer):
 				await self.authenticate(data, frontendId)
 			else:
 				await self.reply('errors.notAuthenticated', False, frontendId)
-		elif data['type'] == 'get_previous_messages':
-			await self.get_previous_messages(data, frontendId)
-		elif data['type'] == 'send_message':
-			await self.send_message(data, frontendId)
 		elif data['type'] == 'send_game_message':
 			pass # TODO: find game, add message in db and find if targets have socket open with find_user_socket
+		else:
+			await self.reply('errors.invalidRequestMooved', False, frontendId)
 
 
 	async def reply(self, data: Any, status: bool, frontendId: Any):
@@ -115,55 +113,3 @@ class ChatSocket(AsyncWebsocketConsumer):
 
 				except User.DoesNotExist:
 					await self.reply('errors.invalidCredentials', False, frontendId)
-
-
-
-	async def send_message(self, data, frontendId):
-		if 'target' not in data or 'content' not in data \
-			or not isinstance(data['target'], str) or not isinstance(data['content'], str):
-				await self.reply('errors.invalidRequest', False, frontendId)
-				return
-		if len(data['content']) > 2048:
-			await self.reply('errors.MessageTooLong', False, frontendId)
-			return
-		try:
-			author = await sync_to_async(User.objects.get, thread_sensitive=True)(username=self.user)
-			target = await sync_to_async(User.objects.get, thread_sensitive=True)(username=data['target'])
-		except User.DoesNotExist:
-			await self.reply('errors.UserNotFound', False, frontendId)
-			return
-		message = PrivateChat(author=author, target=target, content=data['content'])
-		await sync_to_async(message.save, thread_sensitive=True)()
-		targetSockets = find_user_socket(data['target'])
-		for targetSocket in targetSockets:
-			await targetSocket.sendJson({'type': 'new_private_message', 'from': self.user, 'content': data['content'], 'messageId': message.id})
-		await self.reply({
-				'messageId': message.id
-			}, True, frontendId)
-
-	async def get_previous_messages(self, data, frontendId):
-		try:
-			usr = await sync_to_async(User.objects.get)(username=self.user)
-			if 'channelType' not in data or (data['channelType'] != 0 and data['channelType'] != 1) \
-				or 'target' not in data:
-				await self.reply('errors.invalidRequest', False, frontendId)
-				return
-			if data['channelType'] == 0:
-				target = await sync_to_async(User.objects.get)(username=data['target'])
-				messages = await sync_to_async(PrivateChat.objects.filter)(Q(author=usr, target=target) | Q(author=target, target=usr))
-				messages = await sync_to_async(serializers.serialize)('json', messages)
-				messages = json.loads(messages) #sad way, todo change serializers.serialize to a real toJson fct
-				_msgs = []
-				# so fucking ugly bruh thx to serializers.serialize
-				for msg in messages:
-					msg['fields']['id'] = msg['pk']
-					_msgs.append(msg['fields'])
-				messages = _msgs
-			else:
-				await self.reply('todo.fetch.game.messages', False, frontendId)
-				return
-
-			await self.reply(messages, True, frontendId)
-		except User.DoesNotExist:
-			await self.reply('errors.UserNotFound', False, frontendId)
-			return

@@ -55,7 +55,7 @@ class ChatConnexion
 				console.log("TODO new notification: " + data.type + " - " + data.message, e);
 		};
 		this.socket.onclose = function(e) {
-			console.log("Chat socket closed, code: " + e.code + ", reason: " + e.reason + "."); // have to be reconnected
+			console.log("Chat socket closed, code: " + e.code + ", reason: " + e.reason + "."); // todo have to be reconnected
 			_this.connected = false;
 		};
 		this.socket.onerror = function(e) {
@@ -151,20 +151,6 @@ class ChatConnexion
 					reject(err);
 				});
 		});
-	}
-
-	getAllMessages(target, game = false)
-	{
-		if (!this.authenticated)
-			return new Promise((_, rej) => rej({error: 'errors.notAuthenticated'}));
-		return this.triggerCallback({ type: "get_previous_messages", channelType: game ? 1 : 0, target: target });
-	}
-
-	sendMessage(target, content)
-	{
-		if (!this.authenticated)
-			return new Promise((_, rej) => rej({error: 'errors.notAuthenticated'}));
-		return this.triggerCallback({ type: "send_message", target: target, content: content });
 	}
 
 	sendGameMessage(gameId, content)

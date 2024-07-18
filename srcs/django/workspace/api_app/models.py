@@ -318,8 +318,8 @@ class PrivateChat(models.Model):
 		return self.id
 
 	def json(self, json_users=True):
-		author = (self.author.json() if json_users else {'username': self.author.username}) if self.author is not None else None
-		target = (self.target.json() if json_users else {'username': self.target.username}) if self.target is not None else None
+		author = (self.author.json() if json_users else self.author.username) if self.author is not None else None
+		target = (self.target.json() if json_users else self.target.username) if self.target is not None else None
 		return {
 			'id': self.id,
 			'send_at': self.send_at,
