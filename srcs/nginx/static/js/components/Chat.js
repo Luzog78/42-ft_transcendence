@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/18 17:27:12 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/19 11:42:14 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ var openedDiscussion = null;
 //				online: none,
 //			}
 var cache = {}
-var tournamentNotifications = {
+var systemNotifications = {
 	unread: 0,
-	games: []
+	messages: []
 }
 
+
 function GetNotificationsNumber() {
-	var res = tournamentNotifications.unread;
+	var res = systemNotifications.unread;
 	for (var username in cache)
 		res += (cache[username].unreadMessage || 0)
 	return res;
@@ -81,6 +82,18 @@ function buildMessage(content, side) {
 				redirect(`/play/${jsonData.gameId}`);
 			}
 
+			break;
+		case "tournamentMatchStart":
+			messageBloc = document.createElement("div");
+			messageBloc.classList.add("tournamentMatchStart")
+			messageBloc.innerHTML = /*html*/`
+				<!-- todo langs -->
+				<p>Your tournament match has started</p>
+				<button>Join</button>
+			`;
+			messageBloc.querySelector("button").onclick = () => {
+				redirect(`/play/${jsonData.gameUid}`);
+			}
 			break;
 		default:
 			messageBloc = document.createElement("p");
@@ -158,76 +171,88 @@ function openDiscussion(context, username, chat = null) {
 	var discussion = chat.querySelector(".discussion");
 	openedDiscussion = username;
 	if (discussion && username) {
-		if (!cache[username])
-			cache[username] = {};
 		discussion.dataset.username = username;
-		cache[username].unreadMessage = 0;
-		OnNotification();
-		refreshNotificationNumber(chat.querySelector(`.friendBox[data-username="${username}"]`), username);
-		discussion.querySelector(".discussion-header span").innerText = cache[username].full_name || username;
 		var profilePicture = discussion.querySelector(".discussion-header img");
-		profilePicture.onclick = () => {
-			redirect(`/profile/${username}`);
-		}
-
-		if (cache[username].picture)
-			profilePicture.src = cache[username].picture;
-		
-		
 		var discussion_content = discussion.querySelector(".discussion-content");
+		var input = discussion.querySelector("#discussion-input");
+
 		while (discussion_content.firstChild)
 			discussion_content.removeChild(discussion_content.firstChild);
-		
-		function refreshMessages() {
+		function refreshMessages(messages) {
 			if (discussion.dataset.username === username)
 			{
 				while (discussion_content.firstChild) // twice if message sent or received during fetch
 					discussion_content.removeChild(discussion_content.firstChild);
-				cache[username].discussion.forEach(data => {
+				messages.forEach(data => {
 					discussion_content.appendChild(buildMessage(data.content, data.author === username ? 'left' : 'right'));
 				})
 				discussion_content.scrollTo(0, discussion_content.scrollHeight);
 			}
 		}
-		if (!cache[username].discussion)
-		{
-			cache[username].discussion = [];
-			postJson(context, '/api/message/get', {
-				channelType: 0,
-				target: username,
-			})
-			.then(resp => {
-				console.log(resp)
-				if (resp.ok) {
-					cache[username].discussion = cache[username].discussion
-						.concat(resp.messages)
-						.filter((value, index, arr) => {
-							return index === arr.findIndex(e => e.id === value.id);
-						})
-						.sort((a, b) => a.id - b.id);
-					refreshMessages();
-				} else {
-					persistError(context, getLang(context, resp.error));
-					pushPersistents(context);
-				}
-			})
-		}
-		else
-			refreshMessages();
-		var input = discussion.querySelector("#discussion-input");
-		input.onkeydown = (event) => {
-			if (event.keyCode === 13 && !event.shiftKey) {
-				event.preventDefault();
-				sendMessage(context, username, input.value);
-				input.value = "";
-				input.oninput();
+
+		if (username !== "-system") {
+			if (!cache[username])
+				cache[username] = {};
+			cache[username].unreadMessage = 0;
+			refreshNotificationNumber(chat.querySelector(`.friendBox[data-username="${username}"]`), username);
+			discussion.querySelector(".discussion-header span").innerText = cache[username].full_name || username;
+			profilePicture.onclick = () => {
+				redirect(`/profile/${username}`);
 			}
+			if (cache[username].picture)
+				profilePicture.src = cache[username].picture;
+			profilePicture.style.display = "block";
+
+			if (!cache[username].discussion)
+			{
+				cache[username].discussion = [];
+				postJson(context, '/api/message/get', {
+					channelType: 0,
+					target: username,
+				})
+				.then(resp => {
+					console.log(resp)
+					if (resp.ok) {
+						cache[username].discussion = cache[username].discussion
+							.concat(resp.messages)
+							.filter((value, index, arr) => {
+								return index === arr.findIndex(e => e.id === value.id);
+							})
+							.sort((a, b) => a.id - b.id);
+						refreshMessages(cache[username].discussion);
+					} else {
+						persistError(context, getLang(context, resp.error));
+						pushPersistents(context);
+					}
+				})
+			}
+			else
+				refreshMessages(cache[username].discussion);
+			input.onkeydown = (event) => {
+				if (event.keyCode === 13 && !event.shiftKey) {
+					event.preventDefault();
+					sendMessage(context, username, input.value);
+					input.value = "";
+					input.oninput();
+				}
+			}
+			input.disabled = false;
+			discussion.querySelector("#chat-friendMenu").style.display = "block";
+		} else {
+			// todo refreshNotificationNumberSystem
+			discussion.querySelector(".discussion-header span").innerText = "System notification"; // todo lang same in div
+			profilePicture.style.display = "none";
+			refreshMessages(systemNotifications.messages); // todo system messages
+			input.disabled = true;
+			discussion.querySelector("#chat-friendMenu").style.display = "none";
+			systemNotifications.unread = 0;
 		}
+		OnNotification();
+
+
 		discussion.querySelector(".discussion-menu").style.display = "none";
-
-
 		discussion.querySelector(".discussion-header").style.display = "flex";
-		discussion_content.style.display = "block";
+		discussion_content.style.display = "flex";
 		discussion.querySelector(".discussion-footer").style.display = "block";
 	}
 }
@@ -262,7 +287,7 @@ function RefreshFriendList(context, chatBox = null) {
 		friendList.removeChild(friendList.firstChild);
 
 	if (context.chat.FriendList != null) {
-		context.chat.FriendList.sort((a, b) => (a.pending == b.pending) ? a.username.localeCompare(b.username) : b.pending - a.pending);
+		context.chat.FriendList.sort((a, b) => (a.pending == b.pending) ? a.username.localeCompare(b.username) : a.pending - b.pending);
 		context.chat.FriendList.forEach(friend => {
 			let friendButton = templates["friendBox"].cloneNode(true);
 			friendButton.dataset.username = friend.username;
@@ -441,6 +466,7 @@ function sendFriendRequest(context, target, ChatBox) {
 }
 
 function Chat(context) {
+	// todo disable chat if socket disconnected and send message
 	let div = document.createElement("div");
 	div.id = "chat"
 	if (enabled)
@@ -454,6 +480,9 @@ function Chat(context) {
 			</div>
 			<div class="chat-navbar">
 				<input type="text" id="chat-searchBox" />
+				<div id="systemMessages">
+					<span class="notSelectable">System notification</span> <!-- todo lang -->
+				</div>
 				<div id="chat-friendList"></div>
 			</div>
 			<div class="discussion">
@@ -482,12 +511,12 @@ function Chat(context) {
 	var navBar = div.querySelector(".chat-navbar");
 	var addFriendButton = templates["friendBox"].cloneNode(true);
 	addFriendButton.id = "addFriendButton";
-	addFriendButton.querySelector("span").innerText = "Add Friend";
+	addFriendButton.querySelector("span").innerText = "Add Friend"; // todo langs
 	addFriendButton.onclick = () => {
 		sendFriendRequest(context, searchInput, div);
 	}
-	navBar.insertBefore(addFriendButton, div.querySelector("#chat-friendList"));
-	
+	navBar.insertBefore(addFriendButton, div.querySelector("#systemMessages"));
+
 	var searchBox = div.querySelector("#chat-searchBox");
 	searchBox.value = searchInput;
 	searchBox.oninput = (event) => {
@@ -511,7 +540,9 @@ function Chat(context) {
 		}
 	})
 
-
+	div.querySelector("#systemMessages").addEventListener("click", (event) => {
+		openDiscussion(context, '-system', div);
+	})
 	
 	RefreshFriendList(context, div);
 	if (!context.user.isAuthenticated)
@@ -555,6 +586,26 @@ function SetPlayerStatus(context, username, status) {
 	}
 }
 
+function OnTournamentMathStart(gameUid) {
+	var message = '`' + JSON.stringify({
+		'type': 'tournamentMatchStart',
+		'gameUid': gameUid
+	}) + '`';
+	systemNotifications.messages.push({
+		content: message,
+		author: '-system'
+	});
+	var chat = document.getElementById("chat");
+	var discussion_content = chat ? chat.querySelector(".discussion-content") : undefined;
+	if (openedDiscussion !== "-system" || !discussion_content) {
+		systemNotifications.unread++;
+		OnNotification();
+		// todo refresh on chat-navbar
+	} else {
+		discussion_content.appendChild(buildMessage(message, "left"));
+		discussion_content.scrollTo(0, discussion_content.scrollHeight);
+	}
+}
 
 export {
 	Chat,
@@ -563,6 +614,7 @@ export {
 	ReceiveMessage,
 	SetPlayerStatus,
 	GetNotificationsNumber,
+	OnTournamentMathStart,
 }
 
 
@@ -585,7 +637,7 @@ templates["friendBox"].innerHTML = /*html*/`
 `;
 
 window.profilePictureNotFound = (img) => {
-	console.log("fixing image error")
+	console.log("[🔀] Fixing profile picture error")
 	if (img.dataset.default == undefined)
 		img.dataset.default = "/static/img/user.svg";
 	if (img.src != img.dataset.default)

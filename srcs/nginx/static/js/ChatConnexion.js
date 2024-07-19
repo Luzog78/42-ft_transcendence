@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { ReceiveMessage, RefreshFriendList, SetPlayerStatus } from "./components/Chat.js"
+import { OnTournamentMathStart, ReceiveMessage, RefreshFriendList, SetPlayerStatus } from "./components/Chat.js"
 
 class ChatConnexion
 {
@@ -50,7 +50,7 @@ class ChatConnexion
 			else if (data.type == "remove_friend")
 				_this._on_friend_remove(data);
 			else if (data.type == "tournamentMatchStart")
-				console.warn("todo");
+				_this._on_tournament_match_start(data);
 			else
 				console.log("TODO new notification: " + data.type + " - " + data.message, e);
 		};
@@ -76,6 +76,10 @@ class ChatConnexion
 		}
 		else
 			console.log("Received response for unknown frontendId: " + data.frontendId);
+	}
+
+	_on_tournament_match_start(data) {
+		OnTournamentMathStart(data.gameUid);
 	}
 
 	_on_private_message(data)
