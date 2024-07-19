@@ -250,6 +250,10 @@ const persist = (context, copy) => {
 }
 
 const loadLang = async (context, lang) => {
+	if (!lang) {
+		console.log(`Undefined lang: set to default [en].`);
+		lang = 'en';
+	}
 	context.lang = await getJson(context, `/static/lang/${lang}.json`);
 	if (!context.lang || !context.lang.locale)
 		console.error(`[❌] Failed to fetch language file: ${lang}.json`);
@@ -267,7 +271,7 @@ const loadLang = async (context, lang) => {
 const getLang = (context, key, argsList = undefined) => {
 	const notFound = `{'${key}' not found}`;
 	let pathes = `${key}`.split(".");
-	let found = context.lang;
+	let found = context.lang || {};
 	for (let path of pathes) {
 		if (!found[path])
 			return notFound;
