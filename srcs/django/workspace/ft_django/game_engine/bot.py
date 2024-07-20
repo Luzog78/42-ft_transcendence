@@ -3,16 +3,18 @@
 #                                                         :::      ::::::::    #
 #    bot.py                                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 12:37:57 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/18 18:18:02 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/20 22:39:13 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import math
 import datetime
 from .vector import Vector
+from .raytrace import RayTrace
+from .ball import Ball
 
 class Bot:
 	def __init__(self, lobby, client_id: int):
@@ -33,9 +35,10 @@ class Bot:
 		self.rebounces:			int		= 0 #done
 		self.duration:			float	= -1 #done
 
-		self.tps = 10
+		self.tps = 50
 		self.time_to_think = 0
-		self.direction = 0
+
+		self.last_prediction = None
 
 	def die(self):
 		self.deaths += 1
@@ -48,6 +51,9 @@ class Bot:
 		limit = self.lobby.limit
 		if (limit is None):
 			limit = 0
+		
+		self.time_to_think = 0
+		self.last_prediction = None
 
 		self.addSelfWall()
 		await self.updateSelfToother()
@@ -103,10 +109,40 @@ class Bot:
 									f"{playerBoxJS}.position.z": self.pos.y})
 
 	async def thinkMove(self):
-		my_pos = Vector(0,0) - self.pos
-		ball_pos = self.lobby.balls[0].pos - self.pos 
+		ball = self.lobby.balls[0]
+		ray = RayTrace(ball.pos, ball.vel.normalize())
+
+		bot_predictions = 2
+		for i in range(bot_predictions):
+			intersections = ray.intersects(self.lobby.walls)
+			if (len(intersections) == 0):
+				return
+			
+			closest_wall = list(intersections.keys())[0]
+			wall = self.lobby.walls[closest_wall]
+
+			if (i == 0 and closest_wall == f"player{self.client_id}"):
+				self.direction = 0
+				continue
+
+			closest_point = intersections[closest_wall]
+			wall_normal = Vector(-(wall[1].y - wall[0].y), wall[1].x - wall[0].x).normalize()
+			
+			ray.direction = ray.direction.reflect(wall_normal)
+			ray.pos = closest_point + ray.direction * 0.1
 		
-		self.direction = 0
+		self.last_prediction = ray.pos
+
+		self.lobby.balls[1].pos = ray.pos
+		await self.lobby.balls[1].updateBall()
+	
+	def calculDirection(self):
+		pos_to_center = Vector(0,0) - self.pos
+		pos_to_prediction = self.last_prediction - self.pos
+
+		cross = pos_to_center.x * pos_to_prediction.y - pos_to_center.y * pos_to_prediction.x
+		return cross
+		
 
 	async def update(self):
 		if (len(self.lobby.walls) == 0):
@@ -115,13 +151,19 @@ class Bot:
 		self.time_to_think += 1
 		if (self.time_to_think > self.tps):
 			self.time_to_think = 0
+			await self.thinkMove()
 
-		await self.thinkMove()
+		if (self.last_prediction is None):
+			return
 
+		direction = 0
+		if (self.pos.distance(self.last_prediction) > 0.2):
+			direction = self.calculDirection()
+	
 		move_speed = self.speed * self.lobby.game_server.dt * (self.lobby.player_size * 2)
-		if (self.direction < 0):
+		if (direction > 0):
 			await self.move(move_speed, move_speed)
-		elif(self.direction > 0):
+		elif(direction < 0):
 			await self.move(-move_speed, -move_speed)
 
 	async def sendToOther(self, *args):

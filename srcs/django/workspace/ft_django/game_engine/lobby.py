@@ -45,7 +45,7 @@ class Lobby:
 		self.client_ready:	list[bool]		= []
 		self.spectators:	list[Spectator]	= []
 
-		self.balls: list[Ball] = [Ball(self, 0.15, 0)]
+		self.balls: list[Ball] = [Ball(self, 0.15, 0), Ball(self, 0.10, 1)]
 
 		self.player_size:	float	= 0.5
 		self.segment_size:	float	= 4
@@ -221,7 +221,7 @@ class Lobby:
 		for ball in self.balls:
 			del ball
 
-		self.balls = [Ball(self, 0.15, 0)]
+		self.balls = [Ball(self, 0.15, 0), Ball(self, 0.10, 1)]
 
 		player_id = int(dead_player.replace("player", ""))
 		player = self.clients[player_id]

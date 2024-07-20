@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    raytrace.py                                        :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 16:27:26 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/18 17:57:28 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/20 20:25:45 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,4 +37,6 @@ class RayTrace():
 			intersection = self.intersect(wall[0], wall[1])
 			if intersection is not None:
 				intersections[wall_name] = intersection
+
+		intersections = dict(sorted(intersections.items(), key=lambda item: (item[1].distance(self.pos))))
 		return intersections

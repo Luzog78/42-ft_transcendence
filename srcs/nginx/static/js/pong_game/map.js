@@ -27,6 +27,7 @@ function initMap(scene, theme, time_left)
 	scene.scene.add(light);
 
 	scene.addBall();
+	scene.addBall();
 
 	const player_num = scene.player_num;
 	const color_theme = getColorTheme(theme, player_num);
