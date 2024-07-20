@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/19 11:42:14 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/20 13:27:23 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,11 +246,14 @@ function openDiscussion(context, username, chat = null) {
 			input.disabled = true;
 			discussion.querySelector("#chat-friendMenu").style.display = "none";
 			systemNotifications.unread = 0;
+			chat.querySelector("#systemMessages .notificationNumber").style.display = "none";
 		}
 		OnNotification();
 
 
-		discussion.querySelector(".discussion-menu").style.display = "none";
+		discussion.querySelector("#chat-friendMenu").classList.remove("open");
+		let discussionMenu = discussion.querySelector(".discussion-menu")
+		discussionMenu.style.marginTop = -discussionMenu.offsetHeight + "px";
 		discussion.querySelector(".discussion-header").style.display = "flex";
 		discussion_content.style.display = "flex";
 		discussion.querySelector(".discussion-footer").style.display = "block";
@@ -266,7 +269,9 @@ function closeDiscussion(discussion = null) {
 		discussion.querySelector(".discussion-header").style.display = "none";
 		discussion.querySelector(".discussion-content").style.display = "none";
 		discussion.querySelector(".discussion-footer").style.display = "none";
-		discussion.querySelector(".discussion-menu").style.display = "none";
+		discussion.querySelector("#chat-friendMenu").classList.remove("open");
+		let discussionMenu = discussion.querySelector(".discussion-menu")
+		discussionMenu.style.marginTop = -discussionMenu.offsetHeight + "px";
 	}
 }
 
@@ -346,6 +351,9 @@ function refreshFriendMenuButtons(context, username, ChatBox = null) {
 	var cancelBtn = ChatBox.querySelector("#CancelFriend");
 	var blockBtn = ChatBox.querySelector("#BlockFriend");
 	var friend = context.chat.FriendList.find(f => f.username === username);
+	console.log(username);
+	console.log(friend);
+	console.log(context.chat.FriendList);
 	
 	// 0: not friend
 	// 1: waiting friend to accept
@@ -417,6 +425,7 @@ function refreshFriendMenuButtons(context, username, ChatBox = null) {
 		inviteBtn.onclick = undefined
 	}
 
+	blockBtn.style.display = "block";
 	blockBtn.onclick = () => {
 		postJson(context, '/api/friends/block', {
 			target: username
@@ -435,7 +444,15 @@ function refreshFriendMenuButtons(context, username, ChatBox = null) {
 		})
 	}
 
-	
+	let friendMenuBtn = ChatBox.querySelector("#chat-friendMenu")
+	if (!friendMenuBtn.classList.contains("open")) {
+		
+		let discussionMenu = ChatBox.querySelector(".discussion-menu")
+		discussionMenu.style.transition = "unset";
+		discussionMenu.style.marginTop = -discussionMenu.offsetHeight + "px";
+		discussionMenu.getBoundingClientRect(); // fuck you es6 FUUUCK (weird way to make a html flushing to prevent removeProperty before correctly set marginTop)
+		discussionMenu.style.removeProperty("transition");
+	}
 }
 
 function sendFriendRequest(context, target, ChatBox) {
@@ -466,7 +483,7 @@ function sendFriendRequest(context, target, ChatBox) {
 }
 
 function Chat(context) {
-	// todo disable chat if socket disconnected and send message
+	// todo disable chat if socket disconnected and send persistent
 	let div = document.createElement("div");
 	div.id = "chat"
 	if (enabled)
@@ -482,6 +499,7 @@ function Chat(context) {
 				<input type="text" id="chat-searchBox" />
 				<div id="systemMessages">
 					<span class="notSelectable">System notification</span> <!-- todo lang -->
+					<div class="notificationNumber"></div>
 				</div>
 				<div id="chat-friendList"></div>
 			</div>
@@ -489,21 +507,25 @@ function Chat(context) {
 				<div class="discussion-header">
 					<img class="notSelectable" src="/static/img/user.svg" onerror="profilePictureNotFound(this)">
 					<span></span>
-					<div id="chat-friendMenu"></div>
+					<div id="chat-friendMenu">
+						<img class="notSelectable" src="/static/img/menu.svg">
+					</div>
 				</div>
 				<div class="discussion-content">
 				</div>
 				<div class="discussion-footer">
 					<textarea id="discussion-input" rows=1></textarea>
 				</div>
-				<div class="discussion-menu">
-					<!-- todo langs -->
-					<button id="InviteFriend">Invite friend</button> 
-					<button id="AcceptFriend">Accept friend request</button>
-					<button id="DenyFriend">Deny friend request</button>
-					<button id="CancelFriend">Cancel friend request</button>
-					<button id="RemoveFriend">Remove friend</button>
-					<button id="BlockFriend">Block user</button>
+				<div class="discussion-menu-container">
+					<div class="discussion-menu">
+						<!-- todo langs -->
+						<button id="InviteFriend">Invite friend</button> 
+						<button id="AcceptFriend">Accept friend request</button>
+						<button id="DenyFriend">Deny friend request</button>
+						<button id="CancelFriend">Cancel friend request</button>
+						<button id="RemoveFriend">Remove friend</button>
+						<button id="BlockFriend">Block user</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -530,13 +552,21 @@ function Chat(context) {
 		textInput.style.height = 'auto';
 		textInput.style.height = textInput.scrollHeight + "px";
 	}
-
+	
+	var discussionMenu = div.querySelector(".discussion-menu");
 	div.querySelector("#chat-friendMenu").addEventListener("click", (event) => {
-		var username = event.target.parentElement.parentElement;
+		var username = event.target.parentElement.parentElement.parentElement;
 		if (username) {
-			var discussionMenu = div.querySelector(".discussion-menu");
-			discussionMenu.style.display = discussionMenu.style.display == "block" ? "none" : "block";
+			
+			var friendMenu = div.querySelector("#chat-friendMenu");
 			refreshFriendMenuButtons(context, username.dataset.username, div);
+			if (friendMenu.classList.contains("open")) {
+				friendMenu.classList.remove("open");
+				discussionMenu.style.marginTop = -discussionMenu.offsetHeight + "px";
+			} else {
+				friendMenu.classList.add("open");
+				discussionMenu.style.marginTop = "0";
+			}
 		}
 	})
 
@@ -551,6 +581,15 @@ function Chat(context) {
 		ToggleChat(enabled, div);
 	if (openedDiscussion && enabled)
 		openDiscussion(context, openedDiscussion, div);
+
+	var sysNotifNbDiv = div.querySelector("#systemMessages .notificationNumber");
+	if ((openedDiscussion == '-system' && enabled) || systemNotifications.unread == 0) {
+		sysNotifNbDiv.style.display = "none";
+	} else {
+		sysNotifNbDiv.style.display = "block";
+		sysNotifNbDiv.innerText = systemNotifications.unread > 9 ? "9+" : systemNotifications.unread;
+	}
+	
 	return div;
 }
 
@@ -600,7 +639,9 @@ function OnTournamentMathStart(gameUid) {
 	if (openedDiscussion !== "-system" || !discussion_content) {
 		systemNotifications.unread++;
 		OnNotification();
-		// todo refresh on chat-navbar
+		var notifNbDiv = chat.querySelector("#systemMessages .notificationNumber");
+		notifNbDiv.style.display = "block";
+		notifNbDiv.innerText = systemNotifications.unread > 9 ? "9+" : systemNotifications.unread;
 	} else {
 		discussion_content.appendChild(buildMessage(message, "left"));
 		discussion_content.scrollTo(0, discussion_content.scrollHeight);
