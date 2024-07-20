@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/20 13:27:23 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/20 13:38:29 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -505,7 +505,7 @@ function Chat(context) {
 			</div>
 			<div class="discussion">
 				<div class="discussion-header">
-					<img class="notSelectable" src="/static/img/user.svg" onerror="profilePictureNotFound(this)">
+					<img class="profilePicture notSelectable" src="/static/img/user.svg" onerror="profilePictureNotFound(this)">
 					<span></span>
 					<div id="chat-friendMenu">
 						<img class="notSelectable" src="/static/img/menu.svg">
