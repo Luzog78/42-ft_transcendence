@@ -118,13 +118,30 @@ async function Profile(context, username) {
 		} catch (e) {
 			page = 1;
 		}
-
-	if (profileName)
-		profileName.innerText = context.user.firstName + " " + context.user.lastName.toUpperCase();
-	if (profileUsername)
-		profileUsername.innerText = context.user.username;
-	if (profilePicture && context.user.picture)
-		profilePicture.src = context.user.picture;
+	
+	if (context.user.username === username) {
+		if (profileName)
+			profileName.innerText = context.user.firstName + " " + context.user.lastName.toUpperCase();
+		if (profileUsername)
+			profileUsername.innerText = context.user.username;
+		if (profilePicture && context.user.picture)
+			profilePicture.src = context.user.picture;
+	} else {
+		getJson(context, "/api/user/" + username).then(data => {
+			if (!data.ok) {
+				// todo: yanis on redirect ou pas si user not found ???
+				persistError(context, getLang(context, data.error) + " (/api/user/" + username + ")");
+				pushPersistents(context);
+				return;
+			}
+			if (profileName)
+				profileName.innerText = data.firstName + " " + data.lastName.toUpperCase();
+			if (profileUsername)
+				profileUsername.innerText = data.username;
+			if (profilePicture && data.picture)
+				profilePicture.src = data.picture;
+		})
+	}
 
 	getJson(context, "/api/game/u/" + username).then(data => {
 		if (!data.ok) {
