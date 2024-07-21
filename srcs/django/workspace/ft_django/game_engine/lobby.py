@@ -121,12 +121,15 @@ class Lobby:
 		stats: list[Stats] = []
 
 		player_list = self.clients + self.dead_clients
-
 		for player in player_list:
-			if (isinstance(player, Bot)):
-				continue
-			print("save stats of", player.client.username)
-			user = User.objects.get(username=player.client.username)
+			username = ""
+			if (isinstance(player, Player)):
+				username = player.client.username
+			elif (isinstance(player, Bot)):
+				username = f"Bot_{player.client_id}"
+
+			print("save stats of", username)
+			user = User.objects.get(username=username)
 			assert user is not None
 
 			stat = Stats.objects.create(
@@ -162,7 +165,7 @@ class Lobby:
 			best_score.won = True
 			best_score.save()
 
-		game.players = [p.client.username for p in self.clients]
+		game.players = [p.client.username for p in player_list if isinstance(p, Player)]
 
 		game.save()
 

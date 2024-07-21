@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    bot.py                                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: TheRed <TheRed@students.42.fr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 12:37:57 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/20 22:42:27 by marvin           ###   ########.fr        #
+#    Updated: 2024/07/21 15:49:20 by TheRed           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -137,10 +137,16 @@ class Bot:
 		await self.lobby.balls[1].updateBall()
 	
 	def calculDirection(self):
+		if (self.pos.distance(self.last_prediction) < 0.2):
+			return 0
+
 		pos_to_center = Vector(0,0) - self.pos
 		pos_to_prediction = self.last_prediction - self.pos
 
 		cross = pos_to_center.x * pos_to_prediction.y - pos_to_center.y * pos_to_prediction.x
+		if (self.lobby.clients_per_lobby == 2 and self.client_id == 1):
+			cross *= -1
+
 		return cross
 		
 
@@ -156,10 +162,8 @@ class Bot:
 		if (self.last_prediction is None):
 			return
 
-		direction = 0
-		if (self.pos.distance(self.last_prediction) > 0.2):
-			direction = self.calculDirection()
-	
+		direction = self.calculDirection()
+
 		move_speed = self.speed * self.lobby.game_server.dt * (self.lobby.player_size * 2)
 		if (direction > 0):
 			await self.move(move_speed, move_speed)
