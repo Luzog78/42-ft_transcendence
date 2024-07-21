@@ -6,7 +6,7 @@
 #    By: TheRed <TheRed@students.42.fr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 12:37:57 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/21 15:49:20 by TheRed           ###   ########.fr        #
+#    Updated: 2024/07/21 16:28:24 by TheRed           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,7 @@ class Bot:
 
 		self.angle = angle
 		self.pos = mid
+		self.init_pos = mid
 
 		firstPoint = Vector(mid.x + math.cos(angle) * self.lobby.player_size, mid.y + math.sin(angle) * self.lobby.player_size)
 		secondPoint = Vector(mid.x + math.cos(angle - math.pi) * self.lobby.player_size, mid.y + math.sin(angle - math.pi) * self.lobby.player_size)
@@ -110,7 +111,9 @@ class Bot:
 
 	async def thinkMove(self):
 		ball = self.lobby.balls[0]
+
 		ray = RayTrace(ball.pos, ball.vel.normalize())
+		closest_wall = None
 
 		bot_predictions = 2
 		for i in range(bot_predictions):
@@ -121,27 +124,29 @@ class Bot:
 			closest_wall = list(intersections.keys())[0]
 			wall = self.lobby.walls[closest_wall]
 
-			if (i == 0 and closest_wall == f"player{self.client_id}"):
-				self.direction = 0
-				continue
-
 			closest_point = intersections[closest_wall]
 			wall_normal = Vector(-(wall[1].y - wall[0].y), wall[1].x - wall[0].x).normalize()
 			
 			ray.direction = ray.direction.reflect(wall_normal)
 			ray.pos = closest_point + ray.direction * 0.1
+
+			if (i == 0 and (closest_wall == f"player{self.client_id}" or closest_wall == f"score{self.client_id}")):
+				break
 		
-		self.last_prediction = ray.pos
+		self.last_prediction = {'pos': ray.pos, 'wall': closest_wall}
 
 		self.lobby.balls[1].pos = ray.pos
 		await self.lobby.balls[1].updateBall()
 	
 	def calculDirection(self):
-		if (self.pos.distance(self.last_prediction) < 0.2):
-			return 0
-
 		pos_to_center = Vector(0,0) - self.pos
-		pos_to_prediction = self.last_prediction - self.pos
+		pos_to_prediction = self.last_prediction["pos"] - self.pos
+		
+		if ("wall" in self.last_prediction["wall"] or str(self.client_id) not in self.last_prediction["wall"]):
+			pos_to_prediction = self.init_pos - self.pos
+
+		if (pos_to_prediction.length() < 0.1):
+			return 0
 
 		cross = pos_to_center.x * pos_to_prediction.y - pos_to_center.y * pos_to_prediction.x
 		if (self.lobby.clients_per_lobby == 2 and self.client_id == 1):
