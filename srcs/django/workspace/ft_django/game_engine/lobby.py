@@ -172,7 +172,7 @@ class Lobby:
 			best_score.won = True
 			best_score.save()
 
-		game.players = [p.client.username for p in player_list if isinstance(p, Player)]
+		game.players = [p.client.username if isinstance(p, Player) else f"Bot_{p.client_id}" for p in player_list]
 
 		game.save()
 
