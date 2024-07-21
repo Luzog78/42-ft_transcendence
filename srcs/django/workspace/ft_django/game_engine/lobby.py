@@ -53,7 +53,7 @@ class Lobby:
 		self.middle_vertex_positions:	list[Vector]	= []
 		self.angleVertex:				list[float]		= []
 
-		self.walls: dict[str, list[Vector]]	= self.init_map(self.clients_per_lobby)
+		self.walls: dict[str, list[Vector]]	= self.initMap(self.clients_per_lobby)
 
 		self.time	= 0
 		self.dt		= 0
@@ -62,7 +62,7 @@ class Lobby:
 		self.update_thread	= threading.Thread(target=asyncio.run, args=(self.update(),))
 		self.update_thread.start()
 
-	def init_map(self, num_players: int) -> dict[str, list[Vector]]:
+	def initMap(self, num_players: int) -> dict[str, list[Vector]]:
 		self.client_ready = [False] * num_players
 
 		if (num_players == 2):
@@ -194,7 +194,7 @@ class Lobby:
 
 		self.clients_per_lobby -= 1
 		self.time = 0
-		self.walls = self.init_map(self.clients_per_lobby)
+		self.walls = self.initMap(self.clients_per_lobby)
 
 		self.dead_clients.append(player)
 		self.removeClient(player)
