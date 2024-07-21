@@ -2,7 +2,7 @@ import re
 
 
 def username(s) -> bool:
-	return not not re.match(r'^\w{3,24}$', s)
+	return not not re.match(r'^\w{3,24}$', s) and not re.match(r'^(B|b)(O|o)(T|t)[0-9]{0,21}$', s)
 
 
 def first_name(s) -> bool:
