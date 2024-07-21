@@ -114,6 +114,7 @@ class Lobby:
 
 	def onEnd(self):
 		from api_app.models import Game, User, Stats
+		from api_app import auth
 
 		game = Game.objects.get(uid=self.uid)
 		assert game is not None
@@ -129,7 +130,13 @@ class Lobby:
 				username = f"Bot_{player.client_id}"
 
 			print("save stats of", username)
-			user = User.objects.get(username=username)
+			user = User.get(username)
+			if user is None and isinstance(player, Bot):
+				user = auth.register(None, username, "Bot", str(player.client_id), 'ddoc@student.42angouleme.fr', None)
+				if user:
+					user = user['user']
+				else:
+					user = None
 			assert user is not None
 
 			stat = Stats.objects.create(

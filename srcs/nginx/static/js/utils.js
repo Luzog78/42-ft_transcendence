@@ -129,7 +129,7 @@ function checkUsername(context, usernameId) {
 	} else if (username.value.length > 24) {
 		invalidFeedback(username, getLang(context, "errors.usernameTooLong"));
 		return false;
-	} else if (username.value.match(/[^a-zA-Z0-9_]/) || /^(B|b)(O|o)(T|t)[0-9]{0,21}$/.test(username.value)) {
+	} else if (username.value.match(/[^a-zA-Z0-9_]/) || /^(B|b)(O|o)(T|t)_[0-9]{0,20}$/.test(username.value)) {
 		invalidFeedback(username, getLang(context, "errors.usernameIllegal"));
 		return false;
 	}
