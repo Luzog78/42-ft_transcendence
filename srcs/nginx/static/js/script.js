@@ -29,6 +29,7 @@ import { getJson } from "./utils.js";
 import { destroyScene } from "./pong_game/main.js";
 import { TournamentManager } from "./pages/TournamentManager.js";
 import { RefreshFriendList } from "./components/Chat.js";
+import { pushPersistents } from "./components/Persistents.js";
 
 
 const SUPPORTED_LANGS = [ "en", "fr", "es", "de", "cn", "jp", "ru", "ka", "eg" ];
@@ -287,8 +288,11 @@ const onLogin = async (context, loadedData = null, reloadNav = false) => {
 	var data;
 	if (loadedData)
 		data = loadedData;
-	else
+	else {
 		data = await getJson(context, "/api/user");
+		if (!data.ok)
+			redirect("/logout?next=/login");
+	}
 
 	context.chat.ChatConnexion.onOpen(() => {
 		if (context.user.token) {
