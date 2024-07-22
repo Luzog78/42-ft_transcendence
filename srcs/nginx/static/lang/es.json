@@ -12,6 +12,20 @@
 		"register": "Registrarse",
 		"iconAlt": "Logo"
 	},
+	"chat": {
+		"gameJoin": "Participar",
+		"gameInviteTitle": "Invitación al juego",
+		"gameInviteMessage": "¿Quieres jugar?",
+		"tournamentMatchStart": "Tu partida de torneo ha comenzado.",
+		"systemNotification": "Notificación del sistema",
+		"inviteFriend": "Invitar a amistad",
+		"acceptFriend": "Aceptar solicitud de amistad",
+		"denyFriend": "Rechazar solicitud de amistad",
+		"cancelFriend": "Cancelar solicitud de amistad",
+		"removeFriend": "Eliminar amistad",
+		"blockFriend": "Bloquear usuario",
+		"addFriend": "Agregar amistad"
+	},
 	"pages": {
 		"404": {
 			"h0": "Página no encontrada...",
@@ -222,7 +236,13 @@
 		"selectPlayers": "¡Por favor, seleccione un número de jugadores entre {} y {}!",
 		"selectPoints": "¡Por favor, seleccione un número de puntos para ganar entre {} y {}!",
 		"selectTheme": "¡Por favor, seleccione un tema!",
-		"toggleA2FOauth": "¡No puedes alternar 2FA con OAuth!"
+		"toggleA2FOauth": "¡No puedes alternar 2FA con OAuth!",
+		"AlreadyFriend": "¡Ya eres amigo de este usuario!",
+		"FriendRequestSent": "¡Ya enviaste una solicitud de amistad a este usuario!",
+		"FriendRequestYourself": "No se puede solicitar amigo!",
+		"RelationDoesNotExist": "¡No eres amigo de este usuario!",
+		"AlreadyBlocked": "¡Usuario ya bloqueado!",
+		"NotImplementedYet": "¡Aun no implementado!"
 	},
 	"successes": {
 		"a2fDisabled": "¡Autenticación de dos factores desactivada con éxito!",
@@ -239,6 +259,9 @@
 		"registered": "¡Te has registrado con éxito!",
 		"tournamentCreated": "¡Torneo creado con éxito!",
 		"tournamentJoined": "¡Torneo unido con éxito!",
-		"tournamentQuit": "¡Torneo abandonado con éxito!"
+		"tournamentQuit": "¡Torneo abandonado con éxito!",
+		"acceptedFriendRequest": "¡Aceptó con éxito la solicitud de amistad!",
+		"FriendRequestSent": "¡Envía con éxito una solicitud de amistad!",
+		"cancelFriendRequest": "¡Cancelé exitosamente la solicitud de amistad!"
 	}
 }

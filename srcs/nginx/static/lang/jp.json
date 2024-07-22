@@ -12,6 +12,20 @@
 		"register": "登録",
 		"iconAlt": "ロゴ"
 	},
+	"chat": {
+		"gameJoin": "加わる",
+		"gameInviteTitle": "ゲームへの招待",
+		"gameInviteMessage": "あなたは遊びたいですか？",
+		"tournamentMatchStart": "トーナメントの試合が始まりました",
+		"systemNotification": "システム通知",
+		"inviteFriend": "友人を招待",
+		"acceptFriend": "友達リクエストを承認する",
+		"denyFriend": "友達リクエストを拒否する",
+		"cancelFriend": "友達リクエストをキャンセルする",
+		"removeFriend": "友達を削除する",
+		"blockFriend": "ユーザをブロックする",
+		"addFriend": "友人を追加する"
+	},
 	"pages": {
 		"404": {
 			"h0": "ページが見つかりません...",
@@ -222,7 +236,13 @@
 		"selectPlayers": "{}から{}までのプレイヤー数を選択してください！",
 		"selectPoints": "{}から{}までの勝つためのポイントを選択してください！",
 		"selectTheme": "テーマを選択してください！",
-		"toggleA2FOauth": "OAuthで2FAを切り替えることはできません！"
+		"toggleA2FOauth": "OAuthで2FAを切り替えることはできません！",
+		"AlreadyFriend": "あなたはすでにこのユーザーと友達です!",
+		"FriendRequestSent": "このユーザーにはすでに友達リクエストを送信しています。",
+		"FriendRequestYourself": "自分自身に友達リクエストをすることはできません!",
+		"RelationDoesNotExist": "あなたはこのユーザーと友達ではありません!",
+		"AlreadyBlocked": "ユーザーはすでにブロックされています。",
+		"NotImplementedYet": "まだ実装されていません！"
 	},
 	"successes": {
 		"a2fDisabled": "二要素認証が正常に無効化されました！",
@@ -239,6 +259,9 @@
 		"registered": "正常に登録されました！",
 		"tournamentCreated": "トーナメントが正常に作成されました！",
 		"tournamentJoined": "トーナメントに正常に参加しました！",
-		"tournamentQuit": "トーナメントを正常に終了しました！"
+		"tournamentQuit": "トーナメントを正常に終了しました！",
+		"acceptedFriendRequest": "友達リクエストを承認しました！",
+		"FriendRequestSent": "無事に友達リクエストを送信できました！",
+		"cancelFriendRequest": "友達リクエストをキャンセルしました！"
 	}
 }

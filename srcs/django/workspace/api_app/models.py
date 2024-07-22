@@ -396,7 +396,6 @@ class Status(models.TextChoices):
 		return None
 
 
-# import traceback # todo remove
 class Match(models.Model):
 	'''
 	Required fields:
@@ -439,9 +438,6 @@ class Match(models.Model):
 		}
 
 	def add_player(self, player_username: str):
-		# for line in traceback.format_stack(): # TODO: remove
-		# 	print(line.strip())
-		# print("add player", player_username)
 		self.players.append(player_username)
 		if len(self.players) == self.player_count:
 			self.start()
@@ -747,7 +743,12 @@ class Ressources(models.Model):
 
 class FriendList(models.Model):
 	'''
-	todo docstring
+	Required fields:
+		author: User
+		target: User
+	
+	Auto fields:
+		pending: bool
 	'''
 
 	author		= models.ForeignKey(User, related_name='+', on_delete=models.CASCADE, null=False)
@@ -763,7 +764,9 @@ class FriendList(models.Model):
 
 class BlockList(models.Model):
 	'''
-	todo docstring
+	Required fields:
+		author: User
+		target: User
 	'''
 
 	author		= models.ForeignKey(User, related_name='+', on_delete=models.CASCADE, null=False)

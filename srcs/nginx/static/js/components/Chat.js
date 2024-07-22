@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/22 04:52:59 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/22 10:58:37 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,9 @@ function buildMessage(content, side) {
 			messageBloc = document.createElement("div");
 			messageBloc.classList.add("gameInvite");
 			messageBloc.innerHTML = /*html*/`
-				<!-- todo langs -->
-				<p class="gameInvite-title">Game Invite</p>
-				<p>Do you want to play?</p>
-				<button>Join</button>
+				<p class="gameInvite-title">${getLang(context, "chat.gameInviteTitle")}</p>
+				<p>${getLang(context, "chat.gameInviteMessage")}</p>
+				<button>${getLang(context, "chat.gameJoin")}</button>
 			`;
 			messageBloc.querySelector("button").onclick = () => {
 				redirect(`/play/${jsonData.gameId}`);
@@ -87,9 +86,8 @@ function buildMessage(content, side) {
 			messageBloc = document.createElement("div");
 			messageBloc.classList.add("tournamentMatchStart")
 			messageBloc.innerHTML = /*html*/`
-				<!-- todo langs -->
-				<p>Your tournament match has started</p>
-				<button>Join</button>
+				<p>${getLang(context, "chat.tournamentMatchStart")}</p>
+				<button>${getLang(context, "chat.gameJoin")}</button>
 			`;
 			messageBloc.querySelector("button").onclick = () => {
 				redirect(`/play/${jsonData.gameUid}`);
@@ -239,10 +237,9 @@ function openDiscussion(context, username, chat = null) {
 			input.disabled = false;
 			discussion.querySelector("#chat-friendMenu").style.display = "block";
 		} else {
-			// todo refreshNotificationNumberSystem
-			discussion.querySelector(".discussion-header span").innerText = "System notification"; // todo lang same in div
+			discussion.querySelector(".discussion-header span").innerText = getLang(context, "chat.systemNotification");
 			profilePicture.style.display = "none";
-			refreshMessages(systemNotifications.messages); // todo system messages
+			refreshMessages(systemNotifications.messages);
 			input.disabled = true;
 			discussion.querySelector("#chat-friendMenu").style.display = "none";
 			systemNotifications.unread = 0;
@@ -483,7 +480,6 @@ function sendFriendRequest(context, target, ChatBox) {
 }
 
 function Chat(context) {
-	// todo disable chat if socket disconnected and send persistent
 	let div = document.createElement("div");
 	div.id = "chat"
 	if (enabled)
@@ -498,7 +494,7 @@ function Chat(context) {
 			<div class="chat-navbar">
 				<input type="text" id="chat-searchBox" />
 				<div id="systemMessages">
-					<span class="notSelectable">System notification</span> <!-- todo lang -->
+					<span class="notSelectable">${getLang(context, "chat.systemNotification")}</span>
 					<div class="notificationNumber"></div>
 				</div>
 				<div id="chat-friendList"></div>
@@ -518,13 +514,12 @@ function Chat(context) {
 				</div>
 				<div class="discussion-menu-container">
 					<div class="discussion-menu">
-						<!-- todo langs -->
-						<button id="InviteFriend">Invite friend</button>
-						<button id="AcceptFriend">Accept friend request</button>
-						<button id="DenyFriend">Deny friend request</button>
-						<button id="CancelFriend">Cancel friend request</button>
-						<button id="RemoveFriend">Remove friend</button>
-						<button id="BlockFriend">Block user</button>
+						<button id="InviteFriend">${getLang(context, "chat.inviteFriend")}</button>
+						<button id="AcceptFriend">${getLang(context, "chat.acceptFriend")}</button>
+						<button id="DenyFriend">${getLang(context, "chat.denyFriend")}</button>
+						<button id="CancelFriend">${getLang(context, "chat.cancelFriend")}</button>
+						<button id="RemoveFriend">${getLang(context, "chat.removeFriend")}</button>
+						<button id="BlockFriend">${getLang(context, "chat.blockFriend")}</button>
 					</div>
 				</div>
 			</div>
@@ -533,7 +528,7 @@ function Chat(context) {
 	var navBar = div.querySelector(".chat-navbar");
 	var addFriendButton = templates["friendBox"].cloneNode(true);
 	addFriendButton.id = "addFriendButton";
-	addFriendButton.querySelector("span").innerText = "Add Friend"; // todo langs
+	addFriendButton.querySelector("span").innerText = getLang(context, "chat.addFriend");
 	addFriendButton.onclick = () => {
 		sendFriendRequest(context, searchInput, div);
 	}

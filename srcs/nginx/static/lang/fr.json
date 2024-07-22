@@ -12,6 +12,20 @@
 		"register": "S'inscrire",
 		"profilePictureAlt": "Photo de profil"
 	},
+	"chat": {
+	"gameJoin": "Rejoindre",
+		"gameInviteTitle": "Invitation à jouer",
+		"gameInviteMessage": "Veux tu jouer ?",
+		"tournamentMatchStart": "Votre partie de tournoi a commencé",
+		"systemNotification": "Notification systeme",
+		"inviteFriend": "Inviter à jouer",
+		"acceptFriend": "Accepter la demande d'ami",
+		"denyFriend": "Refuser la demande d'ami",
+		"cancelFriend": "Annuler la demande d'ami",
+		"removeFriend": "Supprimer l'amitié",
+		"blockFriend": "Bloquer l'utilisateur",
+		"addFriend": "Ajouter en ami"
+	},
 	"pages": {
 		"404": {
 			"title": "Erreur 404",
@@ -221,7 +235,13 @@
 		"selectPlayers": "Veuillez sélectionner un nombre de joueurs entre {} et {} !",
 		"selectPoints": "Veuillez sélectionner un nombre de points à gagner entre {} et {} !",
 		"selectTheme": "Veuillez sélectionner un thème !",
-		"toggleA2FOauth": "Vous ne pouvez pas basculer 2FA avec OAuth !"
+		"toggleA2FOauth": "Vous ne pouvez pas basculer 2FA avec OAuth !",
+		"AlreadyFriend": "Vous êtes déjà ami avec cet utilisateur !",
+		"FriendRequestSent": "Vous avez déjà envoyer une demande d'ami à cet utilisateur !",
+		"FriendRequestYourself": "Vous ne pouvez vous demander vous même en tant qu'ami !",
+		"RelationDoesNotExist": "Vous n'êtes pas ami avec cet utilisateur !",
+		"AlreadyBlocked": "Utilisateur déjà bloqué !",
+		"NotImplementedYet": "Fonctionnalité non implémenté !"
 	},
 	"successes": {
 		"a2fDisabled": "Authentification à deux facteurs désactivée avec succès !",
@@ -238,6 +258,9 @@
 		"registered": "Vous vous êtes inscrit avec succès !",
 		"tournamentCreated": "Tournoi créé avec succès !",
 		"tournamentJoined": "Tournoi rejoint avec succès !",
-		"tournamentQuit": "Tournoi quitté avec succès !"
+		"tournamentQuit": "Tournoi quitté avec succès !",
+		"acceptedFriendRequest": "Demande d'ami accepté avec succès !",
+		"FriendRequestSent": "Demande d'ami envoyé avec succès !",
+		"cancelFriendRequest": "Demande d'ami annulé avec succès !"
 	}
 }

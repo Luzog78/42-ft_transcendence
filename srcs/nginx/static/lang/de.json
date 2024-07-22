@@ -12,6 +12,20 @@
 		"register": "Registrieren",
 		"iconAlt": "Logo"
 	},
+	"chat": {
+		"gameJoin": "teilnehmen",
+		"gameInviteTitle": "Spieleinladung",
+		"gameInviteMessage": "Willst du spielen?",
+		"tournamentMatchStart": "Ihr Turnierspiel hat begonnen",
+		"systemNotification": "Systembenachrichtigung",
+		"inviteFriend": "Freund einladen",
+		"acceptFriend": "Freundschaftsanfrage akzeptieren",
+		"denyFriend": "Freundschaftsanfrage ablehnen",
+		"cancelFriend": "Freundschaftsanfrage abbrechen",
+		"removeFriend": "Freund entfernen",
+		"blockFriend": "Benutzer blockieren",
+		"addFriend": "Freund hinzufügen"
+	},
 	"pages": {
 		"404": {
 			"h0": "Seite nicht gefunden...",
@@ -222,7 +236,13 @@
 		"selectPlayers": "Bitte wählen Sie eine Anzahl von Spielern zwischen {} und {}!",
 		"selectPoints": "Bitte wählen Sie eine Anzahl von Punkten zum Gewinnen zwischen {} und {}!",
 		"selectTheme": "Bitte wählen Sie ein Thema!",
-		"toggleA2FOauth": "Sie können 2FA nicht mit OAuth umschalten!"
+		"toggleA2FOauth": "Sie können 2FA nicht mit OAuth umschalten!",
+		"AlreadyFriend": "Du bist bereits mit diesem Benutzer befreundet!",
+		"FriendRequestSent": "Du hast diesem Benutzer bereits eine Freundschaftsanfrage gesendet!",
+		"FriendRequestYourself": "Du kannst dich nicht um einen Freund bitten!",
+		"RelationDoesNotExist": "Sie sind mit diesem Benutzer nicht befreundet!",
+		"AlreadyBlocked": "Benutzer bereits blockiert!",
+		"NotImplementedYet": "Noch nicht implementiert!"
 	},
 	"successes": {
 		"a2fDisabled": "Zwei-Faktor-Authentifizierung erfolgreich deaktiviert!",
@@ -239,6 +259,9 @@
 		"registered": "Erfolgreich registriert!",
 		"tournamentCreated": "Turnier erfolgreich erstellt!",
 		"tournamentJoined": "Turnier erfolgreich beigetreten!",
-		"tournamentQuit": "Turnier erfolgreich verlassen!"
+		"tournamentQuit": "Turnier erfolgreich verlassen!",
+		"acceptedFriendRequest": "Die Freundschaftsanfrage wurde erfolgreich angenommen!",
+		"FriendRequestSent": "Senden Sie erfolgreich eine Freundschaftsanfrage!",
+		"cancelFriendRequest": "Die Freundschaftsanfrage wurde erfolgreich abgebrochen!"
 	}
 }

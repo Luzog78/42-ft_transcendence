@@ -12,6 +12,20 @@
 		"register": "Register",
 		"iconAlt": "Logo"
 	},
+	"chat": {
+		"gameJoin": "Join",
+		"gameInviteTitle": "Game Invite",
+		"gameInviteMessage": "Do you want to play?",
+		"tournamentMatchStart": "Your tournament match has started",
+		"systemNotification": "System notification",
+		"inviteFriend": "Invite friend",
+		"acceptFriend": "Accept friend request",
+		"denyFriend": "Deny friend request",
+		"cancelFriend": "Cancel friend request",
+		"removeFriend": "Remove friend",
+		"blockFriend": "Block user",
+		"addFriend": "Add Friend"
+	},
 	"pages": {
 		"404": {
 			"h0": "Page not found...",
@@ -222,7 +236,13 @@
 		"usernameTooLong": "Username must be at most 24 characters long !",
 		"usernameTooShort": "Username must be at least 3 characters long !",
 		"userNotFound": "User not found !",
-		"UserNotFound": "User not found !"
+		"UserNotFound": "User not found !",
+		"AlreadyFriend": "You are already a friend with this user!",
+		"FriendRequestSent": "You already sent a friend request to this user!",
+		"FriendRequestYourself": "Cannot request yourself friend!",
+		"RelationDoesNotExist": "You aren't friend with this user!",
+		"AlreadyBlocked": "User already blocked!",
+		"NotImplementedYet": "Not implemented yet!"
 	},
 	"successes": {
 		"a2fDisabled": "Two-factor authentication successfully disabled !",
@@ -239,6 +259,9 @@
 		"registered": "You have been successfully registered !",
 		"tournamentCreated": "Tournament successfully created !",
 		"tournamentJoined": "Tournament successfully joined !",
-		"tournamentQuit": "Tournament successfully quit !"
+		"tournamentQuit": "Tournament successfully quit !",
+		"acceptedFriendRequest": "Successfully accepted the friend request!",
+		"FriendRequestSent": "Successfully send a friend request!",
+		"cancelFriendRequest": "Successfully canceled the friend request!"
 	}
 }

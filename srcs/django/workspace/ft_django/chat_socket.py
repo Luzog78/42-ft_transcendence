@@ -18,8 +18,6 @@ def find_user_socket(user: str):
 			res.append(socket)
 	return res
 
-# todo opti bdd: transform user from string to UserObject at authenticate to prevent bdd call at each request
-# # pb: maybe (maybe) (django may prevent it) socket need to be closed if user object deleted on another computer to prevent recreation of object if saved
 class ChatSocket(AsyncWebsocketConsumer):
 	def __init__(self, *args, **kwargs):
 		self.user = None
@@ -60,8 +58,6 @@ class ChatSocket(AsyncWebsocketConsumer):
 				await self.authenticate(data, frontendId)
 			else:
 				await self.reply('errors.notAuthenticated', False, frontendId)
-		elif data['type'] == 'send_game_message':
-			pass # TODO: find game, add message in db and find if targets have socket open with find_user_socket
 		else:
 			await self.reply('errors.invalidRequestMooved', False, frontendId)
 

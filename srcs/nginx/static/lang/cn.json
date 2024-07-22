@@ -12,6 +12,20 @@
 		"register": "注册",
 		"iconAlt": "标志"
 	},
+	"chat": {
+		"gameJoin": "加入",
+		"gameInviteTitle": "游戏邀请",
+		"gameInviteMessage": "你想玩吗？",
+		"tournamentMatchStart": "您的锦标赛比赛已经开始",
+		"systemNotification": "系统通知",
+		"inviteFriend": "邀请朋友",
+		"acceptFriend": "接受好友请求",
+		"denyFriend": "拒绝好友请求",
+		"cancelFriend": "取消好友请求",
+		"removeFriend": "删除好友",
+		"blockFriend": "阻止用户",
+		"addFriend": "添加好友"
+	},
 	"pages": {
 		"404": {
 			"h0": "页面未找到...",
@@ -222,7 +236,13 @@
 		"selectPlayers": "请选择{}到{}之间的玩家数！",
 		"selectPoints": "请选择{}到{}之间的胜利分数！",
 		"selectTheme": "请选择主题！",
-		"toggleA2FOauth": "无法使用OAuth切换2FA！"
+		"toggleA2FOauth": "无法使用OAuth切换2FA！",
+		"AlreadyFriend": "您已经是该用户的好友了！",
+		"FriendRequestSent": "您已经向该用户发送了好友请求！",
+		"FriendRequestYourself": "您无法向自己发送好友请求",
+		"RelationDoesNotExist": "您不是该用户的好友！",
+		"AlreadyBlocked": "用户已被屏蔽！",
+		"NotImplementedYet": "尚未实施！"
 	},
 	"successes": {
 		"a2fDisabled": "二次验证已成功禁用！",
@@ -239,6 +259,9 @@
 		"registered": "您已成功注册！",
 		"tournamentCreated": "比赛已成功创建！",
 		"tournamentJoined": "比赛已成功加入！",
-		"tournamentQuit": "比赛已成功退出！"
+		"tournamentQuit": "比赛已成功退出！",
+		"acceptedFriendRequest": "成功接受好友请求！",
+		"FriendRequestSent": "好友请求发送成功！",
+		"cancelFriendRequest": "成功取消好友请求！"
 	}
 }

@@ -12,6 +12,20 @@
 		"register": "التسجيل",
 		"iconAlt": "الشعار"
 	},
+	"chat": {
+		"gameJoin": "ينضم",
+		"gameInviteTitle": "دعوة للعب",
+		"gameInviteMessage": "هل تريد أن تلعب؟",
+		"tournamentMatchStart": "بدأت مباراة البطولة الخاصة بك",
+		"systemNotification": "إشعار النظام",
+		"inviteFriend": "دعوة صديق",
+		"acceptFriend": "قبول طلب الصداقة",
+		"denyFriend": "رفض طلب الصداقة",
+		"cancelFriend": "إلغاء طلب الصداقة",
+		"removeFriend": "أزالة صديق",
+		"blockFriend": "مستخدم محضور",
+		"addFriend": "إضافة صديق"
+	},
 	"pages": {
 		"404": {
 			"h0": "الصفحة غير موجودة...",
@@ -222,7 +236,13 @@
 		"selectPlayers": "يرجى اختيار عدد اللاعبين بين {} و {}!",
 		"selectPoints": "يرجى اختيار عدد النقاط للفوز بين {} و {}!",
 		"selectTheme": "يرجى اختيار موضوع!",
-		"toggleA2FOauth": "لا يمكنك تبديل 2FA باستخدام OAuth!"
+		"toggleA2FOauth": "لا يمكنك تبديل 2FA باستخدام OAuth!",
+		"AlreadyFriend": "أنت بالفعل صديق لهذا المستخدم!",
+		"FriendRequestSent": "لقد أرسلت بالفعل طلب صداقة لهذا المستخدم!",
+		"FriendRequestYourself": "لا يمكن أن تطلب لنفسك صديق!",
+		"RelationDoesNotExist": "أنت لست صديقًا لهذا المستخدم!",
+		"AlreadyBlocked": "تم حظر المستخدم بالفعل!",
+		"NotImplementedYet": "لم تنفذ بعد!"
 	},
 	"successes": {
 		"a2fDisabled": "تم تعطيل المصادقة الثنائية بنجاح!",
@@ -239,6 +259,9 @@
 		"registered": "تم التسجيل بنجاح!",
 		"tournamentCreated": "تم إنشاء البطولة بنجاح!",
 		"tournamentJoined": "تم الانضمام إلى البطولة بنجاح!",
-		"tournamentQuit": "تم إنهاء البطولة بنجاح!"
+		"tournamentQuit": "تم إنهاء البطولة بنجاح!",
+		"acceptedFriendRequest": "تم قبول طلب الصداقة بنجاح!",
+		"FriendRequestSent": "تم إرسال طلب الصداقة بنجاح!",
+		"cancelFriendRequest": "تم إلغاء طلب الصداقة بنجاح!"
 	}
 }
