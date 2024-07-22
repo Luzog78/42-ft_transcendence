@@ -400,6 +400,7 @@ class Status(models.TextChoices):
 class Match(models.Model):
 	'''
 	Required fields:
+		mode: str
 		player_count: int
 
 	Auto fields:
@@ -414,6 +415,7 @@ class Match(models.Model):
 	'''
 
 	id				= models.AutoField(primary_key=True)
+	mode			= models.CharField(max_length=2, choices=GameMode.choices, default=GameMode.BATTLE_ROYALE)
 	player_count	= models.IntegerField()
 	players			= ArrayField(models.CharField(max_length=24), default=list)
 	winner			= models.ForeignKey(User, on_delete=models.SET_NULL, null=True) # type: ignore
@@ -426,6 +428,7 @@ class Match(models.Model):
 	def json(self):
 		return {
 			'id': self.id,
+			'mode': self.mode,
 			'playerCount': self.player_count,
 			'players': self.players,
 			'winner': self.winner.username if self.winner is not None else None,
@@ -436,7 +439,7 @@ class Match(models.Model):
 		}
 
 	def add_player(self, player_username: str):
-		# for line in traceback.format_stack(): # todo remove
+		# for line in traceback.format_stack(): # TODO: remove
 		# 	print(line.strip())
 		# print("add player", player_username)
 		self.players.append(player_username)
@@ -450,7 +453,7 @@ class Match(models.Model):
 		self.status = Status.ONGOING
 		self.game = Game.objects.create(
 			uid=Game.new_uid(),
-			mode=GameMode.BATTLE_ROYALE,
+			mode=self.mode,
 			players=self.players,
 			restricted=True,
 		)
@@ -470,6 +473,7 @@ class Match(models.Model):
 class Pool(models.Model):
 	'''
 	Required fields:
+		mode: str
 		matches_count: int
 		player_per_match: int
 
@@ -482,6 +486,7 @@ class Pool(models.Model):
 	'''
 
 	id					= models.AutoField(primary_key=True)
+	mode				= models.CharField(max_length=2, choices=GameMode.choices, default=GameMode.BATTLE_ROYALE)
 	matches_count		= models.IntegerField()
 	player_per_match	= models.IntegerField()
 	matches				= ArrayField(models.CharField(max_length=24), default=list)
@@ -499,6 +504,7 @@ class Pool(models.Model):
 					matches.append(m.json())
 		return {
 			'id': self.id,
+			'mode': self.mode,
 			'matchesCount': self.matches_count,
 			'playerPerMatch': self.player_per_match,
 			'matches': matches,
@@ -511,7 +517,7 @@ class Pool(models.Model):
 		self.save()
 		self.matches = []
 		for _ in range(self.matches_count):
-			match = Match.objects.create(player_count=self.player_per_match)
+			match = Match.objects.create(mode=self.mode, player_count=self.player_per_match)
 			self.matches.append(match.id)
 		self.save()
 		return self
@@ -533,6 +539,7 @@ class Tournament(models.Model):
 	'''
 	Required fields:
 		tid: str
+		mode: str
 		player_count: int
 
 	Auto fields:
@@ -546,6 +553,7 @@ class Tournament(models.Model):
 	'''
 
 	tid				= models.CharField(primary_key=True, max_length=5, blank=False, null=False)
+	mode			= models.CharField(max_length=2, choices=GameMode.choices, default=GameMode.BATTLE_ROYALE)
 	created_at		= models.DateTimeField(auto_now=True, blank=False)
 	player_count	= models.IntegerField()
 	players			= ArrayField(models.CharField(max_length=24), default=list)
@@ -577,6 +585,7 @@ class Tournament(models.Model):
 					pools.append(p.json(json_matches))
 		return {
 			'tid': self.tid,
+			'mode': self.mode,
 			'createdAt': self.created_at,
 			'playerCount': self.player_count,
 			'players': self.players,
@@ -592,7 +601,7 @@ class Tournament(models.Model):
 		self.pools = []
 		calcs = self.calc_pools(self.player_count)
 		for m, p in calcs:
-			pool = Pool.objects.create(matches_count=m, player_per_match=p).init()
+			pool = Pool.objects.create(mode=self.mode, matches_count=m, player_per_match=p).init()
 			self.pools.append(pool.id)
 		self.save()
 		return self

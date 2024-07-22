@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   NewTournament.js                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/12 16:51:01 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/22 06:01:42 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@ async function NewTournament(context) {
 
 			<p>${getLang(context, "pages.tournament.noTournamentDesc")}</p>
 
+			<div id="modes">
+				<div class="container">
+					<input type="radio" name="mode-radio" autocomplete="off" class="mode-input" id="mode-br" checked>
+					<label class="mode-label" for="mode-br">Battle<br>Royale</label>
+
+					<input type="radio" name="mode-radio" autocomplete="off" class="mode-input" id="mode-tc">
+					<label class="mode-label" for="mode-tc">Tic Tac<br>Toe</label>
+				</div>
+				<hr>
+			</div>
+
 			<div class="kbd-span">
 				<span class="pointer notSelectable" decr="player-count">-</span>
 				<input type="number" id="player-count" class="fs-5 fw-light w100" value="5" min="2" max="1000">
@@ -40,10 +51,12 @@ async function NewTournament(context) {
 	`;
 
 	setTimeout(() => {
+		let modeBR = document.getElementById("mode-br");
+		let modeTC = document.getElementById("mode-tc");
 		let playerCount = document.getElementById("player-count");
 		let createTournament = document.getElementById("create-tournament");
 
-		if (!playerCount || !createTournament)
+		if (!modeBR || !modeTC || !playerCount || !createTournament)
 			return;
 
 		document.querySelectorAll("[decr]").forEach(e => e.onclick = () => {
@@ -70,10 +83,14 @@ async function NewTournament(context) {
 
 		createTournament.onclick = () => {
 			let count = normalizePlayers(playerCount);
-			postJson(context, "/api/tournament/new", { players: count }).then(data => {
+			postJson(context, "/api/tournament/new", {
+				mode: modeBR.checked ? "BR" : "TC",
+				players: count,
+			}).then(data => {
 				if (data.ok)
 					redirect(`/tournament/${data.tid}`, true, data);
 				else {
+					console.log(data);
 					persistError(context, getLang(context, data.error, data.args));
 					pushPersistents(context);
 				}

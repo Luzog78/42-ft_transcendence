@@ -744,16 +744,22 @@ def view_tournament_new(request: HttpRequest):
 
 	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
 
-	valid = 'players' in data and isinstance(data['players'], int) and 2 <= data['players'] <= 1000
+	valid = 'players' in data and isinstance(data['players'], int) and 2 <= data['players'] <= 1000 \
+		and 'mode' in data and (GameMode.equals(data['mode'], GameMode.BATTLE_ROYALE) \
+			or GameMode.equals(data['mode'], GameMode.TIC_TAC_TOE))
 
 	if valid:
-		valid, i = Tournament.is_legit(data['players'])
+		i = 0
+		if GameMode.equals(data['mode'], GameMode.TIC_TAC_TOE):
+			valid, i = Tournament.is_legit(data['players'], min_players=2, max_players=2)
+		else:
+			valid, i = Tournament.is_legit(data['players'])
 		if not valid:
 			return JsonResponse({'ok': False, 'error': 'errors.cannotCreateGameOf', 'args': [ i ]})
 	else:
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
 
-	tournament = Tournament.objects.create(tid=Tournament.new_uid(), player_count=data['players']).init()
+	tournament = Tournament.objects.create(tid=Tournament.new_uid(), mode=data['mode'], player_count=data['players']).init()
 	return JsonResponse({'ok': True, 'success': 'successes.tournamentCreated', **tournament.json()})
 
 
@@ -803,6 +809,7 @@ def view_tournament_tid(request: HttpRequest, tid: str):
 	if t:
 		return JsonResponse({'ok': True, **t[0].json()})
 	return JsonResponse({'ok': False, 'error': 'errors.tournamentNotFound'})
+
 
 @csrf_exempt
 def view_tournament_join(request: HttpRequest, tid: str, username: str):
@@ -914,7 +921,7 @@ def view_add_friend(request: HttpRequest):
 	if 'target' not in data or not isinstance(data['target'], str):
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
 	if (data['target'] == response.user):
-		return JsonResponse({'ok': False, 'error': 'errors.FriendRequestYourself'}) # todo lang
+		return JsonResponse({'ok': False, 'error': 'errors.FriendRequestYourself'}) # TODO: lang
 	if not (user := User.get(response.user)) or not (target := User.get(data['target'])):
 		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
 
@@ -928,9 +935,9 @@ def view_add_friend(request: HttpRequest):
 	try:
 		friend_relation = FriendList.objects.get(Q(author=user, target=target) | Q(author=target, target=user))
 		if friend_relation.pending == False:
-			return JsonResponse({'ok': False, 'error': 'errors.AlreadyFriend'}) # todo lang
+			return JsonResponse({'ok': False, 'error': 'errors.AlreadyFriend'}) # TODO: lang
 		elif friend_relation.author == user:
-			return JsonResponse({'ok': False, 'error': 'errors.FriendRequestSent'}) # todo lang
+			return JsonResponse({'ok': False, 'error': 'errors.FriendRequestSent'}) # TODO: lang
 		else:
 			# accepting friend request
 			friend_relation.pending = False
@@ -945,7 +952,7 @@ def view_add_friend(request: HttpRequest):
 				asyncio.run(socket.sendJson({'type': 'new_friend', 'friend': data['target'], 'myRequest': False}))
 				if len(targetSockets) > 0:
 					asyncio.run(socket.sendJson({'type': 'status_change', 'username': data['target'], 'status': True}))
-			return JsonResponse({'ok': True, 'success': 'successes.acceptedFriendRequest'}) # todo lang
+			return JsonResponse({'ok': True, 'success': 'successes.acceptedFriendRequest'}) # TODO: lang
 
 	except FriendList.DoesNotExist:
 		# send friend request
@@ -953,7 +960,7 @@ def view_add_friend(request: HttpRequest):
 		friend_request.save()
 		for targetSocket in find_user_socket(data['target']):
 			asyncio.run(targetSocket.sendJson({'type': 'new_friend_request', 'friend': response.user, 'myRequest': False}))
-		return JsonResponse({'ok': True, 'success': 'successes.FriendRequestSent'}) # todo lang
+		return JsonResponse({'ok': True, 'success': 'successes.FriendRequestSent'}) # TODO: lang
 
 
 @csrf_exempt
@@ -977,10 +984,10 @@ def view_remove_friend(request: HttpRequest):
 			asyncio.run(socket.sendJson({'type': 'remove_friend', 'friend': response.user}))
 		for socket in find_user_socket(response.user):
 			asyncio.run(socket.sendJson({'type': 'remove_friend', 'friend': data['target']}))
-		return JsonResponse({'ok': True, 'success': 'successes.cancelFriendRequest'}) # todo lang
+		return JsonResponse({'ok': True, 'success': 'successes.cancelFriendRequest'}) # TODO: lang
 
 	except FriendList.DoesNotExist:
-		return JsonResponse({'ok': False, 'error': 'errors.RelationDoesNotExist'}) # todo lang
+		return JsonResponse({'ok': False, 'error': 'errors.RelationDoesNotExist'}) # TODO: lang
 
 
 @csrf_exempt
@@ -1011,7 +1018,7 @@ def view_block_user(request: HttpRequest):
 
 	try:
 		block_relation = BlockList.objects.get(Q(author=user, target=target))
-		return JsonResponse({'ok': False, 'error': 'errors.AlreadyBlocked'}) # todo lang
+		return JsonResponse({'ok': False, 'error': 'errors.AlreadyBlocked'}) # TODO: lang
 	except BlockList.DoesNotExist:
 		block_relation = BlockList(author=user, target=target)
 		block_relation.save()
@@ -1103,6 +1110,7 @@ def view_send_message(request: HttpRequest):
 	except User.DoesNotExist:
 		return JsonResponse({'ok': False, 'error': 'errors.UserNotFound'})
 
+
 @csrf_exempt
 def view_get_messages(request: HttpRequest):
 	if not (response := auth.is_authenticated(request)):
@@ -1122,9 +1130,10 @@ def view_get_messages(request: HttpRequest):
 			messages = [msg.json(json_users=False) for msg in messages]
 			return JsonResponse({'ok': True, 'messages': messages})
 		else:
-			return JsonResponse({'ok': False, 'error': 'errors.NotImplementedYet'}) # todo lang or game messages
+			return JsonResponse({'ok': False, 'error': 'errors.NotImplementedYet'}) # TODO: lang or game messages
 	except User.DoesNotExist:
 		return JsonResponse({'ok': False, 'error': 'errors.UserNotFound'})
+
 
 @csrf_exempt
 def view_test(request: HttpRequest, whatever: int):

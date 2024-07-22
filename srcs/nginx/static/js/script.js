@@ -262,6 +262,7 @@ const loadLang = async (context, lang) => {
 }
 
 const getLang = (context, key, argsList = undefined) => {
+	argsList = (argsList || []).slice();
 	const notFound = `{'${key}' not found}`;
 	let pathes = `${key}`.split(".");
 	let found = context.lang || {};
@@ -272,14 +273,13 @@ const getLang = (context, key, argsList = undefined) => {
 	}
 	if (typeof found !== "string")
 		return notFound;
-	let finalString = "";
-	if (argsList)
-		for (let i = 0; i < found.length; i++) {
-			if (found[i] === "{" && i + 1 < found.length && found[i + 1] === "}")
-				finalString += `${argsList.shift()}`;
-			else
-				finalString += found[i];
-		}
+	let i = 0;
+	while (found.includes("{}")) {
+		if (i >= argsList.length)
+			break;
+		found = found.replace("{}", argsList[i]);
+		i++;
+	}
 	return found;
 }
 

@@ -205,9 +205,66 @@
 
 /* ************************************************************************** */
 
-#tournament-content #no-tournament hr {
+#tournament-content #no-tournament > hr {
 	margin-top: 30px;
 	margin-bottom: 50px;
+}
+
+#tournament-content #no-tournament .mode-input {
+	display: none;
+}
+
+#tournament-content #no-tournament .mode-label {
+	font-size: 24px;
+	transition: .3s;
+}
+
+#tournament-content #no-tournament .mode-input:checked + .mode-label {
+	background: linear-gradient(
+		to right,
+		#24bceb 20%,
+		#9a66e0 30%,
+		#3133ec 70%,
+		#c02ae7 80%
+	);
+	transform: scale(125%);
+	font-weight: bold;
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-size: 500% auto;
+	animation: PongResult-Shine 4s infinite alternate;
+}
+
+#tournament-content #no-tournament #modes {
+	margin-top: 50px;
+	margin-bottom: 30px;
+}
+
+#tournament-content #no-tournament #modes .container {
+	display: flex;
+	justify-content: flex-start;
+	width: fit-content;
+	max-width: 100%;
+	gap: 80px;
+	margin: 20px;
+	text-align: center;
+}
+
+#tournament-content #no-tournament #modes hr {
+	height: 4px;
+	width: 40%;
+	border-radius: 1000px;
+	background: linear-gradient(
+			to right,
+			#24bceb 20%,
+			#9a66e0 30%,
+			#3133ec 70%,
+			#c02ae7 80%
+	);
+	-webkit-text-fill-color: transparent;
+	background-size: 500% auto;
+	animation: PongResult-Shine 3s infinite alternate;
 }
 
 #tournament-content #no-tournament .kbd-span {
