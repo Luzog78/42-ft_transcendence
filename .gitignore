@@ -21,6 +21,7 @@
 !*.md
 !*.env
 !*.conf
+!*.ttf
 !.gitignore
 !Makefile
 

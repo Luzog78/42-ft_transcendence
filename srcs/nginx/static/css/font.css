@@ -1,0 +1,103 @@
+/* 200: extralight
+300: light
+400: regular
+500 medium:
+600: semibold
+700: bold */
+
+@font-face {
+	font-family: 'Kodchasan';
+	font-style: italic;
+	font-weight: 200;
+	font-display: swap;
+	src: url("../font/Kodchasan-ExtraLightItalic.ttf");
+}
+
+@font-face {
+	font-family: 'Kodchasan';
+	font-style: italic;
+	font-weight: 300;
+	font-display: swap;
+	src: url("../font/Kodchasan-LightItalic.ttf");
+}
+
+@font-face {
+	font-family: 'Kodchasan';
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../font/Kodchasan-Italic.ttf");
+}
+
+@font-face {
+	font-family: 'Kodchasan';
+	font-style: italic;
+	font-weight: 500;
+	font-display: swap;
+	src: url("../font/Kodchasan-MediumItalic.ttf");
+}
+
+@font-face {
+	font-family: 'Kodchasan';
+	font-style: italic;
+	font-weight: 600;
+	font-display: swap;
+	src: url("../font/Kodchasan-SemiBoldItalic.ttf");
+}
+
+@font-face {
+	font-family: 'Kodchasan';
+	font-style: italic;
+	font-weight: 700;
+	font-display: swap;
+	src: url("../font/Kodchasan-BoldItalic.ttf");
+}
+
+
+@font-face {
+	font-family: 'Kodchasan';
+	font-style: normal;
+	font-weight: 200;
+	font-display: swap;
+	src: url("../font/Kodchasan-ExtraLight.ttf");
+}
+
+@font-face {
+	font-family: 'Kodchasan';
+	font-style: normal;
+	font-weight: 300;
+	font-display: swap;
+	src: url("../font/Kodchasan-Light.ttf");
+}
+
+@font-face {
+	font-family: 'Kodchasan';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../font/Kodchasan-Regular.ttf");
+}
+
+@font-face {
+	font-family: 'Kodchasan';
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url("../font/Kodchasan-Medium.ttf");
+}
+
+@font-face {
+	font-family: 'Kodchasan';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url("../font/Kodchasan-SemiBold.ttf");
+}
+
+@font-face {
+	font-family: 'Kodchasan';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("../font/Kodchasan-Bold.ttf");
+}
