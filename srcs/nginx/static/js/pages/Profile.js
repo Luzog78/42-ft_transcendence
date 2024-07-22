@@ -118,7 +118,7 @@ async function Profile(context, username) {
 		} catch (e) {
 			page = 1;
 		}
-	
+
 	if (context.user.username === username) {
 		if (profileName)
 			profileName.innerText = context.user.firstName + " " + context.user.lastName.toUpperCase();

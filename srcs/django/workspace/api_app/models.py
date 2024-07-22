@@ -138,26 +138,33 @@ class GameMode(models.TextChoices):
 	TIME_OUT		= 'TO', 'Time Out'
 	FIRST_TO		= 'FT', 'First To'
 	BATTLE_ROYALE	= 'BR', 'Battle Royale'
+	TIC_TAC_TOE		= 'TC', 'Tic Tac Toe'
 
 	@staticmethod
 	def get_items():
-		return [('TO', 'Time Out'), ('FT', 'First To'), ('BR', 'Battle Royale')]
+		return [('TO', 'Time Out'), ('FT', 'First To'), ('BR', 'Battle Royale'), ('TC', 'Tic Tac Toe')]
 
 	@staticmethod
 	def get_mods():
-		return ['TO', 'FT', 'BR']
+		return ['TO', 'FT', 'BR', 'TC']
 
 	@staticmethod
 	def get_names():
-		return ['Time Out', 'First To', 'Battle Royale']
+		return ['Time Out', 'First To', 'Battle Royale', 'Tic Tac Toe']
 
 	@staticmethod
 	def parse(mode):
-		mode = mode.upper()
+		if isinstance(mode, tuple) or isinstance(mode, list):
+			mode = mode[0]
+		mode = f'{mode}'.upper()
 		for k, v in GameMode.get_items():
 			if mode == k or mode == v:
 				return k, v
 		return None
+
+	@staticmethod
+	def equals(mode1, mode2):
+		return GameMode.parse(mode1) == GameMode.parse(mode2)
 
 
 class Game(models.Model):

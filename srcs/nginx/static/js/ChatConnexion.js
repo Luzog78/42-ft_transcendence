@@ -27,7 +27,7 @@ class ChatConnexion
 		this.waitingResponses = []; // list of [frontendId, promiseRes, promiseRej]
 		this.url = 'wss://' + window.location.host + '/ws/chat';
 		console.log("[ChatSocket] Connecting to " + this.url);
-		
+
 		function connect() {
 			_this.socket = new WebSocket(_this.url);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/20 13:38:29 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/22 04:52:59 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ function sendMessage(context, target, message) {
 				if (!cache[target].discussion)
 					cache[target].discussion = [];
 				cache[target].discussion.push({author: context.user.username, content: message, id: resp.messageId});
-				
+
 				var chat = document.getElementById("chat");
 				if (!chat)
 					return;
@@ -298,7 +298,7 @@ function RefreshFriendList(context, chatBox = null) {
 			friendButton.dataset.username = friend.username;
 			let usernameSpan = friendButton.querySelector('span');
 			usernameSpan.innerText = (cache[friend.username] && cache[friend.username].full_name) ? cache[friend.username].full_name : friend.username;
-			
+
 			let friendImg = friendButton.querySelector('img');
 			if (cache[friend.username] && cache[friend.username].picture)
 				friendImg.src = cache[friend.username].picture
@@ -316,7 +316,7 @@ function RefreshFriendList(context, chatBox = null) {
 					friendImg.src = cache[friend.username].picture;
 
 					var discussion = chatBox.querySelector(".discussion");
-					
+
 					if (discussion.dataset.username == friend.username)
 					{
 						discussion.querySelector(".discussion-header span").innerText = cache[username].full_name;
@@ -354,7 +354,7 @@ function refreshFriendMenuButtons(context, username, ChatBox = null) {
 	console.log(username);
 	console.log(friend);
 	console.log(context.chat.FriendList);
-	
+
 	// 0: not friend
 	// 1: waiting friend to accept
 	// 2: pending friend request
@@ -446,7 +446,7 @@ function refreshFriendMenuButtons(context, username, ChatBox = null) {
 
 	let friendMenuBtn = ChatBox.querySelector("#chat-friendMenu")
 	if (!friendMenuBtn.classList.contains("open")) {
-		
+
 		let discussionMenu = ChatBox.querySelector(".discussion-menu")
 		discussionMenu.style.transition = "unset";
 		discussionMenu.style.marginTop = -discussionMenu.offsetHeight + "px";
@@ -519,7 +519,7 @@ function Chat(context) {
 				<div class="discussion-menu-container">
 					<div class="discussion-menu">
 						<!-- todo langs -->
-						<button id="InviteFriend">Invite friend</button> 
+						<button id="InviteFriend">Invite friend</button>
 						<button id="AcceptFriend">Accept friend request</button>
 						<button id="DenyFriend">Deny friend request</button>
 						<button id="CancelFriend">Cancel friend request</button>
@@ -552,12 +552,12 @@ function Chat(context) {
 		textInput.style.height = 'auto';
 		textInput.style.height = textInput.scrollHeight + "px";
 	}
-	
+
 	var discussionMenu = div.querySelector(".discussion-menu");
 	div.querySelector("#chat-friendMenu").addEventListener("click", (event) => {
 		var username = event.target.parentElement.parentElement.parentElement;
 		if (username) {
-			
+
 			var friendMenu = div.querySelector("#chat-friendMenu");
 			refreshFriendMenuButtons(context, username.dataset.username, div);
 			if (friendMenu.classList.contains("open")) {
@@ -573,7 +573,7 @@ function Chat(context) {
 	div.querySelector("#systemMessages").addEventListener("click", (event) => {
 		openDiscussion(context, '-system', div);
 	})
-	
+
 	RefreshFriendList(context, div);
 	if (!context.user.isAuthenticated)
 		ToggleChat(false, div);
@@ -589,7 +589,7 @@ function Chat(context) {
 		sysNotifNbDiv.style.display = "block";
 		sysNotifNbDiv.innerText = systemNotifications.unread > 9 ? "9+" : systemNotifications.unread;
 	}
-	
+
 	return div;
 }
 

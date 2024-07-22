@@ -362,6 +362,7 @@ function getGameMode(mode) {
 	return mode === "TO" ? "Time Out"
 			: mode === "FT" ? "First To"
 			: mode === "BR" ? "Battle Royale"
+			: mode === "TC" ? "Tic Tac Toe"
 			: `??? (${mode}) ???`;
 }
 

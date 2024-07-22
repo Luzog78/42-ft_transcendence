@@ -47,11 +47,11 @@ async function Play(context) {
 			</form>
 		</div>
 	`;
-	
+
 	div.insertBefore(await NavBar(getLang(context, "pages.play.title"), context), div.firstChild);
 	div.insertBefore(Persistents(context), div.firstChild);
 	div.appendChild(Chat(context));
-	
+
 	let form = div.querySelector("#play-form");
 	if (form === null)
 		return;

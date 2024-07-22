@@ -245,7 +245,7 @@ class Lobby:
 			await self.BRDied(player_id, player)
 		elif (self.game_mode == "TO" or self.game_mode == "FT"):
 			await self.TOFTDied(killer, player_id, player)
-		
+
 		if (self.game_mode == "FT" and player.kills >= self.limit):
 			self.onEnd()
 			await self.sendData("game_status", "END")

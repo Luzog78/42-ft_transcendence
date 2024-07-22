@@ -20,7 +20,6 @@ import { Err404 } from "./pages/Err404.js";
 import { Profile } from "./pages/Profile.js";
 import { Play } from "./pages/Play.js";
 import { PlayId } from "./pages/PlayId.js";
-import { Pong } from "./pages/Pong.js";
 import { GameConfig} from "./pages/GameConfig.js";
 import { Settings } from "./pages/Settings.js";
 
@@ -115,10 +114,6 @@ const router = [
 	{
 		path: "/play/<alphanum>",
 		component: PlayId,
-	},
-	{
-		path: "/pong",
-		component: Pong,
 	},
 	{
 		path: "/new",
@@ -250,10 +245,8 @@ const persist = (context, copy) => {
 }
 
 const loadLang = async (context, lang) => {
-	if (!lang) {
-		console.log(`Undefined lang: set to default [en].`);
-		lang = 'en';
-	}
+	if (lang === undefined || lang === null || lang === "")
+		lang = SUPPORTED_LANGS[0];
 	context.lang = await getJson(context, `/static/lang/${lang}.json`);
 	if (!context.lang || !context.lang.locale)
 		console.error(`[❌] Failed to fetch language file: ${lang}.json`);

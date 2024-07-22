@@ -10,7 +10,8 @@ from .views import endpoints, view_err404, view_test, view_root, \
 					view_tournament_tid, view_tournament_join, view_tournament_quit, \
 					view_ressource, view_pong, \
 					view_add_friend, view_remove_friend, view_get_friends, view_block_user, \
-					view_send_message, view_get_messages
+					view_send_message, view_get_messages, \
+					view_ttt
 
 
 urlpatterns = [ re_path('.*', view_err404) ]
@@ -53,4 +54,5 @@ r(view_get_friends,		'friends/list')
 r(view_block_user,		'friends/block')
 r(view_send_message,	'message/send')
 r(view_get_messages,	'message/get')
+r(view_ttt,				'ttt/<str:uid>')
 r(view_test,			'<int:whatever>')

@@ -81,7 +81,7 @@ async function Register(context) {
 
 				<div class="row col-12">
 					<div class="col-12">
-						<button class="btn btn-oauth" id="signup-oauth">${getLang(context, "pages.register.labels.register42")}</button> 
+						<button class="btn btn-oauth" id="signup-oauth">${getLang(context, "pages.register.labels.register42")}</button>
 					</div>
 				</div>
 			</form>

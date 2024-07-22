@@ -60,11 +60,12 @@ class Server
 			}, 3000);
 		}
 	}
+
 	TOFTDied(player_id)
 	{
 		const player = this.scene.get(player_id);
 		const camera_old_position = this.scene.camera.camera_old_position;
-		
+
 		setTimeout(() => {
 			this.scene.camera.setPosition(camera_old_position.x, camera_old_position.y, camera_old_position.z, 0, 0, 0, true);
 			player.player.material.emissiveIntensity = 3;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Settings.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/16 11:06:22 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/22 02:33:19 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ async function Settings(context) {
 	div.insertBefore(Persistents(context), div.firstChild);
 	div.insertBefore(await NavBar(getLang(context, "pages.profile.title"), context), div.firstChild);
 	div.appendChild(Chat(context));
-	
+
 	if (!context.user.isAuthenticated || !context.user.username) {
 		persist(context, persistentBackup);
 		persistError(context, getLang(context, "errors.mustBeLoggedIn"));
@@ -458,7 +458,7 @@ async function Settings(context) {
 				editDisabled.removeEventListener("click", editDisabledFct) // maybe useless cause editEnabledFct cause entire page refresh instead of only 2fa refresh
 				editEnabled.addEventListener("click", editEnabledFct);
 			}
-		} 
+		}
 		refreshToggleA2f();
 
 	}

@@ -224,7 +224,7 @@ function OnNotification(navbar = null) {
 		else
 			notifContainer.style.display = "none";
 	}
-	
+
 }
 
 

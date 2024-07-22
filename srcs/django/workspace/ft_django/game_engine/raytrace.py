@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    raytrace.py                                        :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: TheRed <TheRed@students.42.fr>             +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 16:27:26 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/21 15:36:18 by TheRed           ###   ########.fr        #
+#    Updated: 2024/07/22 04:52:59 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ class RayTrace():
 	def __init__(self, pos: Vector, direction: Vector):
 		self.pos = pos
 		self.direction = direction
-		
+
 	def intersect(self, wall_point_1, wall_point_2):
 		v1 = self.pos - wall_point_1
 		v2 = wall_point_2 - wall_point_1
@@ -28,7 +28,7 @@ class RayTrace():
 		if t1 >= 0.0 and t2 >= 0.0 and t2 <= 1.0:
 			return self.pos + self.direction * t1
 		return None
-	
+
 	def intersects(self, walls) -> dict[str, Vector]:
 		intersections: dict[str, Vector] = {}
 

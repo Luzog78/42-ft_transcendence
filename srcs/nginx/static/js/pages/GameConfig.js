@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GameConfig.js                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/16 11:05:59 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/22 04:49:58 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,24 @@ import { postJson } from "../utils.js";
 import { Chat } from "../components/Chat.js";
 
 
+const TCColors = [
+	'white', 'black', 'red', 'blue', 'green', 'yellow', 'purple', 'aqua'
+]
+
+const TCHexColors = [
+	'#fff', '#000', '#f00', '#00f', '#0f0', '#ff0', '#f0f', '#0ff'
+]
+
+	const TCShapes = [
+		'circle', 'cross', 'triangle', 'square'
+	]
+
+const TCGetShape = (val) => val & 0b1111;
+const TCGetColor = (val) => (val >> 4) & 0b1111;
+const TCGetValue = (shape, color) => (color << 4) | shape;
+const TCGetLimit = (val1, val2) => val1 == val2 ? -1 : (val1 << 8) | val2;
+
+
 async function GameConfig(context, id = null) {
 	let div = document.createElement("div");
 
@@ -24,15 +42,18 @@ async function GameConfig(context, id = null) {
 		<div id="GameConfig-content">
 		<div class="GameConfig-container container-blur">
 				<div class="GameConfig-Mode row d-flex justify-content-center">
-					<div class="col-md-5 text-center d-flex justify-content-around">
+					<div class="text-center d-flex justify-content-around">
 						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn1" autocomplete="off">
-						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn1">First To</label>
+						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn1">First<br>To</label>
 
 						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn2" autocomplete="off" checked>
-						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn2">Battle Royal</label>
+						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn2">Battle<br>Royal</label>
 
 						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn3" autocomplete="off">
-						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn3">Time Out</label>
+						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn3">Time<br>Out</label>
+
+						<input type="radio" class="btn-check GameConfig-ModeInput" name="ModeRadio" id="ModeRadio-btn4" autocomplete="off">
+						<label class="btn fs-3 GameConfig-ModeLabel" for="ModeRadio-btn4">Tic Tac<br>Toe</label>
 					</div>
 				</div>
 				<div class="GameConfig-Line my-4" style="margin-bottom: 15px !important;"></div>
@@ -86,6 +107,24 @@ async function GameConfig(context, id = null) {
 								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio4"><img src="https://raw.githubusercontent.com/42data/r/main/ft_transcendence/theme0.png"></label>
 							</div>
 						</div>
+
+						<div class="row d-flex justify-content-center" style="display: none !important;">
+							<div class="kbd-span">
+								<span class="pointer notSelectable" id="limit-tc-1-shape-decr">&lt;&lt;</span>
+								<span class="pointer notSelectable" id="limit-tc-1-color-decr">&lt;</span>
+								<span class="default-cursor notSelectable" id="limit-tc-1" value="0">...</span>
+								<span class="pointer notSelectable" id="limit-tc-1-color-incr">&gt;</span>
+								<span class="pointer notSelectable" id="limit-tc-1-shape-incr">&gt;&gt;</span>
+							</div>
+							<div style="width: 100%; margin: 10px; text-align: center;">Vs.</div>
+							<div class="kbd-span">
+								<span class="pointer notSelectable" id="limit-tc-2-shape-decr">&lt;&lt;</span>
+								<span class="pointer notSelectable" id="limit-tc-2-color-decr">&lt;</span>
+								<span class="default-cursor notSelectable" id="limit-tc-2" value="0">...</span>
+								<span class="pointer notSelectable" id="limit-tc-2-color-incr">&gt;</span>
+								<span class="pointer notSelectable" id="limit-tc-2-shape-incr">&gt;&gt;</span>
+							</div>
+						</div>
 					</div>
 					<div class="col-md-3 my-3 d-flex flex-column justify-content-between">
 						<div class="GameConfig-Speed row py-2 d-flex justify-content-center">
@@ -117,12 +156,27 @@ async function GameConfig(context, id = null) {
 		let modeFT = div.querySelector("#ModeRadio-btn1");
 		let modeBR = div.querySelector("#ModeRadio-btn2");
 		let modeTO = div.querySelector("#ModeRadio-btn3");
+		let modeTC = div.querySelector("#ModeRadio-btn4");
 		let playerCount = div.querySelector("#player-count");
 		let limitFT = div.querySelector("#limit-ft");
 		let limitTOMinDec = div.querySelector("#limit-to-min-dec");
 		let limitTOMinUni = div.querySelector("#limit-to-min-uni");
 		let limitTOSecDec = div.querySelector("#limit-to-sec-dec");
 		let limitTOSecUni = div.querySelector("#limit-to-sec-uni");
+		let limitTC1 = div.querySelector("#limit-tc-1");
+		let limitTC2 = div.querySelector("#limit-tc-2");
+		let limitTC1Shape = div.querySelector("#limit-tc-1-shape");
+		let limitTC1Color = div.querySelector("#limit-tc-1-color");
+		let limitTC2Shape = div.querySelector("#limit-tc-2-shape");
+		let limitTC2Color = div.querySelector("#limit-tc-2-color");
+		let limitTC1ShapeIncr = div.querySelector("#limit-tc-1-shape-incr");
+		let limitTC1ColorIncr = div.querySelector("#limit-tc-1-color-incr");
+		let limitTC1ShapeDecr = div.querySelector("#limit-tc-1-shape-decr");
+		let limitTC1ColorDecr = div.querySelector("#limit-tc-1-color-decr");
+		let limitTC2ShapeIncr = div.querySelector("#limit-tc-2-shape-incr");
+		let limitTC2ColorIncr = div.querySelector("#limit-tc-2-color-incr");
+		let limitTC2ShapeDecr = div.querySelector("#limit-tc-2-shape-decr");
+		let limitTC2ColorDecr = div.querySelector("#limit-tc-2-color-decr");
 		let theme1 = div.querySelector("#ThemeRadio1");
 		let theme2 = div.querySelector("#ThemeRadio2");
 		let theme3 = div.querySelector("#ThemeRadio3");
@@ -168,20 +222,57 @@ async function GameConfig(context, id = null) {
 		limitTOSecUni.addEventListener("input", (e) =>
 			inputTime(e.target, null, limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni));
 
+		limitTC1ShapeIncr.addEventListener("click", (e) =>
+			changeTC(limitTC1, limitTC1Shape, limitTC1Color, 1, 0));
+		limitTC1ColorIncr.addEventListener("click", (e) =>
+			changeTC(limitTC1, limitTC1Shape, limitTC1Color, 0, 1));
+		limitTC1ShapeDecr.addEventListener("click", (e) =>
+			changeTC(limitTC1, limitTC1Shape, limitTC1Color, -1, 0));
+		limitTC1ColorDecr.addEventListener("click", (e) =>
+			changeTC(limitTC1, limitTC1Shape, limitTC1Color, 0, -1));
+		limitTC2ShapeIncr.addEventListener("click", (e) =>
+			changeTC(limitTC2, limitTC2Shape, limitTC2Color, 1, 0));
+		limitTC2ColorIncr.addEventListener("click", (e) =>
+			changeTC(limitTC2, limitTC2Shape, limitTC2Color, 0, 1));
+		limitTC2ShapeDecr.addEventListener("click", (e) =>
+			changeTC(limitTC2, limitTC2Shape, limitTC2Color, -1, 0));
+		limitTC2ColorDecr.addEventListener("click", (e) =>
+			changeTC(limitTC2, limitTC2Shape, limitTC2Color, 0, -1));
+
+		// Default values
+		changeTC(limitTC1, limitTC1Shape, limitTC1Color, 0, 2);
+		changeTC(limitTC2, limitTC2Shape, limitTC2Color, 1, 3);
+
 		playerCount.addEventListener("change", () => changeOther(playerCount));
 		limitFT.addEventListener("change", () => changeOther(limitFT));
 
 		modeFT.addEventListener("change", () => {
 			limitFT.parentElement.parentElement.style.display = "flex";
 			limitTOSecUni.parentElement.parentElement.style.display = "none";
+			theme1.parentElement.parentElement.style.display = "flex";
+			speedBall.parentElement.parentElement.style.display = "flex";
+			limitTC1.parentElement.parentElement.style.setProperty("display", "none", "important");
 		});
 		modeBR.addEventListener("change", () => {
 			limitFT.parentElement.parentElement.style.display = "none";
 			limitTOSecUni.parentElement.parentElement.style.display = "none";
+			theme1.parentElement.parentElement.style.display = "flex";
+			speedBall.parentElement.parentElement.style.display = "flex";
+			limitTC1.parentElement.parentElement.style.setProperty("display", "none", "important");
 		});
 		modeTO.addEventListener("change", () => {
 			limitFT.parentElement.parentElement.style.display = "none";
 			limitTOSecUni.parentElement.parentElement.style.display = "flex";
+			theme1.parentElement.parentElement.style.display = "flex";
+			speedBall.parentElement.parentElement.style.display = "flex";
+			limitTC1.parentElement.parentElement.style.setProperty("display", "none", "important");
+		});
+		modeTC.addEventListener("change", () => {
+			limitFT.parentElement.parentElement.style.display = "none";
+			limitTOSecUni.parentElement.parentElement.style.display = "none";
+			theme1.parentElement.parentElement.style.setProperty("display", "none", "important");
+			speedBall.parentElement.parentElement.style.setProperty("display", "none", "important");
+			limitTC1.parentElement.parentElement.style.setProperty("display", "flex", "important");
 		});
 		function updateSpeed(speed) {
 			let interval = setInterval(() => {
@@ -219,7 +310,7 @@ async function GameConfig(context, id = null) {
 			let playerCountVal = parseInt(playerCount.value);
 			let limitFTVal = parseInt(limitFT.value);
 			let limitTOVal = normalizeTime(limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni);
-			if (modeFT.checked + modeBR.checked + modeTO.checked !== 1)
+			if (modeFT.checked + modeBR.checked + modeTO.checked + modeTC.checked !== 1)
 				return err(getLang(context, "errors.selectGameMode"));
 			if (isNaN(playerCountVal) || playerCountVal < 2 || playerCountVal > 30)
 				return err(getLang(context, "errors.selectPlayers", 2, 30));
@@ -230,14 +321,21 @@ async function GameConfig(context, id = null) {
 			if (speed1.checked + speed2.checked + speed3.checked !== 1)
 				return err(getLang(context, "errors.selectBallSpeed"));
 
+			changeTC(limitTC1, limitTC1Shape, limitTC1Color, 0, 0);
+			changeTC(limitTC2, limitTC2Shape, limitTC2Color, 0, 0);
+			let limitTCVal = TCGetLimit(parseInt(limitTC1.getAttribute('value')), parseInt(limitTC2.getAttribute('value')));
+			if (limitTCVal == -1)
+				return;
+
 			let post = {
-				mode: modeFT.checked ? "FT" : modeTO.checked ? "TO" : "BR",
+				mode: modeFT.checked ? "FT" : modeTO.checked ? "TO" : modeTC.checked ? "TC" : "BR",
 				players: parseInt(playerCountVal),
 				theme: theme1.checked ? 0 : theme2.checked ? 1 : theme3.checked ? 2 : 3,
 				speed: speed1.checked ? 0 : speed2.checked ? 1 : 2,
 
 				limitFT: modeFT.checked ? limitFTVal : undefined,
 				limitTO: modeTO.checked ? limitTOVal : undefined,
+				limitTC: modeTC.checked ? limitTCVal : undefined,
 			};
 			postJson(context, "/api/game/new", post).then(data => {
 				if (data.ok) {
@@ -325,6 +423,32 @@ function normalizeOther(current) {
 	if (val > max)
 		val = max;
 	current.value = val;
+}
+
+function changeTC(current, shape, color, shapeInc, colorInc) {
+	let val = parseInt(current.getAttribute('value'));
+	if (isNaN(val))
+		val = 0;
+
+	let shapeVal = TCGetShape(val);
+	let colorVal = TCGetColor(val);
+
+	shapeVal += shapeInc;
+	if (shapeVal < 0)
+		shapeVal = TCShapes.length - 1;
+	if (shapeVal >= TCShapes.length)
+		shapeVal = 0;
+
+	colorVal += colorInc;
+	if (colorVal < 0)
+		colorVal = TCColors.length - 1;
+	if (colorVal >= TCColors.length)
+		colorVal = 0;
+
+	current.setAttribute('value', TCGetValue(shapeVal, colorVal));
+
+	current.innerText = TCShapes[shapeVal];
+	current.style.color = TCHexColors[colorVal];
 }
 
 

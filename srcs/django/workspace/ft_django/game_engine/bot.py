@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    bot.py                                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: TheRed <TheRed@students.42.fr>             +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 12:37:57 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/21 16:32:24 by TheRed           ###   ########.fr        #
+#    Updated: 2024/07/22 04:52:59 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ class Bot:
 		limit = self.lobby.limit
 		if (limit is None):
 			limit = 0
-		
+
 		self.time_to_think = 0
 		self.last_prediction = None
 
@@ -120,28 +120,28 @@ class Bot:
 			intersections = ray.intersects(self.lobby.walls)
 			if (len(intersections) == 0):
 				return
-			
+
 			closest_wall = list(intersections.keys())[0]
 			wall = self.lobby.walls[closest_wall]
 
 			closest_point = intersections[closest_wall]
 			wall_normal = Vector(-(wall[1].y - wall[0].y), wall[1].x - wall[0].x).normalize()
-			
+
 			ray.direction = ray.direction.reflect(wall_normal)
 			ray.pos = closest_point + ray.direction * 0.1
 
 			if (i == 0 and (closest_wall == f"player{self.client_id}" or closest_wall == f"score{self.client_id}")):
 				break
-		
+
 		self.last_prediction = {'pos': ray.pos, 'wall': closest_wall}
 
 		self.lobby.balls[1].pos = ray.pos
 		await self.lobby.balls[1].updateBall()
-	
+
 	def calculDirection(self):
 		pos_to_center = Vector(0,0) - self.pos
 		pos_to_prediction = self.last_prediction["pos"] - self.pos
-		
+
 		if ("wall" in self.last_prediction["wall"] or str(self.client_id) not in self.last_prediction["wall"]):
 			pos_to_prediction = self.init_pos - self.pos
 
@@ -153,7 +153,7 @@ class Bot:
 			cross *= -1
 
 		return cross
-		
+
 
 	async def update(self):
 		if (len(self.lobby.walls) == 0):

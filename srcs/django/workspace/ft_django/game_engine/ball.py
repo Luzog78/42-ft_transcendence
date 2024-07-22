@@ -121,7 +121,7 @@ class Ball:
 
 			max_distance = self.pos.distance(predicted_pos)
 			current_distance = predicted_pos.distance(intersection_point)
- 
+
 			if (current_distance <= max_distance):
 
 				if ("score" in wall_name):
@@ -137,7 +137,7 @@ class Ball:
 					player = self.lobby.clients[player_id]
 					player.rebounces += 1
 					self.last_player = player
-				
+
 				if (self.vel.length() > self.lobby.ball_ultimate_speed):
 					self.lobby.ball_ultimate_speed = self.vel.length()
 

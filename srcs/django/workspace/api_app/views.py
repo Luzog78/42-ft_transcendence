@@ -1,4 +1,4 @@
-from re import T, search
+from re import search
 import time
 import json
 import random
@@ -10,6 +10,7 @@ from django.db.models import Q
 
 from .models import GameMode, Ressources, User, Game, Stats, Status, Tournament, Usernames, FriendList, BlockList, PrivateChat
 from . import auth, checker
+from ft_django.tic_tac_toe import TTTLobby
 from ft_django import pong_socket, settings
 from ft_django.chat_socket import find_user_socket
 
@@ -592,26 +593,36 @@ def view_game_new(request):
 		and 'speed' in data and isinstance(data['speed'], int) and 0 <= data['speed'] <= 2
 
 	limit = None
-	if valid and data['mode'] == "TO":
+	if valid and GameMode.equals(data['mode'], GameMode.TIME_OUT):
 		valid = 'limitTO' in data and isinstance(data['limitTO'], int) and 60 <= data['limitTO'] <= 3600
 		limit = data['limitTO']
-	if valid and data['mode'] == "FT":
+	if valid and GameMode.equals(data['mode'], GameMode.FIRST_TO):
 		valid = 'limitFT' in data and isinstance(data['limitFT'], int) and 1 <= data['limitFT'] <= 100
 		limit = data['limitFT']
+	if valid and GameMode.equals(data['mode'], GameMode.TIC_TAC_TOE):
+		valid = 'limitTC' in data and isinstance(data['limitTC'], int)
+		limit = data['limitTC']
 
 	if not valid:
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
 
-	game = Game.objects.create(uid=Game.new_uid())
+	game = Game.objects.create(uid=Game.new_uid(), mode=data['mode'])
 
-	pong_socket.game_server.createLobby(
-		uid=game.uid,
-		game_mode=data["mode"],
-		player_num=data["players"],
-		theme=data["theme"],
-		ball_speed=data["speed"],
-		limit=limit,
-	)
+	if GameMode.equals(data['mode'], GameMode.TIC_TAC_TOE):
+		assert isinstance(limit, int)
+		ttt_lobby = TTTLobby.get_lobby_by_game(game, limit=limit, create=True)
+		if ttt_lobby is None:
+			return JsonResponse({'ok': False, 'error': 'errors.noGameFound'})
+
+	else:
+		pong_socket.game_server.createLobby(
+			uid=game.uid,
+			game_mode=data["mode"],
+			player_num=data["players"],
+			theme=data["theme"],
+			ball_speed=data["speed"],
+			limit=limit,
+		)
 
 	return JsonResponse({
 		'ok': True,
@@ -892,6 +903,7 @@ def view_pong(request: HttpRequest):
 
 	return JsonResponse({'ok': True, 'pong': 'pong'})
 
+
 @csrf_exempt
 def view_add_friend(request: HttpRequest):
 	if not (response := auth.is_authenticated(request)):
@@ -943,6 +955,7 @@ def view_add_friend(request: HttpRequest):
 			asyncio.run(targetSocket.sendJson({'type': 'new_friend_request', 'friend': response.user, 'myRequest': False}))
 		return JsonResponse({'ok': True, 'success': 'successes.FriendRequestSent'}) # todo lang
 
+
 @csrf_exempt
 def view_remove_friend(request: HttpRequest):
 	if not (response := auth.is_authenticated(request)):
@@ -969,6 +982,7 @@ def view_remove_friend(request: HttpRequest):
 	except FriendList.DoesNotExist:
 		return JsonResponse({'ok': False, 'error': 'errors.RelationDoesNotExist'}) # todo lang
 
+
 @csrf_exempt
 def view_get_friends(request: HttpRequest):
 	if not (response := auth.is_authenticated(request)):
@@ -977,10 +991,11 @@ def view_get_friends(request: HttpRequest):
 		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
 	if not (user := User.get(response.user)):
 		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
-	
+
 	friend_list = FriendList.objects.filter(Q(author=user) | Q(target=user))
 	friend_list = [friend.json() for friend in friend_list]
 	return JsonResponse({'ok': True, "data": friend_list})
+
 
 @csrf_exempt
 def view_block_user(request: HttpRequest):
@@ -1008,6 +1023,60 @@ def view_block_user(request: HttpRequest):
 			asyncio.run(targetSocket.sendJson({'type': 'remove_friend', 'friend': response.user}))
 		return JsonResponse({'ok': True, 'success': 'successes.blocked'})
 
+
+@csrf_exempt
+def view_ttt(request: HttpRequest, uid: str):
+	if not (response := auth.is_authenticated(request)):
+		return JsonResponse({'ok': False, 'error': 'errors.notLoggedIn'})
+
+	if request.method == 'POST':
+		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})
+
+	if not (user := User.get(response.user)):
+		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})
+
+	game = Game.objects.filter(uid=uid)
+	if not game:
+		return JsonResponse({'ok': False, 'error': 'errors.gameNotFound'})
+	game = game[0]
+
+	if game.is_ended():
+		winner = game.winner.user.username if game.winner and game.winner.user else None
+		players = game.players
+		idx = players.index(winner) + 1 if winner in players else 0
+		return JsonResponse({'ok': True,
+			'end': True,
+			'winner': f'user{idx}',
+			'game': game.json(),
+		})
+
+	ttt_lobby = TTTLobby.get_lobby_by_game(game)
+	if not ttt_lobby:
+		return JsonResponse({'ok': False})
+
+	if not ttt_lobby.is_present(user):
+		if not ttt_lobby.join(user):
+			return JsonResponse({'ok': False, 'error': 'errors.notInGame'})
+
+	slot = None
+	if 'slot' in request.GET:
+		slot = request.GET['slot']
+		if slot not in '012345678':
+			return JsonResponse({'ok': False})
+
+		try:
+			slot = int(slot)
+		except ValueError:
+			return JsonResponse({'ok': False})
+
+	if slot == -1:
+		ttt_lobby.leave(user)
+	elif slot is not None:
+		ttt_lobby.play(user, slot)
+
+	return JsonResponse({'ok': True, 'game': game.json(), 'lobby': ttt_lobby.json()})
+
+
 @csrf_exempt
 def view_send_message(request: HttpRequest):
 	if not (response := auth.is_authenticated(request)):
@@ -1020,7 +1089,7 @@ def view_send_message(request: HttpRequest):
 			return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
 	if len(data['content']) > 2048:
 		return JsonResponse({'ok': False, 'error': 'errors.MessageTooLong'})
-	
+
 	try:
 		author = User.objects.get(username=response.user)
 		target = User.objects.get(username=data['target'])

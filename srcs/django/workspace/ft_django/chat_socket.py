@@ -95,7 +95,7 @@ class ChatSocket(AsyncWebsocketConsumer):
 			else:
 				try:
 					userObject = await sync_to_async(User.objects.get)(username=self.user)
-					
+
 					if not self in connected_sockets:
 						connected_sockets.append(self)
 					await self.reply(None, True, frontendId)

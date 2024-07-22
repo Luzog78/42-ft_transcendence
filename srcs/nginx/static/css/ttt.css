@@ -1,0 +1,330 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ttt.css                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/15 16:54:14 by ysabik            #+#    #+#             */
+/*   Updated: 2024/07/22 02:33:19 by ysabik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+:root {
+	--line-color: #fff;
+	--line-width: 4px;
+	--line-height: 450px;
+
+	--gap: calc(var(--line-height) / 3);
+
+	--line-half-width: calc(var(--line-width) / 2);
+	--line-half-height: calc(var(--line-height) / 2);
+	--half-gap: calc(var(--gap) / 2);
+}
+
+#body {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+	font-family: 'Roboto', sans-serif;
+	background-color: #000;
+	color: #fff;
+}
+
+#game-kbd {
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	z-index: 100;
+}
+
+#container {
+	width: 100vw;
+	height: 100vh;
+}
+
+.user {
+	width: 60%;
+	height: 20%;
+	margin: auto;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	font-size: 80px;
+	font-weight: 100;
+}
+
+.ucolor {
+	text-shadow: -1px -1px 8px var(--line-color), -1px 1px 8px var(--line-color), 1px -1px 8px var(--line-color), 1px 1px 8px var(--line-color);
+	box-shadow: none !important;
+	background: none !important;
+	color: #fff !important;
+}
+
+#user-1 {
+	justify-content: flex-end;
+}
+
+#user-2 {
+	justify-content: flex-start;
+}
+
+#game {
+	width: 100%;
+	height: 60%;
+	position: relative;
+	z-index: 1;
+}
+
+#game > * {
+	position: absolute;
+}
+
+.white {
+	--line-color: #fff;
+	color: var(--line-color);
+	background: var(--line-color);
+	box-shadow: 0 0 16px 2px var(--line-color);
+}
+
+.black {
+	--line-color: #000;
+	color: var(--line-color);
+	background: var(--line-color);
+	box-shadow: 0 0 16px 2px var(--line-color);
+}
+
+.red {
+	--line-color: #f00;
+	color: var(--line-color);
+	background: var(--line-color);
+	box-shadow: 0 0 16px 2px var(--line-color);
+}
+
+.blue {
+	--line-color: #00f;
+	color: var(--line-color);
+	background: var(--line-color);
+	box-shadow: 0 0 16px 2px var(--line-color);
+}
+
+.green {
+	--line-color: #0f0;
+	color: var(--line-color);
+	background: var(--line-color);
+	box-shadow: 0 0 16px 2px var(--line-color);
+}
+
+.yellow {
+	--line-color: #ff0;
+	color: var(--line-color);
+	background: var(--line-color);
+	box-shadow: 0 0 16px 2px var(--line-color);
+}
+
+.purple {
+	--line-color: #f0f;
+	color: var(--line-color);
+	background: var(--line-color);
+	box-shadow: 0 0 16px 2px var(--line-color);
+}
+
+.aqua {
+	--line-color: #0ff;
+	color: var(--line-color);
+	background: var(--line-color);
+	box-shadow: 0 0 16px 2px var(--line-color);
+}
+
+.line {
+	width: var(--line-width);
+	height: var(--line-height);
+	border-radius: 1000px;
+	position: absolute;
+}
+
+#line-1 {
+	top: calc(50% - var(--line-half-height));
+	left: calc(50% - var(--line-half-width) - var(--half-gap));
+}
+
+#line-2 {
+	top: calc(50% - var(--line-half-height));
+	left: calc(50% - var(--line-half-width) + var(--half-gap));
+}
+
+#line-3 {
+	top: calc(50% - var(--line-half-height) - var(--half-gap));
+	left: calc(50% - var(--line-half-width));
+	transform: rotate(90deg);
+}
+
+#line-4 {
+	top: calc(50% - var(--line-half-height) + var(--half-gap));
+	left: calc(50% - var(--line-half-width));
+	transform: rotate(90deg);
+}
+
+.slot {
+	width: var(--gap);
+	height: var(--gap);
+	position: absolute;
+	z-index: 10;
+}
+
+#slot-1 {
+	top: calc(50% - var(--half-gap) - var(--gap));
+	left: calc(50% - var(--half-gap) - var(--gap));
+}
+
+#slot-2 {
+	top: calc(50% - var(--half-gap) - var(--gap));
+	left: calc(50% - var(--half-gap));
+}
+
+#slot-3 {
+	top: calc(50% - var(--half-gap) - var(--gap));
+	left: calc(50% - var(--half-gap) + var(--gap));
+}
+
+#slot-4 {
+	top: calc(50% - var(--half-gap));
+	left: calc(50% - var(--half-gap) - var(--gap));
+}
+
+#slot-5 {
+	top: calc(50% - var(--half-gap));
+	left: calc(50% - var(--half-gap));
+}
+
+#slot-6 {
+	top: calc(50% - var(--half-gap));
+	left: calc(50% - var(--half-gap) + var(--gap));
+}
+
+#slot-7 {
+	top: calc(50% - var(--half-gap) + var(--gap));
+	left: calc(50% - var(--half-gap) - var(--gap));
+}
+
+#slot-8 {
+	top: calc(50% - var(--half-gap) + var(--gap));
+	left: calc(50% - var(--half-gap));
+}
+
+#slot-9 {
+	top: calc(50% - var(--half-gap) + var(--gap));
+	left: calc(50% - var(--half-gap) + var(--gap));
+}
+
+.circle {
+	top: calc(50% + 20px - var(--half-gap));
+	left: calc(50% + 20px - var(--half-gap));
+
+	width: calc(var(--gap) - 40px);
+	height: calc(var(--gap) - 40px);
+	border-radius: 1000px;
+	background: none;
+	border: var(--line-width) solid var(--line-color);
+}
+
+.cross {
+	top: calc(50% - var(--half-gap));
+	left: calc(50% - var(--half-gap));
+
+	width: 0;
+	height: 0;
+	position: relative;
+}
+
+.cross > * {
+	position: absolute;
+	left: var(--half-gap);
+	width: var(--line-width);
+	height: var(--gap);
+	border-radius: 1000px;
+}
+
+.cross-1 {
+	transform: rotate(45deg);
+}
+
+.cross-2 {
+	transform: rotate(-45deg);
+}
+
+.triangle {
+	top: calc(50% - 10px - var(--half-gap));
+	left: calc(50% - var(--half-gap));
+
+	width: var(--gap);
+	height: var(--gap);
+	position: relative;
+}
+
+.triangle > * {
+	position: absolute;
+	width: var(--line-width);
+	height: calc(var(--gap) - 40px);
+	border-radius: 1000px;
+}
+
+.triangle-1 {
+	top: var(--half-gap);
+	left: var(--half-gap);
+	transform: rotate(90deg);
+}
+
+.triangle-2 {
+	top: 28px;
+	left: calc(var(--half-gap) - 28px);
+	transform: rotate(30deg);
+}
+
+.triangle-3 {
+	top: 28px;
+	right: calc(var(--half-gap) - 30px);
+	transform: rotate(-30deg);
+}
+
+.square {
+	top: calc(50% - var(--half-gap));
+	left: calc(50% - var(--half-gap));
+
+	width: var(--gap);
+	height: var(--gap);
+	position: relative;
+}
+
+.square > * {
+	position: absolute;
+	width: var(--line-width);
+	height: calc(var(--gap) - 40px);
+	border-radius: 1000px;
+}
+
+.square-1 {
+	top: 20px;
+	left: 20px;
+}
+
+.square-2 {
+	top: 20px;
+	left: calc(var(--gap) - 20px);
+}
+
+.square-3 {
+	top: calc(40px - var(--half-gap) + var(--line-half-width));
+	right: calc(var(--half-gap) - var(--line-width));
+	transform: rotate(90deg);
+}
+
+.square-4 {
+	top: calc(var(--half-gap) - var(--line-half-width));
+	right: calc(var(--half-gap) - var(--line-width));
+	transform: rotate(90deg);
+}
