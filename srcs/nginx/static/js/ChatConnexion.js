@@ -54,7 +54,7 @@ class ChatConnexion
 				else if (data.type == "tournamentMatchStart")
 					_this._on_tournament_match_start(data);
 				else
-					console.log("TODO new notification: " + data.type + " - " + data.message, e);
+					console.log("Unimplemented notification: " + data.type + " - " + data.message, e);
 			};
 			_this.socket.onclose = function(e) {
 				console.log("Chat socket closed, code: " + e.code + ", reason: " + e.reason + ". Reconnecting in 5 seconds");

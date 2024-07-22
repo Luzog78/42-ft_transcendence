@@ -27,25 +27,25 @@ async function Register(context) {
 				<div class="row col-12">
 					<div class="col-12">
 						<label for="username" class="form-label">${getLang(context, "pages.register.labels.username")}</label>
-						<input type="text" class="form-control" id="username" placeholder="${getLang(context, "pages.register.placeholders.username")}">
+						<input type="text" autocomplete="username" class="form-control" id="username" placeholder="${getLang(context, "pages.register.placeholders.username")}">
 					</div>
 				</div>
 
 				<div class="row col-12">
 					<div class="col-6">
 						<label for="first-name" class="form-label">${getLang(context, "pages.register.labels.firstName")}</label>
-						<input type="text" class="form-control" id="first-name"  placeholder="${getLang(context, "pages.register.placeholders.firstName")}">
+						<input type="text" autocomplete="given-name" class="form-control" id="first-name"  placeholder="${getLang(context, "pages.register.placeholders.firstName")}">
 					</div>
 					<div class="col-6">
 						<label for="last-name" class="form-label">${getLang(context, "pages.register.labels.lastName")}</label>
-						<input type="text" class="form-control" id="last-name" placeholder="${getLang(context, "pages.register.placeholders.lastName")}">
+						<input type="text" autocomplete="family-name" class="form-control" id="last-name" placeholder="${getLang(context, "pages.register.placeholders.lastName")}">
 					</div>
 				</div>
 
 				<div class="row col-12">
 					<div class="col-12">
 						<label for="email" class="form-label">${getLang(context, "pages.register.labels.email")}</label>
-						<input type="email" class="form-control" id="email" placeholder="${getLang(context, "pages.register.placeholders.email")}">
+						<input type="email" autocomplete="email" class="form-control" id="email" placeholder="${getLang(context, "pages.register.placeholders.email")}">
 					</div>
 				</div>
 
@@ -54,10 +54,10 @@ async function Register(context) {
 						<label for="new-password" class="form-label">${getLang(context, "pages.register.labels.password")}</label>
 					</div>
 					<div class="col-6">
-						<input type="password" class="form-control" id="new-password" placeholder="${getLang(context, "pages.register.placeholders.password")}">
+						<input type="password" autocomplete="new-password" class="form-control" id="new-password" placeholder="${getLang(context, "pages.register.placeholders.password")}">
 					</div>
 					<div class="col-6">
-						<input type="password" class="form-control" id="confirmation" placeholder="${getLang(context, "pages.register.placeholders.confirmPassword")}">
+						<input type="password" autocomplete="new-password" class="form-control" id="confirmation" placeholder="${getLang(context, "pages.register.placeholders.confirmPassword")}">
 					</div>
 				</div>
 

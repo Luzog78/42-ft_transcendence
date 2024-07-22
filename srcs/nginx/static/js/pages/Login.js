@@ -53,14 +53,14 @@ async function Login(context) {
 				<div class="row col-12">
 					<div class="col-12">
 						<label for="username" class="form-label">${getLang(context, "pages.login.labels.username")}</label>
-						<input type="text" class="form-control" id="username" placeholder="${getLang(context, "pages.login.placeholders.username")}">
+						<input type="text" autocomplete="username" class="form-control" id="username" placeholder="${getLang(context, "pages.login.placeholders.username")}">
 					</div>
 				</div>
 
 				<div class="row col-12">
 					<div class="col-12">
 						<label for="password" class="form-label">${getLang(context, "pages.login.labels.password")}</label>
-						<input type="password" class="form-control" id="password" placeholder="${getLang(context, "pages.login.placeholders.password")}">
+						<input type="password" autocomplete="current-password" class="form-control" id="password" placeholder="${getLang(context, "pages.login.placeholders.password")}">
 					</div>
 				</div>
 

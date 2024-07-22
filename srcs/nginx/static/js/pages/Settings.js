@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Settings.js                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/22 02:33:19 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/22 13:28:56 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ async function Settings(context) {
 									<label for="editNewPass" class="form-label">
 										${getLang(context, "pages.settings.labels.oldPassword")}
 									</label>
-									<input type="password" class="form-control" id="editNewPassOld" name="editNewPassOld" placeholder="${getLang(context, "pages.settings.placeholders.oldPassword")}" required>
+									<input type="password" autocomplete="current-password" class="form-control" id="editNewPassOld" name="editNewPassOld" placeholder="${getLang(context, "pages.settings.placeholders.oldPassword")}" required>
 								</div>
 							</div>
 							<div class="row col-12">
@@ -142,7 +142,7 @@ async function Settings(context) {
 									<label for="editNewPass" class="form-label">
 										${getLang(context, "pages.settings.labels.password")}
 									</label>
-									<input type="password" class="form-control" id="editNewPass" name="editNewPass" placeholder="${getLang(context, "pages.settings.placeholders.password")}" required>
+									<input type="password" autocomplete="new-password" class="form-control" id="editNewPass" name="editNewPass" placeholder="${getLang(context, "pages.settings.placeholders.password")}" required>
 								</div>
 							</div>
 							<div class="row col-12">
@@ -150,7 +150,7 @@ async function Settings(context) {
 									<label for="editNewPassConfirm" class="form-label">
 										${getLang(context, "pages.settings.labels.confirmPassword")}
 									</label>
-									<input type="password" class="form-control" id="editNewPassConfirm" name="editNewPassConfirm" placeholder="${getLang(context, "pages.settings.placeholders.confirmPassword")}" required>
+									<input type="password" autocomplete="new-password" class="form-control" id="editNewPassConfirm" name="editNewPassConfirm" placeholder="${getLang(context, "pages.settings.placeholders.confirmPassword")}" required>
 								</div>
 							</div>
 
