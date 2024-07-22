@@ -242,7 +242,8 @@
 		"FriendRequestYourself": "Не могу просить себя, друг!",
 		"RelationDoesNotExist": "Вы не друзья этого пользователя!",
 		"AlreadyBlocked": "Пользователь уже заблокирован!",
-		"NotImplementedYet": "Еще не реализовано!"
+		"NotImplementedYet": "Еще не реализовано!",
+		"oauthMissingCredentials": "Отсутствует параметр учетных данных!"
 	},
 	"successes": {
 		"a2fDisabled": "Двухфакторная аутентификация успешно отключена!",

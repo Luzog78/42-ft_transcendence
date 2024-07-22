@@ -242,7 +242,8 @@
 		"FriendRequestYourself": "No se puede solicitar amigo!",
 		"RelationDoesNotExist": "¡No eres amigo de este usuario!",
 		"AlreadyBlocked": "¡Usuario ya bloqueado!",
-		"NotImplementedYet": "¡Aun no implementado!"
+		"NotImplementedYet": "¡Aun no implementado!",
+		"oauthMissingCredentials": "¡Falta parámetro de credencial!"
 	},
 	"successes": {
 		"a2fDisabled": "¡Autenticación de dos factores desactivada con éxito!",

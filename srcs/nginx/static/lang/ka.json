@@ -242,7 +242,8 @@
 		"FriendRequestYourself": "საკუთარ თავს მეგობარო ვერ მოითხოვ!",
 		"RelationDoesNotExist": "თქვენ არ ხართ ამ მომხმარებლის მეგობარი!",
 		"AlreadyBlocked": "მომხმარებელი უკვე დაბლოკილია!",
-		"NotImplementedYet": "ჯერ არ განხორციელებულა!"
+		"NotImplementedYet": "ჯერ არ განხორციელებულა!",
+		"oauthMissingCredentials": "აკლია სერთიფიკატის პარამეტრი!"
 	},
 	"successes": {
 		"a2fDisabled": "ორფაქტორიანი ავთენტიფიკაცია წარმატებით გამორთულია!",

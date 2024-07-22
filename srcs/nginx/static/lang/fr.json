@@ -241,7 +241,8 @@
 		"FriendRequestYourself": "Vous ne pouvez vous demander vous même en tant qu'ami !",
 		"RelationDoesNotExist": "Vous n'êtes pas ami avec cet utilisateur !",
 		"AlreadyBlocked": "Utilisateur déjà bloqué !",
-		"NotImplementedYet": "Fonctionnalité non implémenté !"
+		"NotImplementedYet": "Fonctionnalité non implémenté !",
+		"oauthMissingCredentials": "Paramètre d'informations d'identification manquant !"
 	},
 	"successes": {
 		"a2fDisabled": "Authentification à deux facteurs désactivée avec succès !",

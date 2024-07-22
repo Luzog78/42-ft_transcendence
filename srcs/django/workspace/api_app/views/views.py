@@ -83,6 +83,13 @@ def view_root(request: HttpRequest):
 			'errors.usernameTooShort',
 			'errors.userNotFound',
 			'errors.UserNotFound',
+			'errors.AlreadyFriend',
+			'errors.FriendRequestSent',
+			'errors.FriendRequestYourself',
+			'errors.RelationDoesNotExist',
+			'errors.AlreadyBlocked',
+			'errors.NotImplementedYet',
+			'errors.oauthMissingCredentials',
 		],
 		'successes': [
 			'successes.a2fDisabled',
@@ -109,6 +116,9 @@ def view_root(request: HttpRequest):
 			'successes.tournamentCreated',
 			'successes.tournamentJoined',
 			'successes.tournamentQuit',
+			'successes.acceptedFriendRequest',
+			'successes.FriendRequestSent',
+			'successes.cancelFriendRequest',
 		],
 	})
 

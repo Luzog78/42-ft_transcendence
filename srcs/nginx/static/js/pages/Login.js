@@ -84,7 +84,7 @@ async function Login(context) {
 
 				<div class="row col-12">
 					<div class="col-12">
-						<button class="btn btn-oauth" id="signin-oauth"> ${getLang(context, "pages.login.labels.login42")} </button>
+						<button class="btn btn-oauth" id="signin-oauth"> ${getLang(context, "pages.register.labels.login42")} </button>
 					</div>
 				</div>
 			</form>

@@ -242,7 +242,8 @@
 		"FriendRequestYourself": "您无法向自己发送好友请求",
 		"RelationDoesNotExist": "您不是该用户的好友！",
 		"AlreadyBlocked": "用户已被屏蔽！",
-		"NotImplementedYet": "尚未实施！"
+		"NotImplementedYet": "尚未实施！",
+		"oauthMissingCredentials": "缺少凭据参数！"
 	},
 	"successes": {
 		"a2fDisabled": "二次验证已成功禁用！",

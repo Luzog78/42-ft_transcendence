@@ -242,7 +242,8 @@
 		"FriendRequestYourself": "Cannot request yourself friend!",
 		"RelationDoesNotExist": "You aren't friend with this user!",
 		"AlreadyBlocked": "User already blocked!",
-		"NotImplementedYet": "Not implemented yet!"
+		"NotImplementedYet": "Not implemented yet!",
+		"oauthMissingCredentials": "Missing credential parameter!"
 	},
 	"successes": {
 		"a2fDisabled": "Two-factor authentication successfully disabled !",

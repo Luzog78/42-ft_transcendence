@@ -67,7 +67,7 @@ async function Register(context) {
 
 				<div class="row col-12">
 					<div class="col-12 text-center" id="abc">
-						${getLang(context, "pages.register.haveAccount")} &nbsp; • &nbsp; <a href="/login${window.location.search}${window.location.hash}" data-link>${getLang(context, "pages.register.labels.login")}</a>
+						${getLang(context, "pages.register.haveAccount")} &nbsp; • &nbsp; <a href="/login${window.location.search}${window.location.hash}" data-link>${getLang(context, "pages.register.labels.register42")}</a>
 					</div>
 				</div>
 

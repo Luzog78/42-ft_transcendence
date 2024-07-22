@@ -242,7 +242,8 @@
 		"FriendRequestYourself": "لا يمكن أن تطلب لنفسك صديق!",
 		"RelationDoesNotExist": "أنت لست صديقًا لهذا المستخدم!",
 		"AlreadyBlocked": "تم حظر المستخدم بالفعل!",
-		"NotImplementedYet": "لم تنفذ بعد!"
+		"NotImplementedYet": "لم تنفذ بعد!",
+		"oauthMissingCredentials": "معلمة بيانات الاعتماد مفقودة!"
 	},
 	"successes": {
 		"a2fDisabled": "تم تعطيل المصادقة الثنائية بنجاح!",
