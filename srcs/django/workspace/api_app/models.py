@@ -583,6 +583,15 @@ class Tournament(models.Model):
 				p = Pool.objects.get(id=pool)
 				if p:
 					pools.append(p.json(json_matches))
+		winner = None
+		if self.status == Status.FINISHED:
+			pool = self.get_pool(len(self.pools) - 1)
+			if pool:
+				winners = pool.get_winners()
+				if winners:
+					winner = winners[0]
+					if winner:
+						winner = winner.json()
 		return {
 			'tid': self.tid,
 			'mode': self.mode,
@@ -594,6 +603,7 @@ class Tournament(models.Model):
 			'status': self.status,
 
 			'ended': self.status == Status.FINISHED,
+			'winner': winner,
 		}
 
 	def init(self):

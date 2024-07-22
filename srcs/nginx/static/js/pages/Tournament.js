@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/14 21:44:07 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/22 06:29:52 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,8 @@ function drawGraph(selectedElements, container, data, pools) {
 				let pool = data.pools.length <= i ? null : data.pools[i];
 				let match = !pool || pool.matches.length <= j ? null : pool.matches[j];
 				let player = !match || match.players.length <= k ? null : match.players[k];
+				if (i == pools.length - 1 && data.ended)
+					player = data.winner;
 				let winnerIdx = null;
 				if (match && match.winner != null) {
 					for (let l = 0; l < match.players.length; l++)
@@ -275,7 +277,7 @@ function drawGraph(selectedElements, container, data, pools) {
 				if (i != 0) {
 					let oldMatch = data.pools.length <= i - 1 || data.pools[i - 1] == null ? null : data.pools[i - 1].matches[j * pools[i][1] + k];
 					createLink(container, selectedElements, x - DIV_W * 1.5, y + DIV_H / 2, i - 1, j * pools[i][1] + k, undefined,
-						oldMatch && oldMatch.status == "finished");
+						(oldMatch && oldMatch.status == "finished") || data.ended);
 					createBall(container, selectedElements, x - DIV_W * 1.5, y + DIV_H / 2, i - 1, j * pools[i][1] + k,
 						i - 1 <= data.currentPool && oldMatch && (oldMatch.status != "pending" || oldMatch.players.length == oldMatch.playerCount));
 					if (i - 1 <= data.currentPool)
@@ -346,7 +348,7 @@ function createUser(container, selectedElements, x, y, pool, match, idx, player 
 		console.log(`${div.id}  |  x: ${x}  y: ${y}  | `, player);
 		if (div.hasAttribute("selected")) {
 			div.removeAttribute("selected");
-			selectedElements.remove(div.id);
+			selectedElements.splice(selectedElements.indexOf(div.id), 1);
 		} else {
 			div.setAttribute("selected", true);
 			selectedElements.push(div.id);
@@ -373,7 +375,7 @@ function createBall(container, selectedElements, x, y, pool, match, active = fal
 		console.log(`${div.id}  |  x: ${x}  y: ${y}`);
 		if (div.hasAttribute("selected")) {
 			div.removeAttribute("selected");
-			selectedElements.remove(div.id);
+			selectedElements.splice(selectedElements.indexOf(div.id), 1);
 		} else {
 			div.setAttribute("selected", true);
 			selectedElements.push(div.id);
@@ -459,7 +461,7 @@ function createTool(container, selectedElements, x, y, pool, match, playerCount 
 		console.log(`${div.id}  |  x: ${x}  y: ${y}`);
 		if (div.hasAttribute("selected")) {
 			div.removeAttribute("selected");
-			selectedElements.remove(div.id);
+			selectedElements.splice(selectedElements.indexOf(div.id), 1);
 		} else {
 			div.setAttribute("selected", true);
 			selectedElements.push(div.id);
@@ -516,11 +518,11 @@ function createLink(container, selectedElements, x, y, pool, match, idx = undefi
 		console.log(div.id + `  |  x: ${x}  y: ${y}`);
 		if (div.hasAttribute("selected")) {
 			div.removeAttribute("selected");
-			selectedElements.remove(div.id);
+			selectedElements.splice(selectedElements.indexOf(div.id), 1);
 
 			if (vert) {
 				vert.removeAttribute("selected");
-				selectedElements.remove(vert.id);
+				selectedElements.splice(selectedElements.indexOf(vert.id), 1);
 			}
 		} else {
 			div.setAttribute("selected", true);
@@ -556,11 +558,11 @@ function createVerticalLink(container, selectedElements, x, y, height, pool, mat
 		console.log(`${div.id}  |  x: ${x}  y: ${y}`);
 		if (div.hasAttribute("selected")) {
 			div.removeAttribute("selected");
-			selectedElements.remove(div.id);
+			selectedElements.splice(selectedElements.indexOf(div.id), 1);
 
 			if (hor) {
 				hor.removeAttribute("selected");
-				selectedElements.remove(hor.id);
+				selectedElements.splice(selectedElements.indexOf(hor.id), 1);
 			}
 		} else {
 			div.setAttribute("selected", true);

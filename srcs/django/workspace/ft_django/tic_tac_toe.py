@@ -1,7 +1,7 @@
 import time
 from datetime import datetime
 
-from api_app.models import Game, GameMode, User, Stats
+from api_app.models import Game, GameMode, User, Stats, Tournament
 
 
 class TTTLimit:
@@ -222,7 +222,6 @@ class TTTLobby:
 
 			duration = int(time.time()) - self.start_timestamp
 
-			# try: # TODO: Put the try back
 			stats1 = Stats.objects.create(
 				user=self.player1,
 				game=self.game,
@@ -254,7 +253,7 @@ class TTTLobby:
 			self.game.ultimate = stats1 if winner == 1 else stats2
 			self.game.duration = stats1 if winner == 1 else stats2
 			self.game.save()
-			# except Exception as e:
-			# 	pass
 
 			self.unregister()
+
+			Tournament.on_game_end(self.game.uid)
