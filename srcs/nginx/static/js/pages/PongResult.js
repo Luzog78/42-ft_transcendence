@@ -207,7 +207,7 @@ async function PongResult(context, id, data=null) {
 				if (game.mode === "BR")
 					data.stats = data.stats.sort((a, b) => b.duration - a.duration);
 				else
-					data.stats = data.stats.sort((a, b) => a.score - b.score);
+					data.stats = data.stats.sort((a, b) => b.score - a.score);
 				for (let player of data.stats) {
 					if (!player)
 						continue;
