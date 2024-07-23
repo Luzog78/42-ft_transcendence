@@ -20,9 +20,9 @@ import { Chat } from "../components/Chat.js"
 async function Home(context) {
 	let div = document.createElement("div");
 	div.innerHTML += /*html*/`
-	<p><br><br></p>
-	<div class="container" id="home-content">${getLang(context, "loading")}</div>
-	<button type="button" class="btn btn-primary" id="abcd">Click</button>
+		<p><br><br></p>
+		<div class="container" id="home-content">${getLang(context, "loading")}</div>
+		<button type="button" class="btn btn-primary" id="abcd">Click</button>
 	`;
 	div.insertBefore(await NavBar(getLang(context, "pages.home.title"), context), div.firstChild);
 	div.insertBefore(Persistents(context), div.firstChild);

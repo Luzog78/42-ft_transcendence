@@ -107,134 +107,134 @@ async function PongResult(context, id, data=null) {
 	div.insertBefore(await NavBar(getLang(context, "pages.playResult.title"), context), div.firstChild);
 	div.appendChild(Chat(context));
 
-		let bestPicture = div.querySelector("#best-picture");
-		let bestUsername = div.querySelector("#best-username");
-		let bestScore = div.querySelector("#best-score");
-		let bestStreak = div.querySelector("#best-streak");
-		let bestStreakBy = div.querySelector("#best-streak-by");
-		let rebounds = div.querySelector("#rebounds");
-		let reboundsBy = div.querySelector("#rebounds-by");
-		let ultimateSpeed = div.querySelector("#ultimate-speed");
-		let ultimateSpeedBy = div.querySelector("#ultimate-speed-by");
-		let bestTime = div.querySelector("#best-time");
-		let bestTimeBy = div.querySelector("#best-time-by");
-		let gameMode = div.querySelector("#game-mode");
-		let gameUid = div.querySelector("#game-uid");
-		let gameIcon = div.querySelector("#game-icon");
-		let pongResultPlayers = div.querySelector(".PongResult-players");
+	let bestPicture = div.querySelector("#best-picture");
+	let bestUsername = div.querySelector("#best-username");
+	let bestScore = div.querySelector("#best-score");
+	let bestStreak = div.querySelector("#best-streak");
+	let bestStreakBy = div.querySelector("#best-streak-by");
+	let rebounds = div.querySelector("#rebounds");
+	let reboundsBy = div.querySelector("#rebounds-by");
+	let ultimateSpeed = div.querySelector("#ultimate-speed");
+	let ultimateSpeedBy = div.querySelector("#ultimate-speed-by");
+	let bestTime = div.querySelector("#best-time");
+	let bestTimeBy = div.querySelector("#best-time-by");
+	let gameMode = div.querySelector("#game-mode");
+	let gameUid = div.querySelector("#game-uid");
+	let gameIcon = div.querySelector("#game-icon");
+	let pongResultPlayers = div.querySelector(".PongResult-players");
 
-		if (data.mode)
-			gameMode.innerText = getGameMode(data.mode);
-		if (data.uid) {
-			gameUid.innerText = `#${data.uid}`;
-			setupCopyKBDSpan(data.uid, gameIcon, [ gameUid ]);
+	if (data.mode)
+		gameMode.innerText = getGameMode(data.mode);
+	if (data.uid) {
+		gameUid.innerText = `#${data.uid}`;
+		setupCopyKBDSpan(data.uid, gameIcon, [ gameUid ]);
+	}
+	if (data.winner) {
+		if (data.winner.user) {
+			if (data.winner.user.picture)
+				bestPicture.src = data.winner.user.picture;
+			bestUsername.href = `/profile/${data.winner.user.username}`;
+			bestUsername.innerText = data.winner.user.username;
 		}
-		if (data.winner) {
-			if (data.winner.user) {
-				if (data.winner.user.picture)
-					bestPicture.src = data.winner.user.picture;
-				bestUsername.href = `/profile/${data.winner.user.username}`;
-				bestUsername.innerText = data.winner.user.username;
-			}
-			if (data.mode !== "BR")
-				bestScore.innerText = data.winner.score + " pts"
-			else {
-				let min = Math.floor(data.winner.duration / 60);
-				let sec = Math.floor(data.winner.duration % 60);
-				bestScore.innerText = (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
-			}
+		if (data.mode !== "BR")
+			bestScore.innerText = data.winner.score + " pts"
+		else {
+			let min = Math.floor(data.winner.duration / 60);
+			let sec = Math.floor(data.winner.duration % 60);
+			bestScore.innerText = (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
 		}
-		if (data.bestStreak) {
-			bestStreak.innerText = data.bestStreak.score;
-			if (data.bestStreak.user)
-				bestStreakBy.innerText = data.bestStreak.user.username;
-			else
-				bestStreakBy.parentElement.style.display = "none";
-		}
-		if (data.rebounces) {
-			rebounds.innerText = data.rebounces.rebounces;
-			if (data.rebounces.user)
-				reboundsBy.innerText = data.rebounces.user.username;
-			else
-				reboundsBy.parentElement.style.display = "none";
-		}
-		if (data.ultimate) {
-			ultimateSpeed.innerText = Math.round(data.ultimate.ultimate * 100) / 100;
-			if (data.ultimate.user)
-				ultimateSpeedBy.innerText = data.ultimate.user.username;
-			else
-				ultimateSpeedBy.parentElement.style.display = "none";
-		}
-		if (data.duration) {
-			let min = Math.floor(data.duration.duration / 60);
-			let sec = Math.floor(data.duration.duration % 60);
-			bestTime.innerText = `${min < 10 ? "0" : ""}${min}:${sec < 10 ? "0" : ""}${sec}`;
-			if (data.mode === "BR" && data.duration.user)
-				bestTimeBy.innerText = data.duration.user.username;
-			else
-				bestTimeBy.parentElement.style.display = "none";
-		}
+	}
+	if (data.bestStreak) {
+		bestStreak.innerText = data.bestStreak.score;
+		if (data.bestStreak.user)
+			bestStreakBy.innerText = data.bestStreak.user.username;
+		else
+			bestStreakBy.parentElement.style.display = "none";
+	}
+	if (data.rebounces) {
+		rebounds.innerText = data.rebounces.rebounces;
+		if (data.rebounces.user)
+			reboundsBy.innerText = data.rebounces.user.username;
+		else
+			reboundsBy.parentElement.style.display = "none";
+	}
+	if (data.ultimate) {
+		ultimateSpeed.innerText = Math.round(data.ultimate.ultimate * 100) / 100;
+		if (data.ultimate.user)
+			ultimateSpeedBy.innerText = data.ultimate.user.username;
+		else
+			ultimateSpeedBy.parentElement.style.display = "none";
+	}
+	if (data.duration) {
+		let min = Math.floor(data.duration.duration / 60);
+		let sec = Math.floor(data.duration.duration % 60);
+		bestTime.innerText = `${min < 10 ? "0" : ""}${min}:${sec < 10 ? "0" : ""}${sec}`;
+		if (data.mode === "BR" && data.duration.user)
+			bestTimeBy.innerText = data.duration.user.username;
+		else
+			bestTimeBy.parentElement.style.display = "none";
+	}
 
-		if (pongResultPlayers) {
-			async function scrollH(div, amount) {
-				setTimeout(() => {
-					div.scrollLeft += amount > 0 ? 1 : -1;
-					if (amount > 1)
-						scrollH(div, amount - 1);
-					else if (amount < -1)
-						scrollH(div, amount + 1);
-				}, 1);
-			}
-			pongResultPlayers.addEventListener("wheel", (e) => {
-				e.preventDefault();
-				scrollH(pongResultPlayers, e.deltaY * .4);
-			});
+	if (pongResultPlayers) {
+		async function scrollH(div, amount) {
+			setTimeout(() => {
+				div.scrollLeft += amount > 0 ? 1 : -1;
+				if (amount > 1)
+					scrollH(div, amount - 1);
+				else if (amount < -1)
+					scrollH(div, amount + 1);
+			}, 1);
+		}
+		pongResultPlayers.addEventListener("wheel", (e) => {
+			e.preventDefault();
+			scrollH(pongResultPlayers, e.deltaY * .4);
+		});
 
-			let game = data;
-			getJson(context, `/api/stats/g/${id}`).then(data => {
-				if (!data.ok) {
-					console.log("[❌] Could not get stats for game " + id);
-					persistError(context, getLang(context, data.error));
-					pushPersistents(context);
-					return;
-				}
-				if (!data.stats || data.stats.length === 0) {
+		let game = data;
+		getJson(context, `/api/stats/g/${id}`).then(data => {
+			if (!data.ok) {
+				console.log("[❌] Could not get stats for game " + id);
+				persistError(context, getLang(context, data.error));
+				pushPersistents(context);
+				return;
+			}
+			if (!data.stats || data.stats.length === 0) {
+				let div = document.createElement("div");
+				div.classList.add("PongResult-player", "row", "justify-content-center");
+				div.innerText = getLang(context, "pages.playResult.noPlayers");
+				pongResultPlayers.appendChild(div);
+			} else
+				if (game.mode === "BR")
+					data.stats = data.stats.sort((a, b) => b.duration - a.duration);
+				else
+					data.stats = data.stats.sort((a, b) => a.score - b.score);
+				for (let player of data.stats) {
+					if (!player)
+						continue;
+					let pic = player.user ? player.user.picture : null;
+					let usr = player.user ? player.user.username : "Unknown";
+					let score = null;
+					if (game.mode !== "BR")
+						score = player.score + " pts"
+					else {
+						let min = Math.floor(player.duration / 60);
+						let sec = Math.floor(player.duration % 60);
+						score = (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+					}
 					let div = document.createElement("div");
 					div.classList.add("PongResult-player", "row", "justify-content-center");
-					div.innerText = getLang(context, "pages.playResult.noPlayers");
+					div.innerHTML = /*html*/`
+						<img src="${pic || "/static/img/user.svg"}" alt="${getLang(context, "pages.playResult.profilePictureAlt")}" class="row">
+						<a class="fs-4 fw-semibold row">${usr}</a>
+						<span class="fs-5 row" style="font-size: 1em !important;">${score}</span>
+					`;
+					div.style.cursor = "pointer";
+					if (usr !== "Unknown")
+						div.onclick = () => redirect(`/profile/${usr}`);
 					pongResultPlayers.appendChild(div);
-				} else
-					if (game.mode === "BR")
-						data.stats = data.stats.sort((a, b) => b.duration - a.duration);
-					else
-						data.stats = data.stats.sort((a, b) => a.score - b.score);
-					for (let player of data.stats) {
-						if (!player)
-							continue;
-						let pic = player.user ? player.user.picture : null;
-						let usr = player.user ? player.user.username : "Unknown";
-						let score = null;
-						if (game.mode !== "BR")
-							score = player.score + " pts"
-						else {
-							let min = Math.floor(player.duration / 60);
-							let sec = Math.floor(player.duration % 60);
-							score = (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
-						}
-						let div = document.createElement("div");
-						div.classList.add("PongResult-player", "row", "justify-content-center");
-						div.innerHTML = /*html*/`
-							<img src="${pic || "/static/img/user.svg"}" alt="${getLang(context, "pages.playResult.profilePictureAlt")}" class="row">
-							<a class="fs-4 fw-semibold row">${usr}</a>
-							<span class="fs-5 row" style="font-size: 1em !important;">${score}</span>
-						`;
-						div.style.cursor = "pointer";
-						if (usr !== "Unknown")
-							div.onclick = () => redirect(`/profile/${usr}`);
-						pongResultPlayers.appendChild(div);
-					}
-			});
-		}
+				}
+		});
+	}
 	return div;
 }
 

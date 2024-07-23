@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Oauth.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 09:50:44 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/12 17:04:01 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/23 14:51:26 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { getLang, persistError, persistSuccess, redirect, onLogin } from "../script.js";
 import { postJson } from "../utils.js";
+
 
 async function Oauth(context) {
 	setTimeout(() => {
@@ -49,6 +50,5 @@ async function Oauth(context) {
 	return document.createElement("div");
 }
 
-export {
-	Oauth
-}
+
+export { Oauth };

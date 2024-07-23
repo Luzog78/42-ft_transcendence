@@ -55,7 +55,7 @@ async function Pong(context, uid, data) {
 			</div>
 		`;
 	}
-	div.appendChild(await NavBar("Profile", context), div.firstChild);
+	div.appendChild(await NavBar("", context), div.firstChild);
 	div.appendChild(Persistents(context), div.firstChild);
 	div.appendChild(Chat(context));
 

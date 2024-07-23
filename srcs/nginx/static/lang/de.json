@@ -161,6 +161,7 @@
 			"pending": "AUSSTEHEND...",
 			"quit": "VERLASSEN",
 			"loadMore": "Scrollen Sie nach unten, um mehr zu laden...",
+			"title": "Turnier",
 			"tryAgain": "Versuchen Sie es noch einmal..."
 		},
 		"playId": {

@@ -161,6 +161,7 @@
 			"ongoing": "ONGOING...",
 			"pending": "PENDING...",
 			"quit": "QUIT",
+			"title": "Tournament",
 			"tryAgain": "Try again..."
 		},
 		"playId": {

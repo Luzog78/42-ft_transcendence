@@ -161,6 +161,7 @@
 			"pending": "PENDIENTE...",
 			"quit": "ABANDONAR",
 			"loadMore": "Desplácese hacia abajo para cargar más...",
+			"title": "Torneo",
 			"tryAgain": "Inténtalo de nuevo..."
 		},
 		"playId": {

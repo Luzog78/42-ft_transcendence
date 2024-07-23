@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/22 04:49:58 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/23 14:50:54 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ async function GameConfig(context, id = null) {
 			</div>
 		</div>
 	`;
-	div.insertBefore(await NavBar("Game Settings", context), div.firstChild);
+	div.insertBefore(await NavBar(getLang(context, "pages.play.title"), context), div.firstChild);
 	div.insertBefore(Persistents(context), div.firstChild);
 	div.appendChild(Chat(context));
 

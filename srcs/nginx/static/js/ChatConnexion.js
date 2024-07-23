@@ -67,7 +67,6 @@ class ChatConnexion
 			};
 		}
 		connect();
-
 	}
 
 	_on_response(data)

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   TournamentManager.js                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/16 11:06:24 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/23 15:06:09 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
-import { refresh } from "../script.js";
+import { getLang, refresh } from "../script.js";
 import { NewTournament } from "./NewTournament.js";
 import { Tournament } from "./Tournament.js";
 import { TournamentList } from "./TournamentList.js";
@@ -31,7 +31,7 @@ async function TournamentManager(context, ...args) {
 		</div>
 	`;
 	div.appendChild(Persistents(context), div.firstChild);
-	div.appendChild(await NavBar("Tournament", context), div.firstChild);
+	div.appendChild(await NavBar(getLang(context, "pages.tournament.title"), context), div.firstChild);
 	div.appendChild(Chat(context));
 
 	let mainContainer = div.querySelector("#tournament-content .container-fluid");
