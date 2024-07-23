@@ -287,16 +287,21 @@ class Lobby:
 				await s.update()
 
 	async def receive(self, data: dict):
-		client_id = data["client_id"]
-		if "client_id" not in data:
+		if "client_id" not in data and isinstance(data["client_id"], int):
 			return
+		client_id: int = data["client_id"]
 
-		if "ready" in data:
-			self.client_ready[client_id] = True
-
-			# TODO: temporarly
+		if "fill" in data:
+			if client_id != 0 or len(self.clients) == self.clients_per_lobby:
+				del data["fill"]
+				return
 			await self.fillBot()
 
+		if "ready" in data:
+			# TODO: what if the client sends ready multiple times?
+			self.client_ready[client_id] = True
+
+		if "fill" in data or "ready" in data:
 			if len(self.clients) == self.clients_per_lobby:
 				async def countdown(lobby: Lobby):
 					time.sleep(3)
@@ -317,7 +322,9 @@ class Lobby:
 
 		if "player_keyboard" in data:
 			if client_id < len(self.clients):
-				self.clients[client_id].keyboard = data["player_keyboard"]
+				client = self.clients[client_id]
+				if isinstance(client, Player):
+					client.keyboard = data["player_keyboard"]
 			else:
 				self.spectators[client_id].keyboard = data["player_keyboard"]
 

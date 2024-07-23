@@ -12,7 +12,7 @@
 
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
-import { initScene } from "../pong_game/main.js";
+import { fillWithBots, initScene } from "../pong_game/main.js";
 import { getGameMode, setupCopyKBDSpan } from "../utils.js";
 import { Chat } from "../components/Chat.js";
 
@@ -79,7 +79,14 @@ async function Pong(context, uid, data) {
 			span.style.animationDelay = `${i * 0.1 + 1}s`;
 			search.appendChild(span);
 		}
+
+		document.addEventListener("keydown", async (e) => {
+			if (e.key === "Enter") {
+				fillWithBots();
+			}
+		});
 	}
+
 	await initScene(uid);
 	return div;
 }

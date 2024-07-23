@@ -92,5 +92,5 @@ class GameServer:
 		return False
 
 	def kill(self, lobby):
-		pass
+		pass # TODO: ...
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/15 16:53:56 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/23 13:21:18 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,12 @@ function animate(timestamp)
 	}
 }
 
+function fillWithBots()
+{
+	if (scene === undefined)
+		return;
+	scene.server.sendData("fill", []);
+}
 
-export { initScene, destroyScene, destroyObject, animate };
+
+export { initScene, destroyScene, destroyObject, animate, fillWithBots };
