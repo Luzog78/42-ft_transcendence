@@ -39,6 +39,7 @@ class Player:
 		self.best_streak:		int		= 0 # TODO: streak
 		self.rebounces:			int		= 0 #done
 		self.duration:			float	= -1 #done
+		self.ultimate_speed:	float	= 0 #done
 
 		self.start_time: float	= -1
 		self.keyboard: dict		= {}
@@ -46,7 +47,6 @@ class Player:
 	def die(self):
 		self.deaths += 1
 		self.duration = datetime.timestamp(datetime.now()) - self.lobby.start_time
-		print(self.duration, datetime.timestamp(datetime.now()), self.lobby.start_time)
 
 	async def initPlayer(self):
 		start_time = self.lobby.start_time

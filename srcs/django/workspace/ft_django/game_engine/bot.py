@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    bot.py                                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 12:37:57 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/23 12:52:05 by ysabik           ###   ########.fr        #
+#    Updated: 2024/07/23 16:04:37 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ class Bot:
 		self.best_streak:		int		= 0 # TODO: streak
 		self.rebounces:			int		= 0 #done
 		self.duration:			float	= -1 #done
+		self.ultimate_speed:	float	= 0 #done
 
 		self.start_time: float	= -1
 
@@ -136,9 +137,6 @@ class Bot:
 				break
 
 		self.last_prediction = {'pos': ray.pos, 'wall': closest_wall}
-
-		self.lobby.balls[1].pos = ray.pos
-		await self.lobby.balls[1].updateBall()
 
 	def calculDirection(self) -> float | None:
 		if self.last_prediction is None:

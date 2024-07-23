@@ -37,7 +37,6 @@ class Lobby:
 		self.limit						= limit
 		self.start_time:		float	= 0
 
-		self.ball_ultimate_speed: 		float = 0
 		self.initial_clients_per_lobby: int = player_num
 
 		self.clients:		list[Player | Bot]	= []
@@ -101,7 +100,7 @@ class Lobby:
 			angleVertex.append(angle)
 
 			angle = angle + math.pi / 2
-			back_direction = Vector(math.cos(angle), math.sin(angle)) * 0.15
+			back_direction = Vector(math.cos(angle), math.sin(angle)) * 0.05
 			firstVertex += back_direction
 			nextVertex += back_direction
 
@@ -147,7 +146,7 @@ class Lobby:
 				kills=player.deaths,
 				best_streak=player.best_streak,
 				rebounces=player.rebounces,
-				ultimate=self.ball_ultimate_speed,
+				ultimate=player.ultimate_speed,
 				duration=player.duration,
 				won=False,
 			)
@@ -189,7 +188,6 @@ class Lobby:
 			time.sleep(3)
 			await self.sendData("game_status", "END")
 
-			self.game_server.kill(self)
 			return
 
 		time.sleep(3)
@@ -214,6 +212,12 @@ class Lobby:
 	async def TOFTDied(self, killer: Player | Bot | None, player_id: int, player: Player | Bot | None):
 		time.sleep(1)
 
+		if self.game_mode == "FT" and killer != None and killer.kills >= self.limit:
+			self.onEnd()
+			await self.sendData("game_status", "END")
+
+			return
+
 		self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby, self.ball_speed)
 		await self.balls[0].updateBall()
 
@@ -221,38 +225,33 @@ class Lobby:
 			score_name = f"player{killer.client_id}textscore"
 			await self.sendData("call", {"command": f'scene.get("{score_name}").updateText', "args": [str(killer.kills)]})
 
+		
 
 	async def playerDied(self, ball: Ball, dead_player: str):
 		if len(self.clients) == 0:
 			return
 
-		killer = ball.last_player
-		if killer:
-			killer.kills += 1
-
-		for ball in self.balls:
-			del ball
-
-		self.balls = [Ball(self, 0.15, 0), Ball(self, 0.10, 1)]
-
 		player_id = int(dead_player.replace("player", ""))
 		player = self.clients[player_id]
 		player.die()
 
-		print("player dead: ", dead_player, player_id)
+		killer = ball.last_player
+		if (self.clients_per_lobby == 2):
+			killer = self.clients[1 - player_id]
+		killer.kills += 1
+
+		for ball in self.balls:
+			del ball
+		self.balls = [Ball(self, 0.15, 0)]
+
 		await self.sendData("call", {"command": 'scene.server.playerDead',
 									"args": ["'" + dead_player + "'"]})
 
 		if self.game_mode == "BR":
-			await self.BRDied(player_id, player)
+			threading.Thread(target=asyncio.run, args=(self.BRDied(player_id, player),)).start()
 		elif self.game_mode == "TO" or self.game_mode == "FT":
-			await self.TOFTDied(killer, player_id, player)
-
-		if self.game_mode == "FT" and player.kills >= self.limit:
-			self.onEnd()
-			await self.sendData("game_status", "END")
-			self.game_server.kill(self)
-			return
+			threading.Thread(target=asyncio.run, args=(self.TOFTDied(killer, player_id, player),)).start()
+		
 
 	async def fillBot(self):
 		bots_num = self.clients_per_lobby - len(self.clients)
@@ -267,9 +266,8 @@ class Lobby:
 				self.onEnd()
 
 				await self.sendData("game_status", "END")
-				self.game_server.kill(self)
 				return
-
+			
 			if self.time == 0:
 				self.time = time.time()
 				continue

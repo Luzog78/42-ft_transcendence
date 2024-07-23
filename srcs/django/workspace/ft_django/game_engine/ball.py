@@ -76,6 +76,7 @@ class Ball:
 		player = self.lobby.clients[int(wallname.replace("player", ""))]
 		if not isinstance(player, Player):
 			return
+
 		player_space = player.keyboard[" "] if " " in player.keyboard else False
 
 		angle = 0
@@ -113,7 +114,7 @@ class Ball:
 	async def checkCollision(self):
 		walls_copy = self.lobby.walls.copy()
 
-		trace = RayTrace(self.pos, self.vel.normalize())
+		trace = RayTrace(self.pos, ray_size, self.vel.normalize())
 		intersection = trace.intersects(walls_copy)
 
 		for wall_name in intersection:
@@ -138,10 +139,10 @@ class Ball:
 
 					player = self.lobby.clients[player_id]
 					player.rebounces += 1
+					if (self.vel.length() > player.ultimate_speed):
+						player.ultimate_speed = self.vel.length()
+					
 					self.last_player = player
-
-				if self.vel.length() > self.lobby.ball_ultimate_speed:
-					self.lobby.ball_ultimate_speed = self.vel.length()
 
 				await self.applyCollision(wall_name, intersection_point, current_distance)
 

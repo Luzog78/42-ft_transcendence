@@ -27,7 +27,6 @@ function initMap(scene, theme, time_left)
 	scene.scene.add(light);
 
 	scene.addBall();
-	scene.addBall();
 
 	const player_num = scene.player_num;
 	const color_theme = getColorTheme(theme, player_num);
@@ -287,10 +286,11 @@ function initPlayerText(scene, player, name)
 	let visual_angle = Math.PI - player.angle;
 	let direction_scale = 1;
 	let y_offset = 1;
+	const player_id = parseInt(player.name.replace("player", ""));
 	if (scene.player_num == 2)
 	{
 		direction_scale = 0;
-		visual_angle = (scene.server.client_id) * Math.PI; // turn the text to the player
+		visual_angle = (player_id + 1) * Math.PI;
 		y_offset = 0.5;
 	}
 
@@ -327,14 +327,14 @@ function initPlayerText(scene, player, name)
 
 function initText(scene, player_num, time_left)
 {
-	if (player_num != 2 && scene.game_mode == "TO")
+	if (scene.game_mode == "TO")
 	{
 		const my_player = scene.get("player" + scene.server.client_id);
 
 		let text_size = (1 / scene.segment_size ) * 4;
 		const rotation = new THREE.Vector3(-Math.PI / 2, Math.PI - my_player.angle + Math.PI, 0);
 
-		if (scene.player_num == 2)
+		if (player_num == 2)
 		{
 			text_size = 0.5;
 			rotation.y = Math.PI / 2;
@@ -344,7 +344,7 @@ function initText(scene, player_num, time_left)
 		const time = new Date(time_left * 1000).toISOString().substring(14, 19);
 		new DynamicText(scene, time, text_position, rotation, text_size, 0xffffff, "timertext");
 	}
-	else if (scene.player_num == 2)
+	else if (scene.game_mode == "FT")
 	{
 		const score_1_pos = new THREE.Vector3(-1.25,0.1,0.5);
 		const score_2_pos = new THREE.Vector3(-1.25,0.1,-0.5);
