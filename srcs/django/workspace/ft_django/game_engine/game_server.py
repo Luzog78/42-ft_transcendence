@@ -52,7 +52,7 @@ class GameServer:
 		return self.createLobby(
 			uid=uid,
 			game_mode=GameMode.BATTLE_ROYALE,
-			player_num=len(game.players),
+			player_num=2,
 			theme=0,
 			ball_speed=1,
 			limit=None
