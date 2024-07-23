@@ -97,7 +97,9 @@
 				"login": "登录",
 				"password": "密码",
 				"register": "注册",
-				"username": "用户名"
+				"username": "用户名",
+				"login42": "使用42登录",
+				"register42": "使用42注册"
 			},
 			"placeholders": {
 				"confirmPassword": "确认",
@@ -108,9 +110,7 @@
 				"username": "doc123"
 			},
 			"title": "注册",
-			"haveAccount": "已经有账号了？",
-			"login42": "使用42登录",
-			"register42": "使用42注册"
+			"haveAccount": "已经有账号了？"
 		},
 		"settings": {
 			"labels": {

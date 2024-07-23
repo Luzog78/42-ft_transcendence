@@ -97,7 +97,9 @@
 				"login": "تسجيل الدخول",
 				"password": "كلمة المرور",
 				"register": "التسجيل",
-				"username": "اسم المستخدم"
+				"username": "اسم المستخدم",
+				"login42": "تسجيل الدخول باستخدام 42",
+				"register42": "التسجيل باستخدام 42"
 			},
 			"placeholders": {
 				"confirmPassword": "تأكيد",
@@ -108,9 +110,7 @@
 				"username": "doc123"
 			},
 			"title": "التسجيل",
-			"haveAccount": "هل لديك حساب؟",
-			"login42": "تسجيل الدخول باستخدام 42",
-			"register42": "التسجيل باستخدام 42"
+			"haveAccount": "هل لديك حساب؟"
 		},
 		"settings": {
 			"labels": {

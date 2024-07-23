@@ -97,7 +97,9 @@
 				"login": "Anmelden",
 				"password": "Passwort",
 				"register": "Registrieren",
-				"username": "Benutzername"
+				"username": "Benutzername",
+				"login42": "Mit 42 anmelden",
+				"register42": "Mit 42 registrieren"
 			},
 			"placeholders": {
 				"confirmPassword": "Bestätigung",
@@ -108,9 +110,7 @@
 				"username": "doc123"
 			},
 			"title": "Registrieren",
-			"haveAccount": "Haben Sie bereits ein Konto?",
-			"login42": "Mit 42 anmelden",
-			"register42": "Mit 42 registrieren"
+			"haveAccount": "Haben Sie bereits ein Konto?"
 		},
 		"settings": {
 			"labels": {

@@ -97,7 +97,9 @@
 				"login": "ログイン",
 				"password": "パスワード",
 				"register": "登録",
-				"username": "ユーザー名"
+				"username": "ユーザー名",
+				"login42": "42でログイン",
+				"register42": "42で登録"
 			},
 			"placeholders": {
 				"confirmPassword": "確認",
@@ -108,9 +110,7 @@
 				"username": "doc123"
 			},
 			"title": "登録",
-			"haveAccount": "すでにアカウントをお持ちですか？",
-			"login42": "42でログイン",
-			"register42": "42で登録"
+			"haveAccount": "すでにアカウントをお持ちですか？"
 		},
 		"settings": {
 			"labels": {

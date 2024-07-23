@@ -67,7 +67,7 @@ async function Register(context) {
 
 				<div class="row col-12">
 					<div class="col-12 text-center" id="abc">
-						${getLang(context, "pages.register.haveAccount")} &nbsp; • &nbsp; <a href="/login${window.location.search}${window.location.hash}" data-link>${getLang(context, "pages.register.labels.register42")}</a>
+						${getLang(context, "pages.register.haveAccount")} &nbsp; • &nbsp; <a href="/login${window.location.search}${window.location.hash}" data-link>${getLang(context, "pages.register.labels.login")}</a>
 					</div>
 				</div>
 
@@ -147,7 +147,7 @@ async function Register(context) {
 					// } catch (e) {
 					// 	console.log("[❌] Token could not be saved in localStorage.");
 					// }
-					redirect("/login?next=" + context.next);
+					redirect("/login" + (context.next ? "?next=" + context.next : ""));
 				} else {
 					persistError(context, getLang(context, data.error));
 					pushPersistents(context);

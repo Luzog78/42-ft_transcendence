@@ -194,7 +194,7 @@ const loadPage = (path, ...additionnalArgs) => {
 }
 
 const redirect = (path, addToHistory = true, ...args) => {
-	let href = window.location.origin + path;
+	let href = window.location.origin + (path.length == 0 || path[0] != "/" ? "/" : "") + path;
 	if (addToHistory)
 		window.history.pushState(null, null, href);
 	else

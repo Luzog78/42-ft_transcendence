@@ -97,7 +97,9 @@
 				"login": "Войти",
 				"password": "Пароль",
 				"register": "Регистрация",
-				"username": "Имя пользователя"
+				"username": "Имя пользователя",
+				"login42": "Войти с 42",
+				"register42": "Зарегистрироваться с 42"
 			},
 			"placeholders": {
 				"confirmPassword": "Подтверждение",
@@ -108,9 +110,7 @@
 				"username": "doc123"
 			},
 			"title": "Регистрация",
-			"haveAccount": "Уже есть аккаунт?",
-			"login42": "Войти с 42",
-			"register42": "Зарегистрироваться с 42"
+			"haveAccount": "Уже есть аккаунт?"
 		},
 		"settings": {
 			"labels": {

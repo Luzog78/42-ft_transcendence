@@ -97,7 +97,9 @@
 				"login": "შესვლა",
 				"password": "პაროლი",
 				"register": "რეგისტრაცია",
-				"username": "მომხმარებლის სახელი"
+				"username": "მომხმარებლის სახელი",
+				"login42": "შესვლა 42-ით",
+				"register42": "რეგისტრაცია 42-ით"
 			},
 			"placeholders": {
 				"confirmPassword": "დადასტურება",
@@ -108,9 +110,7 @@
 				"username": "doc123"
 			},
 			"title": "რეგისტრაცია",
-			"haveAccount": "უკვე გაქვთ ანგარიში?",
-			"login42": "შესვლა 42-ით",
-			"register42": "რეგისტრაცია 42-ით"
+			"haveAccount": "უკვე გაქვთ ანგარიში?"
 		},
 		"settings": {
 			"labels": {
