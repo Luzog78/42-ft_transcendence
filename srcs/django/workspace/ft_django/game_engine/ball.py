@@ -146,14 +146,20 @@ class Ball:
 
 				await self.applyCollision(wall_name, intersection_point, current_distance)
 
+	async def checkOutOfBounds(self):
+		map_radius = math.sqrt(self.lobby.clients_per_lobby) * 2 + 2
+		if self.pos.length() > map_radius:
+			self.pos = Vector(0, 0)
+			await self.updateBall()
+
 	async def update(self):
 		self.pos += self.vel * self.lobby.game_server.dt
 		self.vel += self.acc * self.lobby.game_server.dt
 
 		self.acc *= 0.18729769509073987 ** self.lobby.game_server.dt
 
-		if self.id == 0:
-			await self.checkCollision()
+		await self.checkCollision()
+		await self.checkOutOfBounds()		
 
 		# if self.vel.length() > self.terminal_velocity:
 			# self.vel.setLength(self.terminal_velocity)

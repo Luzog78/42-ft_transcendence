@@ -37,14 +37,15 @@ class Lobby:
 		self.limit						= limit
 		self.start_time:		float	= 0
 
-		self.initial_clients_per_lobby: int = player_num
+		self.initial_clients_per_lobby: int					= player_num
+		self.last_killer:				Player | Bot | None = None
 
 		self.clients:		list[Player | Bot]	= []
 		self.dead_clients:	list[Player | Bot]	= []
 		self.client_ready:	list[bool]			= []
 		self.spectators:	list[Spectator]		= []
 
-		self.balls: list[Ball] = [Ball(self, 0.15, 0), Ball(self, 0.10, 1)]
+		self.balls: list[Ball] = [Ball(self, 0.15, 0)]
 
 		self.player_size:	float	= 0.5
 		self.segment_size:	float	= 4
@@ -76,11 +77,11 @@ class Lobby:
 
 		walls = {}
 
-		mapRadius = math.sqrt(num_players) * 2 + 2
-		mapAngle = (2 * math.pi) / num_players
+		map_radius = math.sqrt(num_players) * 2 + 2
+		map_angle = (2 * math.pi) / num_players
 		vertex = []
 		for i in range(num_players):
-			vertex.append(Vector(math.cos(mapAngle * i) * mapRadius, math.sin(mapAngle * i) * mapRadius))
+			vertex.append(Vector(math.cos(map_angle * i) * map_radius, math.sin(map_angle * i) * map_radius))
 		vertex.reverse()
 
 		middle_vertex_positions = []
@@ -243,6 +244,12 @@ class Lobby:
 			killer = self.clients[1 - player_id]
 		
 		if (killer != None):
+			if (self.last_killer != None and killer != self.last_killer):
+				if (self.last_killer.streak > self.last_killer.best_streak):
+					self.last_killer.best_streak = self.last_killer.streak
+				self.last_killer.streak = 0
+			self.last_killer = killer
+			killer.streak += 1
 			killer.kills += 1
 
 		for ball in self.balls:
@@ -316,11 +323,10 @@ class Lobby:
 			await self.fillBot()
 
 		if "ready" in data:
-			# TODO: what if the client sends ready multiple times? ANSWER: it does nothing  ? it's based on the client_id
 			self.client_ready[client_id] = True
 
 		if "fill" in data or "ready" in data:
-			if len(self.clients) == self.clients_per_lobby:
+			if len(self.clients) == self.clients_per_lobby and self.start_time == 0:
 				threading.Thread(target=asyncio.run, args=(self.countdown(),)).start()
 
 		if "player_keyboard" in data:

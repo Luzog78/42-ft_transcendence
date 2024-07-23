@@ -6,7 +6,7 @@
 #    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 12:37:57 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/23 16:04:37 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/23 19:21:28 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ class Bot:
 
 		self.kills:				int		= 0 #done
 		self.deaths:			int		= 0 #done
-		self.best_streak:		int		= 0 # TODO: streak
+		self.best_streak:		int		= 0 #done
+		self.streak:			int		= 0 #done
 		self.rebounces:			int		= 0 #done
 		self.duration:			float	= -1 #done
 		self.ultimate_speed:	float	= 0 #done

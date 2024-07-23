@@ -42,14 +42,16 @@ class Camera
 
 	setPosition(x, y, z, x_look=0, y_look=0, z_look=0, animation = true)
 	{
-		this.camera_old_position = this.controls.getPosition();
-
 		this.shakeObject.reset();
+
+		this.camera_old_position = this.controls.getPosition();
 		this.controls.setLookAt(x, y, z, x_look, y_look, z_look, animation);
 	}
 
 	shake(vecToAdd, milliseconds)
 	{
+		if (this.controls.active == true)
+			return
 		this.shakeObject.shake(this.camera, vecToAdd, milliseconds);
 	}
 }

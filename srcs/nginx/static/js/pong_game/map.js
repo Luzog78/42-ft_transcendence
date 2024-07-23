@@ -167,6 +167,7 @@ function initNPlayerMap(scene, player_num, colors)
 
 function initCamera(scene, player_num, following_player = null)
 {
+	scene.camera.shakeObject.reset();
 	if (following_player == null)
 	{
 		following_player = scene.server.client_id;

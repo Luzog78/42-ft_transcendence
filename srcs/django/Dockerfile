@@ -24,4 +24,6 @@ COPY workspace/manage.py /ft_transcendence/manage.py
 
 COPY start.sh ./start.sh
 
+STOPSIGNAL SIGKILL
+
 CMD ["bash", "./start.sh"]
