@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 12:37:57 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/22 04:52:59 by ysabik           ###   ########.fr        #
+#    Updated: 2024/07/23 12:52:05 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ import math
 import datetime
 from .vector import Vector
 from .raytrace import RayTrace
-from .ball import Ball
+
 
 class Bot:
 	def __init__(self, lobby, client_id: int):
@@ -35,10 +35,12 @@ class Bot:
 		self.rebounces:			int		= 0 #done
 		self.duration:			float	= -1 #done
 
+		self.start_time: float	= -1
+
 		self.tps = 50
 		self.time_to_think = 0
 
-		self.last_prediction = None
+		self.last_prediction: dict | None = None
 
 	def die(self):
 		self.deaths += 1
@@ -46,10 +48,10 @@ class Bot:
 
 	async def initBot(self):
 		start_time = self.lobby.start_time
-		if (start_time == 0):
+		if start_time == 0:
 			start_time = datetime.datetime.timestamp(datetime.datetime.now())
 		limit = self.lobby.limit
-		if (limit is None):
+		if limit is None:
 			limit = 0
 
 		self.time_to_think = 0
@@ -59,7 +61,7 @@ class Bot:
 		await self.updateSelfToother()
 
 	def addSelfWall(self):
-		if (self.lobby.clients_per_lobby == 2):
+		if self.lobby.clients_per_lobby == 2:
 			vertex = self.lobby.walls["player" + str(self.client_id)]
 			middle = (vertex[0] + vertex[1]) / 2
 			self.pos = middle
@@ -91,13 +93,13 @@ class Bot:
 		rotate_pos = Vector(math.cos(self.angle) * x, math.sin(self.angle) * y)
 
 		computed_pos = self.pos + rotate_pos
-		if (self.lobby.clients_per_lobby != 2):
+		if self.lobby.clients_per_lobby != 2:
 			distance = computed_pos.distance(self.lobby.middle_vertex_positions[self.client_id])
-			if (distance > self.lobby.segment_size / 2 - self.lobby.player_size):
+			if distance > self.lobby.segment_size / 2 - self.lobby.player_size:
 				return
 		else:
 			distance = computed_pos.distance(self.init_pos)
-			if (distance > self.lobby.segment_size / 2 - self.lobby.player_size):
+			if distance > self.lobby.segment_size / 2 - self.lobby.player_size:
 				return
 
 
@@ -118,7 +120,7 @@ class Bot:
 		bot_predictions = 2
 		for i in range(bot_predictions):
 			intersections = ray.intersects(self.lobby.walls)
-			if (len(intersections) == 0):
+			if len(intersections) == 0:
 				return
 
 			closest_wall = list(intersections.keys())[0]
@@ -130,7 +132,7 @@ class Bot:
 			ray.direction = ray.direction.reflect(wall_normal)
 			ray.pos = closest_point + ray.direction * 0.1
 
-			if (i == 0 and (closest_wall == f"player{self.client_id}" or closest_wall == f"score{self.client_id}")):
+			if i == 0 and (closest_wall == f"player{self.client_id}" or closest_wall == f"score{self.client_id}"):
 				break
 
 		self.last_prediction = {'pos': ray.pos, 'wall': closest_wall}
@@ -138,39 +140,44 @@ class Bot:
 		self.lobby.balls[1].pos = ray.pos
 		await self.lobby.balls[1].updateBall()
 
-	def calculDirection(self):
+	def calculDirection(self) -> float | None:
+		if self.last_prediction is None:
+			return
+
 		pos_to_center = Vector(0,0) - self.pos
 		pos_to_prediction = self.last_prediction["pos"] - self.pos
 
-		if ("wall" in self.last_prediction["wall"] or str(self.client_id) not in self.last_prediction["wall"]):
+		if "wall" in self.last_prediction["wall"] or str(self.client_id) not in self.last_prediction["wall"]:
 			pos_to_prediction = self.init_pos - self.pos
 
-		if (pos_to_prediction.length() < 0.1):
+		if pos_to_prediction.length() < 0.1:
 			return 0
 
 		cross = pos_to_center.x * pos_to_prediction.y - pos_to_center.y * pos_to_prediction.x
-		if (self.lobby.clients_per_lobby == 2 and self.client_id == 1):
+		if self.lobby.clients_per_lobby == 2 and self.client_id == 1:
 			cross *= -1
 
 		return cross
 
 
 	async def update(self):
-		if (len(self.lobby.walls) == 0):
+		if len(self.lobby.walls) == 0:
 			return
 
 		self.time_to_think += 1
-		if (self.time_to_think > self.tps):
+		if self.time_to_think > self.tps:
 			self.time_to_think = 0
 			await self.thinkMove()
 
-		if (self.last_prediction is None):
+		if self.last_prediction is None:
 			return
 
 		direction = self.calculDirection()
+		if direction is None:
+			return
 
 		move_speed = self.speed * self.lobby.game_server.dt * (self.lobby.player_size * 2)
-		if (direction > 0):
+		if direction > 0:
 			await self.move(move_speed, move_speed)
 		elif(direction < 0):
 			await self.move(-move_speed, -move_speed)

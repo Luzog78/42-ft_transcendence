@@ -746,7 +746,7 @@ class FriendList(models.Model):
 	Required fields:
 		author: User
 		target: User
-	
+
 	Auto fields:
 		pending: bool
 	'''

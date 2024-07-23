@@ -58,6 +58,6 @@ def verify_token(token) -> str | None:
 
 	signature = base64.urlsafe_b64encode(hmac.new(bytes(settings.SECRET_KEY, "utf-8"),
 		msg=bytes(data[0] + "." + data[1], "utf-8"),digestmod=hashlib.sha256).digest()).rstrip(b"=").decode()
-	if (signature != data[2]):
+	if signature != data[2]:
 		return None
 	return jwt_payload_json["user"]

@@ -6,11 +6,12 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 16:27:26 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/22 04:52:59 by ysabik           ###   ########.fr        #
+#    Updated: 2024/07/23 12:51:50 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from .vector import Vector
+
 
 class RayTrace():
 	def __init__(self, pos: Vector, direction: Vector):
@@ -21,7 +22,7 @@ class RayTrace():
 		v1 = self.pos - wall_point_1
 		v2 = wall_point_2 - wall_point_1
 		v3 = Vector(-self.direction.y, self.direction.x)
-		if (v2.dot(v3) == 0):
+		if v2.dot(v3) == 0:
 			return None
 		t1 = (v2.x * v1.y - v1.x * v2.y) / v2.dot(v3)
 		t2 = v1.dot(v3) / v2.dot(v3)

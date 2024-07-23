@@ -1,22 +1,23 @@
 import json
 from typing import Any
-
-from channels.generic.websocket import AsyncWebsocketConsumer
-from asgiref.sync import sync_to_async
 from django.db.models import Q
-from django.core import serializers
+from asgiref.sync import sync_to_async
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 from api_app.jwt import verify_token
 from api_app.models import User, FriendList
 
+
 connected_sockets = []
 
-def find_user_socket(user: str):
+
+def find_user_socket(user: str | None):
 	res = []
 	for socket in connected_sockets:
 		if socket.get_user() == user:
 			res.append(socket)
 	return res
+
 
 class ChatSocket(AsyncWebsocketConsumer):
 	def __init__(self, *args, **kwargs):
@@ -61,7 +62,6 @@ class ChatSocket(AsyncWebsocketConsumer):
 		else:
 			await self.reply('errors.invalidRequestMooved', False, frontendId)
 
-
 	async def reply(self, data: Any, status: bool, frontendId: Any):
 		json_data = {}
 		json_data['frontendId'] = frontendId
@@ -79,7 +79,6 @@ class ChatSocket(AsyncWebsocketConsumer):
 			await self.send(text_data=json.dumps(json_data))
 		except:
 			print("socket disconnected")
-
 
 	async def authenticate(self, data, frontendId):
 		if 'authorization' not in data:

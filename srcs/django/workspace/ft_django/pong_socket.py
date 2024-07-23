@@ -3,7 +3,9 @@ import json
 from ft_django.game_engine.game_server import GameServer
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+
 game_server = GameServer()
+
 
 class PongSocket(AsyncWebsocketConsumer):
 	def __init__(self, *args, online=True, **kwargs):
@@ -12,9 +14,9 @@ class PongSocket(AsyncWebsocketConsumer):
 
 		self.buffer: list[dict] = []
 
-		self.connected = online
-		self.registered = False
-		self.username = None
+		self.connected: bool		= online
+		self.registered: bool		= False
+		self.username: str | None	= None
 
 	async def connect(self):
 		self.room_name = 'pong'

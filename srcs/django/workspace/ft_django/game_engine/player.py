@@ -11,9 +11,10 @@
 # **************************************************************************** #
 
 import math
-import datetime
+from datetime import datetime
 
 from .vector import Vector
+
 
 class Player:
 
@@ -39,19 +40,20 @@ class Player:
 		self.rebounces:			int		= 0 #done
 		self.duration:			float	= -1 #done
 
-		self.keyboard: dict = {}
+		self.start_time: float	= -1
+		self.keyboard: dict		= {}
 
 	def die(self):
 		self.deaths += 1
-		self.duration = datetime.datetime.timestamp(datetime.datetime.now()) - self.lobby.start_time
-		print(self.duration, datetime.datetime.timestamp(datetime.datetime.now()), self.lobby.start_time)
+		self.duration = datetime.timestamp(datetime.now()) - self.lobby.start_time
+		print(self.duration, datetime.timestamp(datetime.now()), self.lobby.start_time)
 
 	async def initPlayer(self):
 		start_time = self.lobby.start_time
-		if (start_time == 0):
-			start_time = datetime.datetime.timestamp(datetime.datetime.now())
+		if start_time == 0:
+			start_time = datetime.timestamp(datetime.now())
 		limit = self.lobby.limit
-		if (limit is None):
+		if limit is None:
 			limit = 0
 
 		self.addSelfWall()
@@ -59,11 +61,11 @@ class Player:
 										"scene.server.client_id": self.client_id})
 		await self.sendData("call", {"command": "scene.initPlayer",
 									"args": [self.lobby.clients_per_lobby, self.lobby.theme, f"'{self.lobby.game_mode}'",
-				  							limit - (datetime.datetime.timestamp(datetime.datetime.now()) - start_time)]})
+				  							limit - (datetime.timestamp(datetime.now()) - start_time)]})
 		await self.updateSelfToother()
 
 	def addSelfWall(self):
-		if (self.lobby.clients_per_lobby == 2):
+		if self.lobby.clients_per_lobby == 2:
 			vertex = self.lobby.walls["player" + str(self.client_id)]
 			middle = (vertex[0] + vertex[1]) / 2
 			self.pos = middle
@@ -100,13 +102,13 @@ class Player:
 		rotate_pos = Vector(math.cos(self.angle) * x, math.sin(self.angle) * y)
 
 		computed_pos = self.pos + rotate_pos
-		if (self.lobby.clients_per_lobby != 2):
+		if self.lobby.clients_per_lobby != 2:
 			distance = computed_pos.distance(self.lobby.middle_vertex_positions[self.client_id])
-			if (distance > self.lobby.segment_size / 2 - self.lobby.player_size):
+			if distance > self.lobby.segment_size / 2 - self.lobby.player_size:
 				return
 		else:
 			distance = computed_pos.distance(self.init_pos)
-			if (distance > self.lobby.segment_size / 2 - self.lobby.player_size):
+			if distance > self.lobby.segment_size / 2 - self.lobby.player_size:
 				return
 
 
@@ -119,13 +121,13 @@ class Player:
 									f"{playerBoxJS}.position.z": self.pos.y})
 
 	async def update(self):
-		if (len(self.lobby.walls) == 0):
+		if len(self.lobby.walls) == 0:
 			return
 
 		move_speed = self.speed * self.lobby.game_server.dt * (self.lobby.player_size * 2)
-		if (self.isUp()):
+		if self.isUp():
 			await self.move(-move_speed, -move_speed)
-		elif (self.isDown()):
+		elif self.isDown():
 			await self.move(move_speed, move_speed)
 
 	def isUp(self):

@@ -56,7 +56,7 @@ class Response:
 			self.__dict__['kwargs'][key] = value
 
 
-def register(request: HttpRequest, username: str, first_name: str,
+def register(request: HttpRequest | None, username: str, first_name: str,
 		last_name: str, email: str, password: str | None, **extra_fields) -> Response:
 	try:
 		user = User.objects.create_user( # type: ignore
@@ -74,9 +74,9 @@ def register(request: HttpRequest, username: str, first_name: str,
 
 def login(request: HttpRequest, username: str, password: str | None = None, a2f_code: str | None = None, oauth: bool = False) -> Response:
 	if oauth:
-		user: User = authenticate(request, username=username, oauth=True)
+		user: User | None = authenticate(request, username=username, oauth=True) # type: ignore
 	else:
-		user: User = authenticate(request, username=username, password=password) # type: ignore
+		user: User | None = authenticate(request, username=username, password=password) # type: ignore
 	if user is None:
 		return Response('errors.invalidCredentials')
 

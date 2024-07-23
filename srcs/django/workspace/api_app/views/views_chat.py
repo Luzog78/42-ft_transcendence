@@ -18,7 +18,7 @@ def view_add_friend(request: HttpRequest):
 	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
 	if 'target' not in data or not isinstance(data['target'], str):
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
-	if (data['target'] == response.user):
+	if data['target'] == response.user:
 		return JsonResponse({'ok': False, 'error': 'errors.FriendRequestYourself'})
 	if not (user := User.get(response.user)) or not (target := User.get(data['target'])):
 		return JsonResponse({'ok': False, 'error': 'errors.userNotFound'})

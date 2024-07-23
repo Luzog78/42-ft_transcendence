@@ -15,7 +15,9 @@ import random
 
 from .vector import Vector
 from .player import Player
+from .bot import Bot
 from .raytrace import RayTrace
+
 
 class Ball:
 	def __init__(self, lobby, radius, id):
@@ -30,13 +32,13 @@ class Ball:
 		self.vel: 		Vector = Vector(0, 0)
 		self.acc: 		Vector = Vector(0, 0)
 
-		self.last_player: Player | None = None
+		self.last_player: Player | Bot | None = None
 
 		self.id: int = id
 
 	@staticmethod
 	def getBallSpeed(player_number:int, ball_modifier: float) -> Vector:
-		if (player_number == 2):
+		if player_number == 2:
 			direction = Vector(0.5,0.5)
 		else:
 			direction = Vector(random.uniform(0,1) - 0.5, random.uniform(0,1) - 0.5)
@@ -64,26 +66,26 @@ class Ball:
 		self.current_vel_length = self.vel.length()
 
 	def ballEffect(self, wallname:str, collision_normal:Vector):
-		if (self.acc.length() > 0.5 and "wall" in wallname):
+		if self.acc.length() > 0.5 and "wall" in wallname:
 			self.acc = Vector(0, 0)
 			self.vel.setLength(self.current_vel_length - 0.25)
 
-		if ("player" not in wallname):
+		if "player" not in wallname:
 			return
 
 		player = self.lobby.clients[int(wallname.replace("player", ""))]
-		if (isinstance(player, Player) == False):
+		if not isinstance(player, Player):
 			return
 		player_space = player.keyboard[" "] if " " in player.keyboard else False
 
 		angle = 0
-		if (player.isUp() and player_space):
+		if player.isUp() and player_space:
 			angle = -67.5
-		elif (player.isDown() and player_space):
+		elif player.isDown() and player_space:
 			angle = 67.5
 		else:
 			return
-		if (self.lobby.clients_per_lobby == 2):
+		if self.lobby.clients_per_lobby == 2:
 			angle = 67.5
 
 		rotated_vel = math.radians(angle)
@@ -122,23 +124,23 @@ class Ball:
 			max_distance = self.pos.distance(predicted_pos)
 			current_distance = predicted_pos.distance(intersection_point)
 
-			if (current_distance <= max_distance):
+			if current_distance <= max_distance:
 
-				if ("score" in wall_name):
+				if "score" in wall_name:
 					player_name = wall_name.replace("score", "player")
 					await self.lobby.playerDied(self, player_name)
 					break
 
-				if ("player" in wall_name):
+				if "player" in wall_name:
 					player_id = int(wall_name.replace("player", ""))
-					if (player_id >= len(self.lobby.clients)):
+					if player_id >= len(self.lobby.clients):
 						return
 
 					player = self.lobby.clients[player_id]
 					player.rebounces += 1
 					self.last_player = player
 
-				if (self.vel.length() > self.lobby.ball_ultimate_speed):
+				if self.vel.length() > self.lobby.ball_ultimate_speed:
 					self.lobby.ball_ultimate_speed = self.vel.length()
 
 				await self.applyCollision(wall_name, intersection_point, current_distance)
@@ -149,8 +151,8 @@ class Ball:
 
 		self.acc *= 0.18729769509073987 ** self.lobby.game_server.dt
 
-		if (self.id == 0):
+		if self.id == 0:
 			await self.checkCollision()
 
-		# if (self.vel.length() > self.terminal_velocity):
+		# if self.vel.length() > self.terminal_velocity:
 			# self.vel.setLength(self.terminal_velocity)

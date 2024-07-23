@@ -19,7 +19,7 @@ from .spectator import Spectator
 class GameServer:
 	def __init__(self):
 		self.lobbies: list[Lobby] = []
-		self.clients: list[Player] = []
+		self.clients: list[Player | Spectator] = []
 
 		self.tps: int = 60
 		self.dt: float = 1 / self.tps
@@ -85,7 +85,7 @@ class GameServer:
 
 	def removeClient(self, client) -> bool:
 		for player in self.clients:
-			if (player.client == client):
+			if player.client == client:
 				player.lobby.removeClient(player)
 				self.clients.remove(player)
 				return True

@@ -46,7 +46,7 @@ class Vector:
 
 	def normalize(self):
 		length = self.length()
-		if (length == 0):
+		if length == 0:
 			return Vector(0, 0)
 		return Vector(self.x / length, self.y / length)
 
@@ -54,7 +54,7 @@ class Vector:
 		return self.x * other.x + self.y * other.y
 
 	def angle(self, other):
-		if (self.length() == 0 or other.length() == 0):
+		if self.length() == 0 or other.length() == 0:
 			return 0
 		return math.acos(self.dot(other) / (self.length() * other.length()))
 
