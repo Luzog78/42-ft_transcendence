@@ -209,6 +209,9 @@ class Lobby:
 		for s in self.spectators:
 			await s.initSpectator()
 
+		if (all([isinstance(c, Bot) for c in self.clients])):
+			threading.Thread(target=asyncio.run, args=(self.countdown(),)).start()
+
 	async def TOFTDied(self, killer: Player | Bot | None, player_id: int, player: Player | Bot | None):
 		time.sleep(1)
 
@@ -238,7 +241,9 @@ class Lobby:
 		killer = ball.last_player
 		if (self.clients_per_lobby == 2):
 			killer = self.clients[1 - player_id]
-		killer.kills += 1
+		
+		if (killer != None):
+			killer.kills += 1
 
 		for ball in self.balls:
 			del ball
@@ -284,6 +289,21 @@ class Lobby:
 			for s in self.spectators:
 				await s.update()
 
+	async def countdown(self):
+		time.sleep(3)
+		if self.clients_per_lobby == self.initial_clients_per_lobby:
+			self.start_time = datetime.timestamp(datetime.now())
+
+		self.balls[0].vel = Ball.getBallSpeed(self.clients_per_lobby, self.ball_speed)
+		await self.balls[0].updateBall()
+
+		clients = self.clients + self.spectators
+		for c in clients:
+			if isinstance(c, Player) or isinstance(c, Bot):
+				c.start_time = datetime.timestamp(datetime.now())
+			if isinstance(c, Player) or isinstance(c, Spectator):
+				await c.sendData("game_status", "START")
+
 	async def receive(self, data: dict):
 		if "client_id" not in data and isinstance(data["client_id"], int):
 			return
@@ -296,27 +316,12 @@ class Lobby:
 			await self.fillBot()
 
 		if "ready" in data:
-			# TODO: what if the client sends ready multiple times?
+			# TODO: what if the client sends ready multiple times? ANSWER: it does nothing  ? it's based on the client_id
 			self.client_ready[client_id] = True
 
 		if "fill" in data or "ready" in data:
 			if len(self.clients) == self.clients_per_lobby:
-				async def countdown(lobby: Lobby):
-					time.sleep(3)
-					if lobby.clients_per_lobby == lobby.initial_clients_per_lobby:
-						lobby.start_time = datetime.timestamp(datetime.now())
-
-					lobby.balls[0].vel = Ball.getBallSpeed(lobby.clients_per_lobby, self.ball_speed)
-					await lobby.balls[0].updateBall()
-
-					clients = lobby.clients + lobby.spectators
-					for c in clients:
-						if isinstance(c, Player) or isinstance(c, Bot):
-							c.start_time = datetime.timestamp(datetime.now())
-						if isinstance(c, Player) or isinstance(c, Spectator):
-							await c.sendData("game_status", "START")
-
-				threading.Thread(target=asyncio.run, args=(countdown(self),)).start()
+				threading.Thread(target=asyncio.run, args=(self.countdown(),)).start()
 
 		if "player_keyboard" in data:
 			if client_id < len(self.clients):

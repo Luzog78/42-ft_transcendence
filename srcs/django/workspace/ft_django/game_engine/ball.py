@@ -43,7 +43,7 @@ class Ball:
 		else:
 			direction = Vector(random.uniform(0,1) - 0.5, random.uniform(0,1) - 0.5)
 		direction.setLength(math.sqrt(player_number) * 0.8 * (ball_modifier + 1))
-
+		
 		return direction
 
 	async def updateBall(self):
@@ -114,7 +114,7 @@ class Ball:
 	async def checkCollision(self):
 		walls_copy = self.lobby.walls.copy()
 
-		trace = RayTrace(self.pos, ray_size, self.vel.normalize())
+		trace = RayTrace(self.pos, self.vel.normalize())
 		intersection = trace.intersects(walls_copy)
 
 		for wall_name in intersection:
