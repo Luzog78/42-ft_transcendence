@@ -134,7 +134,7 @@ class Lobby:
 
 			user = User.get(username)
 			if user is None and isinstance(player, Bot):
-				user = auth.register(None, username, "Bot", str(player.client_id), 'ddoc@student.42angouleme.fr', None)
+				user = auth.register(None, username, "Bot", str(player.client_id), username + '@server', None)
 				print("Bot user created", user)
 				if user:
 					user = user['user']
