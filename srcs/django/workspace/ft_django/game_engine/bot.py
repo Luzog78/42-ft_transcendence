@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    bot.py                                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
+#    By: TheRed <TheRed@students.42.fr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 12:37:57 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/23 19:21:28 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/24 18:56:04 by TheRed           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,8 @@ class Bot:
 
 		self.lobby:		Lobby		= lobby
 		self.client_id: int	= client_id
+
+		self.username = f"Bot_{client_id}"
 
 		self.angle:		float	= 0
 		self.pos:		Vector	= Vector(0, 0)

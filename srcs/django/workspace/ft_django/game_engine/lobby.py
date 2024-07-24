@@ -39,6 +39,7 @@ class Lobby:
 
 		self.initial_clients_per_lobby: int					= player_num
 		self.last_killer:				Player | Bot | None = None
+		self.status:					str					= "WAITING"
 
 		self.clients:		list[Player | Bot]	= []
 		self.dead_clients:	list[Player | Bot]	= []
@@ -129,17 +130,18 @@ class Lobby:
 					continue
 				username = player.client.username
 			elif isinstance(player, Bot):
-				username = f"Bot_{player.client_id}"
+				username = player.username
 
-			print("save stats of", username)
 			user = User.get(username)
 			if user is None and isinstance(player, Bot):
 				user = auth.register(None, username, "Bot", str(player.client_id), 'ddoc@student.42angouleme.fr', None)
+				print("Bot user created", user)
 				if user:
 					user = user['user']
 				else:
 					continue
 
+			print("save stats of", username)
 			stat = Stats.objects.create(
 				user=user,
 				game=game,
@@ -173,9 +175,9 @@ class Lobby:
 			best_score.won = True
 			best_score.save()
 
-		players = [p.client.username if isinstance(p, Player) else f"Bot_{p.client_id}" for p in player_list]
+		players = [p.client.username if isinstance(p, Player) else p.username for p in player_list]
 		game.players = [username for username in players if username is not None]
-
+		print("party dead :", game.players)
 		game.save()
 
 		Tournament.on_game_end(self.uid)
@@ -235,6 +237,8 @@ class Lobby:
 		if len(self.clients) == 0:
 			return
 
+		self.status == "WAITING"
+
 		player_id = int(dead_player.replace("player", ""))
 		player = self.clients[player_id]
 		player.die()
@@ -277,6 +281,7 @@ class Lobby:
 			if self.game_mode == "TO" and self.start_time != 0 and datetime.timestamp(datetime.now()) - self.start_time > self.limit:
 				self.onEnd()
 
+				self.status = "END"
 				await self.sendData("game_status", "END")
 				return
 			
@@ -326,7 +331,7 @@ class Lobby:
 			self.client_ready[client_id] = True
 
 		if "fill" in data or "ready" in data:
-			if len(self.clients) == self.clients_per_lobby and self.start_time == 0:
+			if len(self.clients) == self.clients_per_lobby and self.status == "WAITING":
 				threading.Thread(target=asyncio.run, args=(self.countdown(),)).start()
 
 		if "player_keyboard" in data:

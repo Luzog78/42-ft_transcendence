@@ -39,7 +39,9 @@ class Ball:
 	@staticmethod
 	def getBallSpeed(player_number:int, ball_modifier: float) -> Vector:
 		if player_number == 2:
-			direction = Vector(0.5,0.5)
+			angle = random.uniform(90 + 45, 90 - 45)
+			angle *= random.choice([-1, 1])
+			direction = Vector(math.cos(math.radians(angle)), math.sin(math.radians(angle)))
 		else:
 			direction = Vector(random.uniform(0,1) - 0.5, random.uniform(0,1) - 0.5)
 		direction.setLength(math.sqrt(player_number) * 0.8 * (ball_modifier + 1))
