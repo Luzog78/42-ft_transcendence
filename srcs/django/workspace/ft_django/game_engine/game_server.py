@@ -72,17 +72,12 @@ class GameServer:
 		print(username, client.username, client.username in username)
 		if lobby.status == "WAITING" and client.username in username:
 			await client.sendData("error", "errors.alreadyConnectedLobby")
-			return 
+			return False
 
 		if game.restricted:
 			goto_specs = client.username not in game.players
 		else:
 			goto_specs = len(lobby.clients) >= lobby.clients_per_lobby
-			# TODO: works, but just it's just the half of the solution
-			# if not goto_specs:
-			# 	usernames = [c.client.username for c in lobby.clients
-			# 					if isinstance(c, Player)]
-			# 	goto_specs = client.username in usernames
 
 		if goto_specs:
 			print("new spec")
@@ -101,11 +96,11 @@ class GameServer:
 			await lobby.addClient(player)
 		return True
 
-	async def removeClient(self, client: Bot | Player) -> bool:
+	async def removeClient(self, client) -> bool:
 		for player in self.clients:
 			if player.client == client:
 				lobby = player.lobby
-				
+
 				if (lobby.status == "START"):
 					return False
 				
@@ -121,4 +116,3 @@ class GameServer:
 
 				return True
 		return False
-

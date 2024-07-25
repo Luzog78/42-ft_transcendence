@@ -26,7 +26,7 @@ async function Home(context) {
 				<h1>ft_transcendence</h1>
 			</section>
 
-			<section class="full"></section>
+			<section class="half"></section>
 
 			<section id="team">
 
@@ -70,7 +70,7 @@ async function Home(context) {
 
 			</section>
 
-			<section class="full"></section>
+			<section class="half"></section>
 
 			<section id="project">
 				<h1>${getLang(context, "pages.home.projectTitle")}</h1>
@@ -184,7 +184,7 @@ async function Home(context) {
 				</div>
 			</section>
 
-			<section class="full"></section>
+			<section class="half"></section>
 
 			<section id="join">
 				<h1>${getLang(context, "pages.home.joinTitle")}</h1>
