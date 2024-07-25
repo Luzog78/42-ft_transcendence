@@ -158,7 +158,7 @@ async function Register(context) {
 	if (signup_oauth)
 		signup_oauth.onclick = (event) => {
 			event.preventDefault();
-			window.location.href = "https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-f16f4749137ef0ec16a0cd6a506f6fdfe39461aa8584e0495163ce52515b814b&redirect_uri=https%3A%2F%2F127.0.0.1%3A4444%2Foauth_callback&response_type=code";
+			window.location.href = `https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-f16f4749137ef0ec16a0cd6a506f6fdfe39461aa8584e0495163ce52515b814b&redirect_uri=https%3A%2F%2F${window.location.host.replace(":", "%3A")}%2Foauth_callback&response_type=code`;
 		};
 	return div;
 }
