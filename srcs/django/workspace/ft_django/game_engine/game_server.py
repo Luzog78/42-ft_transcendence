@@ -71,7 +71,7 @@ class GameServer:
 		username = [p.client.username if isinstance(p, Player) else p.username for p in lobby.clients]
 		print(username, client.username, client.username in username)
 		if lobby.status == "WAITING" and client.username in username:
-			client.sendData("error", "You are already in this game")
+			await client.sendData("error", "errors.alreadyConnectedLobby")
 			return 
 
 		if game.restricted:

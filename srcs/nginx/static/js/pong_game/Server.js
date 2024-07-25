@@ -15,11 +15,12 @@ import * as THREE from 'three';
 import { initPlayerText } from "./map.js";
 import { Particle } from "./Particle.js";
 import { destroyScene, destroyObject, initScene } from './main.js';
-import { global_context } from '../script.js';
+import { getLang, global_context, persistError, redirect } from '../script.js';
 import { remWaiting } from '../pages/Pong.js';
 import { setWaitingTotalPlayerCount, setWaitingPlayerCount } from '../pages/Pong.js'; // used for eval !
 import { refresh } from "../script.js";
 import { postJson } from '../utils.js';
+import { pushPersistents } from '../components/Persistents.js';
 
 
 class Server
@@ -168,7 +169,11 @@ class Server
 		}
 		if (message.game_status)
 			scene.updateGameStatus(message.game_status);
-
+		if (message.error)
+		{
+			persistError(window.context, getLang(window.context, message.error));
+			redirect("/play");
+		}
 	}
 
 	disconnect()

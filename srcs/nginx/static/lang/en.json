@@ -264,7 +264,8 @@
 		"RelationDoesNotExist": "You aren't friend with this user!",
 		"AlreadyBlocked": "User already blocked!",
 		"NotImplementedYet": "Not implemented yet!",
-		"oauthMissingCredentials": "Missing credential parameter!"
+		"oauthMissingCredentials": "Missing credential parameter!",
+		"alreadyConnectedLobby": "You are already playing this game! (Wait until you die)"
 	},
 	"successes": {
 		"a2fDisabled": "Two-factor authentication successfully disabled !",

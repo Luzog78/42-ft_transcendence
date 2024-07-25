@@ -90,6 +90,7 @@ def view_root(request: HttpRequest):
 			'errors.AlreadyBlocked',
 			'errors.NotImplementedYet',
 			'errors.oauthMissingCredentials',
+			'errors.alreadyConnectedLobby',
 		],
 		'successes': [
 			'successes.a2fDisabled',
