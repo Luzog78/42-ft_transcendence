@@ -17,7 +17,7 @@
 #chat {
 	width: 364.8px;
 	height: var(--chat-height);
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	right: 38.4px;
 	opacity: 0.7;

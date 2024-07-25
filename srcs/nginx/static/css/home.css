@@ -77,7 +77,7 @@
 	width: 55%;
 	height: var(--h);
 	background-color: #332b2844;
-	overflow: scroll;
+	overflow: auto;
 }
 
 #home #team .team-desc h3 {
