@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GameConfig.js                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/25 08:30:28 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/25 15:03:57 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,13 +204,12 @@ async function GameConfig(context, id = null) {
 		div.querySelectorAll("input[type=number]").forEach(e => {
 			e.addEventListener("focus", (e) => e.target.select());
 			e.addEventListener("wheel", event => {
-				event.preventDefault();
 				let input = event.target;
 				input.value = parseInt(input.value) + (event.deltaY < 0 ? 1 : -1);
 				normalizeTime(limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni);
 				normalizeOther(playerCount);
 				normalizeOther(limitFT);
-			});
+			}, {passive: true});
 		});
 
 		limitTOMinDec.addEventListener("input", (e) =>

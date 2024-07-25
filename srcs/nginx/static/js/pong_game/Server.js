@@ -37,15 +37,24 @@ class Server
 		this.socket.addEventListener('open', (event) => this.onOpen(this.scene, event));
 	}
 
-	newPlayer(player_id, player_name)
+	newPlayer(player_id, player_name, position)
 	{
+		console.log("pos: ", position);
 		let player = this.scene.get(player_id);
 		if (player == null)
 			return;
 		if (Number(player_id.replace("player", "")) >= this.scene.player_num - 1)
 			remWaiting();
-
+		
 		player.player.visible = true;
+		if (position) {
+			let computed_position = new THREE.Vector3(
+				position[0],
+				player.player.position.y,
+				position[1]
+			)
+			player.player.position.copy(computed_position);
+		}
 		initPlayerText(this.scene, player, player_name);
 	}
 
@@ -124,7 +133,7 @@ class Server
 	onMessage(scene, event)
 	{
 		const message = JSON.parse(event.data);
-		console.log('Received message:', message);
+		// console.log('Received message:', message);
 
 		if (message.modify)
 			for (const [key, value] of Object.entries(message.modify))

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    spectator.py                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#    By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 15:11:13 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/25 13:35:47 by ysabik           ###   ########.fr        #
+#    Updated: 2024/07/25 14:51:29 by psalame          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ class Spectator:
 			else:
 				username = f"Bot_{i}"
 			await self.sendData("call", {"command": "scene.server.newPlayer",
-									"args": [f"'player{i}'", f"'{username}'"]})
+									"args": [f"'player{i}'", f"'{username}'", [player.pos.x, player.pos.y]]})
 
 	def isUp(self):
 		keys = ["w", "ArrowLeft"]
