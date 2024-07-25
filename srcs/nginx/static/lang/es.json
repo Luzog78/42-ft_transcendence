@@ -36,12 +36,32 @@
 			"p2": "a inicio"
 		},
 		"home": {
-			"h0": "Ocurrió un error...",
-			"h1": "Bienvenido a PONG",
-			"h2": "!",
-			"p0": "¡Ven y juega con nosotros!",
-			"title": "¡PONG!"
-		},
+			"title": "",
+			"intro": "Permítanos presentarle la experiencia",
+			"teamTitle": "Equipo",
+			"yavinTitle": "Yavin",
+			"yavinSkills": "Ingeniero de juegos",
+			"yavinDesc": "Yavin es un ingeniero de juegos que ha estado trabajando en el proyecto durante los últimos 3 meses. Es un ingeniero muy talentoso con mucha experiencia en el campo del desarrollo de juegos. Es muy apasionado por su trabajo y siempre se esfuerza por crear los mejores juegos posibles para sus clientes.",
+			"paulTitle": "Paul",
+			"paulSkills": "DevOps - Experto en bases de datos",
+			"paulDesc": "Paul es un ingeniero DevOps que ha estado trabajando en el proyecto durante los últimos 3 meses. Es un ingeniero muy talentoso con mucha experiencia en el campo de DevOps y la gestión de bases de datos. Es muy apasionado por su trabajo y siempre se esfuerza por crear las mejores soluciones posibles para sus clientes.",
+			"yanisTitle": "Yanis",
+			"yanisSkills": "Experto en Python - JS - UI/UX",
+			"yanisDesc": "Yanis es un experto en Python que ha estado trabajando en el proyecto durante los últimos 3 meses. Es un ingeniero muy talentoso con mucha experiencia en el campo del desarrollo de Python y el diseño de UI/UX. Es muy apasionado por su trabajo y siempre se esfuerza por crear las mejores soluciones posibles para sus clientes.",
+			"projectTitle": "Proyecto",
+			"statLinesOfCode": "Líneas de código",
+			"statDurationSymbol": "d",
+			"statDurationDesc": "De puro codificación",
+			"statCommits": "Commits en GitHub",
+			"joinTitle": "Únete a nosotros y comienza la experiencia",
+			"joinButton": "JUGAR",
+			"joinLogin": "Iniciar sesión",
+			"joinRegister": "Registrarse",
+			"footerTitle": "© 2024 ft_transcendence !<br>Todos los derechos reservados.",
+			"footerLinks": "Enlaces 42",
+			"footerLinksProject": "Proyecto",
+			"footerLinksSubject": "Tema"
+		},		
 		"login": {
 			"labels": {
 				"a2f": "2FA",

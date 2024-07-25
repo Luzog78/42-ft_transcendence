@@ -268,7 +268,7 @@ const getLang = (context, key, argsList = undefined) => {
 	let pathes = `${key}`.split(".");
 	let found = context.lang || {};
 	for (let path of pathes) {
-		if (!found[path])
+		if (found[path] === undefined || found[path] === null)
 			return notFound;
 		found = found[path];
 	}

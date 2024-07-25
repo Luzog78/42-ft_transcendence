@@ -36,11 +36,31 @@
 			"p2": "zur Startseite"
 		},
 		"home": {
-			"h0": "Ein Fehler ist aufgetreten...",
-			"h1": "Willkommen bei PONG",
-			"h2": "!",
-			"p0": "Komm und spiel mit uns!",
-			"title": "PONG!"
+			"title": "",
+			"intro": "Lassen Sie uns Ihnen das Erlebnis vorstellen",
+			"teamTitle": "Team",
+			"yavinTitle": "Yavin",
+			"yavinSkills": "Spieletechniker",
+			"yavinDesc": "Yavin ist ein Spieletechniker, der seit den letzten 3 Monaten an dem Projekt arbeitet. Er ist ein sehr talentierter Ingenieur mit viel Erfahrung im Bereich der Spieleentwicklung. Er ist sehr leidenschaftlich in seiner Arbeit und strebt immer danach, die bestmöglichen Spiele für seine Kunden zu schaffen.",
+			"paulTitle": "Paul",
+			"paulSkills": "DevOps - Datenbankexperte",
+			"paulDesc": "Paul ist ein DevOps-Ingenieur, der seit den letzten 3 Monaten an dem Projekt arbeitet. Er ist ein sehr talentierter Ingenieur mit viel Erfahrung im Bereich DevOps und Datenbankverwaltung. Er ist sehr leidenschaftlich in seiner Arbeit und strebt immer danach, die bestmöglichen Lösungen für seine Kunden zu schaffen.",
+			"yanisTitle": "Yanis",
+			"yanisSkills": "Python-Experte - JS - UI/UX",
+			"yanisDesc": "Yanis ist ein Python-Experte, der seit den letzten 3 Monaten an dem Projekt arbeitet. Er ist ein sehr talentierter Ingenieur mit viel Erfahrung im Bereich der Python-Entwicklung und UI/UX-Design. Er ist sehr leidenschaftlich in seiner Arbeit und strebt immer danach, die bestmöglichen Lösungen für seine Kunden zu schaffen.",
+			"projectTitle": "Projekt",
+			"statLinesOfCode": "Codezeilen",
+			"statDurationSymbol": "d",
+			"statDurationDesc": "Von reinem Codieren",
+			"statCommits": "Commits auf GitHub",
+			"joinTitle": "Schließen Sie sich uns an und starten Sie das Erlebnis",
+			"joinButton": "SPIELEN",
+			"joinLogin": "Anmelden",
+			"joinRegister": "Registrieren",
+			"footerTitle": "© 2024 ft_transcendence!<br>Alle Rechte vorbehalten.",
+			"footerLinks": "42 Links",
+			"footerLinksProject": "Projekt",
+			"footerLinksSubject": "Thema"
 		},
 		"login": {
 			"labels": {

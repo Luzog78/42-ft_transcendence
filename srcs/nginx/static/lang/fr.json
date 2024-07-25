@@ -36,12 +36,32 @@
 			"p3": "."
 		},
 		"home": {
-			"title": "PONG !",
-			"h0": "Une erreur s'est produite...",
-			"h1": "Bienvenue sur PONG",
-			"h2": "!",
-			"p0": "Venez et jouez avec nous !"
-		},
+			"title": "",
+			"intro": "Laissez-nous vous présenter l'expérience",
+			"teamTitle": "Équipe",
+			"yavinTitle": "Yavin",
+			"yavinSkills": "Ingénieur de jeu",
+			"yavinDesc": "Yavin est un ingénieur de jeu qui travaille sur le projet depuis 3 mois. C'est un ingénieur très talentueux avec beaucoup d'expérience dans le domaine du développement de jeux. Il est très passionné par son travail et s'efforce toujours de créer les meilleurs jeux possibles pour ses clients.",
+			"paulTitle": "Paul",
+			"paulSkills": "DevOps - Expert en bases de données",
+			"paulDesc": "Paul est un ingénieur DevOps qui travaille sur le projet depuis 3 mois. C'est un ingénieur très talentueux avec beaucoup d'expérience dans le domaine des DevOps et de la gestion des bases de données. Il est très passionné par son travail et s'efforce toujours de créer les meilleures solutions possibles pour ses clients.",
+			"yanisTitle": "Yanis",
+			"yanisSkills": "Expert Python - JS - UI/UX",
+			"yanisDesc": "Yanis est un expert en Python qui travaille sur le projet depuis 3 mois. C'est un ingénieur très talentueux avec beaucoup d'expérience dans le domaine du développement Python et du design UI/UX. Il est très passionné par son travail et s'efforce toujours de créer les meilleures solutions possibles pour ses clients.",
+			"projectTitle": "Projet",
+			"statLinesOfCode": "Lignes de code",
+			"statDurationSymbol": "j",
+			"statDurationDesc": "De pur codage",
+			"statCommits": "Commits sur GitHub",
+			"joinTitle": "Rejoignez-nous et commencez l'expérience",
+			"joinButton": "JOUER",
+			"joinLogin": "Connexion",
+			"joinRegister": "Inscription",
+			"footerTitle": "© 2024 ft_transcendence !<br>Tous droits réservés.",
+			"footerLinks": "Liens 42",
+			"footerLinksProject": "Projet",
+			"footerLinksSubject": "Sujet"
+		},		
 		"login": {
 			"labels": {
 				"a2f": "A2F",

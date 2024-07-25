@@ -36,11 +36,31 @@
 			"p2": "首页"
 		},
 		"home": {
-			"h0": "发生了一个错误...",
-			"h1": "欢迎来到PONG",
-			"h2": "!",
-			"p0": "来和我们一起玩吧！",
-			"title": "PONG!"
+			"title": "",
+			"intro": "让我们向您介绍这个体验",
+			"teamTitle": "团队",
+			"yavinTitle": "亚文",
+			"yavinSkills": "游戏工程师",
+			"yavinDesc": "亚文是一位游戏工程师，他在过去的3个月里一直在这个项目上工作。他是一位非常有才华的工程师，在游戏开发领域有丰富的经验。他对自己的工作非常热爱，总是努力为客户创造最佳的游戏。",
+			"paulTitle": "保罗",
+			"paulSkills": "DevOps - 数据库专家",
+			"paulDesc": "保罗是一位DevOps工程师，他在过去的3个月里一直在这个项目上工作。他是一位非常有才华的工程师，在DevOps和数据库管理领域有丰富的经验。他对自己的工作非常热爱，总是努力为客户创造最佳的解决方案。",
+			"yanisTitle": "亚尼斯",
+			"yanisSkills": "Python专家 - JS - UI/UX",
+			"yanisDesc": "亚尼斯是一位Python专家，他在过去的3个月里一直在这个项目上工作。他是一位非常有才华的工程师，在Python开发和UI/UX设计领域有丰富的经验。他对自己的工作非常热爱，总是努力为客户创造最佳的解决方案。",
+			"projectTitle": "项目",
+			"statLinesOfCode": "代码行数",
+			"statDurationSymbol": "天",
+			"statDurationDesc": "纯编码",
+			"statCommits": "GitHub上的提交",
+			"joinTitle": "加入我们并开始体验",
+			"joinButton": "开始",
+			"joinLogin": "登录",
+			"joinRegister": "注册",
+			"footerTitle": "© 2024 ft_transcendence!<br>版权所有。",
+			"footerLinks": "42链接",
+			"footerLinksProject": "项目",
+			"footerLinksSubject": "主题"
 		},
 		"login": {
 			"labels": {

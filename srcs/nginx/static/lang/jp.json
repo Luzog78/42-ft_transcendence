@@ -36,11 +36,31 @@
 			"p2": "ホーム"
 		},
 		"home": {
-			"h0": "エラーが発生しました...",
-			"h1": "PONGへようこそ",
-			"h2": "！",
-			"p0": "一緒に遊びましょう！",
-			"title": "PONG!"
+			"title": "",
+			"intro": "体験をご紹介します",
+			"teamTitle": "チーム",
+			"yavinTitle": "ヤヴィン",
+			"yavinSkills": "ゲームエンジニア",
+			"yavinDesc": "ヤヴィンは、過去3ヶ月間このプロジェクトに取り組んでいるゲームエンジニアです。ゲーム開発の分野で豊富な経験を持つ非常に優れたエンジニアです。彼は自分の仕事に非常に情熱を持っており、常にクライアントのために最高のゲームを作成することを目指しています。",
+			"paulTitle": "ポール",
+			"paulSkills": "DevOps - データベースの専門家",
+			"paulDesc": "ポールは、過去3ヶ月間このプロジェクトに取り組んでいるDevOpsエンジニアです。DevOpsとデータベース管理の分野で豊富な経験を持つ非常に優れたエンジニアです。彼は自分の仕事に非常に情熱を持っており、常にクライアントのために最高のソリューションを作成することを目指しています。",
+			"yanisTitle": "ヤニス",
+			"yanisSkills": "Pythonエキスパート - JS - UI/UX",
+			"yanisDesc": "ヤニスは、過去3ヶ月間このプロジェクトに取り組んでいるPythonエキスパートです。Python開発とUI/UXデザインの分野で豊富な経験を持つ非常に優れたエンジニアです。彼は自分の仕事に非常に情熱を持っており、常にクライアントのために最高のソリューションを作成することを目指しています。",
+			"projectTitle": "プロジェクト",
+			"statLinesOfCode": "コード行数",
+			"statDurationSymbol": "日",
+			"statDurationDesc": "純粋なコーディングの",
+			"statCommits": "GitHubでのコミット",
+			"joinTitle": "参加して体験を始めましょう",
+			"joinButton": "プレイ",
+			"joinLogin": "ログイン",
+			"joinRegister": "登録",
+			"footerTitle": "© 2024 ft_transcendence!<br>全著作権所有。",
+			"footerLinks": "42リンク",
+			"footerLinksProject": "プロジェクト",
+			"footerLinksSubject": "テーマ"
 		},
 		"login": {
 			"labels": {

@@ -36,11 +36,31 @@
 			"p2": "home"
 		},
 		"home": {
-			"h0": "An error occured...",
-			"h1": "Welcome to PONG",
-			"h2": "!",
-			"p0": "Come and play with us !",
-			"title": "PONG !"
+			"title": "",
+			"intro": "Let us introduce you to the experience",
+			"teamTitle": "Team",
+			"yavinTitle": "Yavin",
+			"yavinSkills": "Game engineer",
+			"yavinDesc": "Yavin is a game engineer who has been working on the project for the past 3 months. He is a very talented engineer who has a lot of experience in the field of game development. He is very passionate about his work and always strives to create the best possible games for his clients.",
+			"paulTitle": "Paul",
+			"paulSkills": "DevOps - Database expert",
+			"paulDesc": "Paul is a DevOps engineer who has been working on the project for the past 3 months. He is a very talented engineer who has a lot of experience in the field of DevOps and database management. He is very passionate about his work and always strives to create the best possible solutions for his clients.",
+			"yanisTitle": "Yanis",
+			"yanisSkills": "Python expert - JS - UI/UX",
+			"yanisDesc": "Yanis is a Python expert who has been working on the project for the past 3 months. He is a very talented engineer who has a lot of experience in the field of Python development and UI/UX design. He is very passionate about his work and always strives to create the best possible solutions for his clients.",
+			"projectTitle": "Project",
+			"statLinesOfCode": "Lines of code",
+			"statDurationSymbol": "d",
+			"statDurationDesc": "Of pure coding",
+			"statCommits": "Commits on GitHub",
+			"joinTitle": "Join us and start the experience",
+			"joinButton": "PLAY",
+			"joinLogin": "Login",
+			"joinRegister": "Register",
+			"footerTitle": "© 2024 ft_transcendence !<br>All rights reserved.",
+			"footerLinks": "42 Links",
+			"footerLinksProject": "Project",
+			"footerLinksSubject": "Subject"
 		},
 		"login": {
 			"labels": {

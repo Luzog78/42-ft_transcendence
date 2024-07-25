@@ -1,0 +1,5 @@
+<svg width="800px" height="800px" viewBox="0 0 24 24" id="date-calendar" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color">
+	<path id="primary" d="M20,21H4a1,1,0,0,1-1-1V9H21V20A1,1,0,0,1,20,21ZM21,5a1,1,0,0,0-1-1H4A1,1,0,0,0,3,5V9H21Z" style="fill: none; stroke: #f80; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
+	<polyline id="secondary" points="12 13 12 15 15 15" style="fill: none; stroke: #aaa; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline>
+	<path id="secondary-2" data-name="secondary" d="M16,3V6M8,3V6M9,17V13m6,0v4" style="fill: none; stroke: #aaa; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
+</svg>
