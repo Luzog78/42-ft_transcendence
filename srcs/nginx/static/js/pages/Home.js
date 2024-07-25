@@ -26,7 +26,7 @@ async function Home(context) {
 				<h1>ft_transcendence</h1>
 			</section>
 
-			<section class="full"></section>
+			<section class="half"></section>
 
 			<section id="team">
 
@@ -70,7 +70,7 @@ async function Home(context) {
 
 			</section>
 
-			<section class="full"></section>
+			<section class="half"></section>
 
 			<section id="project">
 				<h1>${getLang(context, "pages.home.projectTitle")}</h1>
@@ -82,7 +82,7 @@ async function Home(context) {
 							<img src="/static/img/code.svg" alt=" ">
 							<div class="stat-border"></div>
 							<div class="content">
-								<h2>+15k</h2>
+								<h2>+18k</h2>
 								<p>${getLang(context, "pages.home.statLinesOfCode")}</p>
 							</div>
 						</div>
@@ -93,7 +93,7 @@ async function Home(context) {
 							<img src="/static/img/calendar.svg" alt=" ">
 							<div class="stat-border"></div>
 							<div class="content">
-								<h2>61 ${getLang(context, "pages.home.statDurationSymbol")}</h2>
+								<h2>49 ${getLang(context, "pages.home.statDurationSymbol")}</h2>
 								<p>${getLang(context, "pages.home.statDurationDesc")}</p>
 							</div>
 						</div>
@@ -184,7 +184,7 @@ async function Home(context) {
 				</div>
 			</section>
 
-			<section class="full"></section>
+			<section class="half"></section>
 
 			<section id="join">
 				<h1>${getLang(context, "pages.home.joinTitle")}</h1>

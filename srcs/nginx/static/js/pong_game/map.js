@@ -36,8 +36,8 @@ function initMap(scene, theme, time_left)
 	else
 		initNPlayerMap(scene, player_num, color_theme);
 
-	if (scene.server.client_id < player_num && scene.game_mode != "BR")
-		initText(scene, player_num, time_left);
+	// if (scene.server.client_id < player_num && scene.game_mode != "BR")
+	initText(scene, player_num, time_left);
 	initCamera(scene, player_num);
 }
 
@@ -330,10 +330,14 @@ function initText(scene, player_num, time_left)
 {
 	if (scene.game_mode == "TO")
 	{
-		const my_player = scene.get("player" + scene.server.client_id);
+		let id = scene.server.client_id;
+		if (scene.server.client_id >= player_num)
+			id = 0;
+
+		const angle = scene.get("player" + id).angle;
 
 		let text_size = (1 / scene.segment_size ) * 4;
-		const rotation = new THREE.Vector3(-Math.PI / 2, Math.PI - my_player.angle + Math.PI, 0);
+		const rotation = new THREE.Vector3(-Math.PI / 2, Math.PI - angle + Math.PI, 0);
 
 		if (player_num == 2)
 		{
@@ -344,9 +348,9 @@ function initText(scene, player_num, time_left)
 		const text_position = new THREE.Vector3(0,0.1,0);
 		const time = new Date(time_left * 1000).toISOString().substring(14, 19);
 		new DynamicText(scene, time, text_position, rotation, text_size, 0xffffff, "timertext");
-		
+
 	}
-	
+
 	if (scene.game_mode != "BR" && player_num == 2)
 	{
 		const score_1_pos = new THREE.Vector3(-1.25,0.1,0.5);

@@ -40,14 +40,14 @@
 			"intro": "Permítanos presentarle la experiencia",
 			"teamTitle": "Equipo",
 			"yavinTitle": "Yavin",
-			"yavinSkills": "Ingeniero de juegos",
-			"yavinDesc": "Yavin es un ingeniero de juegos que ha estado trabajando en el proyecto durante los últimos 3 meses. Es un ingeniero muy talentoso con mucha experiencia en el campo del desarrollo de juegos. Es muy apasionado por su trabajo y siempre se esfuerza por crear los mejores juegos posibles para sus clientes.",
+			"yavinSkills": "Diseñador de juegos",
+			"yavinDesc": "Yavin es un diseñador de juegos muy talentoso con bastante experiencia en el campo de los videojuegos. Representa un verdadero pilar en la creación del juego para este proyecto. Con fórmulas físicas complicadas, ray-tracing y gestión de objetos tridimensionales, ha logrado crear un juego de ping-pong absolutamente asombroso.",
 			"paulTitle": "Paul",
-			"paulSkills": "DevOps - Experto en bases de datos",
-			"paulDesc": "Paul es un ingeniero DevOps que ha estado trabajando en el proyecto durante los últimos 3 meses. Es un ingeniero muy talentoso con mucha experiencia en el campo de DevOps y la gestión de bases de datos. Es muy apasionado por su trabajo y siempre se esfuerza por crear las mejores soluciones posibles para sus clientes.",
+			"paulSkills": "Ingeniero de datos - Desarrollador Fullstack",
+			"paulDesc": "Paul es un ingeniero de datos muy talentoso con mucha experiencia en el campo de la gestión de bases de datos, pero también sabe completar el equipo en los módulos frontend y backend. Está muy apasionado por su trabajo y siempre se esfuerza por crear un sistema infalible para una mejor seguridad de los datos.",
 			"yanisTitle": "Yanis",
 			"yanisSkills": "Experto en Python - JS - UI/UX",
-			"yanisDesc": "Yanis es un experto en Python que ha estado trabajando en el proyecto durante los últimos 3 meses. Es un ingeniero muy talentoso con mucha experiencia en el campo del desarrollo de Python y el diseño de UI/UX. Es muy apasionado por su trabajo y siempre se esfuerza por crear las mejores soluciones posibles para sus clientes.",
+			"yanisDesc": "Yanis es un experto en Python muy talentoso con 10 años de experiencia en Java y Python. Toca un poco de todo, bases de datos, backend, frontend e incluso diseño UI/UX. En este proyecto, se encargó de la estructura y organización global: proyecto Django, enrutador JavaScript, organización Docker. También está a cargo del frontend (HTML, CSS, JS) y del enlace entre las diferentes aplicaciones.",
 			"projectTitle": "Proyecto",
 			"statLinesOfCode": "Líneas de código",
 			"statDurationSymbol": "d",
@@ -61,7 +61,7 @@
 			"footerLinks": "Enlaces 42",
 			"footerLinksProject": "Proyecto",
 			"footerLinksSubject": "Tema"
-		},		
+		},
 		"login": {
 			"labels": {
 				"a2f": "2FA",

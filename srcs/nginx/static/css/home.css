@@ -8,6 +8,11 @@
 	height: 100vh;
 }
 
+#home .half {
+	width: 100vw;
+	height: 50vh;
+}
+
 #home {
 	position: absolute;
 	top: 0;

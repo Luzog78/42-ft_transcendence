@@ -68,7 +68,7 @@ async function Play(context) {
 				if (data.uid)
 					redirect(`/play/${data.uid}`);
 				else {
-					persistError(context, getLang(context, "error.noGameFound"));
+					persistError(context, getLang(context, "errors.noGameFound"));
 					redirect("/new");
 				}
 			} else {

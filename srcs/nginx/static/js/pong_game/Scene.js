@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/25 18:40:06 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/26 00:50:23 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,11 @@ class Scene
 	{
 		if (status == "START")
 		{
+			console.log(this.game_mode)
 			if (this.game_mode != "TO")
 				return ;
 			const timer_text = this.get("timertext");
+			console.log(timer_text)
 			this.interval_timer_id = setInterval(() => {
 				const timer_split = timer_text.text.split(":");
 				let minutes = parseInt(timer_split[0]);
@@ -125,6 +127,7 @@ class Scene
 	{
 		this.player_num = player_num;
 		this.game_mode = game_mode;
+
 		console.log("I'm spectator");
 		console.log("Player num: " + player_num + " Game mode: " + game_mode);
 
@@ -259,7 +262,7 @@ class Scene
 
 		if (this.entities.includes(element))
 			this.entities.splice(this.entities.indexOf(element), 1);
-		
+
 		delete this.elements[element.name]
 
 		if (element.destroy != undefined)

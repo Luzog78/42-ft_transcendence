@@ -45,7 +45,7 @@ class Ball:
 		else:
 			direction = Vector(random.uniform(0,1) - 0.5, random.uniform(0,1) - 0.5)
 		direction.setLength(math.sqrt(player_number) * 0.8 * (ball_modifier + 1))
-		
+
 		return direction
 
 	async def updateBall(self):
@@ -76,20 +76,24 @@ class Ball:
 			return
 
 		player = self.lobby.clients[int(wallname.replace("player", ""))]
-		if not isinstance(player, Player):
-			return
-
-		player_space = player.keyboard[" "] if " " in player.keyboard else False
 
 		angle = 0
-		if player.isUp() and player_space:
-			angle = -67.5
-		elif player.isDown() and player_space:
-			angle = 67.5
+
+		if isinstance(player, Player):
+			player_space = player.keyboard[" "] if " " in player.keyboard else False
+			if player.isUp() and player_space:
+				angle = -67.5
+			elif player.isDown() and player_space:
+				angle = 67.5
+			else:
+				return
+			if self.lobby.clients_per_lobby == 2:
+				angle = 67.5
 		else:
-			return
-		if self.lobby.clients_per_lobby == 2:
-			angle = 67.5
+			if random.randint(0, 4) == 0:
+				angle = random.choice([-67.5, 67.5])
+			else:
+				return
 
 		rotated_vel = math.radians(angle)
 		direction = collision_normal.rotate(rotated_vel)
@@ -141,9 +145,9 @@ class Ball:
 
 					player = self.lobby.clients[player_id]
 					player.rebounces += 1
-					if (self.vel.length() > player.ultimate_speed):
+					if self.vel.length() > player.ultimate_speed:
 						player.ultimate_speed = self.vel.length()
-					
+
 					self.last_player = player
 
 				await self.applyCollision(wall_name, intersection_point, current_distance)
@@ -161,7 +165,7 @@ class Ball:
 		self.acc *= 0.18729769509073987 ** self.lobby.game_server.dt
 
 		await self.checkCollision()
-		await self.checkOutOfBounds()		
+		await self.checkOutOfBounds()
 
 		# if self.vel.length() > self.terminal_velocity:
 			# self.vel.setLength(self.terminal_velocity)
