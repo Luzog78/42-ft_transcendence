@@ -84,10 +84,11 @@
 
 ### Summary
 
-|              | Major Module amt. | Minor Module amt. |                     Total Score                      |
-| :----------: | :---------------: | :---------------: | :--------------------------------------------------: |
-| **Selected** |       $$12$$      |       $$5$$       |               $$\textbf{14.5}$$ <sub>$$/ 9.5$$</sub> |
-| **Working**  |       $$10$$      |       $$4$$       | $$\textbf{\color{green} 12.0}$$ <sub>$$/ 9.5$$</sub> |
+|                  | Major Module amt. | Minor Module amt. |                      Total Score                      |
+| :--------------: | :---------------: | :---------------: | :---------------------------------------------------: |
+|   **Selected**   |       $$12$$      |       $$5$$       |                $$\textbf{14.5}$$ <sub>$$/ 9.5$$</sub> |
+|   **Working**    |       $$11$$      |       $$5$$       |  $$\textbf{\color{green} 13.5}$$ <sub>$$/ 9.5$$</sub> |
+| **💯 Certified** |        $$8$$      |       $$4$$       | $$\textbf{\color{orange} 10.0}$$ <sub>$$/ 9.5$$</sub> |
 
 <br>
 
@@ -110,18 +111,18 @@
 |   ✅   | `major` | Web                          | [Use a Framework as backend](#major-use-a-framework-as-backend) |
 |   ✅   | `minor` | Web                          | [Use a front-end framework or toolkit](#minor-use-a-front-end-framework-or-toolkit) |
 |   ✅   | `minor` | Web                          | [Use a database for the backend](#minor-use-a-database-for-the-backend) |
-|   ✅   | `major` | User Management              | [Standard user management, authentication, users across tournaments](#major-standard-user-management-authentication-users-across-tournaments) |
+|   ❎   | `major` | User Management              | [Standard user management, authentication, users across tournaments](#major-standard-user-management-authentication-users-across-tournaments) |
 |   ✅   | `major` | User Management              | [Implementing a remote authentication](#major-implementing-a-remote-authentication) |
 |   ✅   | `major` | Gameplay and user experience | [Remote players](#major-remote-players) |
 |   ✅   | `major` | Gameplay and user experience | [Multiplayers (more than 2 in the same game)](#major-multiplayers-more-than-2-in-the-same-game) |
-|   ✅   | `major` | Gameplay and user experience | [Add Another Game with User History and Matchmaking](#major-add-another-game-with-user-history-and-matchmaking) |
-|   ✅   | `minor` | Gameplay and user experience | [Game Customization Options](#minor-game-customization-options) |
+|   ❎   | `major` | Gameplay and user experience | [Add Another Game with User History and Matchmaking](#major-add-another-game-with-user-history-and-matchmaking) |
+|   ❎   | `minor` | Gameplay and user experience | [Game Customization Options](#minor-game-customization-options) |
 |   ✅   | `major` | Gameplay and user experience | [Live chat](#major-live-chat) |
 |   ✅   | `major` | AI-Algo                      | [Introduce an AI Opponent](#major-introduce-an-ai-opponent) |(#minor-user-and-game-stats-dashboards) |
-|   ❌   | `major` | Cybersecurity                | [Implement Two-Factor Authentication (2FA) and JWT](#major-implement-two-factor-authentication-2fa-and-jwt) |
-|   ✅   | `major` | Devops                       | [Designing the Backend as Microservices](#major-designing-the-backend-as-microservices) |
+|   ✅   | `major` | Cybersecurity                | [Implement Two-Factor Authentication (2FA) and JWT](#major-implement-two-factor-authentication-2fa-and-jwt) |
+|   ❎   | `major` | Devops                       | [Designing the Backend as Microservices](#major-designing-the-backend-as-microservices) |
 |   ✅   | `major` | Graphics                     | [Use of advanced 3D techniques](#major-use-of-advanced-3d-techniques) |
-|   ❌   | `minor` | Accessibility                | [Expanding Browser Compatibility](#minor-expanding-browser-compatibility) |
+|   ✅   | `minor` | Accessibility                | [Expanding Browser Compatibility](#minor-expanding-browser-compatibility) |
 |   ✅   | `minor` | Accessibility                | [Multiple language supports](#minor-multiple-language-supports) |
 |   ❌   | `major` | Server-Side Pong             | [Replacing Basic Pong with Server-Side Pong and Implementing an API](#major-replacing-basic-pong-with-server-side-pong-and-implementing-an-api) |
 
