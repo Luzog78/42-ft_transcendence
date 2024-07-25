@@ -250,12 +250,13 @@ class Lobby:
 		killer = ball.last_player
 		if (self.clients_per_lobby == 2):
 			killer = self.clients[1 - player_id]
-		
+
 		if (killer):
-			if (self.last_killer and killer != self.last_killer):
+			if (self.last_killer):
 				if (self.last_killer.streak > self.last_killer.best_streak):
 					self.last_killer.best_streak = self.last_killer.streak
-				self.last_killer.streak = 0
+				if (killer != self.last_killer):
+					self.last_killer.streak = 0
 			self.last_killer = killer
 			killer.streak += 1
 			killer.kills += 1

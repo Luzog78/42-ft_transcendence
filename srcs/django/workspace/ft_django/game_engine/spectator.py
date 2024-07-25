@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    spectator.py                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
+#    By: TheRed <TheRed@students.42.fr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 15:11:13 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/25 17:37:50 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/25 23:54:14 by TheRed           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,8 @@ class Spectator:
 				username = player.username
 			await self.sendData("call", {"command": "scene.server.newPlayer",
 									"args": [f"'player{i}'", f"'{username}'", [player.pos.x, player.pos.y]]})
+
+		await self.sendData("game_status", "START")
 
 	async def sendData(self, *args):
 		await self.client.sendData(*args)

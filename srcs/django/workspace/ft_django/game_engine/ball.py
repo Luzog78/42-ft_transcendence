@@ -76,20 +76,24 @@ class Ball:
 			return
 
 		player = self.lobby.clients[int(wallname.replace("player", ""))]
-		if not isinstance(player, Player):
-			return
-
-		player_space = player.keyboard[" "] if " " in player.keyboard else False
 
 		angle = 0
-		if player.isUp() and player_space:
-			angle = -67.5
-		elif player.isDown() and player_space:
-			angle = 67.5
+
+		if (isinstance(player, Player)):
+			player_space = player.keyboard[" "] if " " in player.keyboard else False
+			if player.isUp() and player_space:
+				angle = -67.5
+			elif player.isDown() and player_space:
+				angle = 67.5
+			else:
+				return
+			if self.lobby.clients_per_lobby == 2:
+				angle = 67.5
 		else:
-			return
-		if self.lobby.clients_per_lobby == 2:
-			angle = 67.5
+			if (random.randint(0, 4) == 0):
+				angle = random.choice([-67.5, 67.5])
+			else:
+				return
 
 		rotated_vel = math.radians(angle)
 		direction = collision_normal.rotate(rotated_vel)
