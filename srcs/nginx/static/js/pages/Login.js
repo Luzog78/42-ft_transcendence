@@ -154,7 +154,7 @@ async function Login(context) {
 				event.preventDefault();
 				getJson(context, "/api/oauth42").then(data => {
 					if (data.ok) {
-						window.location.href = `https://api.intra.42.fr/oauth/authorize?client_id=${data.token}&redirect_uri=https%3A%2F%2F127.0.0.1%3A4444%2Foauth_callback&response_type=code`;
+						window.location.href = `https://api.intra.42.fr/oauth/authorize?client_id=${data.token}&redirect_uri=https%3A%2F%2F${window.location.host.replace(":", "%3A")}%2Foauth_callback&response_type=code`;
 					} else {
 						persistError(context, getLang(context, data.error));
 						pushPersistents(context);
