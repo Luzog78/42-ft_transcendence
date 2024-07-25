@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/25 15:15:56 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/25 18:40:06 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,9 +254,12 @@ class Scene
 
 	remove(element)
 	{
+		if (element == undefined)
+			return ;
+
 		if (this.entities.includes(element))
 			this.entities.splice(this.entities.indexOf(element), 1);
-
+		
 		delete this.elements[element.name]
 
 		if (element.destroy != undefined)
@@ -267,8 +270,9 @@ class Scene
 
 	removeMesh(mesh)
 	{
-		if (mesh == undefined)
+		if (mesh == undefined || mesh.geometry == undefined)
 			return ;
+
 		mesh.geometry.dispose();
 		mesh.material.dispose();
 		this.scene.remove(mesh);

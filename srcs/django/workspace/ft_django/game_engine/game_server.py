@@ -100,7 +100,7 @@ class GameServer:
 			await lobby.addClient(player)
 		return True
 
-	def removeClient(self, client) -> bool:
+	async def removeClient(self, client) -> bool:
 		for player in self.clients:
 			if player.client == client:
 				lobby = player.lobby
@@ -110,6 +110,11 @@ class GameServer:
 				
 				lobby.removeClient(player)
 				self.clients.remove(player)
+
+				for p in lobby.clients:
+					await p.sendData("call", {"command": "scene.server.disconnectPlayer",
+										"args": [f"'player{player.client_id}'"]})
+					await p.sendData("call", {"command": 'setWaitingPlayerCount', "args": [len(lobby.clients)]})
 
 				return True
 		return False

@@ -14,10 +14,10 @@ import * as THREE from 'three';
 
 import { initPlayerText } from "./map.js";
 import { Particle } from "./Particle.js";
-import { destroyObject, destroyScene, initScene } from './main.js';
+import { destroyScene, destroyObject, initScene } from './main.js';
 import { global_context } from '../script.js';
 import { remWaiting } from '../pages/Pong.js';
-import { setWaitingTotalPlayerCount, incrementWaitingPlayerCount } from '../pages/Pong.js'; // used for eval !
+import { setWaitingTotalPlayerCount, setWaitingPlayerCount } from '../pages/Pong.js'; // used for eval !
 import { refresh } from "../script.js";
 import { postJson } from '../utils.js';
 
@@ -46,16 +46,33 @@ class Server
 			remWaiting();
 		
 		initPlayerText(this.scene, player, player_name);
-		
-		player.player.visible = true;
-		if (position) {
+
+		player.mesh.visible = true;
+		if (position)
+		{
 			let computed_position = new THREE.Vector3(
 				position[0],
-				player.player.position.y,
+				player.mesh.position.y,
 				position[1]
 			)
-			player.player.position.copy(computed_position);
+			player.mesh.position.copy(computed_position);
 		}
+	}
+
+	disconnectPlayer(player_id)
+	{
+		let player = this.scene.get(player_id);
+		if (player == null)
+			return;
+		
+		let player_text = this.scene.get(player_id + "text");
+		let player_text_score = this.scene.get(player_id + "textscore");
+
+		this.scene.remove(player_text_score);
+		console.log(player_text)
+		destroyObject(player_text);
+		this.scene.remove(player);
+		
 	}
 
 	BRDied(player_id)
@@ -77,7 +94,7 @@ class Server
 
 		setTimeout(() => {
 			this.scene.camera.setPosition(camera_old_position.x, camera_old_position.y, camera_old_position.z, 0, 0, 0, true);
-			player.player.material.emissiveIntensity = 3;
+			player.mesh.material.emissiveIntensity = 3;
 		}, 1000);
 	}
 
@@ -86,7 +103,7 @@ class Server
 		const player = this.scene.get(player_id);
 		const position = player.init_position.clone();
 
-		player.player.material.emissiveIntensity = 0;
+		player.mesh.material.emissiveIntensity = 0;
 
 		let camera_look_at = position.clone().add(new THREE.Vector3(0, 0.5, 0));
 		let camera_position = position.clone()
@@ -106,7 +123,7 @@ class Server
 			let accDec = 0.95
 
 			let radius = Math.random() * 0.02 + 0.005;
-			let color = player.player.material.color;
+			let color = player.mesh.material.color;
 			color = new THREE.Color(color).offsetHSL(0, 0, Math.random() * 0.2 - 0.1);
 
 			let particle = new Particle(this.scene, randomPosition, direction, acceleration, accDec,
@@ -133,7 +150,7 @@ class Server
 	onMessage(scene, event)
 	{
 		const message = JSON.parse(event.data);
-		// console.log('Received message:', message);
+		console.log('Received message:', message);
 
 		if (message.modify)
 			for (const [key, value] of Object.entries(message.modify))

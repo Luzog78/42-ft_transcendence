@@ -16,12 +16,12 @@ import { WallLines } from "./LineEffects.js";
 import { Lines } from "./Lines.js";
 import { Player } from "./Player.js";
 import { DynamicText } from "./DynamicText.js";
-import { destroyObject } from './main.js';
+import { destroyObjects } from './main.js';
 
 function initMap(scene, theme, time_left)
 {
 	clearInterval(scene.intervalId);
-	destroyObject(scene);
+	destroyObjects(scene);
 
 	const light = new THREE.AmbientLight( 0x555555 ); // soft white light
 	scene.scene.add(light);
@@ -114,7 +114,7 @@ function initNPlayerMap(scene, player_num, colors)
 		let player_position = new THREE.Vector3(middle_point.x, 0.15, middle_point.z - 0.075);
 		let player = new Player(scene, {color: color, emissive:color, emissiveIntensity:3}, playerSize, angle, player_position, player_name);
 		if (i > scene.server.client_id)
-			player.player.visible = false;
+			player.mesh.visible = false;
 		scene.entities.push(player);
 
 		let line_points = [vertex.clone(), next_vertex.clone()];
@@ -180,7 +180,7 @@ function initCamera(scene, player_num, following_player = null)
 		return ;
 	}
 
-	let camera_pos = scene.get("player" + following_player).player.position.clone();
+	let camera_pos = scene.get("player" + following_player).mesh.position.clone();
 	camera_pos = new THREE.Vector3(camera_pos.x, 4, camera_pos.z);
 
 	const look_at_point = new THREE.Vector3(0, 0, 0);
@@ -208,7 +208,7 @@ async function init2PlayerMap(scene, colors)
 	scene.entities.push(new Player(scene, {color: colors["map2"][1], emissive: colors["map2"][1], emissiveIntensity:3}, 1, 0, new THREE.Vector3(0,0.15,-4.075), "player1"));
 
 	if (scene.server.client_id == 0)
-		scene.get("player1").player.visible = false;
+		scene.get("player1").mesh.visible = false;
 
 	scene.addBox(4, 0.1, 8, {color: 0x0}, "floor");
 	scene.addBox(0.2, 0.75, 8, {color: 0xbbbbbb, emissive:0xbbbbbb, emissiveIntensity:2, visible:false}, "wall1");
@@ -302,7 +302,7 @@ function initPlayerText(scene, player, name)
 
 	const text_size = max_size / (name.length * 0.5);
 
-	const text_position = new THREE.Vector3().copy(player.player.position);
+	const text_position = new THREE.Vector3().copy(player.mesh.position);
 	const direction = new THREE.Vector3(Math.cos(player.angle + Math.PI / 2), 0, Math.sin(player.angle + Math.PI / 2));
 
 	if (scene.player_num != 2 && scene.game_mode != "BR")

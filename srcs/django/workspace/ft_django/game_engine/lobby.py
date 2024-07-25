@@ -43,7 +43,6 @@ class Lobby:
 
 		self.clients:		list[Player | Bot]	= []
 		self.dead_clients:	list[Player | Bot]	= []
-		self.client_ready:	list[bool]			= []
 		self.spectators:	list[Spectator]		= []
 
 		self.balls: list[Ball] = [Ball(self, 0.15, 0)]
@@ -64,8 +63,6 @@ class Lobby:
 		self.update_thread.start()
 
 	def initMap(self, num_players: int) -> dict[str, list[Vector]]:
-		self.client_ready = [False] * num_players
-
 		if num_players == 2:
 			self.player_size = 0.5
 			self.segment_size = 4
@@ -304,8 +301,6 @@ class Lobby:
 				await ball.update()
 			for c in self.clients:
 				await c.update()
-			for s in self.spectators:
-				await s.update()
 
 	async def countdown(self):
 		self.status = "START"
@@ -336,25 +331,27 @@ class Lobby:
 				return
 			await self.fillBot()
 
-		if "ready" in data:
-			self.client_ready[client_id] = True
-
 		if "fill" in data or "ready" in data:
 			if len(self.clients) == self.clients_per_lobby and self.status == "WAITING":
 				threading.Thread(target=asyncio.run, args=(self.countdown(),)).start()
 
 		if "player_keyboard" in data:
-			if client_id < len(self.clients):
-				client = self.clients[client_id]
+			if client_id <= max([p.client_id for p in self.clients]):
+				client = self.get_client(client_id)
 				if isinstance(client, Player):
 					client.keyboard = data["player_keyboard"]
-			else:
-				self.spectators[client_id].keyboard = data["player_keyboard"]
+
+	def get_client(self, client_id: int) -> Player | Bot | None:
+		for c in self.clients:
+			if c.client_id == client_id:
+				return c
 
 	async def addClient(self, player: Player):
 		self.clients.insert(player.client_id, player)
-		await self.sendData("call", {"command": 'setWaitingTotalPlayerCount',
+		await player.sendData("call", {"command": 'setWaitingTotalPlayerCount',
 									"args": [ f'{self.clients_per_lobby}' ]})
+		await player.sendData("call", {"command": 'setWaitingPlayerCount',
+									"args": [ f'{len(self.clients)}' ]})
 		await player.initPlayer()
 
 	async def addSpectator(self, spectator: Spectator):

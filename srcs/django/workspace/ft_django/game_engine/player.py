@@ -90,7 +90,7 @@ class Player:
 	async def updateSelfToother(self):
 		await self.sendToOther("call", {"command": "scene.server.newPlayer",
 										"args": [f"'player{self.client_id}'", f"'{self.client.username}'"]})
-		await self.sendToOther("call", {"command": 'incrementWaitingPlayerCount', "args": []})
+		await self.sendToOther("call", {"command": 'setWaitingPlayerCount', "args": [len(self.lobby.clients)]})
 
 		for i in range(len(self.lobby.clients)):
 			player = self.lobby.clients[i]
@@ -101,7 +101,6 @@ class Player:
 				username = player.username
 			await self.sendData("call", {"command": "scene.server.newPlayer",
 									"args": [f"'player{i}'", f"'{username}'", [player.pos.x, player.pos.y]]})
-			await self.sendData("call", {"command": 'incrementWaitingPlayerCount', "args": []})
 
 	async def move(self, x: float, y: float):
 		player_vertex = self.lobby.walls["player" + str(self.client_id)]

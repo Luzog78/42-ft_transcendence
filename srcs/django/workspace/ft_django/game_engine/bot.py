@@ -6,7 +6,7 @@
 #    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 12:37:57 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/25 16:04:27 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/25 18:09:15 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,8 +89,8 @@ class Bot:
 
 	async def updateSelfToother(self):
 		await self.sendToOther("call", {"command": "scene.server.newPlayer",
-										"args": [f"'player{self.client_id}'", f"'Bot_{self.client_id}'"]})
-		await self.sendToOther("call", {"command": 'incrementWaitingPlayerCount', "args": []})
+										"args": [f"'player{self.client_id}'", f"'{self.username}'"]})
+		await self.sendToOther("call", {"command": 'setWaitingPlayerCount', "args": [len(self.lobby.clients)]})
 
 	async def move(self, x: float, y: float):
 		player_vertex = self.lobby.walls["player" + str(self.client_id)]

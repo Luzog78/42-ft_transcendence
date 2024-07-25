@@ -97,15 +97,10 @@ function setWaitingTotalPlayerCount(amount) {
 		elem.innerHTML = amount;
 }
 
-function incrementWaitingPlayerCount() {
+function setWaitingPlayerCount(player_number) {
 	let elem = document.getElementById("current-amount");
-	if (elem) {
-		let count = parseInt(elem.innerHTML);
-		if (isNaN(count))
-			elem.innerHTML = 1;
-		else
-			elem.innerHTML = count + 1;
-	}
+	if (elem)
+		elem.innerHTML = String(player_number);
 }
 
 function remWaiting() {
@@ -115,4 +110,4 @@ function remWaiting() {
 }
 
 
-export { Pong, remWaiting, setWaitingTotalPlayerCount, incrementWaitingPlayerCount };
+export { Pong, remWaiting, setWaitingTotalPlayerCount, setWaitingPlayerCount };

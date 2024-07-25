@@ -27,7 +27,7 @@ class Player
 		this.speed = 1.2;
 
 		this.keyboard = {};
-		this.player = null;
+		this.mesh = null;
 
 		this.keydown_event_func = this.keydown_event.bind(this)
 		this.keyup_event_func = this.keyup_event.bind(this)
@@ -37,11 +37,11 @@ class Player
 
 	init()
 	{
-		this.player = this.scene.addCapsule(0.075, this.size, this.options, this.name + "box");
-		this.player.rotateY(-this.angle + Math.PI / 2);
-		this.player.rotateX(-Math.PI / 2);
+		this.mesh = this.scene.addCapsule(0.075, this.size, this.options, this.name + "box");
+		this.mesh.rotateY(-this.angle + Math.PI / 2);
+		this.mesh.rotateX(-Math.PI / 2);
 
-		this.player.position.copy(this.init_position);
+		this.mesh.position.copy(this.init_position);
 		this.scene.elements[this.name] = this;
 	}
 
@@ -49,7 +49,7 @@ class Player
 	{
 		const speed = this.speed * this.scene.dt * (this.size);
 
-		let computed_position = new THREE.Vector3().copy(this.player.position);
+		let computed_position = new THREE.Vector3().copy(this.mesh.position);
 		if (this.isUp())
 		{
 			computed_position.x -= Math.cos(this.angle) * speed;
@@ -62,7 +62,7 @@ class Player
 		}
 		if (computed_position.distanceTo(this.init_position) > this.scene.segment_size / 2 - this.size / 2)
 			return;
-		this.player.position.copy(computed_position);
+		this.mesh.position.copy(computed_position);
 	}
 
 	bump(normal)
@@ -70,24 +70,24 @@ class Player
 		for (let i = 0; i < 10; i++)
 		{
 			setTimeout(() => {
-				this.player.material.emissive.add(new THREE.Color(0.01,0.01,0.01))
+				this.mesh.material.emissive.add(new THREE.Color(0.01,0.01,0.01))
 			}, 2 * i);
 			setTimeout(() => {
-				this.player.position.z += normal.z * -0.05;
+				this.mesh.position.z += normal.z * -0.05;
 			}, 2 * i);
-			this.player.material.emissiveIntensity += 0.5;
+			this.mesh.material.emissiveIntensity += 0.5;
 		}
 
 		for (let i = 10; i < 20; i++)
 		{
 			setTimeout(() => {
-				this.player.material.emissive.sub(new THREE.Color(0.01,0.01,0.01))
+				this.mesh.material.emissive.sub(new THREE.Color(0.01,0.01,0.01))
 			}, 7 * i);
 			setTimeout(() => {
-				this.player.position.z += normal.z * 0.05;
+				this.mesh.position.z += normal.z * 0.05;
 			}, 8 * i);
 			setTimeout(() => {
-				this.player.material.emissiveIntensity -= 0.5;
+				this.mesh.material.emissiveIntensity -= 0.5;
 			}, 3 * i);
 		}
 

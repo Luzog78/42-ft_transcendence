@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/25 15:02:27 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/25 18:39:49 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,31 @@ async function initScene(uid)
 	scene.renderer.setAnimationLoop( animate );
 }
 
-function destroyObject()
+function destroyObject(object)
+{
+	if (object === undefined)
+		return;
+
+	if (object.geometry)
+		object.geometry.dispose();
+
+	if (object.material)
+	{
+		if (Array.isArray(object.material))
+			object.material.forEach(material => material.dispose());
+		else
+			object.material.dispose();
+	}
+	
+	scene.removeMesh(object);
+}
+
+function destroyObjects()
 {
 	clearInterval(scene.interval_timer_id);
 	scene.scene.traverse(object => {
-		if (!object.isMesh)
-			return;
-
-		if (object.geometry)
-			object.geometry.dispose();
-
-		if (object.material)
-		{
-			if (Array.isArray(object.material))
-				object.material.forEach(material => material.dispose());
-			else
-				object.material.dispose();
-		}
+		console.log(object)
+		destroyObject(object);
 	});
 
 	while (scene.scene.children.length > 0)
@@ -74,7 +82,7 @@ function destroyScene()
 	if (canvas && canvas.parentElement)
 		canvas.parentElement.removeChild(canvas);
 
-	destroyObject();
+	destroyObjects();
 
 	let server = scene.server;
 	server.send("disconnect");
@@ -109,4 +117,4 @@ function fillWithBots()
 }
 
 
-export { initScene, destroyScene, destroyObject, animate, fillWithBots };
+export { initScene, destroyScene, destroyObjects, destroyObject, animate, fillWithBots };

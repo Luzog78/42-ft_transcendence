@@ -26,8 +26,7 @@ class PongSocket(AsyncWebsocketConsumer):
 		await self.accept()
 
 	async def disconnect(self, close_code):
-		# if (close_code != 1001):
-		game_server.removeClient(self)
+		await game_server.removeClient(self)
 		self.disconnected = True
 
 	async def receive(self, text_data):
