@@ -84,10 +84,10 @@
 
 ### Summary
 
-|              | Major Module amt. | Minor Module amt. |       Total Score        |
-| :----------: | :---------------: | :---------------: | :----------------------: |
-| **Selected** |         12        |         5         | **14.5** <sub>/9.5</sub> |
-| **Working**  |         6         |         4         |  **8.0** <sub>/9.5</sub> |
+|              | Major Module amt. | Minor Module amt. |                     Total Score                      |
+| :----------: | :---------------: | :---------------: | :--------------------------------------------------: |
+| **Selected** |       $$12$$      |       $$5$$       |               $$\textbf{14.5}$$ <sub>$$/ 9.5$$</sub> |
+| **Working**  |       $$10$$      |       $$4$$       | $$\textbf{\color{green} 12.0}$$ <sub>$$/ 9.5$$</sub> |
 
 <br>
 
@@ -111,13 +111,13 @@
 |   ✅   | `minor` | Web                          | [Use a front-end framework or toolkit](#minor-use-a-front-end-framework-or-toolkit) |
 |   ✅   | `minor` | Web                          | [Use a database for the backend](#minor-use-a-database-for-the-backend) |
 |   ✅   | `major` | User Management              | [Standard user management, authentication, users across tournaments](#major-standard-user-management-authentication-users-across-tournaments) |
-|   ❌   | `major` | User Management              | [Implementing a remote authentication](#major-implementing-a-remote-authentication) |
+|   ✅   | `major` | User Management              | [Implementing a remote authentication](#major-implementing-a-remote-authentication) |
 |   ✅   | `major` | Gameplay and user experience | [Remote players](#major-remote-players) |
 |   ✅   | `major` | Gameplay and user experience | [Multiplayers (more than 2 in the same game)](#major-multiplayers-more-than-2-in-the-same-game) |
 |   ✅   | `major` | Gameplay and user experience | [Add Another Game with User History and Matchmaking](#major-add-another-game-with-user-history-and-matchmaking) |
 |   ✅   | `minor` | Gameplay and user experience | [Game Customization Options](#minor-game-customization-options) |
-|   ❌   | `major` | Gameplay and user experience | [Live chat](#major-live-chat) |
-|   ❌   | `major` | AI-Algo                      | [Introduce an AI Opponent](#major-introduce-an-ai-opponent) |(#minor-user-and-game-stats-dashboards) |
+|   ✅   | `major` | Gameplay and user experience | [Live chat](#major-live-chat) |
+|   ✅   | `major` | AI-Algo                      | [Introduce an AI Opponent](#major-introduce-an-ai-opponent) |(#minor-user-and-game-stats-dashboards) |
 |   ❌   | `major` | Cybersecurity                | [Implement Two-Factor Authentication (2FA) and JWT](#major-implement-two-factor-authentication-2fa-and-jwt) |
 |   ✅   | `major` | Devops                       | [Designing the Backend as Microservices](#major-designing-the-backend-as-microservices) |
 |   ✅   | `major` | Graphics                     | [Use of advanced 3D techniques](#major-use-of-advanced-3d-techniques) |
@@ -414,7 +414,10 @@ TODO
 
 <br>
 
-TODO
+We are proud to announce that our website is compatible with every nowadays browser. We have tested it on the
+most used ones such as **Chrome**, **Firefox**, **Safari**, **Edge**. We are using the latest technologies, so
+we are sure that it will work on **your** computer too. If not, please let us know. We will do our best to fix it.
+(^^')
 
 <br><br>
 
@@ -423,7 +426,7 @@ TODO
 
 <br>
 
-Thanks to the 42 student community, we managed to make our website available in multiple languages. We are proud to present you the following languages :
+Thanks to the 42 student community, we managed to make our website available in multiple languages. We are proud to present you the 9 following languages :
 
 - **English** (`en`) : *The default language.* ([./src/nginx/static/lang/en.json](#main-file-tree))
 
@@ -431,7 +434,17 @@ Thanks to the 42 student community, we managed to make our website available in 
 
 - **Spanish** (`es`) : *The language of the sun.* ([./src/nginx/static/lang/es.json](#main-file-tree))
 
-- **Brainfuck** (`>+`) : *The language of the gods.* ([./src/nginx/static/lang/>+.json](#main-file-tree))
+- **German** (`de`) : *The language of the beer.* ([./src/nginx/static/lang/de.json](#main-file-tree))
+
+- **Mandarin** (`cn`) : *The language of the future.* ([./src/nginx/static/lang/cn.json](#main-file-tree))
+
+- **Japanese** (`jp`) : *The language of the samurai.* ([./src/nginx/static/lang/jp.json](#main-file-tree))
+
+- **Russian** (`ru`) : *The language of the cold.* ([./src/nginx/static/lang/ru.json](#main-file-tree))
+
+- **Egiptian** (`eg`) : *The language of the desert.* ([./src/nginx/static/lang/eg.json](#main-file-tree))
+
+- **Georgian** (`ka`) : *The language of the mountains.* ([./src/nginx/static/lang/ka.json](#main-file-tree))
 
 <br><br>
 
@@ -451,51 +464,56 @@ TODO
 
 ```tree
 .
-srcs/
-├── postgresql
-│   ├── ...
-│   └── Dockerfile
-├── django                   # [[ BACKEND ]]
-│   ├── workspace
-│   │   ├── api_app          # API, Authentication, Databases
-│   │   │   ├── auth.py
-│   │   │   ├── jwt.py
-│   │   │   ├── models.py    # DB configuration
-│   │   │   ├── urls.py
-│   │   │   ├── views.py
-│   │   │   └── ...
-│   │   ├── ft_django        # Core of the django project
-│   │   │   ├── game_engine
+├── srcs/
+│   ├── postgresql/
+│   │   ├── ...
+│   │   └── Dockerfile
+│   ├── django/                   # [[ BACKEND ]]
+│   │   ├── workspace/
+│   │   │   ├── api_app/          # API, Authentication, Databases
+│   │   │   │   ├── views/
+│   │   │   │   │   └── ...
+│   │   │   │   ├── auth.py
+│   │   │   │   ├── jwt.py
+│   │   │   │   ├── models.py     # DB configuration
+│   │   │   │   ├── urls.py
 │   │   │   │   └── ...
-│   │   │   ├── chat_socket.py
-│   │   │   ├── pong_socket.py
-│   │   │   ├── settings.py
-│   │   │   ├── urls.py
-│   │   │   └── ...
-│   │   └── manage.py
-│   ├── ...
-│   └── Dockerfile
-├── nginx                    # [[ FRONTEND ]]
-│   ├── static
-│   │   ├── css
-│   │   │   └── ...
-│   │   ├── img
-│   │   │   └── ...
-│   │   ├── js               # Website content (SPA)
-│   │   │   ├── components
+│   │   │   ├── ft_django/        # Core of the django project
+│   │   │   │   ├── game_engine/
+│   │   │   │   │   └── ...
+│   │   │   │   ├── chat_socket.py
+│   │   │   │   ├── pong_socket.py
+│   │   │   │   ├── settings.py
+│   │   │   │   ├── urls.py
 │   │   │   │   └── ...
-│   │   │   ├── pages
+│   │   │   └── manage.py
+│   │   ├── ...
+│   │   └── Dockerfile
+│   ├── nginx/                    # [[ FRONTEND ]]
+│   │   ├── static/
+│   │   │   ├── css/
 │   │   │   │   └── ...
-│   │   │   ├── pong_game
+│   │   │   ├── img/
 │   │   │   │   └── ...
-│   │   │   └── ...
-│   │   └── lang             # Languages (.json files)
-│   │       └── ...
-│   ├── templates
-│   │   └── index.html
-│   ├── ...
-│   └── Dockerfile
-├── docker-compose.yml
+│   │   │   ├── js/               # Website content (SPA)
+│   │   │   │   ├── components/
+│   │   │   │   │   └── ...
+│   │   │   │   ├── pages/
+│   │   │   │   │   └── ...
+│   │   │   │   ├── pong_game/
+│   │   │   │   │   └── ...
+│   │   │   │   └── ...
+│   │   │   ├── font/             # Fonts (.ttf files)
+│   │   │   │   └── ...
+│   │   │   └── lang/             # Languages (.json files)
+│   │   │       └── ...
+│   │   ├── templates/
+│   │   │   └── index.html
+│   │   ├── ...
+│   │   └── Dockerfile
+│   ├── .env
+│   ├── secrets.env               # Credentials (API keys)
+│   └── docker-compose.yml
 ├── Makefile
 └── README.md
 ```
