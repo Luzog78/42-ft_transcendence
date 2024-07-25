@@ -10,7 +10,7 @@
 	font-style: italic;
 	font-weight: 200;
 	font-display: swap;
-	src: url("../font/Kodchasan-ExtraLightItalic.ttf");
+	src: url("../font/Kodchasan-ExtraLightItalic.ttf") format("truetype");
 }
 
 @font-face {
@@ -18,7 +18,7 @@
 	font-style: italic;
 	font-weight: 300;
 	font-display: swap;
-	src: url("../font/Kodchasan-LightItalic.ttf");
+	src: url("../font/Kodchasan-LightItalic.ttf") format("truetype");
 }
 
 @font-face {
@@ -26,7 +26,7 @@
 	font-style: italic;
 	font-weight: 400;
 	font-display: swap;
-	src: url("../font/Kodchasan-Italic.ttf");
+	src: url("../font/Kodchasan-Italic.ttf") format("truetype");
 }
 
 @font-face {
@@ -34,7 +34,7 @@
 	font-style: italic;
 	font-weight: 500;
 	font-display: swap;
-	src: url("../font/Kodchasan-MediumItalic.ttf");
+	src: url("../font/Kodchasan-MediumItalic.ttf") format("truetype");
 }
 
 @font-face {
@@ -42,7 +42,7 @@
 	font-style: italic;
 	font-weight: 600;
 	font-display: swap;
-	src: url("../font/Kodchasan-SemiBoldItalic.ttf");
+	src: url("../font/Kodchasan-SemiBoldItalic.ttf") format("truetype");
 }
 
 @font-face {
@@ -50,7 +50,7 @@
 	font-style: italic;
 	font-weight: 700;
 	font-display: swap;
-	src: url("../font/Kodchasan-BoldItalic.ttf");
+	src: url("../font/Kodchasan-BoldItalic.ttf") format("truetype");
 }
 
 
@@ -59,7 +59,7 @@
 	font-style: normal;
 	font-weight: 200;
 	font-display: swap;
-	src: url("../font/Kodchasan-ExtraLight.ttf");
+	src: url("../font/Kodchasan-ExtraLight.ttf") format("truetype");
 }
 
 @font-face {
@@ -67,7 +67,7 @@
 	font-style: normal;
 	font-weight: 300;
 	font-display: swap;
-	src: url("../font/Kodchasan-Light.ttf");
+	src: url("../font/Kodchasan-Light.ttf") format("truetype");
 }
 
 @font-face {
@@ -75,7 +75,7 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
-	src: url("../font/Kodchasan-Regular.ttf");
+	src: url("../font/Kodchasan-Regular.ttf") format("truetype");
 }
 
 @font-face {
@@ -83,7 +83,7 @@
 	font-style: normal;
 	font-weight: 500;
 	font-display: swap;
-	src: url("../font/Kodchasan-Medium.ttf");
+	src: url("../font/Kodchasan-Medium.ttf") format("truetype");
 }
 
 @font-face {
@@ -91,7 +91,7 @@
 	font-style: normal;
 	font-weight: 600;
 	font-display: swap;
-	src: url("../font/Kodchasan-SemiBold.ttf");
+	src: url("../font/Kodchasan-SemiBold.ttf") format("truetype");
 }
 
 @font-face {
@@ -99,5 +99,5 @@
 	font-style: normal;
 	font-weight: 700;
 	font-display: swap;
-	src: url("../font/Kodchasan-Bold.ttf");
+	src: url("../font/Kodchasan-Bold.ttf") format("truetype");
 }
