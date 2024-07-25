@@ -203,7 +203,8 @@ class Server
 
 	sendJson(message)
 	{
-		this.socket.send(JSON.stringify(message));
+		if (this.socket !== WebSocket.CLOSED && this.socket !== WebSocket.CLOSING)
+			this.socket.send(JSON.stringify(message));
 	}
 }
 
