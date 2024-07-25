@@ -229,7 +229,7 @@ function tablePage(context, username, uidsDates, page, totalPage, div = null) {
 				navPrevious.disabled = true;
 			else {
 				navPrevious.disabled = false;
-				navPrevious.onclick = () => tablePage(context, uidsDates, page - 1, totalPage);
+				navPrevious.onclick = () => tablePage(context, username, uidsDates, page - 1, totalPage);
 			}
 		}
 
@@ -238,7 +238,7 @@ function tablePage(context, username, uidsDates, page, totalPage, div = null) {
 				navNext.disabled = true;
 			else {
 				navNext.disabled = false;
-				navNext.onclick = () => tablePage(context, uidsDates, page + 1, totalPage);
+				navNext.onclick = () => tablePage(context, username, uidsDates, page + 1, totalPage);
 			}
 		}
 	});

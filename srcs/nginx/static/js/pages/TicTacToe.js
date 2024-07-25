@@ -6,20 +6,17 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 10:20:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/22 02:33:19 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 01:38:29 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
-import { getGameMode } from "../utils.js";
 import { Chat } from "../components/Chat.js";
 import { start } from "../ttt.js";
 
 
 async function TicTacToe(context, uid, data) {
 	let div = document.createElement("div");
-	div.appendChild(await NavBar(getGameMode(data.mode), context), div.firstChild);
 	div.appendChild(Persistents(context), div.firstChild);
 	div.appendChild(Chat(context));
 

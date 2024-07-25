@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GameConfig.js                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/25 15:03:57 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/26 01:26:07 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,15 @@ async function GameConfig(context, id = null) {
 							</div>
 							<div class="col-md-6 my-2 GameConfig-Img d-flex justify-content-center">
 								<input type="radio" class="btn-check GameConfig-ThemeInput" name="ThemeRadio" id="ThemeRadio2" autocomplete="off">
-								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio2"><img src="https://raw.githubusercontent.com/42data/r/main/ft_transcendence/theme0.png"></label>
+								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio2"><img src="https://raw.githubusercontent.com/42data/r/main/ft_transcendence/theme1.png"></label>
 							</div>
 							<div class="col-md-6 my-2 GameConfig-Img d-flex justify-content-center">
 								<input type="radio" class="btn-check GameConfig-ThemeInput" name="ThemeRadio" id="ThemeRadio3" autocomplete="off">
-								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio3"><img src="https://raw.githubusercontent.com/42data/r/main/ft_transcendence/theme0.png"></label>
+								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio3"><img src="https://raw.githubusercontent.com/42data/r/main/ft_transcendence/theme2.png"></label>
 							</div>
 							<div class="col-md-6 my-2 GameConfig-Img d-flex justify-content-center">
 								<input type="radio" class="btn-check GameConfig-ThemeInput" name="ThemeRadio" id="ThemeRadio4" autocomplete="off">
-								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio4"><img src="https://raw.githubusercontent.com/42data/r/main/ft_transcendence/theme0.png"></label>
+								<label class="btn GameConfig-ThemeLabel" for="ThemeRadio4"><img src="https://raw.githubusercontent.com/42data/r/main/ft_transcendence/theme3.png"></label>
 							</div>
 						</div>
 

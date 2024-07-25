@@ -3,15 +3,16 @@
 #                                                         :::      ::::::::    #
 #    bot.py                                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: TheRed <TheRed@students.42.fr>             +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 12:37:57 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/26 00:06:16 by TheRed           ###   ########.fr        #
+#    Updated: 2024/07/26 01:17:58 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import math
-import datetime
+import time
+from datetime import datetime
 from .vector import Vector
 from .raytrace import RayTrace
 
@@ -41,19 +42,19 @@ class Bot:
 
 		self.start_time: float	= -1
 
-		self.tps = 50
-		self.time_to_think = 0
+		self.tps:			int		= 1000  # delay between each prediction (in ms)
+		self.time_to_think:	float	= 0     # last prediction timestamp (in sec)
 
 		self.last_prediction: dict | None = None
 
 	def die(self):
 		self.deaths += 1
-		self.duration = datetime.datetime.timestamp(datetime.datetime.now()) - self.lobby.start_time
+		self.duration = datetime.timestamp(datetime.now()) - self.lobby.start_time
 
 	async def initBot(self):
 		start_time = self.lobby.start_time
 		if start_time == 0:
-			start_time = datetime.datetime.timestamp(datetime.datetime.now())
+			start_time = datetime.timestamp(datetime.now())
 		limit = self.lobby.limit
 		if limit is None:
 			limit = 0
@@ -165,9 +166,8 @@ class Bot:
 		if len(self.lobby.walls) == 0:
 			return
 
-		self.time_to_think += 1
-		if self.time_to_think > self.tps:
-			self.time_to_think = 0
+		if self.time_to_think + self.tps / 1000.0 < time.time():
+			self.time_to_think = time.time()
 			await self.thinkMove()
 
 		if self.last_prediction is None:
