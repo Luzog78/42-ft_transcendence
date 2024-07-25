@@ -141,6 +141,8 @@ class Lobby:
 				else:
 					continue
 
+			player.duration += 3
+
 			print("save stats of", username)
 			stat = Stats.objects.create(
 				user=user,
