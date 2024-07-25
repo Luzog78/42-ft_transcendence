@@ -129,9 +129,8 @@ async function Profile(context, username) {
 	} else {
 		getJson(context, "/api/user/" + username).then(data => {
 			if (!data.ok) {
-				// todo: yanis on redirect ou pas si user not found ???
 				persistError(context, getLang(context, data.error) + " (/api/user/" + username + ")");
-				pushPersistents(context);
+				redirect(`/profile/${username}/notfound`, false);
 				return;
 			}
 			if (profileName)
@@ -161,12 +160,12 @@ async function Profile(context, username) {
 			navLabelTotal.innerText = totalPage;
 		uidsDates = uidsDates.map(item => [item[0], new Date(item[1])]);
 		uidsDates.sort((a, b) => b[1] - a[1]);
-		tablePage(context, uidsDates, page, totalPage, div);
+		tablePage(context, username, uidsDates, page, totalPage, div);
 	});
 	return div;
 }
 
-function tablePage(context, uidsDates, page, totalPage, div = null) {
+function tablePage(context, username, uidsDates, page, totalPage, div = null) {
 	if (page == 1)
 		window.history.replaceState(null, null, window.location.origin + window.location.pathname + window.location.hash);
 	else
@@ -201,7 +200,8 @@ function tablePage(context, uidsDates, page, totalPage, div = null) {
 				data.games[i].date = dates[i];
 			data.games.forEach(game => {
 				let inProgress = game.waiting || game.playing;
-				let won = game.winner && game.winner.user && game.winner.user.username === context.user.username;
+				console.log(game);
+				let won = game.winner && game.winner.user && game.winner.user.username === username;
 				let date = toLocalDateStringFormat(game.date);
 				let ago = new HowLongAgo(game.date).toFixedString();
 				let tr = document.createElement("tr");
