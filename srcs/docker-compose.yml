@@ -16,6 +16,7 @@ services:
     container_name: django
     env_file:
     - .env
+    - secrets.env
     build:
       context: ./django
       dockerfile: Dockerfile

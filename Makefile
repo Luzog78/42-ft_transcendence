@@ -6,11 +6,12 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/11 22:55:37 by ysabik            #+#    #+#              #
-#    Updated: 2024/07/11 05:41:05 by ysabik           ###   ########.fr        #
+#    Updated: 2024/07/25 02:48:10 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 include			srcs/.env
+-include		srcs/secrets.env
 
 COMPOSE_FILE	=	srcs/docker-compose.yml
 MANAGE_FILE		=	manage.py
@@ -69,6 +70,8 @@ all:
 
 
 up:
+	@touch srcs/secrets.env
+	@chmod 666 srcs/secrets.env
 	@mkdir -p ~/sgoinfre/data-pong/postgresql
 	@echo "$(RED)$$> $(MAGENTA)docker compose -f $(COMPOSE_FILE) up -d --build$(RESET)"
 	@docker compose -f $(COMPOSE_FILE) up -d --build
@@ -76,6 +79,8 @@ up:
 
 
 stop:
+	@touch srcs/secrets.env
+	@chmod 666 srcs/secrets.env
 	@echo "$(RED)$$> $(MAGENTA)docker compose -f $(COMPOSE_FILE) stop$(RESET)"
 	@docker compose -f $(COMPOSE_FILE) stop
 	@echo "$(GREEN)[[ Docker Compose STOPPED ! ]]$(RESET)"
@@ -118,6 +123,8 @@ network:
 
 
 logs:
+	@touch srcs/secrets.env
+	@chmod 666 srcs/secrets.env
 	@echo "$(RED)$$> $(MAGENTA)docker compose -f $(COMPOSE_FILE) logs -f$(RESET)"
 	@docker compose -f $(COMPOSE_FILE) logs -f
 

@@ -39,3 +39,4 @@ migrations
 db.sqlite3
 site
 fields.yml
+secret*

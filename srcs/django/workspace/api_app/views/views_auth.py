@@ -79,8 +79,8 @@ def view_login(request: HttpRequest):
 @csrf_exempt
 def view_auth_callback(request: HttpRequest):
 	def ApiError(requestResponse):
-		if res.status_code == 401:
-			error = json.loads(res.text)
+		if requestResponse is not None and requestResponse.status_code == 401:
+			error = json.loads(requestResponse.text)
 			if error['error'] == 'invalid_grant':
 				return JsonResponse({'ok': False, 'error': 'errors.oauthGrantExpired'})
 			elif error['error'] == 'invalid_client':
@@ -96,6 +96,8 @@ def view_auth_callback(request: HttpRequest):
 	data = json.loads(request.body.decode(request.encoding or 'utf-8'))
 	if 'code' not in data or 'redirect_uri' not in data:
 		return JsonResponse({'ok': False, 'error': 'errors.invalidRequest'})
+	if not settings.OAUTH_42 or not settings.OAUTH_42['client_id'] or not settings.OAUTH_42['client_secret']:
+		return ApiError(None)
 	data = {
 		'grant_type': 'authorization_code',
 		'code': data['code'],
