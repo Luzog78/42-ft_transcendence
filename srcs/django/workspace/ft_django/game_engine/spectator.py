@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 15:11:13 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/23 12:30:10 by ysabik           ###   ########.fr        #
+#    Updated: 2024/07/25 11:41:38 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ class Spectator:
 									"args": [self.lobby.clients_per_lobby, self.lobby.theme, f"'{self.lobby.game_mode}'",
 				  							limit - (datetime.timestamp(datetime.now()) - start_time)]}) # TODO: theme
 
-		for i in range(self.lobby.clients_per_lobby):
+		for i in range(len(self.lobby.clients)):
 			player = self.lobby.clients[i]
 			username = ""
 			if isinstance(player, Player):

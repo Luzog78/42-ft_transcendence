@@ -237,7 +237,7 @@ class Lobby:
 		if len(self.clients) == 0:
 			return
 
-		self.status == "WAITING"
+		self.status = "WAITING"
 
 		player_id = int(dead_player.replace("player", ""))
 		player = self.clients[player_id]

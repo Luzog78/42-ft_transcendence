@@ -70,8 +70,12 @@ class GameServer:
 			goto_specs = client.username not in game.players
 		else:
 			goto_specs = len(lobby.clients) >= lobby.clients_per_lobby
+			if not goto_specs:
+				usernames = [c.client.username for c in lobby.clients
+								if isinstance(c, Player)]
+				goto_specs = client.username in usernames
 
-		if goto_specs: # spectator
+		if goto_specs:
 			print("new spec")
 			spectator = Spectator(lobby, client, len(lobby.spectators) + len(lobby.clients))
 			self.clients.append(spectator)
