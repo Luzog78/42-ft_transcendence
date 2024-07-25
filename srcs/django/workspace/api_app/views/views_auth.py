@@ -10,6 +10,13 @@ from ft_django import settings
 
 
 @csrf_exempt
+def view_oauth42(request: HttpRequest):
+	if not settings.OAUTH_42 or not settings.OAUTH_42['client_id'] or not settings.OAUTH_42['client_secret']:
+		return JsonResponse({'ok': False, 'error': 'errors.oauthApiUnreachable'})
+	return JsonResponse({'ok': True, 'token': settings.OAUTH_42['client_id']})
+
+
+@csrf_exempt
 def view_register(request: HttpRequest):
 	if request.method != 'POST':
 		return JsonResponse({'ok': False, 'error': 'errors.invalidMethod'})

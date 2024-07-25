@@ -12,7 +12,7 @@ class CustomBackend(ModelBackend):
 				return User.objects.get(login_42=username)
 			else:
 				user = User.objects.get(username=username)
-				if check_password(password, user.password): # TODO: what if user.password is None?
+				if check_password(password, user.password if user.password else ""):
 					return user
 		except User.DoesNotExist:
 			return None

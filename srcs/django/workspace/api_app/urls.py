@@ -2,8 +2,8 @@ from django.urls import path, re_path
 
 from .views.views import		endpoints, view_err404, view_root, view_pong, \
 								view_ttt, view_ressource, view_test
-from .views.views_auth import	view_login, view_register, view_auth_callback, \
-								view_is_logged
+from .views.views_auth import	view_oauth42, view_login, view_register, \
+								view_auth_callback, view_is_logged
 from .views.views_game import	view_games, view_game_list, view_game_user, \
 								view_game_uid, view_game_new, view_game_rand
 from .views.views_stats import	view_stats_id, view_stats_user, view_stats_game
@@ -28,6 +28,7 @@ r(view_ttt,			'ttt/<str:uid>')
 r(view_ressource,	'ressource/<str:name>')
 r(view_test,		'<int:whatever>')
 
+r(view_oauth42,			'oauth42')
 r(view_login,			'login')
 r(view_register,		'register')
 r(view_auth_callback,	'oauth_callback')
