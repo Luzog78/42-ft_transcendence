@@ -173,7 +173,7 @@ function tablePage(context, uidsDates, page, totalPage, div = null) {
 		window.history.replaceState(null, null, window.location.origin + window.location.pathname + `?page=${page}` + window.location.hash);
 
 	if (div == null)
-		div = document.getElementById(ProfilePage);
+		div = document.getElementById("ProfilePage");
 
 	let sliced = uidsDates.slice((page - 1) * 8, page * 8);
 	let uids = sliced.map(uidDate => uidDate[0]);
