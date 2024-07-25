@@ -66,6 +66,13 @@ class GameServer:
 		print("new client in lobby id: ", lobby.lobby_id)
 
 		game = Game.objects.get(uid=uid)
+		
+		username = [p.client.username if isinstance(p, Player) else p.username for p in lobby.clients]
+		print(username, client.username, client.username in username)
+		if lobby.status == "WAITING" and client.username in username:
+			client.sendData("error", "You are already in this game")
+			return 
+
 		if game.restricted:
 			goto_specs = client.username not in game.players
 		else:
@@ -82,9 +89,14 @@ class GameServer:
 			self.clients.append(spectator)
 			await lobby.addSpectator(spectator)
 		else:
-			print("new player")
-			player = Player(lobby, client, len(lobby.clients))
-			self.clients.append(player)
+			id = 0
+			while (id in [c.client_id for c in lobby.clients]):
+				id += 1
+			print([c.client_id for c in lobby.clients])
+			print("new player", id)
+
+			player = Player(lobby, client, id)
+			self.clients.insert(id, player)
 			await lobby.addClient(player)
 		return True
 

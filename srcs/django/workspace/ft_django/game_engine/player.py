@@ -92,7 +92,7 @@ class Player:
 										"args": [f"'player{self.client_id}'", f"'{self.client.username}'"]})
 		await self.sendToOther("call", {"command": 'incrementWaitingPlayerCount', "args": []})
 
-		for i in range(self.client_id + 1):
+		for i in range(len(self.lobby.clients)):
 			player = self.lobby.clients[i]
 			await self.sendData("call", {"command": "scene.server.newPlayer",
 									"args": [f"'player{i}'", f"'{player.client.username}'" if isinstance(player, Player) else f"'Bot_{i}'"]})

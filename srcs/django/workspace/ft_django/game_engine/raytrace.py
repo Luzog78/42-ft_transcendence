@@ -6,7 +6,7 @@
 #    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 16:27:26 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/23 19:51:50 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/25 14:23:56 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,6 @@ class RayTrace():
 			return intersection_right
 		return intersection_left
 
-		
 
 	def intersects(self, walls) -> dict[str, Vector]:
 		intersections: dict[str, Vector] = {}

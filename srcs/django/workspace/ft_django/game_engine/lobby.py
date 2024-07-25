@@ -122,6 +122,10 @@ class Lobby:
 
 		stats: list[Stats] = []
 
+		if (self.status == "END"):
+			return
+		self.status = "END"
+
 		player_list = self.clients + self.dead_clients
 		for player in player_list:
 			username = ""
@@ -188,6 +192,7 @@ class Lobby:
 		if self.clients_per_lobby == 2:
 			winner = self.clients[player_id - 1]
 			winner.duration = datetime.timestamp(datetime.now()) - winner.start_time + 2
+			
 			self.onEnd()
 
 			time.sleep(3)
@@ -249,8 +254,8 @@ class Lobby:
 		if (self.clients_per_lobby == 2):
 			killer = self.clients[1 - player_id]
 		
-		if (killer != None):
-			if (self.last_killer != None and killer != self.last_killer):
+		if (killer):
+			if (self.last_killer and killer != self.last_killer):
 				if (self.last_killer.streak > self.last_killer.best_streak):
 					self.last_killer.best_streak = self.last_killer.streak
 				self.last_killer.streak = 0
@@ -345,7 +350,7 @@ class Lobby:
 				self.spectators[client_id].keyboard = data["player_keyboard"]
 
 	async def addClient(self, player: Player):
-		self.clients.append(player)
+		self.clients.insert(player.client_id, player)
 		await self.sendData("call", {"command": 'setWaitingTotalPlayerCount',
 									"args": [ f'{self.clients_per_lobby}' ]})
 		await player.initPlayer()
@@ -361,9 +366,6 @@ class Lobby:
 	def removeClient(self, client: Player | Spectator | Bot):
 		if client in self.clients:
 			self.clients.remove(client)
-
-		if len(self.clients) == 0:
-			self.game_server.lobbies.remove(self)
 
 	async def sendData(self, *args):
 		for c in self.clients:

@@ -16,6 +16,7 @@ class DynamicText
 	{
 		this.scene = scene;
 		this.name = this.scene.getName(name);
+		console.log("CREATE TEXT " + this.name);
 
 		this.text = text;
 		this.position = position;

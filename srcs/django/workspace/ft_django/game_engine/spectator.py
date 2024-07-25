@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    spectator.py                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 15:11:13 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/25 13:35:47 by ysabik           ###   ########.fr        #
+#    Updated: 2024/07/25 15:23:11 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ class Spectator:
 			if isinstance(player, Player):
 				username = player.client.username
 			else:
-				username = f"Bot_{i}"
+				username = player.username
 			await self.sendData("call", {"command": "scene.server.newPlayer",
 									"args": [f"'player{i}'", f"'{username}'"]})
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: TheRed <TheRed@students.42.fr>             +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/21 16:32:34 by TheRed           ###   ########.fr       */
+/*   Updated: 2024/07/25 15:15:56 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ class Scene
 	{
 		if (status == "START")
 		{
-			if (this.player_num == 2 || this.game_mode == "BR" || this.game_mode == "FT")
+			if (this.game_mode != "TO")
 				return ;
 			const timer_text = this.get("timertext");
 			this.interval_timer_id = setInterval(() => {
