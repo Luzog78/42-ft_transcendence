@@ -138,3 +138,8 @@
 #settings-content #tokenValue:hover {
 	color: inherit;
 }
+
+#settings-content .QR-Code {
+	width: 50%;
+	margin: 32px auto 0 auto;
+}

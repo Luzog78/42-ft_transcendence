@@ -6,7 +6,7 @@
 /*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/22 13:28:56 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/25 23:14:26 by psalame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,7 @@ async function Settings(context) {
 									</button>
 								</div>
 							</div>
+							<div class="row col-12 QR-Code"></div>
 						</div>
 						<hr>
 					</div>
@@ -432,6 +433,9 @@ async function Settings(context) {
 						persistSuccess(context, getLang(context, "pages.settings.labels.tokenCopied"));
 						pushPersistents(context);
 					}
+					let qr = div.querySelector(".QR-Code");
+					let uri = `otpauth://totp/Pong:${context.user.username}?secret=${data.complement.a2f_token}&issuer=Pong`
+					new QRCode(qr, uri);
 					div.querySelector("#a2f-key").style.display = "block"
 					refreshToggleA2f()
 				}
