@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/23 14:50:54 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/25 08:30:28 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,7 @@ async function GameConfig(context, id = null) {
 		limitFT.addEventListener("change", () => changeOther(limitFT));
 
 		modeFT.addEventListener("change", () => {
+			playerCount.parentElement.parentElement.style.display = "flex";
 			limitFT.parentElement.parentElement.style.display = "flex";
 			limitTOSecUni.parentElement.parentElement.style.display = "none";
 			theme1.parentElement.parentElement.style.display = "flex";
@@ -254,6 +255,7 @@ async function GameConfig(context, id = null) {
 			limitTC1.parentElement.parentElement.style.setProperty("display", "none", "important");
 		});
 		modeBR.addEventListener("change", () => {
+			playerCount.parentElement.parentElement.style.display = "flex";
 			limitFT.parentElement.parentElement.style.display = "none";
 			limitTOSecUni.parentElement.parentElement.style.display = "none";
 			theme1.parentElement.parentElement.style.display = "flex";
@@ -261,6 +263,7 @@ async function GameConfig(context, id = null) {
 			limitTC1.parentElement.parentElement.style.setProperty("display", "none", "important");
 		});
 		modeTO.addEventListener("change", () => {
+			playerCount.parentElement.parentElement.style.display = "flex";
 			limitFT.parentElement.parentElement.style.display = "none";
 			limitTOSecUni.parentElement.parentElement.style.display = "flex";
 			theme1.parentElement.parentElement.style.display = "flex";
@@ -270,6 +273,7 @@ async function GameConfig(context, id = null) {
 		modeTC.addEventListener("change", () => {
 			limitFT.parentElement.parentElement.style.display = "none";
 			limitTOSecUni.parentElement.parentElement.style.display = "none";
+			playerCount.parentElement.parentElement.style.setProperty("display", "none", "important");
 			theme1.parentElement.parentElement.style.setProperty("display", "none", "important");
 			speedBall.parentElement.parentElement.style.setProperty("display", "none", "important");
 			limitTC1.parentElement.parentElement.style.setProperty("display", "flex", "important");
@@ -307,7 +311,7 @@ async function GameConfig(context, id = null) {
 			pushPersistents(context);
 		}
 		startBtn.addEventListener("click", () => {
-			let playerCountVal = parseInt(playerCount.value);
+			let playerCountVal = modeTC.checked ? 2 : parseInt(playerCount.value);
 			let limitFTVal = parseInt(limitFT.value);
 			let limitTOVal = normalizeTime(limitTOMinDec, limitTOMinUni, limitTOSecDec, limitTOSecUni);
 			if (modeFT.checked + modeBR.checked + modeTO.checked + modeTC.checked !== 1)
@@ -329,7 +333,7 @@ async function GameConfig(context, id = null) {
 
 			let post = {
 				mode: modeFT.checked ? "FT" : modeTO.checked ? "TO" : modeTC.checked ? "TC" : "BR",
-				players: parseInt(playerCountVal),
+				players: modeTC.checked ? 2 : playerCountVal,
 				theme: theme1.checked ? 0 : theme2.checked ? 1 : theme3.checked ? 2 : 3,
 				speed: speed1.checked ? 0 : speed2.checked ? 1 : 2,
 
