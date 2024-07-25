@@ -39,6 +39,7 @@ class Server
 
 	newPlayer(player_id, player_name, position=null)
 	{
+		console.log("CONNECT PLAYER " + player_id);
 		let player = this.scene.get(player_id);
 		if (player == null)
 			return;
@@ -61,6 +62,7 @@ class Server
 
 	disconnectPlayer(player_id)
 	{
+		console.log("DISCONNECT PLAYER " + player_id);
 		let player = this.scene.get(player_id);
 		if (player == null)
 			return;
@@ -69,10 +71,10 @@ class Server
 		let player_text_score = this.scene.get(player_id + "textscore");
 
 		this.scene.remove(player_text_score);
-		console.log(player_text)
 		destroyObject(player_text);
-		this.scene.remove(player);
+		player.mesh.visible = false;
 		
+		console.log("Player disconnected");
 	}
 
 	BRDied(player_id)

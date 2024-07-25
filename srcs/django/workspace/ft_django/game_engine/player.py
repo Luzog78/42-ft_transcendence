@@ -121,7 +121,7 @@ class Player:
 			player_vertex[i] += rotate_pos
 		self.pos = computed_pos
 
-		playerBoxJS = "scene.get('player" + str(self.client_id) + "').player"
+		playerBoxJS = "scene.get('player" + str(self.client_id) + "').mesh"
 		await self.sendToOther("modify", {f"{playerBoxJS}.position.x": self.pos.x,
 									f"{playerBoxJS}.position.z": self.pos.y})
 
