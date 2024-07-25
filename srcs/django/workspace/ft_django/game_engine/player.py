@@ -94,8 +94,13 @@ class Player:
 
 		for i in range(len(self.lobby.clients)):
 			player = self.lobby.clients[i]
+			username = ""
+			if isinstance(player, Player):
+				username = player.client.username
+			else:
+				username = player.username
 			await self.sendData("call", {"command": "scene.server.newPlayer",
-									"args": [f"'player{i}'", f"'{player.client.username}'" if isinstance(player, Player) else f"'Bot_{i}'"]})
+									"args": [f"'player{i}'", f"'{username}'", [player.pos.x, player.pos.y]]})
 			await self.sendData("call", {"command": 'incrementWaitingPlayerCount', "args": []})
 
 	async def move(self, x: float, y: float):

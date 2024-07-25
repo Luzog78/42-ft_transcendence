@@ -17,6 +17,7 @@ class PongSocket(AsyncWebsocketConsumer):
 		self.connected: bool		= online
 		self.registered: bool		= False
 		self.username: str | None	= None
+		self.disconnected: bool		= False
 
 	async def connect(self):
 		self.room_name = 'pong'
@@ -25,8 +26,9 @@ class PongSocket(AsyncWebsocketConsumer):
 		await self.accept()
 
 	async def disconnect(self, close_code):
-		# if (close_code != 1001): # TODO: to remove
+		# if (close_code != 1001):
 		game_server.removeClient(self)
+		self.disconnected = True
 
 	async def receive(self, text_data):
 		data = json.loads(text_data)
@@ -42,6 +44,9 @@ class PongSocket(AsyncWebsocketConsumer):
 		await self.sendJson(data)
 
 	async def sendJson(self, json_data):
+		if self.disconnected:
+			return
+
 		if self.connected:
 			await self.send(text_data=json.dumps(json_data))
 		else:

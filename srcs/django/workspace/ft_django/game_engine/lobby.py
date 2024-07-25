@@ -219,7 +219,7 @@ class Lobby:
 		for s in self.spectators:
 			await s.initSpectator()
 
-		if (all([isinstance(c, Bot) for c in self.clients])):
+		if (all([isinstance(c, Bot) or c.client.disconnected for c in self.clients])):
 			threading.Thread(target=asyncio.run, args=(self.countdown(),)).start()
 
 	async def TOFTDied(self, killer: Player | Bot | None, player_id: int, player: Player | Bot | None):
@@ -288,7 +288,6 @@ class Lobby:
 			if self.game_mode == "TO" and self.start_time != 0 and datetime.timestamp(datetime.now()) - self.start_time > self.limit:
 				self.onEnd()
 
-				self.status = "END"
 				await self.sendData("game_status", "END")
 				return
 			
@@ -309,7 +308,10 @@ class Lobby:
 				await s.update()
 
 	async def countdown(self):
+		self.status = "START"
+		
 		time.sleep(3)
+
 		if self.clients_per_lobby == self.initial_clients_per_lobby:
 			self.start_time = datetime.timestamp(datetime.now())
 

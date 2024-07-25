@@ -103,8 +103,14 @@ class GameServer:
 	def removeClient(self, client) -> bool:
 		for player in self.clients:
 			if player.client == client:
-				player.lobby.removeClient(player)
+				lobby = player.lobby
+				
+				if (lobby.status == "START"):
+					return False
+				
+				lobby.removeClient(player)
 				self.clients.remove(player)
+
 				return True
 		return False
 

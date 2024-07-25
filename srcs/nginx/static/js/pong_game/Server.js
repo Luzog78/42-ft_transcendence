@@ -37,14 +37,15 @@ class Server
 		this.socket.addEventListener('open', (event) => this.onOpen(this.scene, event));
 	}
 
-	newPlayer(player_id, player_name, position)
+	newPlayer(player_id, player_name, position=null)
 	{
-		console.log("pos: ", position);
 		let player = this.scene.get(player_id);
 		if (player == null)
 			return;
 		if (Number(player_id.replace("player", "")) >= this.scene.player_num - 1)
 			remWaiting();
+		
+		initPlayerText(this.scene, player, player_name);
 		
 		player.player.visible = true;
 		if (position) {
@@ -55,7 +56,6 @@ class Server
 			)
 			player.player.position.copy(computed_position);
 		}
-		initPlayerText(this.scene, player, player_name);
 	}
 
 	BRDied(player_id)
