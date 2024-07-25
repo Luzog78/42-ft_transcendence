@@ -6,7 +6,7 @@
 #    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 15:11:13 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/25 15:23:11 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/25 16:19:43 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ class Spectator:
 			else:
 				username = player.username
 			await self.sendData("call", {"command": "scene.server.newPlayer",
-									"args": [f"'player{i}'", f"'{username}'"]})
+									"args": [f"'player{i}'", f"'{username}'", [player.pos.x, player.pos.y]]})
 
 	def isUp(self):
 		keys = ["w", "ArrowLeft"]

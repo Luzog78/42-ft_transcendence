@@ -140,13 +140,6 @@ async function Register(context) {
 			}).then(data => {
 				if (data.ok) {
 					persistSuccess(context, getLang(context, data.success));
-					/// todo see if remove: set auth token but redirect to login page ???
-					// try {
-					// 	context.user.token = data.token;
-					// 	localStorage.setItem("ft_token", data.token);
-					// } catch (e) {
-					// 	console.log("[❌] Token could not be saved in localStorage.");
-					// }
 					redirect("/login" + (context.next ? "?next=" + context.next : ""));
 				} else {
 					persistError(context, getLang(context, data.error));
