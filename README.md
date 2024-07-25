@@ -50,16 +50,6 @@
 			<strong>Yanis Sabik</strong>
 		</a>
 	</td>
-</tr><tr>
-	<td></td>
-	<td>
-		<a href="https://profile.intra.42.fr/users/kbutor-b" target="_blank">
-			<img src="https://cdn.intra.42.fr/users/1367a6f5724176259cac1599918a02e8/kbutor-b.jpg" height="120" alt="kbutor-b" />
-			<br>
-			<strong>Kurt Butor-Blamont</strong>
-		</a>
-	</td>
-	<td></td>
 </tr></tbody></table>
 
 <br><br>
