@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: TheRed <TheRed@students.42.fr>             +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/25 23:51:40 by TheRed           ###   ########.fr       */
+/*   Updated: 2024/07/26 00:50:23 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ class Scene
 
 		if (this.entities.includes(element))
 			this.entities.splice(this.entities.indexOf(element), 1);
-		
+
 		delete this.elements[element.name]
 
 		if (element.destroy != undefined)

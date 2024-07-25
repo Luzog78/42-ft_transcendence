@@ -46,7 +46,7 @@ class Server
 			return;
 		if (Number(player_id.replace("player", "")) >= this.scene.player_num - 1)
 			remWaiting();
-		
+
 		initPlayerText(this.scene, player, player_name);
 
 		player.mesh.visible = true;
@@ -67,14 +67,14 @@ class Server
 		let player = this.scene.get(player_id);
 		if (player == null)
 			return;
-		
+
 		let player_text = this.scene.get(player_id + "text");
 		let player_text_score = this.scene.get(player_id + "textscore");
 
 		this.scene.remove(player_text_score);
 		destroyObject(player_text);
 		player.mesh.visible = false;
-		
+
 		console.log("Player disconnected");
 	}
 

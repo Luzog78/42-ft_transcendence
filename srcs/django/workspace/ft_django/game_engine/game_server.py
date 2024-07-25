@@ -67,7 +67,7 @@ class GameServer:
 		print("new client in lobby id: ", lobby.lobby_id)
 
 		game = Game.objects.get(uid=uid)
-		
+
 		username = [p.client.username if isinstance(p, Player) else p.username for p in lobby.clients]
 		print(username, client.username, client.username in username)
 		if lobby.status == "WAITING" and client.username in username:
@@ -86,7 +86,7 @@ class GameServer:
 			await lobby.addSpectator(spectator)
 		else:
 			id = 0
-			while (id in [c.client_id for c in lobby.clients]):
+			while id in [c.client_id for c in lobby.clients]:
 				id += 1
 			print([c.client_id for c in lobby.clients])
 			print("new player", id)
@@ -101,14 +101,14 @@ class GameServer:
 			if player.client == client:
 				lobby = player.lobby
 
-				if (lobby.status == "START"):
+				if lobby.status == "START":
 					return False
-				
+
 				lobby.removeClient(player)
 				self.clients.remove(player)
 
 				for p in lobby.clients:
-					if (isinstance(p, Bot)):
+					if isinstance(p, Bot):
 						continue
 					await p.sendData("call", {"command": "scene.server.disconnectPlayer",
 										"args": [f"'player{player.client_id}'"]})

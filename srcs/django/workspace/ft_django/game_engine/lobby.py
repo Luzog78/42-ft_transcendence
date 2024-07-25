@@ -119,7 +119,7 @@ class Lobby:
 
 		stats: list[Stats] = []
 
-		if (self.status == "END"):
+		if self.status == "END":
 			return
 		self.status = "END"
 
@@ -189,7 +189,7 @@ class Lobby:
 		if self.clients_per_lobby == 2:
 			winner = self.clients[player_id - 1]
 			winner.duration = datetime.timestamp(datetime.now()) - winner.start_time + 2
-			
+
 			self.onEnd()
 
 			time.sleep(3)
@@ -216,7 +216,7 @@ class Lobby:
 		for s in self.spectators:
 			await s.initSpectator()
 
-		if (all([isinstance(c, Bot) or c.client.disconnected for c in self.clients])):
+		if all([isinstance(c, Bot) or c.client.disconnected for c in self.clients]):
 			threading.Thread(target=asyncio.run, args=(self.countdown(),)).start()
 
 	async def TOFTDied(self, killer: Player | Bot | None, player_id: int, player: Player | Bot | None):
@@ -235,7 +235,7 @@ class Lobby:
 			score_name = f"player{killer.client_id}textscore"
 			await self.sendData("call", {"command": f'scene.get("{score_name}").updateText', "args": [str(killer.kills)]})
 
-		
+
 
 	async def playerDied(self, ball: Ball, dead_player: str):
 		if len(self.clients) == 0:
@@ -248,14 +248,14 @@ class Lobby:
 		player.die()
 
 		killer = ball.last_player
-		if (self.clients_per_lobby == 2):
+		if self.clients_per_lobby == 2:
 			killer = self.clients[1 - player_id]
 
-		if (killer):
-			if (self.last_killer):
-				if (self.last_killer.streak > self.last_killer.best_streak):
+		if killer:
+			if self.last_killer:
+				if self.last_killer.streak > self.last_killer.best_streak:
 					self.last_killer.best_streak = self.last_killer.streak
-				if (killer != self.last_killer):
+				if killer != self.last_killer:
 					self.last_killer.streak = 0
 			self.last_killer = killer
 			killer.streak += 1
@@ -272,7 +272,7 @@ class Lobby:
 			threading.Thread(target=asyncio.run, args=(self.BRDied(player_id, player),)).start()
 		elif self.game_mode == "TO" or self.game_mode == "FT":
 			threading.Thread(target=asyncio.run, args=(self.TOFTDied(killer, player_id, player),)).start()
-		
+
 
 	async def fillBot(self):
 		bots_num = self.clients_per_lobby - len(self.clients)
@@ -288,7 +288,7 @@ class Lobby:
 
 				await self.sendData("game_status", "END")
 				return
-			
+
 			if self.time == 0:
 				self.time = time.time()
 				continue
@@ -305,7 +305,7 @@ class Lobby:
 
 	async def countdown(self):
 		self.status = "START"
-		
+
 		time.sleep(3)
 
 		if self.clients_per_lobby == self.initial_clients_per_lobby:
