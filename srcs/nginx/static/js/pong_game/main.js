@@ -6,7 +6,7 @@
 /*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/25 18:39:49 by ycontre          ###   ########.fr       */
+/*   Updated: 2024/07/25 19:19:33 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,19 @@ function destroyObjects()
 {
 	clearInterval(scene.interval_timer_id);
 	scene.scene.traverse(object => {
-		console.log(object)
-		destroyObject(object);
+		if (!object.isMesh)
+			return;
+
+		if (object.geometry)
+			object.geometry.dispose();
+
+		if (object.material)
+		{
+			if (Array.isArray(object.material))
+				object.material.forEach(material => material.dispose());
+			else
+				object.material.dispose();
+		}
 	});
 
 	while (scene.scene.children.length > 0)

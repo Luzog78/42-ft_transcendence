@@ -13,6 +13,7 @@
 from api_app.models import Game, GameMode
 from .lobby import Lobby
 from .player import Player
+from .bot import Bot
 from .spectator import Spectator
 
 
@@ -100,7 +101,7 @@ class GameServer:
 			await lobby.addClient(player)
 		return True
 
-	async def removeClient(self, client) -> bool:
+	async def removeClient(self, client: Bot | Player) -> bool:
 		for player in self.clients:
 			if player.client == client:
 				lobby = player.lobby
@@ -112,6 +113,8 @@ class GameServer:
 				self.clients.remove(player)
 
 				for p in lobby.clients:
+					if (isinstance(p, Bot)):
+						continue
 					await p.sendData("call", {"command": "scene.server.disconnectPlayer",
 										"args": [f"'player{player.client_id}'"]})
 					await p.sendData("call", {"command": 'setWaitingPlayerCount', "args": [len(lobby.clients)]})

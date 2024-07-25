@@ -6,7 +6,7 @@
 #    By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 12:37:57 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/25 18:09:15 by ycontre          ###   ########.fr        #
+#    Updated: 2024/07/25 19:17:36 by ycontre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,7 +111,7 @@ class Bot:
 			player_vertex[i] += rotate_pos
 		self.pos = computed_pos
 
-		playerBoxJS = "scene.get('player" + str(self.client_id) + "').player"
+		playerBoxJS = "scene.get('player" + str(self.client_id) + "').mesh"
 		await self.sendToOther("modify", {f"{playerBoxJS}.position.x": self.pos.x,
 									f"{playerBoxJS}.position.z": self.pos.y})
 
