@@ -30,6 +30,7 @@ import { destroyScene } from "./pong_game/main.js";
 import { TournamentManager } from "./pages/TournamentManager.js";
 import { RefreshFriendList } from "./components/Chat.js";
 import { pushPersistents } from "./components/Persistents.js";
+import { LocalGame } from "./pages/LocalGame.js";
 
 
 const SUPPORTED_LANGS = [ "en", "fr", "es", "de", "cn", "jp", "ru", "ka", "eg" ];
@@ -132,6 +133,10 @@ const router = [
 		path: "/create",
 		component: TournamentManager,
 	},
+	{
+		path: "/local",
+		component: LocalGame,
+	}
 ];
 
 const content = document.getElementById("body-content");

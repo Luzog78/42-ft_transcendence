@@ -1,0 +1,48 @@
+#localgame {
+	width: 80vw;
+	height: 80vh;
+	margin: 0 auto;
+	position: relative;
+}
+
+#localgame .bar {
+	position: absolute;
+	width: 0.5%;
+	height: 25%;
+	top: 50%;
+	background-color: red;
+	border-radius: 15px;
+}
+
+#localgame .bar:nth-child(1) {
+	left: 0;
+	background-color: rgb(255, 0, 0);
+	box-shadow: 0px 0px 11px 4px rgba(255, 0, 0, 0.7);
+}
+
+#localgame .bar:nth-child(2) {
+	right: 0;
+	background-color: rgb(0, 0, 255);
+	box-shadow: 0px 0px 11px 4px rgba(0, 0, 255, 0.7);
+}
+
+#localgame .ball {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	background-color: green;
+	width: 4vh;
+	height: 4vh;
+	border-radius: 50%;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+}
+
+#localgame span {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 69px;
+}
