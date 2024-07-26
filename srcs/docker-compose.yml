@@ -37,7 +37,7 @@ services:
     - transcendence_network
     restart: on-failure
     ports:
-    - 443:443
+    - 4444:4444
 
 networks:
   transcendence_network:
