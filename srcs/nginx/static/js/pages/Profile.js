@@ -15,6 +15,7 @@ import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persist, persistCopy, persistError, redirect } from "../script.js";
 import { HowLongAgo, getJson, postJson, toLocalDateStringFormat } from "../utils.js";
 import { Chat } from "../components/Chat.js";
+import { Konami } from "../components/Konami.js";
 
 
 async function Profile(context, username) {
@@ -81,6 +82,7 @@ async function Profile(context, username) {
 	div.insertBefore(Persistents(context), div.firstChild);
 	div.insertBefore(await NavBar(getLang(context, "pages.profile.title"), context), div.firstChild);
 	div.appendChild(Chat(context));
+	div.appendChild(Konami(context));
 
 	if (!context.user.isAuthenticated || !context.user.username) {
 		persist(context, persistentBackup);

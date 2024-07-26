@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   LocalGame.js                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 23:30:55 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/26 01:00:05 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/26 03:13:39 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ function startGame(container, ball, ballData, barList, barPositions, keyboard) {
 			barPositions[1] = Math.max(barPositions[1] - barSpeed, 0);
 		if (keyboard.has("ArrowDown"))
 			barPositions[1] = Math.min(barPositions[1] + barSpeed, container.offsetHeight - barList[1].offsetHeight);
-		
+
 		ballData.position[0] += ballData.direction[0] * ballSpeed;
 		ballData.position[1] += ballData.direction[1] * ballSpeed;
 		refreshPositions(ball, ballData, barList, barPositions);
@@ -67,7 +67,7 @@ function startGame(container, ball, ballData, barList, barPositions, keyboard) {
 			ball.dataset.rot = parseInt(ball.dataset.rot) + 360;
 		ball.dataset.rot = (parseInt(ball.dataset.rot) + ballData.direction[0] * ballSpeed) % 360;
 		ball.style.transform = `rotate(${ball.dataset.rot}deg)`;
-		
+
 		if (ballData.direction[1] < 0 && ballData.position[1] <= 0)
 			ballData.direction[1] = -ballData.direction[1];
 		if (ballData.direction[1] > 0 && ballData.position[1] + ball.offsetHeight >= container.offsetHeight)
@@ -115,16 +115,17 @@ function startGame(container, ball, ballData, barList, barPositions, keyboard) {
 async function LocalGame(context) {
 	let div = document.createElement("div");
 	div.innerHTML += /*html*/`
-	<div id="localgame" tabindex="1">
-		<div class="bar"></div>
-		<div class="bar"></div>
-		<div class="ball"></div>
-		<span>0 - 0</span>
-	</div>
+		<div id="localgame" tabindex="1">
+			<div class="bar"></div>
+			<div class="bar"></div>
+			<div class="ball"></div>
+			<span>0 - 0</span>
+		</div>
 	`;
 	div.insertBefore(await NavBar(getLang(context, "pages.home.title"), context), div.firstChild);
 	div.appendChild(Persistents(context));
 	div.appendChild(Chat(context));
+
 	var container = div.querySelector("#localgame");
 	var ball = div.querySelector(".ball");
 	let ballImgs = [
@@ -159,8 +160,9 @@ async function LocalGame(context) {
 
 	setTimeout(() => {
 		resetGame(container, ball, ballData, barList, barPositions, keyboard);
+		container.focus();
 	}, 200);
-	
+
 
 	return div;
 }

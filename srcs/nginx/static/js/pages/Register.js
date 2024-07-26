@@ -15,6 +15,7 @@ import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
 import { Chat } from "../components/Chat.js";
+import { Konami } from "../components/Konami.js";
 
 
 async function Register(context) {
@@ -91,6 +92,7 @@ async function Register(context) {
 	div.insertBefore(Persistents(context), div.firstChild);
 	div.insertBefore(await NavBar(getLang(context, "pages.register.title"), context), div.firstChild);
 	div.appendChild(Chat(context));
+	div.appendChild(Konami(context));
 
 	let form = div.querySelector("#registration-form");
 	let inputUsername = div.querySelector("#username");

@@ -16,6 +16,7 @@ import { getLang, persistError, redirect } from "../script.js";
 import { getGameMode, getJson, setupCopyKBDSpan } from "../utils.js";
 import { PlayId } from "./PlayId.js";
 import { Chat } from "../components/Chat.js";
+import { Konami } from "../components/Konami.js";
 
 
 async function PongResult(context, id, data=null) {
@@ -106,6 +107,7 @@ async function PongResult(context, id, data=null) {
 	div.insertBefore(Persistents(context), div.firstChild);
 	div.insertBefore(await NavBar(getLang(context, "pages.playResult.title"), context), div.firstChild);
 	div.appendChild(Chat(context));
+	div.appendChild(Konami(context));
 
 	let bestPicture = div.querySelector("#best-picture");
 	let bestUsername = div.querySelector("#best-username");

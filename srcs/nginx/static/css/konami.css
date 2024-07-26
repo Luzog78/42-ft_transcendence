@@ -1,0 +1,24 @@
+/* ************************************************************************** */
+/* --------------------------------- Konami --------------------------------- */
+/* ************************************************************************** */
+
+
+#konami {
+	position: fixed;
+	top: 110vh;
+	left: 0;
+	width: 100vw;
+	z-index: 999999;
+	cursor: none;
+	display: flex;
+	justify-content: space-around
+}
+
+#konami .k-dot {
+	height: 3vh;
+	width: 3vh;
+	border-radius: 50%;
+	background-color: #fff;
+	box-shadow: 0 0 2vh #fff, 0 0 2vh #fff, 0 0 2vh #fff, 0 0 2vh #fff;
+	transition: .2s;
+}

@@ -13,6 +13,7 @@
 import { getLang, persistError, persistSuccess, popNext, redirect } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
+import { Konami } from "../components/Konami.js";
 
 
 async function Logout(context) {
@@ -44,6 +45,7 @@ async function Logout(context) {
 	}
 	div.appendChild(await NavBar(getLang(context, "pages.logout.title"), context));
 	div.appendChild(Persistents(context));
+	div.appendChild(Konami(context));
 	return div;
 }
 

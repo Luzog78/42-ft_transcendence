@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/26 01:26:07 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 02:36:27 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@ import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { getLang, persistError, persistSuccess, redirect } from "../script.js";
 import { postJson } from "../utils.js";
 import { Chat } from "../components/Chat.js";
+import { Konami } from "../components/Konami.js";
 
 
 const TCColors = [
@@ -152,6 +153,7 @@ async function GameConfig(context, id = null) {
 	div.insertBefore(await NavBar(getLang(context, "pages.play.title"), context), div.firstChild);
 	div.insertBefore(Persistents(context), div.firstChild);
 	div.appendChild(Chat(context));
+	div.appendChild(Konami(context));
 
 		let modeFT = div.querySelector("#ModeRadio-btn1");
 		let modeBR = div.querySelector("#ModeRadio-btn2");

@@ -14,6 +14,7 @@ import { getLang, redirect } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 import { Chat } from "../components/Chat.js"
+import { Konami } from "../components/Konami.js";
 
 
 async function Home(context) {
@@ -269,6 +270,7 @@ async function Home(context) {
 	div.insertBefore(await NavBar(getLang(context, "pages.home.title"), context), div.firstChild);
 	div.insertBefore(Persistents(context), div.firstChild);
 	div.appendChild(Chat(context));
+	div.appendChild(Konami(context));
 	return div;
 }
 

@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import { OnTournamentMathStart, ReceiveMessage, RefreshFriendList, SetPlayerStatus } from "./components/Chat.js"
+import { OnTournamentMathStart, ReceiveMessage, RefreshFriendList, SetPlayerStatus } from "./components/Chat.js";
+
 
 class ChatConnexion
 {
@@ -134,7 +135,7 @@ class ChatConnexion
 	/// 	ChatConnexion.triggerCallback({content}
 	/// 		.then(resp => {})
 	/// 		.catch(err => {});
-	//// or with await and try catch
+	//// or with await and try catch // TODO
 	triggerCallback(request)
 	{
 		const _this = this;

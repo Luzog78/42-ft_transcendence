@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/23 15:06:09 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 02:40:07 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ import { NewTournament } from "./NewTournament.js";
 import { Tournament } from "./Tournament.js";
 import { TournamentList } from "./TournamentList.js";
 import { Chat } from "../components/Chat.js";
+import { Konami } from "../components/Konami.js";
 
 
 async function TournamentManager(context, ...args) {
@@ -33,6 +34,7 @@ async function TournamentManager(context, ...args) {
 	div.appendChild(Persistents(context), div.firstChild);
 	div.appendChild(await NavBar(getLang(context, "pages.tournament.title"), context), div.firstChild);
 	div.appendChild(Chat(context));
+	div.appendChild(Konami(context));
 
 	let mainContainer = div.querySelector("#tournament-content .container-fluid");
 

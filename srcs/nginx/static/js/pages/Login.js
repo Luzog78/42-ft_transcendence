@@ -14,6 +14,7 @@ import { checkA2F, checkPassword, checkUsername, getJson, postJson } from "../ut
 import { getLang, persistError, persistSuccess, popNext, redirect, onLogin } from "../script.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistents, pushPersistents } from "../components/Persistents.js";
+import { Konami } from "../components/Konami.js";
 
 
 function createA2fInput(context) {
@@ -93,6 +94,7 @@ async function Login(context) {
 
 	div.insertBefore(await NavBar(getLang(context, "pages.login.title"), context), div.firstChild);
 	div.insertBefore(Persistents(context), div.firstChild);
+	div.appendChild(Konami(context));
 
 	const foo = () => {
 		let form = div.querySelector("#login-form");

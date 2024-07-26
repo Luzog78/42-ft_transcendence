@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+import { Konami } from "../components/Konami.js";
 import { NavBar } from "../components/NavBar.js";
 import { Persistents } from "../components/Persistents.js";
 import { getLang } from "../script.js";
@@ -33,6 +34,7 @@ async function Err404(context) {
 	`;
 	div.insertBefore(await NavBar(getLang(context, "pages.404.title"), context), div.firstChild);
 	div.insertBefore(Persistents(context), div.firstChild);
+	div.insertBefore(Konami(context), div.firstChild);
 
 	return div;
 }

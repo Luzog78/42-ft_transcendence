@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/26 01:44:16 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 02:39:42 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@ import { Persistents, pushPersistents } from "../components/Persistents.js";
 import { SUPPORTED_LANGS, getLang, loadLang, persist, persistCopy, persistError, persistSuccess, redirect, refresh } from "../script.js";
 import { checkEmail, checkFirstName, checkLastName, checkPassword, checkPasswords, clearFeedbacks, postJson, postRaw } from "../utils.js";
 import { Chat } from "../components/Chat.js";
+import { Konami } from "../components/Konami.js";
 
 
 async function setUserAttributes(context, data) {
@@ -220,6 +221,7 @@ async function Settings(context) {
 	div.insertBefore(Persistents(context), div.firstChild);
 	div.insertBefore(await NavBar(getLang(context, "pages.profile.title"), context), div.firstChild);
 	div.appendChild(Chat(context));
+	div.appendChild(Konami(context));
 
 	if (!context.user.isAuthenticated || !context.user.username) {
 		persist(context, persistentBackup);
@@ -419,7 +421,7 @@ async function Settings(context) {
 			}).then(data => {
 				console.log(data)
 				if (data.successes.includes('successes.a2fEnabled'))
-					context.user.a2f = true
+					context.user.a2f = true;
 				if (data.complement && data.complement.a2f_token)
 				{
 					pushPersistents(context);
@@ -427,20 +429,20 @@ async function Settings(context) {
 					editEnabled.classList.add("btn-success");
 					editDisabled.classList.remove("btn-danger");
 					editDisabled.classList.add("btn-outline-danger");
-					div.querySelector("#tokenValue").value = data.complement.a2f_token
+					div.querySelector("#tokenValue").value = data.complement.a2f_token;
 					div.querySelector("#copyA2fToken").onclick = () => {
 						navigator.clipboard.writeText(div.querySelector("#tokenValue").value);
 						persistSuccess(context, getLang(context, "pages.settings.labels.tokenCopied"));
 						pushPersistents(context);
-					}
+					};
 					let qr = div.querySelector(".QR-Code");
 					let uri = `otpauth://totp/Pong:${context.user.username}?secret=${data.complement.a2f_token}&issuer=Pong`;
 					new QRCode(qr, uri);
-					div.querySelector("#a2f-key").style.display = "block"
-					refreshToggleA2f()
+					div.querySelector("#a2f-key").style.display = "block";
+					refreshToggleA2f();
 				}
 				else
-					refresh() // maybe show useless error bad version
+					refresh(); // TODO: maybe show useless error bad version
 			});
 		}
 
@@ -462,7 +464,7 @@ async function Settings(context) {
 				editDisabled.removeEventListener("click", editDisabledFct) // maybe useless cause editEnabledFct cause entire page refresh instead of only 2fa refresh
 				editEnabled.addEventListener("click", editEnabledFct);
 			}
-		}
+		};
 		refreshToggleA2f();
 
 	}

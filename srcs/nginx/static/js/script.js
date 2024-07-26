@@ -29,8 +29,8 @@ import { getJson } from "./utils.js";
 import { destroyScene } from "./pong_game/main.js";
 import { TournamentManager } from "./pages/TournamentManager.js";
 import { RefreshFriendList } from "./components/Chat.js";
-import { pushPersistents } from "./components/Persistents.js";
 import { LocalGame } from "./pages/LocalGame.js";
+import { konami } from "./components/Konami.js";
 
 
 const SUPPORTED_LANGS = [ "en", "fr", "es", "de", "cn", "jp", "ru", "ka", "eg" ];
@@ -156,6 +156,10 @@ const loadComponent = async (component, ...args) => {
 const loadPage = (path, ...additionnalArgs) => {
 	console.log(`[🔀] Loading page: ${path}`, ...additionnalArgs);
 	destroyScene();
+	try {
+		document.removeEventListener('keydown', konami);
+	} catch (e) {
+	}
 	let next = new URLSearchParams(window.location.search).get("next");
 	if (next)
 		global_context.next = next;
