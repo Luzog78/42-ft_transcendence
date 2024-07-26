@@ -3,6 +3,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 import asyncio
+import threading
 
 
 class Usernames(models.Model):
@@ -457,7 +458,7 @@ class Match(models.Model):
 		for player in self.players:
 			sockets = find_user_socket(player)
 			for socket in sockets:
-				asyncio.run(socket.sendJson({'type': 'tournamentMatchStart', 'gameUid': self.game.uid}))
+				threading.Thread(target=asyncio.run, args=(socket.sendJson({'type': 'tournamentMatchStart', 'gameUid': self.game.uid}),)).start()
 
 	def end(self):
 		assert self.game is not None
@@ -701,6 +702,7 @@ class Tournament(models.Model):
 
 	def end_pool(self):
 		self.current_pool += 1
+		self.save()
 		if self.current_pool < len(self.pools):
 			self.dispatch()
 		else:
@@ -741,6 +743,7 @@ class Ressources(models.Model):
 			'size': self.size,
 		}
 
+
 class FriendList(models.Model):
 	'''
 	Required fields:
@@ -761,6 +764,7 @@ class FriendList(models.Model):
 			'target': self.target.username,
 			'pending': self.pending,
 		}
+
 
 class BlockList(models.Model):
 	'''

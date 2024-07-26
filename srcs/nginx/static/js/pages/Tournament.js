@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tournament.js                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/26 09:19:36 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 10:34:46 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,9 @@ async function ifPending(context, container, data, pools, tid) {
 }
 
 function drawGraph(selectedElements, container, data, pools) {
+	console.log(data);
+	console.log(pools);
+
 	let pos = [];
 	let newPos = [];
 	for (let i = 0; i < pools.length; i++) {
@@ -273,9 +276,9 @@ function drawGraph(selectedElements, container, data, pools) {
 				if (i != 0) {
 					let oldMatch = data.pools.length <= i - 1 || data.pools[i - 1] == null ? null : data.pools[i - 1].matches[j * pools[i][1] + k];
 					createLink(container, selectedElements, x - DIV_W * 1.5, y + DIV_H / 2, i - 1, j * pools[i][1] + k, undefined,
-						(oldMatch && oldMatch.status == "finished") || data.ended);
+						(oldMatch && oldMatch.status == "F") || data.ended);
 					createBall(container, selectedElements, x - DIV_W * 1.5, y + DIV_H / 2, i - 1, j * pools[i][1] + k,
-						i - 1 <= data.currentPool && oldMatch && (oldMatch.status != "pending" || oldMatch.players.length == oldMatch.playerCount));
+						i - 1 <= data.currentPool && oldMatch && (oldMatch.status != "P" || oldMatch.players.length == oldMatch.playerCount));
 					if (i - 1 <= data.currentPool)
 						createTool(container, selectedElements, x - DIV_W * 1.5, y + DIV_H / 2, i - 1, j * pools[i][1] + k,
 							pools[i - 1][1], oldMatch);
