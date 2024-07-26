@@ -36,7 +36,6 @@ function initMap(scene, theme, time_left)
 	else
 		initNPlayerMap(scene, player_num, color_theme);
 
-	// if (scene.server.client_id < player_num && scene.game_mode != "BR")
 	initText(scene, player_num, time_left);
 	initCamera(scene, player_num);
 }

@@ -87,8 +87,8 @@ class Ball:
 				angle = 67.5
 			else:
 				return
-			if self.lobby.clients_per_lobby == 2:
-				angle = 67.5
+			if self.lobby.clients_per_lobby == 2 and player.client_id == 1:
+				angle = -angle + 180
 		else:
 			if self.lobby.clients_per_lobby > 2 and random.randint(0, 10) == 0:
 				angle = random.choice([-67.5, 67.5])

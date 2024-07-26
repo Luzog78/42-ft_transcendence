@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Scene.js                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ycontre <ycontre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:17:28 by ycontre           #+#    #+#             */
-/*   Updated: 2024/07/26 09:20:39 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 10:37:24 by ycontre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ class Scene
 					minutes -= 1;
 				}
 				if (minutes < 0)
-					clearInterval(interval_id);
+					clearInterval(this.interval_timer_id);
 				timer_text.updateText(minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'));
 			}, 1000);
 		}
