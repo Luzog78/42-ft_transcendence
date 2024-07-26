@@ -264,7 +264,8 @@
 		"RelationDoesNotExist": "თქვენ არ ხართ ამ მომხმარებლის მეგობარი!",
 		"AlreadyBlocked": "მომხმარებელი უკვე დაბლოკილია!",
 		"NotImplementedYet": "ჯერ არ განხორციელებულა!",
-		"oauthMissingCredentials": "აკლია სერთიფიკატის პარამეტრი!"
+		"oauthMissingCredentials": "აკლია სერთიფიკატის პარამეტრი!",
+		"alreadyConnectedLobby": "You are already playing this game! (Wait until you die)"
 	},
 	"successes": {
 		"a2fDisabled": "ორფაქტორიანი ავთენტიფიკაცია წარმატებით გამორთულია!",

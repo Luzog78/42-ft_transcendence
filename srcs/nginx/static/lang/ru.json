@@ -264,7 +264,8 @@
 		"RelationDoesNotExist": "Вы не друзья этого пользователя!",
 		"AlreadyBlocked": "Пользователь уже заблокирован!",
 		"NotImplementedYet": "Еще не реализовано!",
-		"oauthMissingCredentials": "Отсутствует параметр учетных данных!"
+		"oauthMissingCredentials": "Отсутствует параметр учетных данных!",
+		"alreadyConnectedLobby": "You are already playing this game! (Wait until you die)"
 	},
 	"successes": {
 		"a2fDisabled": "Двухфакторная аутентификация успешно отключена!",

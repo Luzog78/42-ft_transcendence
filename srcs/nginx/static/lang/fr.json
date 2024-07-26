@@ -263,7 +263,8 @@
 		"RelationDoesNotExist": "Vous n'êtes pas ami avec cet utilisateur !",
 		"AlreadyBlocked": "Utilisateur déjà bloqué !",
 		"NotImplementedYet": "Fonctionnalité non implémenté !",
-		"oauthMissingCredentials": "Paramètre d'informations d'identification manquant !"
+		"oauthMissingCredentials": "Paramètre d'informations d'identification manquant !",
+		"alreadyConnectedLobby": "You are already playing this game! (Wait until you die)"
 	},
 	"successes": {
 		"a2fDisabled": "Authentification à deux facteurs désactivée avec succès !",

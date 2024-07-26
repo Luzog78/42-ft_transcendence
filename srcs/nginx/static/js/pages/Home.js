@@ -105,7 +105,7 @@ async function Home(context) {
 							<img src="/static/img/git.svg" alt=" ">
 							<div class="stat-border"></div>
 							<div class="content">
-								<h2>286</h2>
+								<h2>314</h2>
 								<p>${getLang(context, "pages.home.statCommits")}</p>
 							</div>
 						</div>

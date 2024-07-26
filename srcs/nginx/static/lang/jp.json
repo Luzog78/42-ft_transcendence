@@ -264,7 +264,8 @@
 		"RelationDoesNotExist": "あなたはこのユーザーと友達ではありません!",
 		"AlreadyBlocked": "ユーザーはすでにブロックされています。",
 		"NotImplementedYet": "まだ実装されていません！",
-		"oauthMissingCredentials": "資格情報パラメータが欠落しています!"
+		"oauthMissingCredentials": "資格情報パラメータが欠落しています!",
+		"alreadyConnectedLobby": "You are already playing this game! (Wait until you die)"
 	},
 	"successes": {
 		"a2fDisabled": "二要素認証が正常に無効化されました！",

@@ -264,7 +264,8 @@
 		"RelationDoesNotExist": "¡No eres amigo de este usuario!",
 		"AlreadyBlocked": "¡Usuario ya bloqueado!",
 		"NotImplementedYet": "¡Aun no implementado!",
-		"oauthMissingCredentials": "¡Falta parámetro de credencial!"
+		"oauthMissingCredentials": "¡Falta parámetro de credencial!",
+		"alreadyConnectedLobby": "You are already playing this game! (Wait until you die)"
 	},
 	"successes": {
 		"a2fDisabled": "¡Autenticación de dos factores desactivada con éxito!",

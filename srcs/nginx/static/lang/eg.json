@@ -264,7 +264,8 @@
 		"RelationDoesNotExist": "أنت لست صديقًا لهذا المستخدم!",
 		"AlreadyBlocked": "تم حظر المستخدم بالفعل!",
 		"NotImplementedYet": "لم تنفذ بعد!",
-		"oauthMissingCredentials": "معلمة بيانات الاعتماد مفقودة!"
+		"oauthMissingCredentials": "معلمة بيانات الاعتماد مفقودة!",
+		"alreadyConnectedLobby": "You are already playing this game! (Wait until you die)"
 	},
 	"successes": {
 		"a2fDisabled": "تم تعطيل المصادقة الثنائية بنجاح!",

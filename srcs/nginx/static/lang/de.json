@@ -264,7 +264,8 @@
 		"RelationDoesNotExist": "Sie sind mit diesem Benutzer nicht befreundet!",
 		"AlreadyBlocked": "Benutzer bereits blockiert!",
 		"NotImplementedYet": "Noch nicht implementiert!",
-		"oauthMissingCredentials": "Fehlender Anmeldeinformationsparameter!"
+		"oauthMissingCredentials": "Fehlender Anmeldeinformationsparameter!",
+		"alreadyConnectedLobby": "You are already playing this game! (Wait until you die)"
 	},
 	"successes": {
 		"a2fDisabled": "Zwei-Faktor-Authentifizierung erfolgreich deaktiviert!",

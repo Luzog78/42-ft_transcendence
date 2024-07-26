@@ -264,7 +264,8 @@
 		"RelationDoesNotExist": "您不是该用户的好友！",
 		"AlreadyBlocked": "用户已被屏蔽！",
 		"NotImplementedYet": "尚未实施！",
-		"oauthMissingCredentials": "缺少凭据参数！"
+		"oauthMissingCredentials": "缺少凭据参数！",
+		"alreadyConnectedLobby": "You are already playing this game! (Wait until you die)"
 	},
 	"successes": {
 		"a2fDisabled": "二次验证已成功禁用！",
