@@ -21,8 +21,7 @@ from .vector import Vector
 from .bot import Bot
 from .player import Player
 from .spectator import Spectator
-from api_app.models import Tournament
-
+from api_app.models import Tournament, Game
 
 class Lobby:
 	def __init__(self, game_server, uid: str, game_mode: str, player_num: int, theme: int, ball_speed: float, limit):
@@ -323,7 +322,8 @@ class Lobby:
 		client_id: int = data["client_id"]
 
 		if "fill" in data:
-			if client_id != 0 or len(self.clients) == self.clients_per_lobby:
+			game = Game.objects.get(uid=self.uid)
+			if client_id != 0 or len(self.clients) == self.clients_per_lobby or game.restricted:
 				del data["fill"]
 				return
 			await self.fillBot()
