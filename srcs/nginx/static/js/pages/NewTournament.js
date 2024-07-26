@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/26 09:19:03 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 09:49:32 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,10 @@ async function NewTournament(context) {
 		document.querySelectorAll("input[type=number]").forEach(e => {
 			e.addEventListener("focus", (e) => e.target.select());
 			e.addEventListener("wheel", event => {
-				event.preventDefault();
 				let input = event.target;
 				input.value = parseInt(input.value) + (event.deltaY < 0 ? 1 : -1);
 				normalizePlayers(playerCount);
-			});
+			}, { passive: false });
 		});
 
 		playerCount.addEventListener("change", () => changePlayers(playerCount));
