@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 13:40:35 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/22 04:48:03 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 09:15:35 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,13 +155,11 @@ function start() {
 		try {
 			getJson(window.context, url.slice(0, -1)).then(data => {
 				if (!data.ok) {
-					console.log(data);
 					return;
 				}
 
 				let lobby = data.lobby;
 				if (lobby && !gameRunning && lobby.player1 && lobby.player2) {
-					console.log('Game started!', lobby);
 					onReceive({
 						reset: true,
 						start: true,
@@ -201,7 +199,6 @@ function start() {
 				onReceive(data);
 			});
 		} catch (ignored) {
-			console.log(ignored);
 		}
 	}
 
@@ -269,10 +266,6 @@ function start() {
 	sendToServer();
 
 	document.ttt = { sendToServer };
-
-
-	console.log('TicTacToe loaded!');
-
 }
 
 

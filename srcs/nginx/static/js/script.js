@@ -307,7 +307,6 @@ const onLogin = async (context, loadedData = null, reloadNav = false) => {
 		if (context.user.token) {
 			context.chat.ChatConnexion.authenticate(context.user.token)
 				.then(() => {
-					console.log("Successfully authenticated in chat")
 					getJson(context, '/api/friends/list')
 					.then(response => {
 						if (response.ok) {
@@ -323,12 +322,12 @@ const onLogin = async (context, loadedData = null, reloadNav = false) => {
 							})
 							RefreshFriendList(context);
 						} else {
-							console.log("Failed to get friend list : " + response.error);
+							console.log("[❌] Failed to get friend list : " + response.error);
 						}
 					})
 				})
 				.catch(err => {
-					console.log("Failed to authenticate : " + err);
+					console.log("[❌] Failed to authenticate : " + err);
 				})
 		}
 	})
@@ -374,7 +373,6 @@ window.addEventListener("load", async () => {
 					return;
 				}
 				href = window.location.origin + elem.getAttribute("href");
-				console.log(`[🔗] Clicked on link: ${href}`);
 				window.history.pushState(null, null, href);
 				loadPage(new URL(href).pathname);
 				return;

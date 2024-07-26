@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/18 12:37:57 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/26 01:17:58 by ysabik           ###   ########.fr        #
+#    Updated: 2024/07/26 08:46:10 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,7 +106,6 @@ class Bot:
 			distance = computed_pos.distance(self.init_pos)
 			if distance > self.lobby.segment_size / 2 - self.lobby.player_size:
 				return
-
 
 		for i in range(len(player_vertex)):
 			player_vertex[i] += rotate_pos

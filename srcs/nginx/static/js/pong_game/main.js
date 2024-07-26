@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:24:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/26 00:50:23 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 09:20:32 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@ let scene = undefined;
 
 async function initScene(uid)
 {
-	console.log("initScene");
 	if (scene !== undefined)
 		return;
-	console.log("initScene");
 
 	scene = new Scene();
 	await scene.init(uid);
@@ -102,7 +100,6 @@ function destroyScene()
 	scene.renderer.setAnimationLoop( null );
 
 	scene = undefined;
-	console.log("SCENE DESTROYED");
 }
 
 let frame_rate_ms = 1000 / 120;

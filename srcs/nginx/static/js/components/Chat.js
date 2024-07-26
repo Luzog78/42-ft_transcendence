@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Chat.js                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psalame <psalame@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:19:04 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/22 10:58:37 by psalame          ###   ########.fr       */
+/*   Updated: 2024/07/26 09:17:31 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,6 @@ function openDiscussion(context, username, chat = null) {
 					target: username,
 				})
 				.then(resp => {
-					console.log(resp)
 					if (resp.ok) {
 						cache[username].discussion = cache[username].discussion
 							.concat(resp.messages)
@@ -348,9 +347,6 @@ function refreshFriendMenuButtons(context, username, ChatBox = null) {
 	var cancelBtn = ChatBox.querySelector("#CancelFriend");
 	var blockBtn = ChatBox.querySelector("#BlockFriend");
 	var friend = context.chat.FriendList.find(f => f.username === username);
-	console.log(username);
-	console.log(friend);
-	console.log(context.chat.FriendList);
 
 	// 0: not friend
 	// 1: waiting friend to accept
@@ -447,7 +443,7 @@ function refreshFriendMenuButtons(context, username, ChatBox = null) {
 		let discussionMenu = ChatBox.querySelector(".discussion-menu")
 		discussionMenu.style.transition = "unset";
 		discussionMenu.style.marginTop = -discussionMenu.offsetHeight + "px";
-		discussionMenu.getBoundingClientRect(); // fuck you es6 FUUUCK (weird way to make a html flushing to prevent removeProperty before correctly set marginTop)
+		discussionMenu.getBoundingClientRect();
 		discussionMenu.style.removeProperty("transition");
 	}
 }
@@ -591,7 +587,6 @@ function Chat(context) {
 function ToggleChat(toggle = undefined, chat = null) {
 	if (toggle === undefined)
 		toggle = !enabled;
-	console.log("chat toggle", toggle, enabled)
 	enabled = toggle;
 	if (chat == null)
 		chat = document.getElementById("chat");
@@ -614,7 +609,6 @@ function SetPlayerStatus(context, username, status) {
 	var chat = document.getElementById("chat");
 	if (chat) {
 		var friendListUser = chat.querySelector(`.friendBox[data-username="${username}"]`)
-		console.log("set status of ", username, status, friendListUser);
 		if (friendListUser)
 			friendListUser.querySelector(".playerStatusImage .online").style.display = status ? "block" : "none";
 	}
@@ -651,7 +645,7 @@ export {
 	SetPlayerStatus,
 	GetNotificationsNumber,
 	OnTournamentMathStart,
-}
+};
 
 
 
@@ -660,7 +654,7 @@ export {
 
 const templates = {
 	"friendBox": document.createElement("div"),
-}
+};
 
 templates["friendBox"].classList.add("friendBox");
 templates["friendBox"].innerHTML = /*html*/`
@@ -678,4 +672,4 @@ window.profilePictureNotFound = (img) => {
 		img.dataset.default = "/static/img/user.svg";
 	if (img.src != img.dataset.default)
 		img.src = img.dataset.default;
-}
+};

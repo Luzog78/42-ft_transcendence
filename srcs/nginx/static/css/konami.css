@@ -15,10 +15,10 @@
 }
 
 #konami .k-dot {
-	height: 3vh;
-	width: 3vh;
+	height: 1.5vh;
+	width: 1.5vh;
 	border-radius: 50%;
 	background-color: #fff;
-	box-shadow: 0 0 2vh #fff, 0 0 2vh #fff, 0 0 2vh #fff, 0 0 2vh #fff;
+	box-shadow: 0 0 1vh #fff, 0 0 1vh #fff, 0 0 1vh #fff, 0 0 1vh #fff;
 	transition: .2s;
 }

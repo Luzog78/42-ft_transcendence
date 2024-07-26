@@ -29,8 +29,6 @@ class GameServer:
 		if not socket.registered:
 			if "uid" in data and isinstance(data["uid"], str) \
 				and "username" in data and isinstance(data["username"], str):
-				print('>>> Creating new socket <<<')
-				print('>>> lobbys:', *[l.uid for l in self.lobbies], '<<<')
 				socket.username = data["username"]
 				await self.addClient(socket, data["uid"])
 				socket.registered = True
@@ -64,12 +62,9 @@ class GameServer:
 		if not lobby:
 			return False
 
-		print("new client in lobby id: ", lobby.lobby_id)
-
 		game = Game.objects.get(uid=uid)
 
 		username = [p.client.username if isinstance(p, Player) else p.username for p in lobby.clients]
-		print(username, client.username, client.username in username)
 		if lobby.status == "WAITING" and client.username in username:
 			await client.sendData("error", "errors.alreadyConnectedLobby")
 			return False
@@ -80,7 +75,6 @@ class GameServer:
 			goto_specs = len(lobby.clients) >= lobby.clients_per_lobby
 
 		if goto_specs:
-			print("new spec")
 			spectator = Spectator(lobby, client, len(lobby.spectators) + len(lobby.clients))
 			self.clients.append(spectator)
 			await lobby.addSpectator(spectator)
@@ -88,8 +82,6 @@ class GameServer:
 			id = 0
 			while id in [c.client_id for c in lobby.clients]:
 				id += 1
-			print([c.client_id for c in lobby.clients])
-			print("new player", id)
 
 			player = Player(lobby, client, id)
 			self.clients.insert(id, player)

@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 02:31:54 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/26 02:36:27 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 09:18:54 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -371,7 +371,6 @@ function normalizeTime(minDec, minUni, secDec, secUni, minTime = 60, maxTime = 3
 		secUniVal = 0;
 
 	let time = secUniVal + secDecVal * 10 + minUniVal * 60 + minDecVal * 600;
-	console.log(time, minDecVal, minUniVal, secDecVal, secUniVal);
 	if (time < minTime)
 		time = minTime;
 	if (time > maxTime)

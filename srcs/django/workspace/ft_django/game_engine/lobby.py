@@ -136,7 +136,6 @@ class Lobby:
 			user = User.get(username)
 			if user is None and isinstance(player, Bot):
 				user = auth.register(None, username, "Bot", str(player.client_id), username + '@server', None)
-				print("Bot user created", user)
 				if user:
 					user = user['user']
 				else:
@@ -144,7 +143,6 @@ class Lobby:
 
 			player.duration += 3
 
-			print("save stats of", username)
 			stat = Stats.objects.create(
 				user=user,
 				game=game,
@@ -180,7 +178,6 @@ class Lobby:
 
 		players = [p.client.username if isinstance(p, Player) else p.username for p in player_list]
 		game.players = [username for username in players if username is not None]
-		print("party dead :", game.players)
 		game.save()
 
 		Tournament.on_game_end(self.uid)
@@ -272,7 +269,6 @@ class Lobby:
 			threading.Thread(target=asyncio.run, args=(self.BRDied(player_id, player),)).start()
 		elif self.game_mode == "TO" or self.game_mode == "FT":
 			threading.Thread(target=asyncio.run, args=(self.TOFTDied(killer, player_id, player),)).start()
-
 
 	async def fillBot(self):
 		bots_num = self.clients_per_lobby - len(self.clients)

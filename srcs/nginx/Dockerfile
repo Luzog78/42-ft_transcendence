@@ -19,6 +19,6 @@ WORKDIR	/ft_transcendence
 COPY	static /ft_transcendence/static
 COPY	templates /ft_transcendence/templates
 
-EXPOSE	4444
+EXPOSE	443
 
 CMD		[ "nginx", "-g", "daemon off;" ]

@@ -202,7 +202,6 @@ function tablePage(context, username, uidsDates, page, totalPage, div = null) {
 				data.games[i].date = dates[i];
 			data.games.forEach(game => {
 				let inProgress = game.waiting || game.playing;
-				console.log(game);
 				let won = game.winner && game.winner.user && game.winner.user.username === username;
 				let date = toLocalDateStringFormat(game.date);
 				let ago = new HowLongAgo(game.date).toFixedString();

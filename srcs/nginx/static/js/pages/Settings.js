@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/26 02:39:42 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 09:19:21 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -419,7 +419,6 @@ async function Settings(context) {
 			setUserAttributes(context, {
 				a2f: true
 			}).then(data => {
-				console.log(data)
 				if (data.successes.includes('successes.a2fEnabled'))
 					context.user.a2f = true;
 				if (data.complement && data.complement.a2f_token)

@@ -31,7 +31,6 @@ class DynamicText
 
 	updateText(text)
 	{
-		console.log("UPDATE TEXT TO " + text);
 		this.scene.removeMesh(this.mesh);
 		this.text = String(text);
 

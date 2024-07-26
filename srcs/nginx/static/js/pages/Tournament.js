@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:45:15 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/22 06:29:52 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 09:19:36 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,6 @@ async function drawWindow(context, data, tid,
 		return;
 	}
 
-	console.log("Tournament data:", data);
-
 	for (let i = 0; i < data.pools.length; i++)
 		for (let j = 0; j < data.pools[i].matches.length; j++)
 			for (let k = 0; k < data.pools[i].matches[j].players.length; k++) {
@@ -146,8 +144,6 @@ async function drawWindow(context, data, tid,
 
 	let pools = calcPools(data.playerCount);
 	pools.push([1, 1]);
-
-	console.log("Pools:", pools);
 
 	updateStatus(status, data);
 	drawGraph(selectedElements, container, data, pools);

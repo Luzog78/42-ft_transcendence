@@ -43,7 +43,6 @@ class ChatSocket(AsyncWebsocketConsumer):
 						await socket.sendJson({'type': 'status_change', 'username': self.user, 'status': False})
 
 	async def receive(self, text_data):
-		print("received", text_data)
 		try:
 			data = json.loads(text_data)
 		except:
@@ -74,11 +73,10 @@ class ChatSocket(AsyncWebsocketConsumer):
 		await self.sendJson(json_data)
 
 	async def sendJson(self, json_data):
-		print("sending", json_data)
 		try:
 			await self.send(text_data=json.dumps(json_data))
 		except:
-			print("socket disconnected")
+			pass
 
 	async def authenticate(self, data, frontendId):
 		if 'authorization' not in data:

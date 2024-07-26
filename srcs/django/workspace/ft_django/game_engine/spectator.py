@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    spectator.py                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: TheRed <TheRed@students.42.fr>             +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/09 15:11:13 by ycontre           #+#    #+#              #
-#    Updated: 2024/07/25 23:54:14 by TheRed           ###   ########.fr        #
+#    Updated: 2024/07/26 09:07:31 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ class Spectator:
 										"scene.server.client_id": self.client_id})
 		await self.sendData("call", {"command": "scene.initSpectator",
 									"args": [self.lobby.clients_per_lobby, self.lobby.theme, f"'{self.lobby.game_mode}'",
-											limit - (datetime.timestamp(datetime.now()) - start_time)]}) # TODO: theme
+											limit - (datetime.timestamp(datetime.now()) - start_time)]})
 
 		for i in range(len(self.lobby.clients)):
 			player = self.lobby.clients[i]

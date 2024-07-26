@@ -74,8 +74,6 @@ class Server
 		this.scene.remove(player_text_score);
 		destroyObject(player_text);
 		player.mesh.visible = false;
-
-		console.log("Player disconnected");
 	}
 
 	BRDied(player_id)
@@ -153,7 +151,6 @@ class Server
 	onMessage(scene, event)
 	{
 		const message = JSON.parse(event.data);
-		console.log('Received message:', message);
 
 		if (message.modify)
 			for (const [key, value] of Object.entries(message.modify))

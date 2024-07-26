@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 09:50:44 by psalame           #+#    #+#             */
-/*   Updated: 2024/07/23 14:51:26 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 09:19:06 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ async function Oauth(context) {
 			redirect_uri: window.location.href.split('?')[0] // bruh rip my cpu
 		}).then(async (data) => {
 			if (!data.ok) {
-				console.log("nope", data);
 				persistError(context, getLang(context, data.error));
 				redirect("/login");
 				return;

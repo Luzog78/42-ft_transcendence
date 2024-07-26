@@ -90,7 +90,7 @@ class Ball:
 			if self.lobby.clients_per_lobby == 2:
 				angle = 67.5
 		else:
-			if random.randint(0, 4) == 0:
+			if self.lobby.clients_per_lobby > 2 and random.randint(0, 10) == 0:
 				angle = random.choice([-67.5, 67.5])
 			else:
 				return
@@ -106,7 +106,7 @@ class Ball:
 		self.acc.setLength(self.vel.length() * 2)
 
 
-	async def applyCollision(self, wall_name:str, closest_point:Vector, distance:float):
+	async def applyCollision(self, wall_name: str, closest_point: Vector, distance: float):
 		wall = self.lobby.walls[wall_name]
 		wall_normal = Vector(-(wall[1].y - wall[0].y), wall[1].x - wall[0].x).normalize()
 
