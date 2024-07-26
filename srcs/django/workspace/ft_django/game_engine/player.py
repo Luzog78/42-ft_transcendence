@@ -100,7 +100,7 @@ class Player:
 			else:
 				username = player.username
 			await self.sendData("call", {"command": "scene.server.newPlayer",
-									"args": [f"'player{i}'", f"'{username}'", [player.pos.x, player.pos.y]]})
+									"args": [f"'player{i}'", f"'{username}'"]})
 
 	async def move(self, x: float, y: float):
 		player_vertex = self.lobby.walls["player" + str(self.client_id)]
