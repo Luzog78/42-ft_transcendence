@@ -188,9 +188,8 @@ async function PongResult(context, id, data=null) {
 			}, 1);
 		}
 		pongResultPlayers.addEventListener("wheel", (e) => {
-			e.preventDefault();
 			scrollH(pongResultPlayers, e.deltaY * .4);
-		});
+		}, { passive: true });
 
 		let game = data;
 		getJson(context, `/api/stats/g/${id}`).then(data => {

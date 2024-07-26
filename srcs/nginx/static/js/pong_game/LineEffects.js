@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 17:32:23 by marvin            #+#    #+#             */
-/*   Updated: 2024/07/10 09:39:12 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 09:34:15 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ class WallLines
 		this.ending_height = ending_height;
 
 		this.line = new Lines(scene, points, colors, division_count, 5, name);
-		// this.scene.entities.push(this.line) // TODO
 	}
 
 	destroy()
@@ -41,7 +40,6 @@ class WallLines
 		this.line.mesh.position.y += 0.001;
 		if (this.line.mesh.position.y >= this.ending_height)
 			this.line.mesh.position.y = this.starting_height;
-		// this.line.update(scene); // TODO
 	}
 }
 

@@ -200,8 +200,11 @@ class Server
 
 	sendJson(message)
 	{
-		if (this.socket !== WebSocket.CLOSED && this.socket !== WebSocket.CLOSING)
-			this.socket.send(JSON.stringify(message));
+		try{
+			if (this.socket !== WebSocket.CLOSED && this.socket !== WebSocket.CLOSING)
+				this.socket.send(JSON.stringify(message));
+		} catch (e) {
+		}
 	}
 }
 
