@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 20:53:01 by ysabik            #+#    #+#             */
-/*   Updated: 2024/07/26 09:19:21 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/07/26 09:34:07 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -441,7 +441,7 @@ async function Settings(context) {
 					refreshToggleA2f();
 				}
 				else
-					refresh(); // TODO: maybe show useless error bad version
+					refresh();
 			});
 		}
 

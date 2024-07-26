@@ -135,7 +135,7 @@ class ChatConnexion
 	/// 	ChatConnexion.triggerCallback({content}
 	/// 		.then(resp => {})
 	/// 		.catch(err => {});
-	//// or with await and try catch // TODO
+	//// or with await and try catch
 	triggerCallback(request)
 	{
 		const _this = this;
