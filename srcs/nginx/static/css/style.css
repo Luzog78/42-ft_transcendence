@@ -24,11 +24,11 @@ body {
 	overflow-x: hidden;
 }
 
-body::-webkit-scrollbar {
+::-webkit-scrollbar {
 	width: 9.6px;
 }
 
-body::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
 	background-color: rgb(180, 180, 180);
 	background-clip: content-box;
 	border: 2.88px solid transparent;
@@ -36,11 +36,11 @@ body::-webkit-scrollbar-thumb {
 	transition: background-color 2s;
 }
 
-body::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
 	background-color: rgb(80, 80, 80);
 }
 
-body::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
 	background-color: rgb(33,32,33);
 }
 

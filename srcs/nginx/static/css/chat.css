@@ -43,6 +43,14 @@
 	background-color: rgb(80, 80, 80);
 }
 
+#chat ::-webkit-scrollbar-track {
+	background-color: #001433;
+}
+
+#chat #chat-friendList::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
 #chat .chat-container {
 	position: relative;
 	width: 100%;
