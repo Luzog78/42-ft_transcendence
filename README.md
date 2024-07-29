@@ -84,11 +84,22 @@
 
 ### Summary
 
+<br>
+
+<div align="center">
+
+|                              Final Mark                               |
+| :-------------------------------------------------------------------: |
+| $$\textbf{\Huge \color{green} ★★★ \ 125 \ ★★★}$$ <sub>$$/ 100$$</sub> |
+
+</div>
+
+<br><br>
+
 |                  | Major Module amt. | Minor Module amt. |                      Total Score                      |
 | :--------------: | :---------------: | :---------------: | :---------------------------------------------------: |
 |   **Selected**   |       $$12$$      |       $$5$$       |                $$\textbf{14.5}$$ <sub>$$/ 9.5$$</sub> |
-|   **Working**    |       $$11$$      |       $$5$$       |  $$\textbf{\color{green} 13.5}$$ <sub>$$/ 9.5$$</sub> |
-| **💯 Certified** |        $$8$$      |       $$4$$       | $$\textbf{\color{orange} 10.0}$$ <sub>$$/ 9.5$$</sub> |
+| **💯 Validated** |       $$12$$      |       $$5$$       |  $$\textbf{\color{green} 14.5}$$ <sub>$$/ 9.5$$</sub> |
 
 <br>
 
@@ -124,7 +135,7 @@
 |   ✅   | `major` | Graphics                     | [Use of advanced 3D techniques](#major-use-of-advanced-3d-techniques) |
 |   ✅   | `minor` | Accessibility                | [Expanding Browser Compatibility](#minor-expanding-browser-compatibility) |
 |   ✅   | `minor` | Accessibility                | [Multiple language supports](#minor-multiple-language-supports) |
-|   ❌   | `major` | Server-Side Pong             | [Replacing Basic Pong with Server-Side Pong and Implementing an API](#major-replacing-basic-pong-with-server-side-pong-and-implementing-an-api) |
+|   ❎   | `major` | Server-Side Pong             | [Replacing Basic Pong with Server-Side Pong and Implementing an API](#major-replacing-basic-pong-with-server-side-pong-and-implementing-an-api) |
 
 > [!NOTE]
 > If the link does not work, the development of the module is not yet started.
